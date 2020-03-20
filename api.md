@@ -13,11 +13,18 @@ Response:
   "shops": [
     {
       "id": "some-id-1",
-      "name": "some-name-1"
+      "name": "some-name-1",
+      "distance": 5.3,
+      "supportedContactTypes": [
+        "telephone", "whatsapp"
+      ]
     },
     {
       "id": "some-id-2",
-      "name": "some-name-2"
+      "name": "some-name-2",
+      "supportedContactTypes": [
+        "facetime"
+      ]
     }    
   ]
 }
