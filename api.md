@@ -22,3 +22,18 @@ Response:
   ]
 }
 ```
+
+## Get shop details
+
+Request:
+```
+GET /api/shop/{id}
+```
+
+Response:
+```json
+{
+  "id": "some-id-1",
+  "name": "some-name-1"
+}
+```
