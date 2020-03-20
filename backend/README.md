@@ -1,5 +1,9 @@
 # Mercury backend
 
+## Get an architectural overview
+
+Start with looking at the `de.qaware.mercury.mercury.rest.ShopController` class.
+
 ## Run it
 
 ### With gradle
