@@ -10,10 +10,10 @@ public final class Lists {
     }
 
     /**
-     * Lists a collection of type 'input' to a list of type 'output' using a mapper function.
+     * Maps a collection of type 'input' to a list of type 'output' using a mapper function.
      *
      * @param in     list of type 'input'
-     * @param mapper maps from 'input' to 'output'
+     * @param mapper mapper function which maps from 'input' to 'output'
      * @param <I>    input type
      * @param <O>    output type
      * @return list of type 'output'
