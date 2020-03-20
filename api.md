@@ -34,6 +34,8 @@ Response:
 ```json
 {
   "id": "some-id-1",
-  "name": "some-name-1"
+  "name": "some-name-1",
+  "description": "some-description-1",
+  "email": "some@email"
 }
 ```
