@@ -1,19 +1,15 @@
 <main class="mercury-root">
 
-  <div class="hero">
-    <h1>Mercury</h1>
-  </div>
+  <app-header></app-header>
 
-  <router-outlet></router-outlet>
+  <section class="app-content">
+    <mat-card>
+      <mat-card-content>
+        <router-outlet></router-outlet>
+      </mat-card-content>
+    </mat-card>
+  </section>
 
-  <div class="footer">
-    <a [routerLink]="'login'">Login für Ladenbesitzer</a>
-    |
-    <a [routerLink]="'create-shop'">Als Ladenbesitzer registrieren</a>
-    |
-    <a [routerLink]="'imprint'">Impressum</a>
-    |
-    <a [routerLink]="'privacy'">Datenschutz</a>
-  </div>
+  <app-footer></app-footer>
 
 </main>

@@ -13,6 +13,9 @@ import { ShopManagementPageComponent } from './shop-management-page/shop-managem
 import { LoginPageComponent } from './login-page/login-page.component';
 import { PrivacyPageComponent } from './privacy-page/privacy-page.component';
 import { ImprintPageComponent } from './imprint-page/imprint-page.component';
+import { AppHeaderComponent } from './app-header/app-header.component';
+import { AppFooterComponent } from './app-footer/app-footer.component';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
   declarations: [
@@ -24,13 +27,16 @@ import { ImprintPageComponent } from './imprint-page/imprint-page.component';
     ShopManagementPageComponent,
     LoginPageComponent,
     PrivacyPageComponent,
-    ImprintPageComponent
+    ImprintPageComponent,
+    AppHeaderComponent,
+    AppFooterComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MatButtonModule
+    MatButtonModule,
+    MatCardModule
   ],
   providers: [],
   bootstrap: [AppComponent]
