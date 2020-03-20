@@ -11,6 +11,6 @@ class ShopsDto {
     List<ShopDto> shops;
 
     public static ShopsDto of(List<Shop> shops) {
-        return new ShopsDto(Lists.map(shops, s -> ShopDto.of(s)));
+        return new ShopsDto(Lists.map(shops, ShopDto::of));
     }
 }
