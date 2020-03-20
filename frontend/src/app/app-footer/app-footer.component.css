@@ -1,3 +1,11 @@
-:host {
+.app-footer {
   font-size: 80%;
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+a {
+  margin: 0 1em;
 }
