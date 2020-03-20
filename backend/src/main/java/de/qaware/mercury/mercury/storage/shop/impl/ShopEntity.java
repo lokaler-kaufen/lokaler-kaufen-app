@@ -1,6 +1,6 @@
-package de.qaware.mercury.mercury.storage.impl;
+package de.qaware.mercury.mercury.storage.shop.impl;
 
-import de.qaware.mercury.mercury.business.Shop;
+import de.qaware.mercury.mercury.business.shop.Shop;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

@@ -1,7 +1,7 @@
 package de.qaware.mercury.mercury;
 
-import de.qaware.mercury.mercury.business.Shop;
-import de.qaware.mercury.mercury.business.ShopService;
+import de.qaware.mercury.mercury.business.shop.Shop;
+import de.qaware.mercury.mercury.business.shop.ShopService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;

@@ -2,7 +2,7 @@
 
 ## Get an architectural overview
 
-Start with looking at the `de.qaware.mercury.mercury.rest.ShopController` class.
+Start with looking at the `de.qaware.mercury.mercury.rest.shop.ShopController` class.
 
 ## Run it
 

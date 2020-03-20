@@ -1,13 +1,13 @@
-package de.qaware.mercury.mercury.rest;
+package de.qaware.mercury.mercury.rest.shop.dto;
 
-import de.qaware.mercury.mercury.business.Shop;
+import de.qaware.mercury.mercury.business.shop.Shop;
 import de.qaware.mercury.mercury.util.Lists;
 import lombok.Value;
 
 import java.util.List;
 
 @Value
-class ShopsDto {
+public class ShopsDto {
     List<ShopDto> shops;
 
     public static ShopsDto of(List<Shop> shops) {

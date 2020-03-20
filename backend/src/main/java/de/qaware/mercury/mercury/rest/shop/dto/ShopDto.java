@@ -1,10 +1,10 @@
-package de.qaware.mercury.mercury.rest;
+package de.qaware.mercury.mercury.rest.shop.dto;
 
-import de.qaware.mercury.mercury.business.Shop;
+import de.qaware.mercury.mercury.business.shop.Shop;
 import lombok.Value;
 
 @Value
-class ShopDto {
+public class ShopDto {
     String id;
     String name;
 
