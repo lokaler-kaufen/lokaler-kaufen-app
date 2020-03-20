@@ -1,6 +1,6 @@
-package de.qaware.mercury.mercury.business.shop.impl;
+package de.qaware.mercury.mercury.business.uuid.impl;
 
-import de.qaware.mercury.mercury.business.shop.UUIDFactory;
+import de.qaware.mercury.mercury.business.uuid.UUIDFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;

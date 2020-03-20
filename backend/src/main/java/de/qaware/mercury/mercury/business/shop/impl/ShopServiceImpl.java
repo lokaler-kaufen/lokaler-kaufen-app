@@ -2,7 +2,7 @@ package de.qaware.mercury.mercury.business.shop.impl;
 
 import de.qaware.mercury.mercury.business.shop.Shop;
 import de.qaware.mercury.mercury.business.shop.ShopService;
-import de.qaware.mercury.mercury.business.shop.UUIDFactory;
+import de.qaware.mercury.mercury.business.uuid.UUIDFactory;
 import de.qaware.mercury.mercury.storage.shop.ShopRepository;
 import org.springframework.stereotype.Service;
 

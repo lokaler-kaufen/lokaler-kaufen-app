@@ -1,4 +1,4 @@
-package de.qaware.mercury.mercury.business.shop;
+package de.qaware.mercury.mercury.business.uuid;
 
 import java.util.UUID;
 
