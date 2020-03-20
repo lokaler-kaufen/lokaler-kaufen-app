@@ -20,6 +20,8 @@ class DebugPopulateDatabase implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
+        log.info("Populating database for DEBUG purposes");
+
         Set<String> names = Set.of(
             "Moe's Whiskey",
             "Flo's Kaffeeladen",
