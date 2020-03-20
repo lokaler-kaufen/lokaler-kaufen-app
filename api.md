@@ -22,6 +22,7 @@ Response:
     {
       "id": "some-id-2",
       "name": "some-name-2",
+      "distance": 7.3,
       "supportedContactTypes": [
         "facetime"
       ]
