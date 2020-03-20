@@ -1,1 +1,14 @@
-<p>shop-search-page works!</p>
+<div style="width: 100%;">
+  <mat-form-field style="width: 70%; margin-right: 15px; ">
+    <mat-label>Suche</mat-label>
+    <input matInput placeholder="Dein Lieblingsgeschäft..." [(ngModel)]="searchBusiness">
+    <mat-icon matSuffix>search</mat-icon>
+  </mat-form-field>
+
+  <mat-form-field style="width: 25%;">
+    <mat-label>Sortieren</mat-label>
+    <mat-select [(value)]="selectedOrder">
+      <mat-option *ngFor="let option of orderOptions" [value]="option">{{option}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>

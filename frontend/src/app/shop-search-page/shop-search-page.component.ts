@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'shop-search-page',
@@ -6,8 +6,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./shop-search-page.component.css']
 })
 export class ShopSearchPageComponent implements OnInit {
+  searchBusiness: string;
+  selectedOrder = 'Entfernung';
+  orderOptions: string[] = ['Entfernung', 'Alphabetisch'];
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
   }
