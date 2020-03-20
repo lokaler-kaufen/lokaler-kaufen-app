@@ -44,6 +44,22 @@ Response:
   "id": "some-id-1",
   "name": "some-name-1",
   "description": "some-description-1",
-  "email": "some@email"
+  "email": "some@email",
+  "street": "some-street",
+  "zipcode": "some-zip-code",
+  "country": "some-country",
+  "website": "some-website",
+  "slots": [
+    {
+      "start": "11:00",
+      "end": "12:00",
+      "available": true
+    },
+    {
+      "start": "12:00",
+      "end": "13:00",
+      "available": false
+    }   
+  ]
 }
 ```
