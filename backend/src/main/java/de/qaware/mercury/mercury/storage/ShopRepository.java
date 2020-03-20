@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface ShopRepository {
     List<Shop> listAll();
+
+    void insert(Shop shop);
 }
