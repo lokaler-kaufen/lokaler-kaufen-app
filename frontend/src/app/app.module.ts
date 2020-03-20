@@ -16,6 +16,8 @@ import { ImprintPageComponent } from './imprint-page/imprint-page.component';
 import { AppHeaderComponent } from './app-header/app-header.component';
 import { AppFooterComponent } from './app-footer/app-footer.component';
 import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule, MatLabel } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   declarations: [
@@ -36,7 +38,10 @@ import { MatCardModule } from '@angular/material/card';
     AppRoutingModule,
     BrowserAnimationsModule,
     MatButtonModule,
-    MatCardModule
+    MatCardModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   providers: [],
   bootstrap: [AppComponent]

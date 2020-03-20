@@ -1,0 +1,22 @@
+.landing-page {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.landing-page-content {
+  dipslay: flex;
+  flex-direction: column;
+}
+
+.landing-page-field-label {
+  width: 100%;
+}
+
+.landing-page-field-label {
+  width: 100%;
+}
+
+.landing-page-button {
+  width: 100%;
+}
