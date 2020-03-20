@@ -10,6 +10,9 @@ import { ShopSearchPageComponent } from './shop-search-page/shop-search-page.com
 import { ShopDetailsPageComponent } from './shop-details-page/shop-details-page.component';
 import { ShopCreationPageComponent } from './shop-creation-page/shop-creation-page.component';
 import { ShopManagementPageComponent } from './shop-management-page/shop-management-page.component';
+import { LoginPageComponent } from './login-page/login-page.component';
+import { PrivacyPageComponent } from './privacy-page/privacy-page.component';
+import { ImprintPageComponent } from './imprint-page/imprint-page.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +21,10 @@ import { ShopManagementPageComponent } from './shop-management-page/shop-managem
     ShopSearchPageComponent,
     ShopDetailsPageComponent,
     ShopCreationPageComponent,
-    ShopManagementPageComponent
+    ShopManagementPageComponent,
+    LoginPageComponent,
+    PrivacyPageComponent,
+    ImprintPageComponent
   ],
   imports: [
     BrowserModule,
