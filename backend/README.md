@@ -28,3 +28,13 @@ Start the `main()` method of the `de.qaware.mercury.mercury.MercuryApplication` 
 * The service layer doesn't know the storage or the REST layer
 * Use query parameters (`@RequestParam`) in URLs for optional parameters. If a parameter is required, better use a `@PathVariable`.
 * Use `varchar` without length for string columns ([Details](https://wiki.postgresql.org/wiki/Don%27t_Do_This#Don.27t_use_varchar.28n.29_by_default)).
+
+## How To's
+
+### Login as Admin
+
+```
+curlie :8080/api/admin/login email=admin-1@localhost password=admin-1
+```
+
+The access token is set as a cookie.
