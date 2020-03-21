@@ -65,7 +65,7 @@ class AdminLoginServiceImpl implements AdminLoginService {
         Admin admin = adminRepository.findById(adminId);
         if (admin == null) {
             log.warn("Token is valid, but admin with id '{}' not found", adminId);
-            throw LoginException.forAdminId(adminId);
+            throw LoginException.forAdminToken(token);
         }
 
         return admin;

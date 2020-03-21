@@ -18,3 +18,11 @@ CREATE TABLE admin
     email         varchar not null unique,
     password_hash varchar not null
 );
+
+CREATE TABLE shop_login
+(
+    id            uuid primary key,
+    shop_id       uuid    not null references shop (id),
+    email         varchar not null unique,
+    password_hash varchar not null
+);

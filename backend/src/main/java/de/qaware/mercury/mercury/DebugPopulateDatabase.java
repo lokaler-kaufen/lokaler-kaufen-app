@@ -1,6 +1,7 @@
 package de.qaware.mercury.mercury;
 
 import de.qaware.mercury.mercury.business.login.AdminLoginService;
+import de.qaware.mercury.mercury.business.login.ShopLoginService;
 import de.qaware.mercury.mercury.business.shop.Shop;
 import de.qaware.mercury.mercury.business.shop.ShopService;
 import lombok.extern.slf4j.Slf4j;
@@ -8,17 +9,17 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
-import java.util.Map;
-
 @Component
 @Slf4j
 class DebugPopulateDatabase implements ApplicationRunner {
     private final ShopService shopService;
     private final AdminLoginService adminLoginService;
+    private final ShopLoginService shopLoginService;
 
-    DebugPopulateDatabase(ShopService shopService, AdminLoginService adminLoginService) {
+    DebugPopulateDatabase(ShopService shopService, AdminLoginService adminLoginService, ShopLoginService shopLoginService) {
         this.shopService = shopService;
         this.adminLoginService = adminLoginService;
+        this.shopLoginService = shopLoginService;
     }
 
     @Override
@@ -35,15 +36,16 @@ class DebugPopulateDatabase implements ApplicationRunner {
     }
 
     private void createShops() {
-        Map<String, String> shops = Map.of(
-            "Moe's Whiskey", "Moe",
-            "Flo's Kaffeeladen", "Flo",
-            "Vroni's Kleiderladen", "Vroni"
-        );
+        Shop shop = shopService.create("Moe's Whiskey", "Moe", "Lothstr. 64", "80335", "München", "");
+        shopLoginService.createLogin(shop, "moe@localhost", "moe");
+        log.info("Created shop {}", shop);
 
-        for (Map.Entry<String, String> shop : shops.entrySet()) {
-            Shop createdShop = shopService.create(shop.getKey(), shop.getValue(), "Street 1", "12345", "Munich", "Hasenbergl");
-            log.info("Created shop {}", createdShop);
-        }
+        shop = shopService.create("Flo's Kaffeeladen", "Flo", "Aschauer Str. 32", "81549", "München", "");
+        shopLoginService.createLogin(shop, "flo@localhost", "flo");
+        log.info("Created shop {}", shop);
+
+        shop = shopService.create("Vroni's Kleiderladen", "Vroni", "Rheinstraße 4C", "55116", "Mainz", "");
+        shopLoginService.createLogin(shop, "vroni@localhost", "vroni");
+        log.info("Created shop {}", shop);
     }
 }

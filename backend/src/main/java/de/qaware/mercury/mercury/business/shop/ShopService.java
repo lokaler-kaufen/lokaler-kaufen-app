@@ -1,5 +1,7 @@
 package de.qaware.mercury.mercury.business.shop;
 
+import org.springframework.lang.Nullable;
+
 import java.util.List;
 
 public interface ShopService {
@@ -12,4 +14,7 @@ public interface ShopService {
     List<ShopWithDistance> findNearby(String location);
 
     void delete(Shop.Id parse) throws ShopNotFoundException;
+
+    @Nullable
+    Shop findById(Shop.Id id);
 }
