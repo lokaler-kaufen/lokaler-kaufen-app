@@ -63,7 +63,8 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "mercury-ui:build"
+            "browserTarget": "mercury-ui:build",
+            "proxyConfig": "proxy.conf.json"
           },
           "configurations": {
             "production": {
