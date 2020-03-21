@@ -7,6 +7,7 @@ import de.qaware.mercury.mercury.business.shop.ShopNotFoundException;
 import de.qaware.mercury.mercury.business.shop.ShopService;
 import de.qaware.mercury.mercury.business.shop.ShopWithDistance;
 import de.qaware.mercury.mercury.business.uuid.UUIDFactory;
+import de.qaware.mercury.mercury.storage.shop.ContactType;
 import de.qaware.mercury.mercury.storage.shop.ShopRepository;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
@@ -54,7 +55,7 @@ class ShopServiceImpl implements ShopService {
     }
 
     @Override
-    public Shop create(String name, String ownerName, String email, String street, String zipCode, String city, String addressSupplement, String[] contactTypes) {
+    public Shop create(String name, String ownerName, String email, String street, String zipCode, String city, String addressSupplement, List<ContactType> contactTypes) {
         UUID id = uuidFactory.create();
 
         GeoLocation geoLocation = geoLocationLookup.fromZipCode(zipCode);

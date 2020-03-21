@@ -1,9 +1,12 @@
 package de.qaware.mercury.mercury.rest.shop.dto;
 
 import de.qaware.mercury.mercury.business.shop.Shop;
+import de.qaware.mercury.mercury.storage.shop.ContactType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -17,7 +20,7 @@ public class ShopCreateDto {
     String zipCode;
     String city;
     String addressSupplement;
-    String[] contactTypes;
+    List<ContactType> contactTypes;
 
     public static ShopCreateDto of(Shop shop) {
         return new ShopCreateDto(

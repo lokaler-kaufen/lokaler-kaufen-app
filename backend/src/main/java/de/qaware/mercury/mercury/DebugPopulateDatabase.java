@@ -4,10 +4,13 @@ import de.qaware.mercury.mercury.business.login.AdminLoginService;
 import de.qaware.mercury.mercury.business.login.ShopLoginService;
 import de.qaware.mercury.mercury.business.shop.Shop;
 import de.qaware.mercury.mercury.business.shop.ShopService;
+import de.qaware.mercury.mercury.storage.shop.ContactType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 @Slf4j
@@ -36,15 +39,15 @@ class DebugPopulateDatabase implements ApplicationRunner {
     }
 
     private void createShops() {
-        Shop shop = shopService.create("Moe's Whiskey", "Moe", "moe@example.com", "Lothstr. 64", "80335", "München", "", new String[]{"facebook_messenger", "whatsapp"});
+        Shop shop = shopService.create("Moe's Whiskey", "Moe", "moe@example.com", "Lothstr. 64", "80335", "München", "", List.of(ContactType.FACEBOOK_MESSENGER, ContactType.WHATSAPP));
         shopLoginService.createLogin(shop, "moe@localhost", "moe");
         log.info("Created shop {}", shop);
 
-        shop = shopService.create("Flo's Kaffeeladen", "Flo", "flo@coffeshop-profis.de", "Aschauer Str. 32", "81549", "München", "", new String[]{"telefon"});
+        shop = shopService.create("Flo's Kaffeeladen", "Flo", "flo@coffeshop-profis.de", "Aschauer Str. 32", "81549", "München", "", List.of(ContactType.GLIDE));
         shopLoginService.createLogin(shop, "flo@localhost", "flo");
         log.info("Created shop {}", shop);
 
-        shop = shopService.create("Vroni's Kleiderladen", "Vroni", "vroni@kranzhornsyndikat.at", "Rheinstraße 4C", "55116", "Mainz", "", new String[]{"google_duo", "skype"});
+        shop = shopService.create("Vroni's Kleiderladen", "Vroni", "vroni@kranzhornsyndikat.at", "Rheinstraße 4C", "55116", "Mainz", "", List.of(ContactType.GOOGLE_DUO, ContactType.TANGO));
         shopLoginService.createLogin(shop, "vroni@localhost", "vroni");
         log.info("Created shop {}", shop);
     }

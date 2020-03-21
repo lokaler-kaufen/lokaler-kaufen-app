@@ -9,11 +9,11 @@ Content-Type: application/json
     "email": "info@example.com",
     "street": "Münchner Straße 13",
     "zipCode": "83464",
-    "city": "MÜnchen",
+    "city": "München",
     "addressSupplement": "",
     "contactTypes": [
-        "facebook_messenger",
-        "whatsapp"
+        "FACEBOOK_MESSENGER",
+        "WHATSAPP"
     ]
 }
 
