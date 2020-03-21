@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
 
-import java.util.List;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -21,7 +21,7 @@ public class ShopAdminDto {
     String zipCode;
     String city;
     String addressSupplement;
-    List<ContactType> contactTypes;
+    Set<ContactType> contactTypes;
     boolean enabled;
     String details;
     @Nullable
@@ -37,7 +37,7 @@ public class ShopAdminDto {
             shop.getZipCode(),
             shop.getCity(),
             shop.getAddressSupplement(),
-            shop.getContactTypes(),
+            shop.getContactTypes().keySet(),
             shop.isEnabled(),
             shop.getDetails(),
             shop.getWebsite()

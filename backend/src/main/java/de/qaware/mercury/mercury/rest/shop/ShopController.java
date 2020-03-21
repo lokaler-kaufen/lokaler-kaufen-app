@@ -9,7 +9,6 @@ import de.qaware.mercury.mercury.business.shop.ShopCreation;
 import de.qaware.mercury.mercury.business.shop.ShopNotFoundException;
 import de.qaware.mercury.mercury.business.shop.ShopService;
 import de.qaware.mercury.mercury.business.shop.ShopUpdate;
-import de.qaware.mercury.mercury.business.shop.Slots;
 import de.qaware.mercury.mercury.rest.plumbing.authentication.AuthenticationHelper;
 import de.qaware.mercury.mercury.rest.plumbing.authentication.InvalidCredentialsRestException;
 import de.qaware.mercury.mercury.rest.shop.dto.CreateShopRequestDto;
@@ -71,9 +70,7 @@ class ShopController {
         return ShopDetailDto.of(shopService.create(new ShopCreation(
             email, request.getOwnerName(), request.getName(), request.getStreet(), request.getZipCode(), request.getCity(),
             request.getAddressSupplement(), request.getDetails(), request.getWebsite(), request.getPassword(),
-            Maps.mapKeys(request.getContactTypes(), ContactType::valueOf),
-            // TODO MKA: Slots
-            Slots.none(request.getSlots().getTimePerSlot(), request.getSlots().getTimeBetweenSlots())
+            Maps.mapKeys(request.getContactTypes(), ContactType::valueOf), request.getSlots().toSlots()
         )));
     }
 
@@ -84,9 +81,7 @@ class ShopController {
         return ShopDetailDto.of(shopService.update(shop, new ShopUpdate(
             request.getName(), request.getOwnerName(), request.getStreet(), request.getZipCode(), request.getCity(),
             request.getAddressSupplement(), request.getDetails(), request.getWebsite(),
-            Maps.mapKeys(request.getContactTypes(), ContactType::valueOf),
-            // TODO MKA: Slots
-            Slots.none(request.getSlots().getTimePerSlot(), request.getSlots().getTimeBetweenSlots())
+            Maps.mapKeys(request.getContactTypes(), ContactType::valueOf), request.getSlots().toSlots()
         )));
     }
 

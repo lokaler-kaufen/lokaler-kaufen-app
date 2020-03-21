@@ -5,7 +5,7 @@ import lombok.Value;
 import lombok.With;
 import org.springframework.lang.Nullable;
 
-import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Value
@@ -18,13 +18,14 @@ public class Shop {
     String zipCode;
     String city;
     String addressSupplement;
-    List<ContactType> contactTypes;
+    Map<ContactType, String> contactTypes;
     @With
     boolean enabled;
     GeoLocation geoLocation;
     String details;
     @Nullable
     String website;
+    Slots slots;
 
     @Value(staticConstructor = "of")
     public static class Id {
