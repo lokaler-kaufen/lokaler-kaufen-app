@@ -57,7 +57,7 @@ class ShopController {
     }
 
     @PostMapping(path = "/", consumes = MediaType.APPLICATION_JSON_VALUE)
-    ShopCreateDto createShop(@RequestBody CreateShopRequestDto request, @RequestParam String token) {
+    ShopDetailDto createShop(@RequestBody CreateShopRequestDto request, @RequestParam String token) {
         // The token is taken from the link which the user got with email
         // It contains the email address, and is used to verify that the user really has access to this email address
         String email;
@@ -67,7 +67,7 @@ class ShopController {
             throw new InvalidCredentialsRestException(e.getMessage());
         }
 
-        return ShopCreateDto.of(shopService.create(new ShopCreation(
+        return ShopDetailDto.of(shopService.create(new ShopCreation(
             email, request.getOwnerName(), request.getName(), request.getStreet(), request.getZipCode(), request.getCity(),
             request.getAddressSupplement(), request.getDetails(), request.getWebsite(), request.getPassword(),
             Maps.mapKeys(request.getContactTypes(), ContactType::valueOf),
