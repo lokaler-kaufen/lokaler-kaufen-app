@@ -9,20 +9,22 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 
 @Service
-@EnableConfigurationProperties(EmailSenderConfigurationProperties.class)
+@EnableConfigurationProperties(EmailConfigurationProperties.class)
 @Slf4j
 @ConditionalOnProperty(name = "mercury.email.use-dummy", havingValue = "false")
 class EmailSenderImpl implements EmailSender {
-    private final EmailSenderConfigurationProperties config;
+    private final EmailConfigurationProperties config;
     private final MailSender mailSender;
 
-    EmailSenderImpl(EmailSenderConfigurationProperties config, MailSender mailSender) {
+    EmailSenderImpl(EmailConfigurationProperties config, MailSender mailSender) {
         this.config = config;
         this.mailSender = mailSender;
     }
 
     @Override
     public void sendEmail(String recipient, String subject, String body) {
+        // TODO MKA: Make this async!
+
         SimpleMailMessage mail = new SimpleMailMessage();
         mail.setFrom(config.getFrom());
         mail.setTo(recipient);

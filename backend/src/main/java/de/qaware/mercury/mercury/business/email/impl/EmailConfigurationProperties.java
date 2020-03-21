@@ -9,7 +9,12 @@ import javax.validation.constraints.NotBlank;
 @Data
 @ConfigurationProperties("mercury.email")
 @Validated
-class EmailSenderConfigurationProperties {
+class EmailConfigurationProperties {
     @NotBlank
     private String from;
+    /**
+     * {{ token }} will be replaced with the creation link token
+     */
+    @NotBlank
+    private String creationLinkTemplate;
 }

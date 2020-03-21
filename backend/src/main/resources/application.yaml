@@ -9,9 +9,11 @@ mercury:
   tokens:
     shopJwtSecret: "u2WXgWEWhyop+qtpiH5jhQmDN+PVRbazKPNuseI0dmE=" # openssl rand -base64 32
     adminJwtSecret: "QXOm/a5//OFtmciYomnixCTDCzNUQFWNAiT3eGBOfhQ=" # openssl rand -base64 32
+    shopCreationJwtSecret: "8aaM086u9cpaNp8fMKURLOdpTEJYPqFy/xrN3M5ynT4=" # openssl rand -base64 32
   email:
     use-dummy: true # Set this to false to send real emails
     from: "Lokaler.kaufen <lokaler.kaufen@gmail.com>"
+    creationLinkTemplate: "http://localhost:8080#/create/token={{ token }}"
 
 spring.mail:
   host: "smtp.gmail.com"

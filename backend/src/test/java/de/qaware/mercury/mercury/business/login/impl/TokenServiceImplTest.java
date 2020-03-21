@@ -21,7 +21,7 @@ class TokenServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        TokenServiceConfigurationProperties config = new TokenServiceConfigurationProperties("shop-secret", "admin-secret");
+        TokenServiceConfigurationProperties config = new TokenServiceConfigurationProperties("shop-secret", "admin-secret", "shop-creation-secret");
         sut = new TokenServiceImpl(config);
     }
 
