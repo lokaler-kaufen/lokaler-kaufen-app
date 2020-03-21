@@ -8,12 +8,14 @@ public class ShopDto {
     String id;
     String name;
     boolean enabled;
+    String locationName;
 
     public static ShopDto of(Shop shop) {
         return new ShopDto(
             shop.getId().getId().toString(),
             shop.getName(),
-            shop.isEnabled()
+            shop.isEnabled(),
+            shop.getLocation().getName()
         );
     }
 }

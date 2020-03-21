@@ -1,5 +1,6 @@
 package de.qaware.mercury.mercury;
 
+import de.qaware.mercury.mercury.business.location.Location;
 import de.qaware.mercury.mercury.business.shop.Shop;
 import de.qaware.mercury.mercury.business.shop.ShopService;
 import lombok.extern.slf4j.Slf4j;
@@ -29,8 +30,10 @@ class DebugPopulateDatabase implements ApplicationRunner {
         );
 
         for (String name : names) {
-            Shop shop = shopService.create(name, true);
-            log.info("Created shop {}", shop);
+            Shop shop1 = shopService.create(name + " München", "81549", true);
+            Shop shop2 = shopService.create(name + " Rosenheim", new Location("83022 Rosenheim", 47.848671, 12.139321), true);
+            log.info("Created shop {}", shop1);
+            log.info("Created shop {}", shop2);
         }
     }
 }

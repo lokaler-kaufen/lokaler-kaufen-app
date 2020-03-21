@@ -16,8 +16,13 @@ class ShopController {
         this.shopService = shopService;
     }
 
-    @GetMapping
+    @GetMapping("list")
     ShopsDto listAll() {
         return ShopsDto.of(shopService.listAll());
+    }
+
+    @GetMapping("find")
+    ShopsDto findNearby(String location) {
+        return ShopsDto.of(shopService.findNearby(location));
     }
 }

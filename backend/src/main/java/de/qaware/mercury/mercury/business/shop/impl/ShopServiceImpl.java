@@ -1,5 +1,7 @@
 package de.qaware.mercury.mercury.business.shop.impl;
 
+import de.qaware.mercury.mercury.business.location.Location;
+import de.qaware.mercury.mercury.business.location.LocationLookup;
 import de.qaware.mercury.mercury.business.shop.Shop;
 import de.qaware.mercury.mercury.business.shop.ShopService;
 import de.qaware.mercury.mercury.business.uuid.UUIDFactory;
@@ -12,10 +14,12 @@ import java.util.UUID;
 @Service
 class ShopServiceImpl implements ShopService {
     private final UUIDFactory uuidFactory;
+    private final LocationLookup locationLookup;
     private final ShopRepository shopRepository;
 
-    ShopServiceImpl(UUIDFactory uuidFactory, ShopRepository shopRepository) {
+    ShopServiceImpl(UUIDFactory uuidFactory, LocationLookup locationLookup, ShopRepository shopRepository) {
         this.uuidFactory = uuidFactory;
+        this.locationLookup = locationLookup;
         this.shopRepository = shopRepository;
     }
 
@@ -25,9 +29,20 @@ class ShopServiceImpl implements ShopService {
     }
 
     @Override
-    public Shop create(String name, boolean enabled) {
+    public List<Shop> findNearby(String postCode) {
+        Location location = locationLookup.fromPostcode(postCode);
+        return shopRepository.findNearby(location.getLatitude(), location.getLongitude());
+    }
+
+    @Override
+    public Shop create(String name, String postCode, boolean enabled) {
+        return create(name, locationLookup.fromPostcode(postCode), enabled);
+    }
+
+    @Override
+    public Shop create(String name, Location location, boolean enabled) {
         UUID id = uuidFactory.create();
-        Shop shop = new Shop(Shop.Id.of(id), name, enabled);
+        Shop shop = new Shop(Shop.Id.of(id), name, enabled, location);
 
         shopRepository.insert(shop);
         return shop;

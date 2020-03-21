@@ -1,5 +1,6 @@
 package de.qaware.mercury.mercury.storage.shop.impl;
 
+import de.qaware.mercury.mercury.business.location.Location;
 import de.qaware.mercury.mercury.business.shop.Shop;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -12,6 +13,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Locale;
 import java.util.UUID;
 
 @Entity
@@ -35,11 +37,24 @@ class ShopEntity {
     @Column(nullable = false)
     private boolean enabled;
 
+    @Setter
+    @Column(nullable = false)
+    private String locationName;
+
+    @Setter
+    @Column(nullable = false)
+    private double latitude;
+
+    @Setter
+    @Column(nullable = false)
+    private double longitude;
+
     public static ShopEntity of(Shop shop) {
-        return new ShopEntity(shop.getId().getId(), shop.getName(), shop.isEnabled());
+        return new ShopEntity(shop.getId().getId(), shop.getName(), shop.isEnabled(),
+            shop.getLocation().getName(), shop.getLocation().getLatitude(), shop.getLocation().getLongitude());
     }
 
     public Shop toShop() {
-        return new Shop(Shop.Id.of(id), name, enabled);
+        return new Shop(Shop.Id.of(id), name, enabled, new Location(locationName, latitude, longitude));
     }
 }
