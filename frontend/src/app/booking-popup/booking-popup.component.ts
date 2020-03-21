@@ -1,6 +1,6 @@
 import {Component, Inject, Input, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {FormControl, FormGroup} from '@angular/forms';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 
 export interface BookingDialogData {
 }
@@ -25,10 +25,13 @@ export enum BookingPopupOutcome {
 export class BookingPopupComponent implements OnInit {
 
   formControl = new FormGroup({
-    option: new FormControl(''),
-    phoneNumber: new FormControl(''),
-    name: new FormControl(''),
-    email: new FormControl('')
+    option: new FormControl('', [Validators.required]),
+    phoneNumber: new FormControl('', [Validators.required]),
+    name: new FormControl('', [Validators.required]),
+    email: new FormControl('', [
+      Validators.required,
+      Validators.email]
+    )
   });
 
   options: string[] = [
