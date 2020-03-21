@@ -37,6 +37,16 @@ class ShopServiceImpl implements ShopService {
     }
 
     @Override
+    public void delete(Shop.Id id) throws ShopNotFoundException {
+        Shop shop = shopRepository.findById(id);
+        if (shop == null) {
+            throw new ShopNotFoundException(id);
+        }
+
+        shopRepository.deleteById(id);
+    }
+
+    @Override
     public Shop create(String name, String street, String zipCode, String city) {
         UUID id = uuidFactory.create();
 

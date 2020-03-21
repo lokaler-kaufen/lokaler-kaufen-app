@@ -62,4 +62,9 @@ class JpaShopRepositoryImpl implements ShopRepository {
         log.debug("Update {}", updatedShop);
         shopDataRepository.save(ShopEntity.of(updatedShop));
     }
+
+    @Override
+    public void deleteById(Shop.Id id) {
+        shopDataRepository.deleteById(id.getId());
+    }
 }

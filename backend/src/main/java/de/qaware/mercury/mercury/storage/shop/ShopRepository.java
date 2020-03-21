@@ -17,4 +17,6 @@ public interface ShopRepository {
     List<ShopWithDistance> findNearby(double latitude, double longitude);
 
     void update(Shop updatedShop);
+
+    void deleteById(Shop.Id id);
 }
