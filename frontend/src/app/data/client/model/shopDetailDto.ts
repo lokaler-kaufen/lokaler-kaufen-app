@@ -10,13 +10,12 @@
  * Do not edit the class manually.
  */
 
-export interface ShopAdminDto { 
+export interface ShopDetailDto { 
     addressSupplement?: string;
     city?: string;
-    contactTypes?: Array<ShopAdminDto.ContactTypesEnum>;
+    contactTypes?: Array<ShopDetailDto.ContactTypesEnum>;
     details?: string;
     email?: string;
-    enabled?: boolean;
     id?: string;
     name?: string;
     ownerName?: string;
@@ -24,7 +23,7 @@ export interface ShopAdminDto {
     website?: string;
     zipCode?: string;
 }
-export namespace ShopAdminDto {
+export namespace ShopDetailDto {
     export type ContactTypesEnum = 'FACEBOOK_MESSENGER' | 'GLIDE' | 'GOOGLE_DUO' | 'WHATSAPP' | 'SKYPE' | 'JUSTALK' | 'SIGNAL_PRIVATE_MESSENGER' | 'SNAPCHAT' | 'TANGO' | 'VIBER' | 'TELEPHONE';
     export const ContactTypesEnum = {
         FACEBOOKMESSENGER: 'FACEBOOK_MESSENGER' as ContactTypesEnum,

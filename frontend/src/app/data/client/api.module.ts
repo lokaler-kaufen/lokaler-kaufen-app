@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { AdminLoginControllerService } from './api/adminLoginController.service';
 import { BasicErrorControllerService } from './api/basicErrorController.service';
+import { ReservationControllerService } from './api/reservationController.service';
 import { ShopAdminControllerService } from './api/shopAdminController.service';
 import { ShopControllerService } from './api/shopController.service';
 import { ShopLoginControllerService } from './api/shopLoginController.service';
@@ -16,6 +17,7 @@ import { ShopLoginControllerService } from './api/shopLoginController.service';
   providers: [
     AdminLoginControllerService,
     BasicErrorControllerService,
+    ReservationControllerService,
     ShopAdminControllerService,
     ShopControllerService,
     ShopLoginControllerService ]

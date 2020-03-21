@@ -9,8 +9,10 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { ShopListEntryDto } from './shopListEntryDto';
 
-export interface ShopListDto { 
-    shops?: Array<ShopListEntryDto>;
+export interface ShopListEntryDto { 
+    distance?: number;
+    id?: string;
+    name?: string;
+    supportedContactTypes?: Array<string>;
 }

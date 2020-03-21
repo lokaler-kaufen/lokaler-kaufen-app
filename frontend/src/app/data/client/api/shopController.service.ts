@@ -17,9 +17,11 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable }                                        from 'rxjs';
 
+import { CreateShopRequestDto } from '../model/createShopRequestDto';
 import { SendCreateLinkDto } from '../model/sendCreateLinkDto';
-import { ShopCreateDto } from '../model/shopCreateDto';
+import { ShopDetailDto } from '../model/shopDetailDto';
 import { ShopListDto } from '../model/shopListDto';
+import { UpdateShopRequestDto } from '../model/updateShopRequestDto';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -60,15 +62,15 @@ export class ShopControllerService {
     /**
      * createShop
      * 
-     * @param body shop
+     * @param body request
      * @param token token
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createShopUsingPOST(body: ShopCreateDto, token: string, observe?: 'body', reportProgress?: boolean): Observable<ShopCreateDto>;
-    public createShopUsingPOST(body: ShopCreateDto, token: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ShopCreateDto>>;
-    public createShopUsingPOST(body: ShopCreateDto, token: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ShopCreateDto>>;
-    public createShopUsingPOST(body: ShopCreateDto, token: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public createShopUsingPOST(body: CreateShopRequestDto, token: string, observe?: 'body', reportProgress?: boolean): Observable<ShopDetailDto>;
+    public createShopUsingPOST(body: CreateShopRequestDto, token: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ShopDetailDto>>;
+    public createShopUsingPOST(body: CreateShopRequestDto, token: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ShopDetailDto>>;
+    public createShopUsingPOST(body: CreateShopRequestDto, token: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (body === null || body === undefined) {
             throw new Error('Required parameter body was null or undefined when calling createShopUsingPOST.');
@@ -103,10 +105,51 @@ export class ShopControllerService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.request<ShopCreateDto>('post',`${this.basePath}/api/shop/create`,
+        return this.httpClient.request<ShopDetailDto>('post',`${this.basePath}/api/shop/`,
             {
                 body: body,
                 params: queryParameters,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * getDetails
+     * 
+     * @param id id
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getDetailsUsingGET(id: string, observe?: 'body', reportProgress?: boolean): Observable<ShopDetailDto>;
+    public getDetailsUsingGET(id: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ShopDetailDto>>;
+    public getDetailsUsingGET(id: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ShopDetailDto>>;
+    public getDetailsUsingGET(id: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling getDetailsUsingGET.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<ShopDetailDto>('get',`${this.basePath}/api/shop/${encodeURIComponent(String(id))}`,
+            {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -152,6 +195,61 @@ export class ShopControllerService {
         ];
 
         return this.httpClient.request<ShopListDto>('get',`${this.basePath}/api/shop/nearby`,
+            {
+                params: queryParameters,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * listNearby
+     * 
+     * @param location location
+     * @param query query
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public listNearbyUsingGET1(location: string, query: string, observe?: 'body', reportProgress?: boolean): Observable<ShopListDto>;
+    public listNearbyUsingGET1(location: string, query: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ShopListDto>>;
+    public listNearbyUsingGET1(location: string, query: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ShopListDto>>;
+    public listNearbyUsingGET1(location: string, query: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (location === null || location === undefined) {
+            throw new Error('Required parameter location was null or undefined when calling listNearbyUsingGET1.');
+        }
+
+        if (query === null || query === undefined) {
+            throw new Error('Required parameter query was null or undefined when calling listNearbyUsingGET1.');
+        }
+
+        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        if (location !== undefined && location !== null) {
+            queryParameters = queryParameters.set('location', <any>location);
+        }
+        if (query !== undefined && query !== null) {
+            queryParameters = queryParameters.set('query', <any>query);
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<ShopListDto>('get',`${this.basePath}/api/shop/search`,
             {
                 params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
@@ -211,14 +309,14 @@ export class ShopControllerService {
     /**
      * updateShop
      * 
-     * @param body shop
+     * @param body request
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateShopUsingPUT(body: ShopCreateDto, observe?: 'body', reportProgress?: boolean): Observable<ShopCreateDto>;
-    public updateShopUsingPUT(body: ShopCreateDto, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ShopCreateDto>>;
-    public updateShopUsingPUT(body: ShopCreateDto, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ShopCreateDto>>;
-    public updateShopUsingPUT(body: ShopCreateDto, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public updateShopUsingPUT(body: UpdateShopRequestDto, observe?: 'body', reportProgress?: boolean): Observable<ShopDetailDto>;
+    public updateShopUsingPUT(body: UpdateShopRequestDto, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ShopDetailDto>>;
+    public updateShopUsingPUT(body: UpdateShopRequestDto, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ShopDetailDto>>;
+    public updateShopUsingPUT(body: UpdateShopRequestDto, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (body === null || body === undefined) {
             throw new Error('Required parameter body was null or undefined when calling updateShopUsingPUT.');
@@ -244,7 +342,7 @@ export class ShopControllerService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.request<ShopCreateDto>('put',`${this.basePath}/api/shop/update`,
+        return this.httpClient.request<ShopDetailDto>('put',`${this.basePath}/api/shop/`,
             {
                 body: body,
                 withCredentials: this.configuration.withCredentials,
