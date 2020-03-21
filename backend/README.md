@@ -6,6 +6,12 @@ Start with looking at the `de.qaware.mercury.mercury.rest.shop.ShopController` c
 
 ## Run it
 
+First, start a local postgres database. Easiest way to do this is with docker:
+
+```
+docker run -e POSTGRES_PASSWORD=password -p 5432:5432 postgres:11
+```
+
 ### With gradle
 
 ```shell script
