@@ -5,6 +5,7 @@ import de.qaware.mercury.mercury.business.shop.Shop;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.lang.Nullable;
 
 import java.util.List;
 
@@ -22,6 +23,9 @@ public class ShopAdminDto {
     String addressSupplement;
     List<ContactType> contactTypes;
     boolean enabled;
+    String details;
+    @Nullable
+    String website;
 
     public static ShopAdminDto of(Shop shop) {
         return new ShopAdminDto(
@@ -34,7 +38,9 @@ public class ShopAdminDto {
             shop.getCity(),
             shop.getAddressSupplement(),
             shop.getContactTypes(),
-            shop.isEnabled()
+            shop.isEnabled(),
+            shop.getDetails(),
+            shop.getWebsite()
         );
     }
 }

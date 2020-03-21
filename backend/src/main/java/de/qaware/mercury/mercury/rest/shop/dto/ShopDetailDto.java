@@ -5,6 +5,7 @@ import de.qaware.mercury.mercury.business.shop.Shop;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.lang.Nullable;
 
 import java.util.List;
 
@@ -21,6 +22,9 @@ public class ShopDetailDto {
     String city;
     String addressSupplement;
     List<ContactType> contactTypes;
+    String details;
+    @Nullable
+    String website;
 
     public static ShopDetailDto of(Shop shop) {
         return new ShopDetailDto(
@@ -32,7 +36,9 @@ public class ShopDetailDto {
             shop.getZipCode(),
             shop.getCity(),
             shop.getAddressSupplement(),
-            shop.getContactTypes()
+            shop.getContactTypes(),
+            shop.getDetails(),
+            shop.getWebsite()
         );
     }
 }
