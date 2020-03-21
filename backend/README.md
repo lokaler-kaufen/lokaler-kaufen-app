@@ -50,3 +50,11 @@ curlie :8080/api/admin/login email=admin-1@localhost password=admin-1
 ```
 
 The access token is set as a cookie.
+
+### Login as Shop
+
+```
+curlie :8080/api/shop/login email=moe@localhost password=moe
+```
+
+The access token is set as a cookie.
