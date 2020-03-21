@@ -7,30 +7,32 @@
   </div>
 
   <p class="mat-divider"></p>
+  <div class="mat-card">
+    <mat-table [dataSource]="details.slots" class="mat-table" id="calendar">
+      <ng-container matColumnDef="from">
+        <mat-header-cell *matHeaderCellDef> Start</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.start}}</mat-cell>
+      </ng-container>
 
-  <mat-table [dataSource]="details.slots" class="mat-table mat-card" id="calendar">
-    <ng-container matColumnDef="from">
-      <mat-header-cell *matHeaderCellDef class="mat-tab-header"> Start</mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.start}}</mat-cell>
-    </ng-container>
+      <ng-container matColumnDef="to">
+        <mat-header-cell *matHeaderCellDef> Ende</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.end}}</mat-cell>
+      </ng-container>
 
-    <ng-container matColumnDef="to">
-      <mat-header-cell *matHeaderCellDef> Ende</mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.end}}</mat-cell>
-    </ng-container>
+      <ng-container matColumnDef="available">
+        <mat-header-cell *matHeaderCellDef> Verfügbar</mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <button class="book-button" mat-stroked-button [disabled]="!element.available"
+                  [textContent]="element.available?'Jetzt buchen':'Belegt'"
+                  (click)="showBookingPopup(element.id)"></button>
+        </mat-cell>
+      </ng-container>
 
-    <ng-container matColumnDef="available">
-      <mat-header-cell *matHeaderCellDef> Verfügbar</mat-header-cell>
-      <mat-cell *matCellDef="let element">
-        <button class="book-button" mat-stroked-button [disabled]="!element.available"
-                [textContent]="element.available?'Jetzt buchen':'Belegt'"
-                (click)="showBookingPopup(element.id)"></button>
-      </mat-cell>
-    </ng-container>
+      <mat-header-row *matHeaderRowDef="['from', 'to', 'available']"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: ['from', 'to', 'available']"></mat-row>
+    </mat-table>
+  </div>
 
-    <mat-header-row *matHeaderRowDef="['from', 'to', 'available']"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: ['from', 'to', 'available']"></mat-row>
-  </mat-table>
 
   <p class="mat-divider"></p>
 
@@ -42,5 +44,4 @@
     <div>{{details.website}}</div>
     <div>{{details.email}}</div>
   </div>
-
 </div>

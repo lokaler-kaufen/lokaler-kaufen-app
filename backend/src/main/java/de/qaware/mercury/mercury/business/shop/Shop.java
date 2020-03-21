@@ -26,5 +26,10 @@ public class Shop {
         public static Id parse(String input) {
             return Id.of(UUID.fromString(input));
         }
+
+        @Override
+        public String toString() {
+            return id.toString();
+        }
     }
 }

@@ -8,6 +8,7 @@ import de.qaware.mercury.mercury.business.shop.ShopService;
 import de.qaware.mercury.mercury.business.shop.ShopWithDistance;
 import de.qaware.mercury.mercury.business.uuid.UUIDFactory;
 import de.qaware.mercury.mercury.storage.shop.ShopRepository;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -44,6 +45,12 @@ class ShopServiceImpl implements ShopService {
         }
 
         shopRepository.deleteById(id);
+    }
+
+    @Override
+    @Nullable
+    public Shop findById(Shop.Id id) {
+        return shopRepository.findById(id);
     }
 
     @Override

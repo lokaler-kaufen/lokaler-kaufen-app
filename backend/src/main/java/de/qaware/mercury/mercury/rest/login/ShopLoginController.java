@@ -1,9 +1,9 @@
 package de.qaware.mercury.mercury.rest.login;
 
-import de.qaware.mercury.mercury.business.admin.Admin;
-import de.qaware.mercury.mercury.business.login.AdminLoginService;
-import de.qaware.mercury.mercury.business.login.AdminToken;
 import de.qaware.mercury.mercury.business.login.LoginException;
+import de.qaware.mercury.mercury.business.login.ShopLoginService;
+import de.qaware.mercury.mercury.business.login.ShopToken;
+import de.qaware.mercury.mercury.business.shop.Shop;
 import de.qaware.mercury.mercury.rest.AuthenticationHelper;
 import de.qaware.mercury.mercury.rest.login.dto.LoginDto;
 import de.qaware.mercury.mercury.rest.login.dto.WhoAmIDto;
@@ -18,24 +18,22 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import static de.qaware.mercury.mercury.rest.AuthenticationHelper.ADMIN_COOKIE_NAME;
-
 @RestController
-@RequestMapping(path = "/api/admin/login", produces = MediaType.APPLICATION_JSON_VALUE)
-class AdminLoginController {
+@RequestMapping(path = "/api/shop/login", produces = MediaType.APPLICATION_JSON_VALUE)
+class ShopLoginController {
+    private final ShopLoginService shopLoginService;
     private final AuthenticationHelper authenticationHelper;
-    private final AdminLoginService adminLoginService;
 
-    AdminLoginController(AuthenticationHelper authenticationHelper, AdminLoginService adminLoginService) {
+    ShopLoginController(ShopLoginService shopLoginService, AuthenticationHelper authenticationHelper) {
+        this.shopLoginService = shopLoginService;
         this.authenticationHelper = authenticationHelper;
-        this.adminLoginService = adminLoginService;
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     void login(@RequestBody LoginDto request, HttpServletResponse response) throws LoginException {
-        AdminToken token = adminLoginService.login(request.getEmail(), request.getPassword());
+        ShopToken token = shopLoginService.login(request.getEmail(), request.getPassword());
 
-        Cookie cookie = new Cookie(ADMIN_COOKIE_NAME, token.getToken());
+        Cookie cookie = new Cookie(AuthenticationHelper.SHOP_COOKIE_NAME, token.getToken());
         cookie.setHttpOnly(true);
         // TODO MKA: set secure = true
 
@@ -44,7 +42,7 @@ class AdminLoginController {
 
     @GetMapping
     WhoAmIDto whoami(HttpServletRequest request) {
-        Admin admin = authenticationHelper.authenticateAdmin(request);
-        return new WhoAmIDto(admin.getEmail());
+        Shop shop = authenticationHelper.authenticateShop(request);
+        return new WhoAmIDto(shop.getName());
     }
 }

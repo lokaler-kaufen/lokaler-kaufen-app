@@ -17,16 +17,16 @@ class AdminRepositoryImpl implements AdminRepository {
 
     @Override
     public Admin findByEmail(String email) {
-        AdminEntity adminEntity = adminDataRepository.findFirstByEmail(email);
+        AdminEntity entity = adminDataRepository.findFirstByEmail(email);
 
-        return Null.map(adminEntity, AdminEntity::toAdmin);
+        return Null.map(entity, AdminEntity::toAdmin);
     }
 
     @Override
     public Admin findById(Admin.Id id) {
-        AdminEntity adminEntity = adminDataRepository.findById(id.getId()).orElse(null);
+        AdminEntity entity = adminDataRepository.findById(id.getId()).orElse(null);
 
-        return Null.map(adminEntity, AdminEntity::toAdmin);
+        return Null.map(entity, AdminEntity::toAdmin);
     }
 
     @Override
