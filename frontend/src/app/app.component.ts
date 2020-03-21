@@ -10,13 +10,13 @@ import {DomSanitizer} from "@angular/platform-browser";
 export class AppComponent {
   constructor(private matIconRegistry: MatIconRegistry, private domSanitizer: DomSanitizer) {
     this.matIconRegistry.addSvgIcon(
-      'WhatsApp',
+      'whatsapp',
       this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/whatsapp.svg'))
       .addSvgIcon(
-        'Voice Chat',
+        'facetime',
         this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/voice_chat.svg'))
       .addSvgIcon(
-        'Phone',
+        'phone',
         this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/phone.svg')
       );
   }
