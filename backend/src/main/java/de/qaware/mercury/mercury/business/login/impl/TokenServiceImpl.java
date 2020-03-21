@@ -20,10 +20,9 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 class TokenServiceImpl implements TokenService {
-    // TODO MKA: Move to config!
-    private static final String SHOP_JWT_SECRET = "shop-secret";
+    private static final String SHOP_JWT_SECRET = "u2WXgWEWhyop+qtpiH5jhQmDN+PVRbazKPNuseI0dmE="; // TODO MKA: Move to config!
     private static final String SHOP_ISSUER = "mercury-shop";
-    private static final String ADMIN_JWT_SECRET = "admin-secret";
+    private static final String ADMIN_JWT_SECRET = "QXOm/a5//OFtmciYomnixCTDCzNUQFWNAiT3eGBOfhQ="; // TODO MKA: Move to config!
     private static final String ADMIN_ISSUER = "mercury-admin";
 
     @Override
