@@ -5,7 +5,7 @@ import java.util.List;
 public interface ShopService {
     List<Shop> listAll();
 
-    Shop create(String name, String street, String zipCode, String city);
+    Shop create(String name, String ownerName, String street, String zipCode, String city, String addressSupplement);
 
     void changeEnabled(Shop.Id id, boolean enabled) throws ShopNotFoundException;
 

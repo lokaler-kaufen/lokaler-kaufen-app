@@ -1,0 +1,14 @@
+GET {{ host }}/api/admin/shop
+Accept: application/json, */*
+
+###
+
+PUT {{ host }}/api/admin/shop/781f733f-1581-4247-b03c-0b741ad2cdd6/enable?enabled=false
+Accept: application/json, */*
+
+###
+
+DELETE {{ host }}/api/admin/shop/879cafc3-9016-42e4-ae75-af8d3b8f44d8/delete
+Accept: application/json, */*
+
+###

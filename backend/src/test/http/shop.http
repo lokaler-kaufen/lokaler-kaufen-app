@@ -1,0 +1,16 @@
+POST {{ host }}/api/shop/create
+Accept: application/json, */*
+Content-Type: application/json
+
+{
+    "id": "",
+    "name": "Horst's Burgerladen",
+    "ownerName": "Horst",
+    "street": "Münchner Straße 13",
+    "zipCode": "83464",
+    "city": "MÜnchen",
+    "addressSupplement": ""
+}
+
+###
+

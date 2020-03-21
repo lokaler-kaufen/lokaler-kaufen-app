@@ -34,6 +34,26 @@ public class ShopEntity {
 
     @Setter
     @Column(nullable = false)
+    private String ownerName;
+
+    @Setter
+    @Column(nullable = false)
+    private String street;
+
+    @Setter
+    @Column(nullable = false)
+    private String zipCode;
+
+    @Setter
+    @Column(nullable = false)
+    private String city;
+
+    @Setter
+    @Column(nullable = false)
+    private String addressSupplement;
+
+    @Setter
+    @Column(nullable = false)
     private boolean enabled;
 
     @Setter
@@ -46,12 +66,30 @@ public class ShopEntity {
 
     public static ShopEntity of(Shop shop) {
         return new ShopEntity(
-            shop.getId().getId(), shop.getName(), shop.isEnabled(),
-            shop.getGeoLocation().getLatitude(), shop.getGeoLocation().getLongitude()
+            shop.getId().getId(),
+            shop.getName(),
+            shop.getOwnerName(),
+            shop.getStreet(),
+            shop.getZipCode(),
+            shop.getCity(),
+            shop.getAddressSupplement(),
+            shop.isEnabled(),
+            shop.getGeoLocation().getLatitude(),
+            shop.getGeoLocation().getLongitude()
         );
     }
 
     public Shop toShop() {
-        return new Shop(Shop.Id.of(id), name, enabled, new GeoLocation(latitude, longitude));
+        return new Shop(
+            Shop.Id.of(id),
+            name,
+            ownerName,
+            street,
+            zipCode,
+            city,
+            addressSupplement,
+            enabled,
+            new GeoLocation(latitude, longitude)
+        );
     }
 }

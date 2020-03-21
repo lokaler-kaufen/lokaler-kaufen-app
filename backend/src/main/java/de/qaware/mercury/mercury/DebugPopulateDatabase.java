@@ -8,7 +8,7 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
-import java.util.Set;
+import java.util.Map;
 
 @Component
 @Slf4j
@@ -35,15 +35,15 @@ class DebugPopulateDatabase implements ApplicationRunner {
     }
 
     private void createShops() {
-        Set<String> names = Set.of(
-            "Moe's Whiskey",
-            "Flo's Kaffeeladen",
-            "Vroni's Kleiderladen"
+        Map<String, String> shops = Map.of(
+            "Moe's Whiskey", "Moe",
+            "Flo's Kaffeeladen", "Flo",
+            "Vroni's Kleiderladen", "Vroni"
         );
 
-        for (String name : names) {
-            Shop shop = shopService.create(name, "Street 1", "12345", "Munich");
-            log.info("Created shop {}", shop);
+        for (Map.Entry<String, String> shop : shops.entrySet()) {
+            Shop createdShop = shopService.create(shop.getKey(), shop.getValue(), "Street 1", "12345", "Munich", "Hasenbergl");
+            log.info("Created shop {}", createdShop);
         }
     }
 }

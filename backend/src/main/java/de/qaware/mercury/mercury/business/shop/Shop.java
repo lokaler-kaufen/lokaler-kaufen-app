@@ -10,6 +10,11 @@ import java.util.UUID;
 public class Shop {
     Id id;
     String name;
+    String ownerName;
+    String street;
+    String zipCode;
+    String city;
+    String addressSupplement;
     @With
     boolean enabled;
     GeoLocation geoLocation;
