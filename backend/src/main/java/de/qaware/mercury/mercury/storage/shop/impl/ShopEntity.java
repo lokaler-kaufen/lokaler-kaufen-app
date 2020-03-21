@@ -1,7 +1,6 @@
 package de.qaware.mercury.mercury.storage.shop.impl;
 
 import com.vladmihalcea.hibernate.type.array.ListArrayType;
-import com.vladmihalcea.hibernate.type.array.StringArrayType;
 import de.qaware.mercury.mercury.business.location.GeoLocation;
 import de.qaware.mercury.mercury.business.shop.ContactType;
 import de.qaware.mercury.mercury.business.shop.Shop;
@@ -13,13 +12,11 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.Column;
-import javax.persistence.ColumnResult;
-import javax.persistence.ConstructorResult;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.SqlResultSetMapping;
 import javax.persistence.Table;
 import java.util.List;
 import java.util.UUID;
@@ -32,16 +29,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "shop")
-@SqlResultSetMapping(name = "ShopWithDistance", classes = @ConstructorResult(
-    targetClass = ShopWithDistance.class,
-    columns = {
-        @ColumnResult(name = "id", type = UUID.class),
-        @ColumnResult(name = "name", type = String.class),
-        @ColumnResult(name = "distance", type = Double.class),
-        @ColumnResult(name = "contact_types", type = StringArrayType.class),
-    })
-)
-class ShopEntity {
+public class ShopEntity {
     @Id
     @EqualsAndHashCode.Include
     private UUID id;
@@ -99,6 +87,15 @@ class ShopEntity {
     @Column(nullable = false)
     private double longitude;
 
+    @Setter
+    @Column(nullable = false)
+    private String details;
+
+    @Setter
+    @Column(nullable = true)
+    @Nullable
+    private String website;
+
     public static ShopEntity of(Shop shop) {
         return new ShopEntity(
             shop.getId().getId(),
@@ -112,7 +109,9 @@ class ShopEntity {
             shop.getContactTypes(),
             shop.isEnabled(),
             shop.getGeoLocation().getLatitude(),
-            shop.getGeoLocation().getLongitude()
+            shop.getGeoLocation().getLongitude(),
+            shop.getDetails(),
+            shop.getWebsite()
         );
     }
 
@@ -128,7 +127,9 @@ class ShopEntity {
             addressSupplement,
             contactTypes,
             enabled,
-            new GeoLocation(latitude, longitude)
+            new GeoLocation(latitude, longitude),
+            details,
+            website
         );
     }
 }

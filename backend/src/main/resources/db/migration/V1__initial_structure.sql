@@ -10,10 +10,12 @@ CREATE TABLE shop
     zip_code           varchar          not null,
     city               varchar          not null,
     address_supplement varchar          not null,
-    contact_types      contact_type[]   not null,
+    contact_types      contact_type[] not null,
     enabled            boolean          not null,
     latitude           double precision not null,
-    longitude          double precision not null
+    longitude          double precision not null,
+    details            varchar          not null,
+    website            varchar
 );
 
 CREATE TABLE admin

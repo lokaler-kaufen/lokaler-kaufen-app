@@ -45,7 +45,8 @@ class DebugPopulateDatabase implements ApplicationRunner {
 
     private void createShops() {
         createShop(new ShopCreation(
-            "moe@localhost", "Moe", "Moe's Whiskey", "Lothstr. 64", "85579", "Neubiberg", "", "", "https://www.moes-whiskey.com/", "moe",
+            "moe@localhost", "Moe", "Moe's Whiskey", "Lothstr. 64", "85579", "Neubiberg", "", "Bester Whiskey in ganz Neubiberg!",
+            "https://www.moes-whiskey.com/", "moe",
             Map.of(ContactType.WHATSAPP, "0151/123456789", ContactType.FACEBOOK_MESSENGER, "moe@localhost"), Slots.none(15, 5)
         ));
         createShop(new ShopCreation(

@@ -94,4 +94,10 @@ class ShopController {
     ShopListDto listNearby(@RequestParam String location) {
         return ShopListDto.of(shopService.findNearby(location));
     }
+
+    @GetMapping("search")
+    ShopListDto listNearby(@RequestParam String query, @RequestParam String location) {
+        return ShopListDto.of(shopService.search(query, location));
+    }
+
 }
