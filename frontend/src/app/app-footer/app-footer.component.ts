@@ -9,16 +9,25 @@ import {RegisterBusinessPopupComponent} from "../register-business-popup/registe
 })
 export class AppFooterComponent implements OnInit {
 
+  // hold the dialog ref as long as the dialog is open
+  dialogRef;
 
   constructor(public dialog: MatDialog) {
   }
 
   openRegisterBusinessPopup(): void {
-    const dialogRef = this.dialog.open(RegisterBusinessPopupComponent, {
-      width: '500px'
-    });
+    if (!this.dialogRef) {
+      this.dialogRef = this.dialog.open(RegisterBusinessPopupComponent, {
+        width: '500px'
+      });
 
-    dialogRef.afterClosed().subscribe();
+      this.dialogRef.afterClosed().subscribe(
+        () => {
+          // Reset the dialogRef because the user should be able to open the dialog again.
+          this.dialogRef = null;
+        }
+      );
+    }
   }
 
   ngOnInit(): void {
