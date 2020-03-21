@@ -1,5 +1,6 @@
 package de.qaware.mercury.mercury.rest.shop;
 
+import de.qaware.mercury.mercury.business.admin.Admin;
 import de.qaware.mercury.mercury.business.shop.Shop;
 import de.qaware.mercury.mercury.business.shop.ShopNotFoundException;
 import de.qaware.mercury.mercury.business.shop.ShopService;
@@ -44,17 +45,21 @@ class ShopAdminController {
 
     @PutMapping(path = "/{id}/enable")
     void changeEnabled(@PathVariable String id, @RequestParam boolean enabled, HttpServletRequest request) throws ShopNotFoundException {
-        authenticationHelper.authenticateAdmin(request);
+        Admin admin = authenticationHelper.authenticateAdmin(request);
+        Shop.Id shopId = Shop.Id.parse(id);
 
-        shopService.changeEnabled(Shop.Id.parse(id), enabled);
+        log.info("Admin '{}' changed enabled flag from shop {} to {}", admin.getEmail(), shopId, enabled);
+        shopService.changeEnabled(shopId, enabled);
     }
 
-    @PutMapping(path = "/{id}/update")
+    @PutMapping(path = "/{id}")
     ShopAdminDto update(@PathVariable String id, @RequestBody ShopAdminDto shop, HttpServletRequest request) {
-        authenticationHelper.authenticateAdmin(request);
+        Admin admin = authenticationHelper.authenticateAdmin(request);
+        Shop.Id shopId = Shop.Id.parse(id);
 
+        log.info("Admin {} updated shop {}", admin.getEmail(), shopId);
         return ShopAdminDto.of(shopService.update(
-            Shop.Id.parse(id),
+            shopId,
             shop.getName(),
             shop.getOwnerName(),
             shop.getEmail(), // Email is not taken from request body, but from the token which was in the email link
@@ -67,11 +72,13 @@ class ShopAdminController {
         ));
     }
 
-    @DeleteMapping(path = "/{id}/delete")
+    @DeleteMapping(path = "/{id}")
     void delete(@PathVariable String id, HttpServletRequest request) throws ShopNotFoundException {
-        authenticationHelper.authenticateAdmin(request);
+        Admin admin = authenticationHelper.authenticateAdmin(request);
+        Shop.Id shopId = Shop.Id.parse(id);
 
-        shopService.delete(Shop.Id.parse(id));
+        log.info("Admin {} deleted shop {}", admin.getEmail(), shopId);
+        shopService.delete(shopId);
     }
 
     @ExceptionHandler(ShopNotFoundException.class)
