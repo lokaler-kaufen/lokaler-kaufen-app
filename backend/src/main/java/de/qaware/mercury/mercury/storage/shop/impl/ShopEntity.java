@@ -31,11 +31,15 @@ class ShopEntity {
     @Column(nullable = false)
     private String name;
 
+    @Setter
+    @Column(nullable = false)
+    private boolean enabled;
+
     public static ShopEntity of(Shop shop) {
-        return new ShopEntity(shop.getId().getId(), shop.getName());
+        return new ShopEntity(shop.getId().getId(), shop.getName(), shop.isEnabled());
     }
 
     public Shop toShop() {
-        return new Shop(Shop.Id.of(id), name);
+        return new Shop(Shop.Id.of(id), name, enabled);
     }
 }

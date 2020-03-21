@@ -8,4 +8,6 @@ public interface ShopRepository {
     List<Shop> listAll();
 
     void insert(Shop shop);
+
+    Shop findById(Shop.Id id);
 }

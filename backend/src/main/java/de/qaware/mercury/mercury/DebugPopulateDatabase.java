@@ -29,7 +29,7 @@ class DebugPopulateDatabase implements ApplicationRunner {
         );
 
         for (String name : names) {
-            Shop shop = shopService.create(name);
+            Shop shop = shopService.create(name, true);
             log.info("Created shop {}", shop);
         }
     }

@@ -7,11 +7,13 @@ import lombok.Value;
 public class ShopDto {
     String id;
     String name;
+    boolean enabled;
 
     public static ShopDto of(Shop shop) {
         return new ShopDto(
             shop.getId().getId().toString(),
-            shop.getName()
+            shop.getName(),
+            shop.isEnabled()
         );
     }
 }
