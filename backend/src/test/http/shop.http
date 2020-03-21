@@ -17,6 +17,28 @@ Content-Type: application/json
     ]
 }
 
+### Update shop
+
+PUT {{ host }}/api/shop/update
+Accept: application/json, */*
+Content-Type: application/json
+Cookie: mercury-shop=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMWY0YTdlNi1mZDg2LTQ1NTItYWVhMS0wYWZiNDdhMThiYjQiLCJzaG9wIjoiOWQ4Zjg3OTItMDRkMy00M2FhLWI4YTQtOTNmZGUxMTgyNTllIiwiaXNzIjoibWVyY3VyeS1zaG9wIn0.IsMSv6hkJTU6caSCvMlDgNKJTR2AC-JWUzXztdpkdzs
+
+{
+    "id": "",
+    "name": "Horst's Burgerladen 6",
+    "ownerName": "Horst",
+    "email": "info@example.com",
+    "street": "Münchner Straße 13",
+    "zipCode": "83464",
+    "city": "München",
+    "addressSupplement": "",
+    "contactTypes": [
+        "FACEBOOK_MESSENGER",
+        "WHATSAPP"
+    ]
+}
+
 ### Send creation link
 
 POST {{ host }}/api/shop/send-create-link

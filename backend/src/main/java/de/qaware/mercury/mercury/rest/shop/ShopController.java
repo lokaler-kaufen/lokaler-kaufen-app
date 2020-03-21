@@ -59,7 +59,7 @@ class ShopController {
         ));
     }
 
-    @PutMapping(path = "/{id}/update", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(path = "/update", consumes = MediaType.APPLICATION_JSON_VALUE)
     ShopCreateDto updateShop(@RequestBody ShopCreateDto shop, HttpServletRequest request) {
         // The token is taken from the link which the user got with email
         // It contains the email address, and is used to verify that the user really has access to this email address
