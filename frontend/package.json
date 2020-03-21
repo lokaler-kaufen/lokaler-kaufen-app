@@ -7,7 +7,9 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "update-swagger-json": "cd tooling/codegen/bin/ && ./update-swagger-json.sh",
+    "generate-backend-client": "cd tooling/codegen/bin/ && ./swagger-generate-code.sh"
   },
   "private": true,
   "dependencies": {
