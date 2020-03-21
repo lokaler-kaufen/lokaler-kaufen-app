@@ -15,7 +15,23 @@ CREATE TABLE shop
     latitude           double precision not null,
     longitude          double precision not null,
     details            varchar          not null,
-    website            varchar
+    website            varchar,
+    time_per_slot      int,
+    time_between_slots int,
+    monday_start       varchar,
+    monday_end         varchar,
+    tuesday_start      varchar,
+    tuesday_end        varchar,
+    wednesday_start    varchar,
+    wednesday_end      varchar,
+    thursday_start     varchar,
+    thursday_end       varchar,
+    friday_start       varchar,
+    friday_end         varchar,
+    saturday_start     varchar,
+    saturday_end       varchar,
+    sunday_start       varchar,
+    sunday_end         varchar
 );
 
 CREATE TABLE admin

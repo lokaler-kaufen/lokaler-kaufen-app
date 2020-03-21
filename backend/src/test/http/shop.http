@@ -4,7 +4,7 @@ Accept: application/json, */*
 ###
 
 POST {{ host }}/api/shop?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmb29AYmFyLm9yZyIsImlzcyI6Im1lcmN1cnktc2hvcC1jcmVhdGlvbiJ9.WaUsDR89nzQtgqxXhfLZqazjf0PvywMzajQFZfKW9IQ
-Accept: application/json, */*
+Accept: application/json
 Content-Type: application/json
 
 {
@@ -16,10 +16,29 @@ Content-Type: application/json
     "zipCode": "83464",
     "city": "München",
     "addressSupplement": "",
-    "contactTypes": [
-        "FACEBOOK_MESSENGER",
-        "WHATSAPP"
-    ]
+    "password": "secret",
+    "details": "Beste Burger in ganz München. Vielleicht.",
+    "website": "http://www.horsts-burgerladen.muenchen",
+    "contactTypes": {
+        "FACEBOOK_MESSENGER": "Der_Horst",
+        "WHATSAPP": "0151/1234567"
+    },
+    "slots": {
+        "timePerSlot": 15,
+        "timeBetweenSlots": 5,
+        "monday": {
+            "start": "10:00",
+            "end": "17:00"
+        },
+        "tuesday": {
+            "start": "08:00",
+            "end": "18:00"
+        },
+        "wednesday": {
+            "start": "15:00",
+            "end": "22:30"
+        }
+    }
 }
 
 ### Update shop

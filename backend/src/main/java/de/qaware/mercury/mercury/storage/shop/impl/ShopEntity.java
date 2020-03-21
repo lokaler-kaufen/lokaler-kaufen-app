@@ -4,7 +4,9 @@ import com.vladmihalcea.hibernate.type.array.ListArrayType;
 import de.qaware.mercury.mercury.business.location.GeoLocation;
 import de.qaware.mercury.mercury.business.shop.ContactType;
 import de.qaware.mercury.mercury.business.shop.Shop;
+import de.qaware.mercury.mercury.business.shop.Slot;
 import de.qaware.mercury.mercury.business.shop.Slots;
+import de.qaware.mercury.mercury.util.Null;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -19,11 +21,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Supplier;
 
 @Entity
 @Getter
@@ -100,6 +104,63 @@ public class ShopEntity {
     @Nullable
     private String website;
 
+    @Setter
+    @Column(nullable = false)
+    private int timePerSlot;
+
+    @Setter
+    @Column(nullable = false)
+    private int timeBetweenSlots;
+
+    @Setter
+    @Column(nullable = true, columnDefinition = "varchar")
+    private LocalTime mondayStart;
+    @Setter
+    @Column(nullable = true, columnDefinition = "varchar")
+    private LocalTime mondayEnd;
+
+    @Setter
+    @Column(nullable = true, columnDefinition = "varchar")
+    private LocalTime tuesdayStart;
+    @Setter
+    @Column(nullable = true, columnDefinition = "varchar")
+    private LocalTime tuesdayEnd;
+
+    @Setter
+    @Column(nullable = true, columnDefinition = "varchar")
+    private LocalTime wednesdayStart;
+    @Setter
+    @Column(nullable = true, columnDefinition = "varchar")
+    private LocalTime wednesdayEnd;
+
+    @Setter
+    @Column(nullable = true, columnDefinition = "varchar")
+    private LocalTime thursdayStart;
+    @Setter
+    @Column(nullable = true, columnDefinition = "varchar")
+    private LocalTime thursdayEnd;
+
+    @Setter
+    @Column(nullable = true, columnDefinition = "varchar")
+    private LocalTime fridayStart;
+    @Setter
+    @Column(nullable = true, columnDefinition = "varchar")
+    private LocalTime fridayEnd;
+
+    @Setter
+    @Column(nullable = true, columnDefinition = "varchar")
+    private LocalTime saturdayStart;
+    @Setter
+    @Column(nullable = true, columnDefinition = "varchar")
+    private LocalTime saturdayEnd;
+
+    @Setter
+    @Column(nullable = true, columnDefinition = "varchar")
+    private LocalTime sundayStart;
+    @Setter
+    @Column(nullable = true, columnDefinition = "varchar")
+    private LocalTime sundayEnd;
+
     public static ShopEntity of(Shop shop) {
         return new ShopEntity(
             shop.getId().getId(),
@@ -115,9 +176,24 @@ public class ShopEntity {
             shop.getGeoLocation().getLatitude(),
             shop.getGeoLocation().getLongitude(),
             shop.getDetails(),
-            shop.getWebsite()
+            shop.getWebsite(),
+            shop.getSlots().getTimePerSlot(),
+            shop.getSlots().getTimeBetweenSlots(),
+            Null.map(shop.getSlots().getMonday(), Slot::getStart),
+            Null.map(shop.getSlots().getMonday(), Slot::getEnd),
+            Null.map(shop.getSlots().getTuesday(), Slot::getStart),
+            Null.map(shop.getSlots().getTuesday(), Slot::getEnd),
+            Null.map(shop.getSlots().getWednesday(), Slot::getStart),
+            Null.map(shop.getSlots().getWednesday(), Slot::getEnd),
+            Null.map(shop.getSlots().getThursday(), Slot::getStart),
+            Null.map(shop.getSlots().getThursday(), Slot::getEnd),
+            Null.map(shop.getSlots().getFriday(), Slot::getStart),
+            Null.map(shop.getSlots().getFriday(), Slot::getEnd),
+            Null.map(shop.getSlots().getSaturday(), Slot::getStart),
+            Null.map(shop.getSlots().getSaturday(), Slot::getEnd),
+            Null.map(shop.getSlots().getSunday(), Slot::getStart),
+            Null.map(shop.getSlots().getSunday(), Slot::getEnd)
         );
-        // TODO MKA: Store slots
     }
 
     public Shop toShop() {
@@ -135,8 +211,28 @@ public class ShopEntity {
             new GeoLocation(latitude, longitude),
             details,
             website,
-            Slots.none(0, 0) // TODO MKA: Load slots
+            new Slots(
+                timePerSlot, timeBetweenSlots,
+                loadSlot(this::getMondayStart, this::getMondayEnd),
+                loadSlot(this::getTuesdayStart, this::getTuesdayEnd),
+                loadSlot(this::getWednesdayStart, this::getWednesdayEnd),
+                loadSlot(this::getThursdayStart, this::getThursdayEnd),
+                loadSlot(this::getFridayStart, this::getFridayEnd),
+                loadSlot(this::getSaturdayStart, this::getSaturdayEnd),
+                loadSlot(this::getSundayStart, this::getSundayEnd)
+            )
         );
+    }
+
+    private Slot loadSlot(Supplier<LocalTime> start, Supplier<LocalTime> end) {
+        LocalTime startValue = start.get();
+        LocalTime endValue = end.get();
+
+        if (startValue == null || endValue == null) {
+            return null;
+        }
+
+        return new Slot(startValue, endValue);
     }
 
     private Map<ContactType, String> fakeMap(Iterable<ContactType> contactTypes) {
