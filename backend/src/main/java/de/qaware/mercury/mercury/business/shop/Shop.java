@@ -3,6 +3,7 @@ package de.qaware.mercury.mercury.business.shop;
 import de.qaware.mercury.mercury.business.location.GeoLocation;
 import lombok.Value;
 import lombok.With;
+import org.springframework.lang.Nullable;
 
 import java.util.List;
 import java.util.UUID;
@@ -21,6 +22,9 @@ public class Shop {
     @With
     boolean enabled;
     GeoLocation geoLocation;
+    String details;
+    @Nullable
+    String website;
 
     @Value(staticConstructor = "of")
     public static class Id {

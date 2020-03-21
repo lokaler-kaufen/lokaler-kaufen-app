@@ -1,7 +1,8 @@
 package de.qaware.mercury.mercury.storage.shop.impl;
 
+import de.qaware.mercury.mercury.business.location.GeoLocation;
 import de.qaware.mercury.mercury.business.shop.Shop;
-import de.qaware.mercury.mercury.business.shop.ShopListEntry;
+import de.qaware.mercury.mercury.business.shop.ShopWithDistance;
 import de.qaware.mercury.mercury.storage.shop.ShopRepository;
 import de.qaware.mercury.mercury.util.Lists;
 import de.qaware.mercury.mercury.util.Null;
@@ -41,26 +42,18 @@ class JpaShopRepositoryImpl implements ShopRepository {
     }
 
     @Override
-    public List<ShopListEntry> findNearby(double latitude, double longitude) {
-        log.debug("Find show nearby location {}, {}", longitude, latitude);
+    public List<ShopWithDistance> findNearby(GeoLocation location) {
+        log.debug("Finding shops nearby location {}", location);
 
-        String query = "SELECT " +
-            "s.id AS id, " +
-            "s.name AS name, " +
-            "s.contact_types AS contact_types, " +
-            "sqrt(" +
-            "   power(111.3 * cos((?1 + s.latitude) / (2*0.01745)) * (?2-s.longitude) , 2) " +
-            " + power(111.3*(?1-s.latitude), 2)" +
-            ") AS distance " +
-            "FROM shop AS s";
+        List<ShopWithDistanceProjection> shops = shopDataRepository.findNearby(location.getLatitude(), location.getLongitude());
+        return toShopWithDistance(shops);
+    }
 
-        @SuppressWarnings("unchecked")
-        List<ShopWithDistance> shops = (List<ShopWithDistance>) entityManager.createNativeQuery(query, "ShopWithDistance") // ShopWithDistance is declared on ShopEntity
-            .setParameter(1, latitude)
-            .setParameter(2, longitude)
-            .getResultList();
+    @Override
+    public List<ShopWithDistance> search(String query, GeoLocation location) {
+        List<ShopWithDistanceProjection> shops = shopDataRepository.search("%" + query + "%", location.getLatitude(), location.getLongitude());
+        return toShopWithDistance(shops);
 
-        return Lists.map(shops, ShopWithDistance::toShopListEntry);
     }
 
     @Override
@@ -77,5 +70,9 @@ class JpaShopRepositoryImpl implements ShopRepository {
     @Override
     public List<Shop> findByName(String name) {
         return Lists.map(shopDataRepository.findByName(name), ShopEntity::toShop);
+    }
+
+    private List<ShopWithDistance> toShopWithDistance(List<ShopWithDistanceProjection> shops) {
+        return Lists.map(shops, s -> new ShopWithDistance(s.getShopEntity().toShop(), s.getDistance()));
     }
 }

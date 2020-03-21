@@ -6,10 +6,10 @@ import de.qaware.mercury.mercury.business.location.GeoLocationLookup;
 import de.qaware.mercury.mercury.business.login.ShopLoginService;
 import de.qaware.mercury.mercury.business.shop.Shop;
 import de.qaware.mercury.mercury.business.shop.ShopCreation;
-import de.qaware.mercury.mercury.business.shop.ShopListEntry;
 import de.qaware.mercury.mercury.business.shop.ShopNotFoundException;
 import de.qaware.mercury.mercury.business.shop.ShopService;
 import de.qaware.mercury.mercury.business.shop.ShopUpdate;
+import de.qaware.mercury.mercury.business.shop.ShopWithDistance;
 import de.qaware.mercury.mercury.business.uuid.UUIDFactory;
 import de.qaware.mercury.mercury.storage.shop.ShopRepository;
 import lombok.AccessLevel;
@@ -41,9 +41,9 @@ class ShopServiceImpl implements ShopService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<ShopListEntry> findNearby(String postCode) {
-        GeoLocation location = geoLocationLookup.fromZipCode(postCode);
-        return shopRepository.findNearby(location.getLatitude(), location.getLongitude());
+    public List<ShopWithDistance> findNearby(String zipCode) {
+        GeoLocation location = geoLocationLookup.fromZipCode(zipCode);
+        return shopRepository.findNearby(location);
     }
 
     @Override
@@ -74,7 +74,7 @@ class ShopServiceImpl implements ShopService {
             Shop.Id.of(id), creation.getName(), creation.getOwnerName(), creation.getEmail(), creation.getStreet(),
             // TODO MKA: Slots, contact types
             creation.getZipCode(), creation.getCity(), creation.getAddressSupplement(), new ArrayList<>(creation.getContactTypes().keySet()),
-            false, geoLocation
+            false, geoLocation, creation.getDetails(), creation.getWebsite()
         );
 
         shopRepository.insert(shop);
@@ -90,7 +90,7 @@ class ShopServiceImpl implements ShopService {
             shop.getId(), update.getName(), update.getOwnerName(), shop.getName(), update.getStreet(), update.getZipCode(),
             // TODO MKA: Slots, contact types
             update.getCity(), update.getAddressSupplement(), new ArrayList<>(update.getContactTypes().keySet()),
-            shop.isEnabled(), geoLocation
+            shop.isEnabled(), geoLocation, shop.getDetails(), shop.getWebsite()
         );
 
         shopRepository.update(newShop);
@@ -121,5 +121,12 @@ class ShopServiceImpl implements ShopService {
     @Transactional(readOnly = true)
     public List<Shop> findByName(String name) {
         return shopRepository.findByName(name);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ShopWithDistance> search(String query, String zipCode) {
+        GeoLocation location = geoLocationLookup.fromZipCode(zipCode);
+        return shopRepository.search(query, location);
     }
 }

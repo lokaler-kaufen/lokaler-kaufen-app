@@ -13,7 +13,7 @@ public interface ShopService {
 
     void changeEnabled(Shop.Id id, boolean enabled) throws ShopNotFoundException;
 
-    List<ShopListEntry> findNearby(String location);
+    List<ShopWithDistance> findNearby(String zipCode);
 
     void delete(Shop.Id parse) throws ShopNotFoundException;
 
@@ -28,4 +28,6 @@ public interface ShopService {
     void sendCreateLink(String email);
 
     List<Shop> findByName(String name);
+
+    List<ShopWithDistance> search(String query, String zipCode);
 }
