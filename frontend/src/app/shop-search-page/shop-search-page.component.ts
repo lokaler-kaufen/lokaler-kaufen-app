@@ -1,11 +1,11 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {MatTableDataSource} from "@angular/material/table";
-import {MatSort} from "@angular/material/sort";
-import {ActivatedRoute, Router} from "@angular/router";
-import {HttpClient} from "@angular/common/http";
-import {ContactTypes} from "../shared/contact-types";
-import {Observable} from "rxjs";
-import {ShopControllerService, ShopListDto, ShopsListEntryDto} from "../data/client";
+import {MatTableDataSource} from '@angular/material/table';
+import {MatSort} from '@angular/material/sort';
+import {ActivatedRoute, Router} from '@angular/router';
+import {HttpClient} from '@angular/common/http';
+import {ContactTypes} from '../shared/contact-types';
+import {Observable} from 'rxjs';
+import {ShopControllerService, ShopListDto, ShopListEntryDto} from '../data/client';
 
 @Component({
   selector: 'shop-search-page',
@@ -46,7 +46,7 @@ export class ShopSearchPageComponent implements OnInit {
   }
 
   private dataUpdate(data: ShopListDto): void {
-    this.dataSource = new MatTableDataSource<ShopsListEntryDto>(data.shops);
+    this.dataSource = new MatTableDataSource<ShopListEntryDto>(data.shops);
   }
 
 }

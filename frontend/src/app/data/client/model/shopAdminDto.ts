@@ -14,12 +14,14 @@ export interface ShopAdminDto {
     addressSupplement?: string;
     city?: string;
     contactTypes?: Array<ShopAdminDto.ContactTypesEnum>;
+    details?: string;
     email?: string;
     enabled?: boolean;
     id?: string;
     name?: string;
     ownerName?: string;
     street?: string;
+    website?: string;
     zipCode?: string;
 }
 export namespace ShopAdminDto {

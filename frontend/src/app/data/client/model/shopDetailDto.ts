@@ -14,11 +14,13 @@ export interface ShopDetailDto {
     addressSupplement?: string;
     city?: string;
     contactTypes?: Array<ShopDetailDto.ContactTypesEnum>;
+    details?: string;
     email?: string;
     id?: string;
     name?: string;
     ownerName?: string;
     street?: string;
+    website?: string;
     zipCode?: string;
 }
 export namespace ShopDetailDto {
