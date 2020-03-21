@@ -1,10 +1,11 @@
 package de.qaware.mercury.mercury.business.shop.impl;
 
-import de.qaware.mercury.mercury.business.location.Location;
-import de.qaware.mercury.mercury.business.location.LocationLookup;
+import de.qaware.mercury.mercury.business.location.GeoLocation;
+import de.qaware.mercury.mercury.business.location.GeoLocationLookup;
 import de.qaware.mercury.mercury.business.shop.Shop;
 import de.qaware.mercury.mercury.business.shop.ShopNotFoundException;
 import de.qaware.mercury.mercury.business.shop.ShopService;
+import de.qaware.mercury.mercury.business.shop.ShopWithDistance;
 import de.qaware.mercury.mercury.business.uuid.UUIDFactory;
 import de.qaware.mercury.mercury.storage.shop.ShopRepository;
 import org.springframework.stereotype.Service;
@@ -15,12 +16,12 @@ import java.util.UUID;
 @Service
 class ShopServiceImpl implements ShopService {
     private final UUIDFactory uuidFactory;
-    private final LocationLookup locationLookup;
+    private final GeoLocationLookup geoLocationLookup;
     private final ShopRepository shopRepository;
 
-    ShopServiceImpl(UUIDFactory uuidFactory, LocationLookup locationLookup, ShopRepository shopRepository) {
+    ShopServiceImpl(UUIDFactory uuidFactory, GeoLocationLookup geoLocationLookup, ShopRepository shopRepository) {
         this.uuidFactory = uuidFactory;
-        this.locationLookup = locationLookup;
+        this.geoLocationLookup = geoLocationLookup;
         this.shopRepository = shopRepository;
     }
 
@@ -30,20 +31,17 @@ class ShopServiceImpl implements ShopService {
     }
 
     @Override
-    public List<Shop> findNearby(String postCode) {
-        Location location = locationLookup.fromPostcode(postCode);
+    public List<ShopWithDistance> findNearby(String postCode) {
+        GeoLocation location = geoLocationLookup.fromZipCode(postCode);
         return shopRepository.findNearby(location.getLatitude(), location.getLongitude());
     }
 
     @Override
-    public Shop create(String name, String postCode, boolean enabled) {
-        return create(name, locationLookup.fromPostcode(postCode), enabled);
-    }
-
-    @Override
-    public Shop create(String name, Location location, boolean enabled) {
+    public Shop create(String name, String street, String zipCode, String city) {
         UUID id = uuidFactory.create();
-        Shop shop = new Shop(Shop.Id.of(id), name, enabled, location);
+
+        GeoLocation geoLocation = geoLocationLookup.fromZipCode(zipCode);
+        Shop shop = new Shop(Shop.Id.of(id), name, false, geoLocation);
 
         shopRepository.insert(shop);
         return shop;

@@ -1,6 +1,6 @@
 package de.qaware.mercury.mercury.business.shop;
 
-import de.qaware.mercury.mercury.business.location.Location;
+import de.qaware.mercury.mercury.business.location.GeoLocation;
 import lombok.Value;
 import lombok.With;
 
@@ -12,7 +12,7 @@ public class Shop {
     String name;
     @With
     boolean enabled;
-    Location location;
+    GeoLocation geoLocation;
 
     @Value(staticConstructor = "of")
     public static class Id {

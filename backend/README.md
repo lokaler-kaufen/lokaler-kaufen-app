@@ -15,3 +15,9 @@ Start with looking at the `de.qaware.mercury.mercury.rest.shop.ShopController` c
 ### With IntelliJ
 
 Start the `main()` method of the `de.qaware.mercury.mercury.MercuryApplication` class.
+
+## Developing
+
+### Conventions
+
+* 

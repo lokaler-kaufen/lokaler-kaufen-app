@@ -1,6 +1,6 @@
 package de.qaware.mercury.mercury.rest.shop.dto;
 
-import de.qaware.mercury.mercury.business.shop.Shop;
+import de.qaware.mercury.mercury.business.shop.ShopWithDistance;
 import lombok.Value;
 
 @Value
@@ -8,14 +8,14 @@ public class ShopDto {
     String id;
     String name;
     boolean enabled;
-    String locationName;
+    double distance;
 
-    public static ShopDto of(Shop shop) {
+    public static ShopDto of(ShopWithDistance shopWithDistance) {
         return new ShopDto(
-            shop.getId().getId().toString(),
-            shop.getName(),
-            shop.isEnabled(),
-            shop.getLocation().getName()
+            shopWithDistance.getShop().getId().getId().toString(),
+            shopWithDistance.getShop().getName(),
+            shopWithDistance.getShop().isEnabled(),
+            shopWithDistance.getDistance()
         );
     }
 }

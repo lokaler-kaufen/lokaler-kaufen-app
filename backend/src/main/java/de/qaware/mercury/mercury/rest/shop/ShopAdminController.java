@@ -5,7 +5,8 @@ import de.qaware.mercury.mercury.business.shop.ShopNotFoundException;
 import de.qaware.mercury.mercury.business.shop.ShopService;
 import de.qaware.mercury.mercury.business.uuid.UUIDFactory;
 import de.qaware.mercury.mercury.rest.ErrorDto;
-import de.qaware.mercury.mercury.rest.shop.dto.ShopsDto;
+import de.qaware.mercury.mercury.rest.shop.dto.ShopsAdminDto;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "/api/admin/shop", produces = MediaType.APPLICATION_JSON_VALUE)
+@Slf4j
 class ShopAdminController {
     private final ShopService shopService;
     private final UUIDFactory uuidFactory;
@@ -29,8 +31,8 @@ class ShopAdminController {
     }
 
     @GetMapping
-    ShopsDto listAll() {
-        return ShopsDto.of(shopService.listAll());
+    ShopsAdminDto listAll() {
+        return ShopsAdminDto.of(shopService.listAll());
     }
 
     @PutMapping(path = "/{id}/enable")
@@ -40,8 +42,11 @@ class ShopAdminController {
 
     @ExceptionHandler(ShopNotFoundException.class)
     ResponseEntity<ErrorDto> handleShopNotFoundException(ShopNotFoundException exception) {
+        String exceptionId = uuidFactory.create().toString();
+        log.debug("Handled ShopNotFoundException with exception id {}", exceptionId);
+
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDto(
-            uuidFactory.create().toString(), "SHOP_NOT_FOUND", exception.getMessage()
+            exceptionId, "SHOP_NOT_FOUND", exception.getMessage()
         ));
     }
 }
