@@ -18,4 +18,11 @@ public interface ShopService {
 
     @Nullable
     Shop findById(Shop.Id id);
+
+    /**
+     * Sends the email with the creation link for a new shop to the given email address
+     *
+     * @param email email address
+     */
+    void sendCreateLink(String email);
 }

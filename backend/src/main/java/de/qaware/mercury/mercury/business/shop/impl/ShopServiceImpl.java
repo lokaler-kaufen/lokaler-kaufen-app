@@ -1,5 +1,6 @@
 package de.qaware.mercury.mercury.business.shop.impl;
 
+import de.qaware.mercury.mercury.business.email.EmailService;
 import de.qaware.mercury.mercury.business.location.GeoLocation;
 import de.qaware.mercury.mercury.business.location.GeoLocationLookup;
 import de.qaware.mercury.mercury.business.shop.Shop;
@@ -9,6 +10,7 @@ import de.qaware.mercury.mercury.business.shop.ShopWithDistance;
 import de.qaware.mercury.mercury.business.uuid.UUIDFactory;
 import de.qaware.mercury.mercury.storage.shop.ContactType;
 import de.qaware.mercury.mercury.storage.shop.ShopRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
@@ -16,15 +18,18 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
+@Slf4j
 class ShopServiceImpl implements ShopService {
     private final UUIDFactory uuidFactory;
     private final GeoLocationLookup geoLocationLookup;
     private final ShopRepository shopRepository;
+    private final EmailService emailService;
 
-    ShopServiceImpl(UUIDFactory uuidFactory, GeoLocationLookup geoLocationLookup, ShopRepository shopRepository) {
+    ShopServiceImpl(UUIDFactory uuidFactory, GeoLocationLookup geoLocationLookup, ShopRepository shopRepository, EmailService emailService) {
         this.uuidFactory = uuidFactory;
         this.geoLocationLookup = geoLocationLookup;
         this.shopRepository = shopRepository;
+        this.emailService = emailService;
     }
 
     @Override
@@ -74,5 +79,12 @@ class ShopServiceImpl implements ShopService {
 
         Shop newShop = shop.withEnabled(enabled);
         shopRepository.update(newShop);
+    }
+
+    @Override
+    public void sendCreateLink(String email) {
+        log.info("Sending shop creation link to '{}'", email);
+
+        emailService.sendShopCreationLink(email);
     }
 }

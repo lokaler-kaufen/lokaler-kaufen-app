@@ -49,8 +49,8 @@ Just kill the docker container (pressing Ctrl+C in that terminal), and start it 
 @NoArgsConstructor
 @AllArgsConstructor
 public class LoginDto {
-    String email;
-    String password;
+    private String email;
+    private String password;
 }
 ```
 

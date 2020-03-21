@@ -15,7 +15,7 @@ import javax.validation.constraints.NotBlank;
 @Validated
 class TokenServiceConfigurationProperties {
     @NotBlank
-    String shopJwtSecret;
+    private String shopJwtSecret;
     @NotBlank
-    String adminJwtSecret;
+    private String adminJwtSecret;
 }

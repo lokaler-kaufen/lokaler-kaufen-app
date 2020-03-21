@@ -9,3 +9,14 @@ mercury:
   tokens:
     shopJwtSecret: "u2WXgWEWhyop+qtpiH5jhQmDN+PVRbazKPNuseI0dmE=" # openssl rand -base64 32
     adminJwtSecret: "QXOm/a5//OFtmciYomnixCTDCzNUQFWNAiT3eGBOfhQ=" # openssl rand -base64 32
+  email:
+    use-dummy: true # Set this to false to send real emails
+    from: "Lokaler.kaufen <lokaler.kaufen@gmail.com>"
+
+spring.mail:
+  host: "smtp.gmail.com"
+  port: 587
+  username: "[]"
+  password: "[redacted]"
+  properties:
+    mail.smtp.starttls.enable: true

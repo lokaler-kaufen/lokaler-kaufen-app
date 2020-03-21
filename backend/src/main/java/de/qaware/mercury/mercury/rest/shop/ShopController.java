@@ -1,6 +1,7 @@
 package de.qaware.mercury.mercury.rest.shop;
 
 import de.qaware.mercury.mercury.business.shop.ShopService;
+import de.qaware.mercury.mercury.rest.shop.dto.SendCreateLinkDto;
 import de.qaware.mercury.mercury.rest.shop.dto.ShopCreateDto;
 import de.qaware.mercury.mercury.rest.shop.dto.ShopsDto;
 import org.springframework.http.MediaType;
@@ -18,6 +19,11 @@ class ShopController {
 
     ShopController(ShopService shopService) {
         this.shopService = shopService;
+    }
+
+    @PostMapping(path = "/send-create-link", consumes = MediaType.APPLICATION_JSON_VALUE)
+    void sendCreateLink(@RequestBody SendCreateLinkDto request) {
+        shopService.sendCreateLink(request.getEmail());
     }
 
     @PostMapping(path = "/create", consumes = MediaType.APPLICATION_JSON_VALUE)
