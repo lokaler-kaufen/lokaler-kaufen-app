@@ -31,6 +31,18 @@ Start the `main()` method of the `de.qaware.mercury.mercury.MercuryApplication` 
 
 ## How To's
 
+### Create a DTO which Spring deserializes from JSON
+
+```java
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class LoginDto {
+    String email;
+    String password;
+}
+```
+
 ### Login as Admin
 
 ```
