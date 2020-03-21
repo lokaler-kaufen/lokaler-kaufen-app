@@ -1,4 +1,4 @@
-GET {{ host }}/api/shop/257f07f4-1481-4f5e-a47d-0a3406e27e8d/details
+GET {{ host }}/api/shop/257f07f4-1481-4f5e-a47d-0a3406e27e8d
 Accept: application/json, */*
 
 ###

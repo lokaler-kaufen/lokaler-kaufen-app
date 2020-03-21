@@ -36,7 +36,7 @@ class ShopController {
     private final TokenService tokenService;
     private final AuthenticationHelper authenticationHelper;
 
-    @GetMapping(path = "/{id}/details")
+    @GetMapping(path = "/{id}")
     ShopDetailDto getDetails(@PathVariable String id) throws ShopNotFoundException {
         Shop shop = shopService.findById(Shop.Id.parse(id));
         if (shop == null) {
