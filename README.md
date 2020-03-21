@@ -14,7 +14,7 @@ Hier findet ihr unseren [Projekt-Flyer](https://docs.google.com/document/d/1yx54
 
 ## Frontend
 
-[Backend documentation](frontend/README.md)
+[Frontend documentation](frontend/README.md)
 
 ## Backend
 
