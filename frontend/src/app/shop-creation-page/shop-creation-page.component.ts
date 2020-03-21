@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {ContactTypes} from "../shared/contact-types";
 
 @Component({
   selector: 'shop-creation-page',
@@ -6,10 +8,59 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./shop-creation-page.component.css']
 })
 export class ShopCreationPageComponent implements OnInit {
+  nameFormGroup: FormGroup;
+  addressFormGroup: FormGroup;
+  descriptionFormGroup: FormGroup;
+  contactFormGroup: FormGroup;
+  openingFormGroup: FormGroup;
+  passwordFormGroup: FormGroup;
 
-  constructor() { }
+  token: string;
+  contactTypes = ContactTypes;
+  hidePassword = true;
 
-  ngOnInit(): void {
+  constructor(private formBuilder: FormBuilder) {
+  }
+
+  ngOnInit() {
+    this.nameFormGroup = this.formBuilder.group({
+      nameCtrl: ['', Validators.required],
+      businessNameCtrl: ['', Validators.required]
+    });
+    this.addressFormGroup = this.formBuilder.group({
+      streetCtrl: ['', Validators.required],
+      zipCtrl: ['', Validators.required],
+      cityCtrl: ['', Validators.required],
+      suffixCtrl: '',
+    });
+    this.descriptionFormGroup = this.formBuilder.group({
+      descriptionCtrl: ['', Validators.required],
+      urlCtrl: ['', [Validators.required, Validators.pattern('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]]
+    });
+    this.contactFormGroup = this.formBuilder.group({
+      phoneCtrl: '',
+      facetimeCtrl: '',
+      whatsappCtrl: '',
+    });
+    this.openingFormGroup = this.formBuilder.group({});
+    this.passwordFormGroup = this.formBuilder.group({
+      passwordCtrl: ['', [Validators.required, Validators.minLength(14)]],
+      confirmPasswordCtrl: ['', Validators.required]
+    }, {validator: this.checkMatchingPasswords('passwordCtrl', 'confirmPasswordCtrl')});
+
+  }
+
+  // Validation password equals confirmed password
+  checkMatchingPasswords(passwordKey: string, passwordConfirmationKey: string) {
+    return (group: FormGroup) => {
+      const passwordInput = group.controls[passwordKey],
+        passwordConfirmationInput = group.controls[passwordConfirmationKey];
+      if (passwordInput.value !== passwordConfirmationInput.value) {
+        return passwordConfirmationInput.setErrors({notEquivalent: true});
+      } else {
+        return passwordConfirmationInput.setErrors(null);
+      }
+    };
   }
 
 }

@@ -27,7 +27,8 @@ import {MatSortModule} from "@angular/material/sort";
 import {BookingPopupComponent} from './booking-popup/booking-popup.component';
 import {MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule} from '@angular/material/dialog';
 import {ErrorStateMatcher, ShowOnDirtyErrorStateMatcher} from '@angular/material/core';
-import { RegisterBusinessPopupComponent } from './register-business-popup/register-business-popup.component';
+import {RegisterBusinessPopupComponent} from './register-business-popup/register-business-popup.component';
+import {MatStepperModule} from "@angular/material/stepper";
 
 @NgModule({
   declarations: [
@@ -70,6 +71,7 @@ import { RegisterBusinessPopupComponent } from './register-business-popup/regist
     MatTableModule,
     MatSortModule,
     HttpClientModule,
+    MatStepperModule,
   ],
   providers: [
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}},

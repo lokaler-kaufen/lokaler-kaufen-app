@@ -1,1 +1,137 @@
-<p>shop-creation-page works!</p>
+<p>Hallo und herzlich willkommen! Toll, dass du einen Shop auf lokaler.kaufen anlegen willst! Dafür brauchen wir noch
+  ein paar Infos
+  von dir. </p>
+
+<mat-vertical-stepper [linear]="true" #stepper>
+  <mat-step [stepControl]="nameFormGroup">
+    <form [formGroup]="nameFormGroup">
+      <ng-template matStepLabel>Starten wir ganz einfach</ng-template>
+      <mat-form-field>
+        <mat-label>Wie ist dein Name?</mat-label>
+        <input matInput placeholder="Max Mustermann" formControlName="nameCtrl" required>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Und wie heißt dein Laden?</mat-label>
+        <input matInput placeholder="Maxis Modeladen" formControlName="businessNameCtrl" required>
+      </mat-form-field>
+      <div>
+        <button mat-button matStepperNext>Weiter</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="addressFormGroup">
+    <form [formGroup]="addressFormGroup">
+      <ng-template matStepLabel>Und wo ist dein Laden?</ng-template>
+      <mat-form-field>
+        <mat-label>Straße</mat-label>
+        <input matInput formControlName="streetCtrl" placeholder="Hauptstr. 11"
+               required>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>PLZ</mat-label>
+        <input matInput formControlName="zipCtrl" placeholder="12345"
+               required>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Stadt</mat-label>
+        <input matInput formControlName="cityCtrl" placeholder="Maulwurfshausen"
+               required>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Adresszusatz</mat-label>
+        <input matInput formControlName="suffixCtrl" placeholder="Hinterhof">
+      </mat-form-field>
+      <div>
+        <button mat-button matStepperPrevious>Zurück</button>
+        <button mat-button matStepperNext>Weiter</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="descriptionFormGroup">
+    <form [formGroup]="descriptionFormGroup">
+      <ng-template matStepLabel>Beschreibe deinen Laden ein bisschen.</ng-template>
+      <div style="width: 100%">
+        <p>Was verkaufst du, was zeichnet deinen Laden aus und wobei kannst du deine Kunden am besten beraten?</p>
+        <mat-form-field style="width: 100%">
+          <mat-label>Beschreibung</mat-label>
+          <textarea matInput formControlName="descriptionCtrl"
+                    placeholder="Hier gibt es vegane Kleidung und Schuhe. "
+                    required></textarea>
+        </mat-form-field>
+      </div>
+      <div>
+        <p>Falls du eine Website hast, kannst du sie mit anzeigen lassen und deinen Kunden dort weitere Details zu
+          deinem Laden zeigen.</p>
+        <mat-form-field>
+          <mat-label>Website Link</mat-label>
+          <input matInput formControlName="urlCtrl" placeholder="https://mywebsite.de"
+                 required>
+        </mat-form-field>
+      </div>
+      <div>
+        <button mat-button matStepperPrevious>Zurück</button>
+        <button mat-button matStepperNext>Weiter</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="contactFormGroup">
+    <form [formGroup]="contactFormGroup">
+      <ng-template matStepLabel>Welche Kontaktmöglichkeiten möchtest du anbieten?</ng-template>
+      <p>Fülle einfach alle Möglichkeiten, die du hast, aus. </p>
+      <div *ngFor="let contactType of contactTypes.POSSIBLE_CONTACT_TYPES">
+        <p>
+          <mat-icon svgIcon="{{contactType}}"
+                    style="margin-right: 5px; vertical-align: bottom"></mat-icon>
+          {{contactTypes.getDisplayName(contactType)}}
+        </p>
+        <mat-form-field>
+          <mat-label>Dein Kontakt
+          </mat-label>
+          <input matInput formControlName="{{contactType}}Ctrl" placeholder="Deine Kontaktmöglichkeit">
+        </mat-form-field>
+      </div>
+      <div>
+        <button mat-button matStepperPrevious>Zurück</button>
+        <button mat-button matStepperNext>Weiter</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="openingFormGroup">
+    <form [formGroup]="openingFormGroup">
+      <ng-template matStepLabel>Was sind deine Öffnungszeiten?</ng-template>
+      <div>
+        <button mat-button matStepperPrevious>Zurück</button>
+        <button mat-button matStepperNext>Weiter</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="passwordFormGroup">
+    <form [formGroup]="passwordFormGroup">
+      <ng-template matStepLabel>Fast fertig!</ng-template>
+      <p>Wähle noch ein Passwort, damit du deine Angaben später ändern kannst. Wähle ein sicheres Passwort, das
+        mindestens 14 Zeichen hat. Ein gutes Beispiel ist ein Satz, den du dir gut merken kannst.</p>
+      <mat-form-field><input matInput placeholder="Password" [type]="hidePassword ? 'password' : 'text'"
+                             formControlName="passwordCtrl" required>
+        <mat-icon matSuffix
+                  (click)="hidePassword = !hidePassword">{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+      </mat-form-field>
+      <mat-form-field><input matInput placeholder="Password wiederholen" [type]="hidePassword ? 'password' : 'text'"
+                             formControlName="confirmPasswordCtrl" required>
+        <mat-icon matSuffix
+                  (click)="hidePassword = !hidePassword">{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+      </mat-form-field>
+      <div>
+        <button mat-button matStepperPrevious>Zurück</button>
+        <button mat-button matStepperNext>Weiter</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Done</ng-template>
+    <p>You are now done.</p>
+    <div>
+      <button mat-button matStepperPrevious>Back</button>
+      <button mat-button (click)="stepper.reset()">Reset</button>
+    </div>
+  </mat-step>
+</mat-vertical-stepper>
