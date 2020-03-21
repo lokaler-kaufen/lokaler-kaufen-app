@@ -1,7 +1,7 @@
 package de.qaware.mercury.mercury.storage.shop.impl;
 
 import de.qaware.mercury.mercury.business.shop.Shop;
-import de.qaware.mercury.mercury.business.shop.ShopWithDistance;
+import de.qaware.mercury.mercury.business.shop.ShopListEntry;
 import de.qaware.mercury.mercury.storage.shop.ShopRepository;
 import de.qaware.mercury.mercury.util.Lists;
 import de.qaware.mercury.mercury.util.Null;
@@ -9,15 +9,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 
 @Component
 @Slf4j
 class JpaShopRepositoryImpl implements ShopRepository {
     private final ShopDataRepository shopDataRepository;
+    private final EntityManager entityManager;
 
-    JpaShopRepositoryImpl(ShopDataRepository shopDataRepository) {
+    JpaShopRepositoryImpl(ShopDataRepository shopDataRepository, EntityManager entityManager) {
         this.shopDataRepository = shopDataRepository;
+        this.entityManager = entityManager;
     }
 
     @Override
@@ -40,21 +43,26 @@ class JpaShopRepositoryImpl implements ShopRepository {
     }
 
     @Override
-    public List<ShopWithDistance> findNearby(double longitude, double latitude) {
+    public List<ShopListEntry> findNearby(double latitude, double longitude) {
         log.debug("Find show nearby location {}, {}", longitude, latitude);
 
-        // TODO: Idea JPA projection
-        // TODO: Idea Native Query + Resultset von Hibernate lesen lassen
+        String query = "SELECT " +
+            "s.id AS id, " +
+            "s.name AS name, " +
+            "s.contact_types AS contact_types, " +
+            "sqrt(" +
+            "   power(111.3 * cos((?1 + s.latitude) / (2*0.01745)) * (?2-s.longitude) , 2) " +
+            " + power(111.3*(?1-s.latitude), 2)" +
+            ") AS distance " +
+            "FROM shop AS s";
 
-        // TODO:  implement this query correctly and transform miles to kilometers
-        // first step should use limit 10 and no max distance
+        @SuppressWarnings("unchecked")
+        List<ShopWithDistance> shops = (List<ShopWithDistance>) entityManager.createNativeQuery(query, "ShopWithDistance") // ShopWithDistance is declared on ShopEntity
+            .setParameter(1, latitude)
+            .setParameter(2, longitude)
+            .getResultList();
 
-/*        SELECT latitude, longitude, SQRT(
-            POW(69.1 * (latitude - [startlat]), 2) +
-            POW(69.1 * ([startlng] - longitude) * COS(latitude / 57.3), 2)) AS distance
-        FROM TableName HAVING distance < maxDistance ORDER BY distance LIMIT maxResults;*/
-
-        return List.of();
+        return Lists.map(shops, ShopWithDistance::toShopListEntry);
     }
 
     @Override

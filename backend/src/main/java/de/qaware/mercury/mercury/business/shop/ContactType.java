@@ -1,5 +1,7 @@
 package de.qaware.mercury.mercury.business.shop;
 
+import lombok.Getter;
+
 public enum ContactType {
 
     FACEBOOK_MESSENGER("FACEBOOK_MESSENGER"),
@@ -14,6 +16,7 @@ public enum ContactType {
     VIBER("VIBER"),
     TELEPHONE("TELEPHONE");
 
+    @Getter
     private final String value;
 
     ContactType(String value) {

@@ -13,7 +13,7 @@ public interface ShopService {
 
     void changeEnabled(Shop.Id id, boolean enabled) throws ShopNotFoundException;
 
-    List<ShopWithDistance> findNearby(String location);
+    List<ShopListEntry> findNearby(String location);
 
     void delete(Shop.Id parse) throws ShopNotFoundException;
 

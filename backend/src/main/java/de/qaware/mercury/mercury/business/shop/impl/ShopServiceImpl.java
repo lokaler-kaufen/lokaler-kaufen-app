@@ -5,9 +5,9 @@ import de.qaware.mercury.mercury.business.location.GeoLocation;
 import de.qaware.mercury.mercury.business.location.GeoLocationLookup;
 import de.qaware.mercury.mercury.business.shop.ContactType;
 import de.qaware.mercury.mercury.business.shop.Shop;
+import de.qaware.mercury.mercury.business.shop.ShopListEntry;
 import de.qaware.mercury.mercury.business.shop.ShopNotFoundException;
 import de.qaware.mercury.mercury.business.shop.ShopService;
-import de.qaware.mercury.mercury.business.shop.ShopWithDistance;
 import de.qaware.mercury.mercury.business.uuid.UUIDFactory;
 import de.qaware.mercury.mercury.storage.shop.ShopRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -38,7 +38,7 @@ class ShopServiceImpl implements ShopService {
     }
 
     @Override
-    public List<ShopWithDistance> findNearby(String postCode) {
+    public List<ShopListEntry> findNearby(String postCode) {
         GeoLocation location = geoLocationLookup.fromZipCode(postCode);
         return shopRepository.findNearby(location.getLatitude(), location.getLongitude());
     }

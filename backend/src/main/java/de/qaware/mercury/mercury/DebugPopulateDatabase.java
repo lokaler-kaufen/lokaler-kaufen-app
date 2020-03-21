@@ -9,12 +9,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Component
 @Slf4j
 class DebugPopulateDatabase implements ApplicationRunner {
+    private static final boolean ENABLED = false;
+
     private final ShopService shopService;
     private final AdminLoginService adminLoginService;
     private final ShopLoginService shopLoginService;
@@ -26,7 +29,12 @@ class DebugPopulateDatabase implements ApplicationRunner {
     }
 
     @Override
+    @Transactional
     public void run(ApplicationArguments args) throws Exception {
+        if (!ENABLED) {
+            return;
+        }
+
         log.info("Populating database for DEBUG purposes");
 
         createAdmins();
