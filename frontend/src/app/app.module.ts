@@ -27,8 +27,6 @@ import {MatSortModule} from "@angular/material/sort";
 import {BookingPopupComponent} from './booking-popup/booking-popup.component';
 import {MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule} from '@angular/material/dialog';
 import {ErrorStateMatcher, ShowOnDirtyErrorStateMatcher} from '@angular/material/core';
-import {MatTableModule} from '@angular/material/table';
-import {HttpClientModule} from '@angular/common/http';
 
 @NgModule({
   declarations: [
