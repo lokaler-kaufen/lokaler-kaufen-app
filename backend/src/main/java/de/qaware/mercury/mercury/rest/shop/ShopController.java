@@ -3,15 +3,20 @@ package de.qaware.mercury.mercury.rest.shop;
 import de.qaware.mercury.mercury.business.login.LoginException;
 import de.qaware.mercury.mercury.business.login.ShopCreationToken;
 import de.qaware.mercury.mercury.business.login.TokenService;
+import de.qaware.mercury.mercury.business.shop.ContactType;
 import de.qaware.mercury.mercury.business.shop.Shop;
+import de.qaware.mercury.mercury.business.shop.ShopCreation;
 import de.qaware.mercury.mercury.business.shop.ShopNotFoundException;
 import de.qaware.mercury.mercury.business.shop.ShopService;
+import de.qaware.mercury.mercury.business.shop.Slots;
 import de.qaware.mercury.mercury.rest.plumbing.authentication.AuthenticationHelper;
 import de.qaware.mercury.mercury.rest.plumbing.authentication.InvalidCredentialsRestException;
+import de.qaware.mercury.mercury.rest.shop.dto.CreateShopRequestDto;
 import de.qaware.mercury.mercury.rest.shop.dto.SendCreateLinkDto;
 import de.qaware.mercury.mercury.rest.shop.dto.ShopCreateDto;
 import de.qaware.mercury.mercury.rest.shop.dto.ShopDetailDto;
 import de.qaware.mercury.mercury.rest.shop.dto.ShopListDto;
+import de.qaware.mercury.mercury.util.Maps;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -52,7 +57,7 @@ class ShopController {
     }
 
     @PostMapping(path = "/", consumes = MediaType.APPLICATION_JSON_VALUE)
-    ShopCreateDto createShop(@RequestBody ShopCreateDto shop, @RequestParam String token) {
+    ShopCreateDto createShop(@RequestBody CreateShopRequestDto request, @RequestParam String token) {
         // The token is taken from the link which the user got with email
         // It contains the email address, and is used to verify that the user really has access to this email address
         String email;
@@ -62,16 +67,12 @@ class ShopController {
             throw new InvalidCredentialsRestException(e.getMessage());
         }
 
-        return ShopCreateDto.of(shopService.create(
-            shop.getName(),
-            shop.getOwnerName(),
-            email, // Email is not taken from request body, but from the token which was in the email link
-            shop.getStreet(),
-            shop.getZipCode(),
-            shop.getCity(),
-            shop.getAddressSupplement(),
-            shop.getContactTypes()
-        ));
+        return ShopCreateDto.of(shopService.create(new ShopCreation(
+            email, request.getOwnerName(), request.getName(), request.getStreet(), request.getZipCode(), request.getCity(),
+            request.getAddressSupplement(), request.getDetails(), request.getWebsite(), request.getPassword(),
+            Maps.mapValues(request.getContactTypes(), ContactType::valueOf),
+            Slots.none(request.getSlots().getTimePerSlot(), request.getSlots().getTimeBetweenSlots())
+        )));
     }
 
     @PutMapping(path = "/", consumes = MediaType.APPLICATION_JSON_VALUE)

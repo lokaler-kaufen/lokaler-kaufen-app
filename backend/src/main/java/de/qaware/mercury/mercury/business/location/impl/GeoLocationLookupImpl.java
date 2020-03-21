@@ -8,11 +8,15 @@ import org.springframework.stereotype.Service;
 public class GeoLocationLookupImpl implements GeoLocationLookup {
     @Override
     public GeoLocation fromZipCode(String zipCode) {
-        double latitude = 48.104347;
-        double longitude = 11.600918;
-
-        // TODO: Look up PLZ to coordinates
-
-        return new GeoLocation(latitude, longitude);
+        switch (zipCode) {
+            case "85579":
+                return new GeoLocation(48.08140, 11.63480);
+            case "81549":
+                return new GeoLocation(48.137154, 11.576124);
+            case "55116":
+                return new GeoLocation(49.98419, 8.2791);
+            default:
+                return new GeoLocation(48.137154, 11.576124);
+        }
     }
 }

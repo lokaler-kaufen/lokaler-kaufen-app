@@ -7,7 +7,7 @@ import java.util.List;
 public interface ShopService {
     List<Shop> listAll();
 
-    Shop create(String name, String ownerName, String email, String street, String zipCode, String city, String addressSupplement, List<ContactType> contactTypes);
+    Shop create(ShopCreation creation);
 
     Shop update(Shop.Id id, String name, String ownerName, String email, String street, String zipCode, String city, String addressSupplement, List<ContactType> contactTypes, boolean enabled);
 

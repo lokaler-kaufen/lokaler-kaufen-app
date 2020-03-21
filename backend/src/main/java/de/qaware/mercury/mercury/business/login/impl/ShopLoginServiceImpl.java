@@ -7,29 +7,24 @@ import de.qaware.mercury.mercury.business.login.ShopLoginService;
 import de.qaware.mercury.mercury.business.login.ShopToken;
 import de.qaware.mercury.mercury.business.login.TokenService;
 import de.qaware.mercury.mercury.business.shop.Shop;
-import de.qaware.mercury.mercury.business.shop.ShopService;
 import de.qaware.mercury.mercury.business.uuid.UUIDFactory;
 import de.qaware.mercury.mercury.storage.login.ShopLoginRepository;
+import de.qaware.mercury.mercury.storage.shop.ShopRepository;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 class ShopLoginServiceImpl implements ShopLoginService {
     private final ShopLoginRepository shopLoginRepository;
     private final PasswordHasher passwordHasher;
     private final TokenService tokenService;
     private final UUIDFactory uuidFactory;
-    private final ShopService shopService;
-
-    ShopLoginServiceImpl(ShopLoginRepository shopLoginRepository, PasswordHasher passwordHasher, TokenService tokenService, UUIDFactory uuidFactory, ShopService shopService) {
-        this.shopLoginRepository = shopLoginRepository;
-        this.passwordHasher = passwordHasher;
-        this.tokenService = tokenService;
-        this.uuidFactory = uuidFactory;
-        this.shopService = shopService;
-    }
+    private final ShopRepository shopRepository;
 
     @Override
     @Transactional
@@ -71,7 +66,7 @@ class ShopLoginServiceImpl implements ShopLoginService {
             throw LoginException.forShopToken(token);
         }
 
-        Shop shop = shopService.findById(shopLogin.getShopId());
+        Shop shop = shopRepository.findById(shopLogin.getShopId());
         if (shop == null) {
             log.warn("Token is valid, shop login found, but shop with id '{}' not found", shopLogin.getShopId());
             throw LoginException.forShopToken(token);
