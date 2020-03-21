@@ -4,6 +4,7 @@ import {ShopOverviewDto} from "./shop-overview-dto";
 import {MatSort} from "@angular/material/sort";
 import {ActivatedRoute, Router} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
+import {ContactTypes} from "../shared/contact-types";
 
 @Component({
   selector: 'shop-search-page',
@@ -11,9 +12,7 @@ import {HttpClient} from "@angular/common/http";
   styleUrls: ['./shop-search-page.component.css']
 })
 export class ShopSearchPageComponent implements OnInit {
-  readonly POSSIBLE_CONTACT_TYPES = [
-    'phone', 'facetime', 'whatsapp'
-  ];
+  contactTypes = ContactTypes;
   searchBusiness: string;
   dataSource = new MatTableDataSource();
   @ViewChild(MatSort, {static: true}) sort: MatSort;
@@ -48,15 +47,6 @@ export class ShopSearchPageComponent implements OnInit {
   showDetailPage(row: any) {
     console.log('Row ID: ' + row.id);
     this.router.navigate(['/shops/' + row.id]);
-  }
-
-  // Replace '_' with ' ' and capitalize first letter
-  getDisplayName(contactType: string) {
-    let splitted = contactType.split('_');
-    splitted = splitted.map(split => {
-      return split.charAt(0).toUpperCase() + split.slice(1);
-    });
-    return splitted.join(' ');
   }
 
 }
