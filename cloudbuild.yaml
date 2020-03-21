@@ -1,11 +1,11 @@
 steps:
-  - name: gradle:jre11
+  - name: gradle:jdk11
     entrypoint: gradle
-    args: ["test"]
+    args: ["--no-daemon", "test"]
     dir: backend
-  - name: gradle:jre11
+  - name: gradle:jdk11
     entrypoint: gradle
-    args: ["assemble"]
+    args: ["--no-daemon", "assemble"]
     dir: backend
   - name: gcr.io/cloud-builders/docker
     args: ["build", "-t", "gcr.io/$PROJECT_ID/lokaler.kaufen", "--build-arg=JAR_FILE=backend/build/libs/mercury-0.0.1-SNAPSHOT.jar", "."]
