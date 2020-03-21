@@ -32,16 +32,17 @@ export class ShopSearchPageComponent implements OnInit {
       this.client.get<ShopOverviewDto[]>('/api/shop/find?location=' + params.location).subscribe(
         response => {
           this.dataSource = new MatTableDataSource<ShopOverviewDto>(response);
+          this.sort.sort({id: 'distance', start: 'asc', disableClear: false});
+          this.dataSource.sort = this.sort;
         },
         error => {
           console.log('Error requesting shop overview: ' + error.status + ', ' + error.error.message);
           this.dataSource = new MatTableDataSource<ShopOverviewDto>(this.shopOverviews);
+          this.sort.sort({id: 'distance', start: 'asc', disableClear: false});
+          this.dataSource.sort = this.sort;
         }
       );
     });
-    console.log('shopOverviews: ' + this.shopOverviews[0].name);
-    this.sort.sort({id: 'distance', start: 'asc', disableClear: false});
-    this.dataSource.sort = this.sort;
   }
 
   showDetailPage(row: any) {
