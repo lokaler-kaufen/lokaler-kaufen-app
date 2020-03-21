@@ -1,5 +1,6 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { FormControl, FormGroup } from '@angular/forms';
 
 export interface BookingDialogData {}
 
@@ -12,7 +13,7 @@ export interface BookingPopupResult {
 }
 
 export enum BookingPopupOutcome {
-  BOOKED, CANCELLED
+  BOOK, CANCEL
 }
 
 @Component({
@@ -21,6 +22,13 @@ export enum BookingPopupOutcome {
   styleUrls: ['./booking-popup.component.css']
 })
 export class BookingPopupComponent implements OnInit {
+
+  formControl = new FormGroup({
+    option: new FormControl(''),
+    phoneNumber: new FormControl(''),
+    name: new FormControl(''),
+    email: new FormControl('')
+  });
 
   options : string[] = [
     "WhatsApp",
@@ -33,13 +41,21 @@ export class BookingPopupComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onBook(): void {
-    console.log('book it!');
-    this.dialogRef.close();
+  onSubmit(): void {
+    const formValue : any = this.formControl.value;
+
+    const popupResult : BookingPopupResult = {
+      outcome: BookingPopupOutcome.BOOK,
+      phoneNumber: formValue.phoneNumber,
+      name: formValue.name,
+      email: formValue.email,
+      option: formValue.option
+    };
+
+    this.dialogRef.close(popupResult);
   }
 
   onNoClick(): void {
-    console.log('onNoClick');
     this.dialogRef.close();
   }
 
