@@ -128,7 +128,7 @@ class TokenServiceImpl implements TokenService {
                 .withIssuer(SHOP_CREATION_ISSUER)
                 .build();
             DecodedJWT jwt = verifier.verify(token.getToken());
-            String email = jwt.getClaim("shop").asString();
+            String email = jwt.getSubject();
 
             log.debug("Verified token for shop creation, email '{}'", email);
             return email;

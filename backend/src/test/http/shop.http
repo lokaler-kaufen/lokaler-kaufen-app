@@ -1,4 +1,4 @@
-POST {{ host }}/api/shop/create
+POST {{ host }}/api/shop/create?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmb29AYmFyLm9yZyIsImlzcyI6Im1lcmN1cnktc2hvcC1jcmVhdGlvbiJ9.WaUsDR89nzQtgqxXhfLZqazjf0PvywMzajQFZfKW9IQ
 Accept: application/json, */*
 Content-Type: application/json
 

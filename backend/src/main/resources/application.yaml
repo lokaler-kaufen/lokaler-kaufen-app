@@ -13,7 +13,7 @@ mercury:
   email:
     use-dummy: true # Set this to false to send real emails
     from: "Lokaler.kaufen <lokaler.kaufen@gmail.com>"
-    creationLinkTemplate: "http://localhost:8080#/create/token={{ token }}"
+    creationLinkTemplate: "http://localhost:8080#/create?token={{ token }}"
 
 spring.mail:
   host: "smtp.gmail.com"
