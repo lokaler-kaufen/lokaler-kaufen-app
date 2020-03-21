@@ -2,11 +2,11 @@ CREATE TABLE shop
 (
     id                 uuid primary key,
     name               varchar not null,
-    owner_name         text    not null,
-    street             text    not null,
-    zip_code           text    not null,
-    city               text    not null,
-    address_supplement text    not null,
+    owner_name         varchar not null,
+    street             varchar not null,
+    zip_code           varchar not null,
+    city               varchar not null,
+    address_supplement varchar not null,
     enabled            boolean not null,
     latitude           double  not null,
     longitude          double  not null
