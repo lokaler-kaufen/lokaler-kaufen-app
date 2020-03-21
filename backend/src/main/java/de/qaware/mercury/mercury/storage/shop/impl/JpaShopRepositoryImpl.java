@@ -3,15 +3,14 @@ package de.qaware.mercury.mercury.storage.shop.impl;
 import de.qaware.mercury.mercury.business.shop.Shop;
 import de.qaware.mercury.mercury.storage.shop.ShopRepository;
 import de.qaware.mercury.mercury.util.Lists;
+import de.qaware.mercury.mercury.util.Null;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @Component
 @Slf4j
@@ -34,11 +33,11 @@ class JpaShopRepositoryImpl implements ShopRepository {
     }
 
     @Override
+    @Nullable
     public Shop findById(Shop.Id id) {
         log.debug("Find Shop {}", id);
-        Optional<ShopEntity> shopEntityOptional = shopDataRepository.findById(id.getId());
-        ShopEntity shopEntity = shopEntityOptional.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        return shopEntity.toShop();
+        ShopEntity entity = shopDataRepository.findById(id.getId()).orElse(null);
+        return Null.map(entity, ShopEntity::toShop);
     }
 
     @Override
@@ -57,5 +56,10 @@ class JpaShopRepositoryImpl implements ShopRepository {
 
 
         return Lists.map(shops, ShopEntity::toShop);
+    }
+
+    @Override
+    public void update(Shop updatedShop) {
+        shopDataRepository.save(ShopEntity.of(updatedShop));
     }
 }

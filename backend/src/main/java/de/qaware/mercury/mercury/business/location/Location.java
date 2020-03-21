@@ -1,14 +1,12 @@
 package de.qaware.mercury.mercury.business.location;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Value;
 
-@Data
-@AllArgsConstructor
+@Value
 public class Location {
-    private String name;
-    private double latitude;
-    private double longitude;
+    String name;
+    double latitude;
+    double longitude;
 
     public double distanceTo(Location that) {
         double STATUTE_MILES_PER_NAUTICAL_MILE = 1.15077945;

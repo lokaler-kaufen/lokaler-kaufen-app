@@ -3,6 +3,7 @@ package de.qaware.mercury.mercury.business.shop.impl;
 import de.qaware.mercury.mercury.business.location.Location;
 import de.qaware.mercury.mercury.business.location.LocationLookup;
 import de.qaware.mercury.mercury.business.shop.Shop;
+import de.qaware.mercury.mercury.business.shop.ShopNotFoundException;
 import de.qaware.mercury.mercury.business.shop.ShopService;
 import de.qaware.mercury.mercury.business.uuid.UUIDFactory;
 import de.qaware.mercury.mercury.storage.shop.ShopRepository;
@@ -49,9 +50,13 @@ class ShopServiceImpl implements ShopService {
     }
 
     @Override
-    public void setAvailability(String shopId, boolean enabled) {
-        Shop shop = shopRepository.findById(Shop.Id.of(UUID.fromString(shopId)));
-        shop.setEnabled(enabled);
-        shopRepository.insert(shop);
+    public void changeEnabled(Shop.Id id, boolean enabled) throws ShopNotFoundException {
+        Shop shop = shopRepository.findById(id);
+        if (shop == null) {
+            throw new ShopNotFoundException(id);
+        }
+
+        Shop newShop = shop.withEnabled(enabled);
+        shopRepository.update(newShop);
     }
 }

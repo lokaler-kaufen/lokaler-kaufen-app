@@ -11,7 +11,7 @@ public interface ShopService {
 
     Shop create(String name, String postCode, boolean enabled);
 
-    void setAvailability(String shopId, boolean enabled);
+    void changeEnabled(Shop.Id id, boolean enabled) throws ShopNotFoundException;
 
     List<Shop> findNearby(String location);
 }
