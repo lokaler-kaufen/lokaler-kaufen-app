@@ -16,7 +16,7 @@ import java.util.List;
 @Component
 @Slf4j
 class DebugPopulateDatabase implements ApplicationRunner {
-    private static final boolean ENABLED = false;
+    private static final boolean ENABLED = true;
 
     private final ShopService shopService;
     private final AdminLoginService adminLoginService;
