@@ -30,3 +30,14 @@ CREATE TABLE shop_login
     email         varchar not null unique,
     password_hash varchar not null
 );
+
+CREATE TABLE reservation
+(
+    id                  uuid primary key,
+    shop_id             uuid                     not null references shop (id),
+    start_time          timestamp with time zone not null,
+    end_time            timestamp with time zone not null,
+    contact_information varchar                  not null,
+    email               varchar                  not null,
+    contact_type        contact_type[]           not null
+);

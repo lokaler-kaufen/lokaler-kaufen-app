@@ -41,7 +41,7 @@ import java.util.UUID;
         @ColumnResult(name = "contact_types", type = StringArrayType.class),
     })
 )
-public class ShopEntity {
+class ShopEntity {
     @Id
     @EqualsAndHashCode.Include
     private UUID id;

@@ -5,6 +5,8 @@ import de.qaware.mercury.mercury.business.shop.ShopListEntry;
 import de.qaware.mercury.mercury.storage.shop.ShopRepository;
 import de.qaware.mercury.mercury.util.Lists;
 import de.qaware.mercury.mercury.util.Null;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
@@ -12,16 +14,12 @@ import org.springframework.stereotype.Component;
 import javax.persistence.EntityManager;
 import java.util.List;
 
-@Component
 @Slf4j
+@Component
+@RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 class JpaShopRepositoryImpl implements ShopRepository {
     private final ShopDataRepository shopDataRepository;
     private final EntityManager entityManager;
-
-    JpaShopRepositoryImpl(ShopDataRepository shopDataRepository, EntityManager entityManager) {
-        this.shopDataRepository = shopDataRepository;
-        this.entityManager = entityManager;
-    }
 
     @Override
     public List<Shop> listAll() {

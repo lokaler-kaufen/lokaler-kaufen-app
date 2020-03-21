@@ -13,7 +13,7 @@ import java.util.UUID;
  * Used as a data holder in the SqlResultSetMapping on {@link ShopEntity}.
  */
 @Value
-public class ShopWithDistance {
+class ShopWithDistance {
     UUID id;
     String name;
     double distance;
