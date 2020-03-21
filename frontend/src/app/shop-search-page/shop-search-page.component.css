@@ -6,7 +6,3 @@ tr:not(.example-expanded-row):hover {
   flex: 0 0 40% !important;
   width: 40% !important;
 }
-
-.mat-header-cell {
-  background: rgba(141, 141, 141, 0.6);
-}
