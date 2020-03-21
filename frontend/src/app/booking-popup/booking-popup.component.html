@@ -2,7 +2,7 @@
 <div mat-dialog-content>
   <p>What's your favorite animal?</p>
   <form [formGroup]="formControl" (ngSubmit)="onSubmit()">
-    <mat-form-field>
+    <mat-form-field class="booking-popup-form-label">
       <mat-label>Wie können wir dich kontaktieren?</mat-label>
       <mat-select formControlName="option">
         <mat-option *ngFor="let option of options" [value]="option">
@@ -11,20 +11,26 @@
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>Deine Telefonnummer</mat-label>
-      <input matInput formControlName="phoneNumber">
-    </mat-form-field>
+    <p>
+      <mat-form-field class="booking-popup-form-label">
+        <mat-label>Deine Telefonnummer</mat-label>
+        <input matInput formControlName="phoneNumber">
+      </mat-form-field>
+    </p>
 
-    <mat-form-field>
-      <mat-label>Dein Name</mat-label>
-      <input matInput formControlName="name">
-    </mat-form-field>
+    <p>
+      <mat-form-field class="booking-popup-form-label">
+        <mat-label>Dein Name</mat-label>
+        <input matInput formControlName="name">
+      </mat-form-field>
+    </p>
 
-    <mat-form-field>
-      <mat-label>Deine E-Mail Adresse</mat-label>
-      <input matInput formControlName="email">
-    </mat-form-field>
+    <p>
+      <mat-form-field class="booking-popup-form-label">
+        <mat-label>Deine E-Mail Adresse</mat-label>
+        <input matInput formControlName="email">
+      </mat-form-field>
+    </p>
 
     <div mat-dialog-actions>
       <button mat-button
