@@ -38,6 +38,10 @@ Start the `main()` method of the `de.qaware.mercury.mercury.MercuryApplication` 
 
 ## How To's
 
+### Get rid of all data in the postgres
+
+Just kill the docker container (pressing Ctrl+C in that terminal), and start it again.
+
 ### Create a DTO which Spring deserializes from JSON
 
 ```java
