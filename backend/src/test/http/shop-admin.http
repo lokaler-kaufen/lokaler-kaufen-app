@@ -8,6 +8,30 @@ Accept: application/json, */*
 
 ###
 
+PUT {{ host }}/api/admin/shop/1c498404-a926-4af7-9082-0fc884f5621c/update
+Accept: application/json, */*
+Content-Type: application/json
+Cookie: mercury-admin=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxZTYwODc1ZS03OWZhLTRmMjgtYTk0Mi05YTBmNmNhZjliNGIiLCJpc3MiOiJtZXJjdXJ5LWFkbWluIn0.MQB0VnSQB01u7ml5oinLQCQin3A61BbHCwuVjkOOegk
+
+{
+    "id": "1c498404-a926-4af7-9082-0fc884f5621c",
+    "name": "Horst's Burgerladen 6",
+    "ownerName": "Horst",
+    "email": "info@example.com",
+    "street": "Münchner Straße 13",
+    "zipCode": "83464",
+    "city": "München",
+    "addressSupplement": "",
+    "contactTypes": [
+        "FACEBOOK_MESSENGER",
+        "WHATSAPP",
+        "VIBER"
+    ],
+    "enabled": true
+}
+
+###
+
 DELETE {{ host }}/api/admin/shop/879cafc3-9016-42e4-ae75-af8d3b8f44d8/delete
 Accept: application/json, */*
 
