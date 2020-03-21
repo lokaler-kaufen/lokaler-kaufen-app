@@ -1,20 +1,20 @@
 <div class="landing-page">
-  <div class="landing-page-content">
-    <div>
-      <p>Hast du Bock deine lokalen Läden zu unterstützen?</p>
-    </div>
 
-    <div>
-      <form class="landing-page-field-label">
-        <mat-form-field class="landing-page-field-label">
-          <mat-label>Deine Postleitzahl</mat-label>
-          <input matInput placeholder="PLZ">
-        </mat-form-field>
-      </form>
-    </div>
+  <header>
+    <h2>Hast Du Bock, Deine lokalen Läden zu unterstützen?</h2>
+  </header>
 
-    <button class="landing-page-button"
+  <form>
+    <mat-form-field class="form-item">
+      <mat-label>Deine Postleitzahl</mat-label>
+      <input matInput placeholder="PLZ">
+    </mat-form-field>
+
+    <button class="form-item"
             routerLink="/shops"
-            mat-button color="primary">Los geht's!</button>
-  </div>
+            mat-raised-button
+            color="primary">Los geht's!
+    </button>
+  </form>
+
 </div>

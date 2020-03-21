@@ -2,21 +2,19 @@
   width: 100%;
   display: flex;
   justify-content: center;
-}
-
-.landing-page-content {
-  dipslay: flex;
   flex-direction: column;
+  align-items: center;
 }
 
-.landing-page-field-label {
-  width: 100%;
+form {
+  width: 75%;
+  max-width: 480px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 }
 
-.landing-page-field-label {
-  width: 100%;
-}
-
-.landing-page-button {
+.form-item {
   width: 100%;
 }
