@@ -1,30 +1,37 @@
 package de.qaware.mercury.mercury.rest.login;
 
+import de.qaware.mercury.mercury.business.admin.Admin;
 import de.qaware.mercury.mercury.business.login.AdminLoginService;
 import de.qaware.mercury.mercury.business.login.AdminToken;
 import de.qaware.mercury.mercury.business.login.LoginException;
+import de.qaware.mercury.mercury.rest.AuthenticationHelper;
 import de.qaware.mercury.mercury.rest.login.dto.LoginDto;
+import de.qaware.mercury.mercury.rest.login.dto.WhoAmIDto;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@RestController
-@RequestMapping(path = "/api/admin/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-class AdminLoginController {
-    public static final String ADMIN_COOKIE_NAME = "mercury-admin";
+import static de.qaware.mercury.mercury.rest.AuthenticationHelper.ADMIN_COOKIE_NAME;
 
+@RestController
+@RequestMapping(path = "/api/admin/login", produces = MediaType.APPLICATION_JSON_VALUE)
+class AdminLoginController {
+    private final AuthenticationHelper authenticationHelper;
     private final AdminLoginService adminLoginService;
 
-    AdminLoginController(AdminLoginService adminLoginService) {
+    AdminLoginController(AuthenticationHelper authenticationHelper, AdminLoginService adminLoginService) {
+        this.authenticationHelper = authenticationHelper;
         this.adminLoginService = adminLoginService;
     }
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     void login(@RequestBody LoginDto request, HttpServletResponse response) throws LoginException {
         AdminToken token = adminLoginService.login(request.getEmail(), request.getPassword());
 
@@ -33,5 +40,11 @@ class AdminLoginController {
         // TODO MKA: set secure = true
 
         response.addCookie(cookie);
+    }
+
+    @GetMapping
+    WhoAmIDto whoami(HttpServletRequest request) {
+        Admin admin = authenticationHelper.authenticateAdmin(request);
+        return new WhoAmIDto(admin.getEmail());
     }
 }

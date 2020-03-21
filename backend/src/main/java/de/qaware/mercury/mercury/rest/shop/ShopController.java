@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "/api/shop", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/shop", produces = MediaType.APPLICATION_JSON_VALUE)
 class ShopController {
     private final ShopService shopService;
 
@@ -20,7 +20,7 @@ class ShopController {
         this.shopService = shopService;
     }
 
-    @PostMapping("/create")
+    @PostMapping(path = "/create", consumes = MediaType.APPLICATION_JSON_VALUE)
     ShopCreateDto createShop(@RequestBody ShopCreateDto shop) {
         return ShopCreateDto.of(shopService.create(
             shop.getName(),

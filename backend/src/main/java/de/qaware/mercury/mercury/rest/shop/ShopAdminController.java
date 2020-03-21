@@ -48,11 +48,8 @@ class ShopAdminController {
 
     @ExceptionHandler(ShopNotFoundException.class)
     ResponseEntity<ErrorDto> handleShopNotFoundException(ShopNotFoundException exception) {
-        String exceptionId = uuidFactory.create().toString();
-        log.debug("Handled ShopNotFoundException with exception id {}", exceptionId);
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDto(
-            exceptionId, "SHOP_NOT_FOUND", exception.getMessage()
-        ));
+        ErrorDto errorDto = ErrorDto.of(uuidFactory, "SHOP_NOT_FOUND", exception.getMessage());
+        log.debug("Handled ShopNotFoundException with exception id {}", errorDto.getId());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorDto);
     }
 }
