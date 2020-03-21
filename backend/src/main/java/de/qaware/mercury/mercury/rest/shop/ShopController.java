@@ -36,7 +36,7 @@ class ShopController {
         shopService.sendCreateLink(request.getEmail());
     }
 
-    @PostMapping(path = "/create", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/", consumes = MediaType.APPLICATION_JSON_VALUE)
     ShopCreateDto createShop(@RequestBody ShopCreateDto shop, @RequestParam String token) {
         // The token is taken from the link which the user got with email
         // It contains the email address, and is used to verify that the user really has access to this email address
@@ -59,17 +59,15 @@ class ShopController {
         ));
     }
 
-    @PutMapping(path = "/update", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(path = "/", consumes = MediaType.APPLICATION_JSON_VALUE)
     ShopCreateDto updateShop(@RequestBody ShopCreateDto shop, HttpServletRequest request) {
-        // The token is taken from the link which the user got with email
-        // It contains the email address, and is used to verify that the user really has access to this email address
         Shop authenticatedShop = authenticationHelper.authenticateShop(request);
 
         return ShopCreateDto.of(shopService.update(
             authenticatedShop.getId(),
             shop.getName(),
             shop.getOwnerName(),
-            authenticatedShop.getEmail(), // Email is not taken from request body, but from the token which was in the email link
+            authenticatedShop.getEmail(), // Not allowed to change email address
             shop.getStreet(),
             shop.getZipCode(),
             shop.getCity(),

@@ -1,4 +1,4 @@
-POST {{ host }}/api/shop/create?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmb29AYmFyLm9yZyIsImlzcyI6Im1lcmN1cnktc2hvcC1jcmVhdGlvbiJ9.WaUsDR89nzQtgqxXhfLZqazjf0PvywMzajQFZfKW9IQ
+POST {{ host }}/api/shop?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmb29AYmFyLm9yZyIsImlzcyI6Im1lcmN1cnktc2hvcC1jcmVhdGlvbiJ9.WaUsDR89nzQtgqxXhfLZqazjf0PvywMzajQFZfKW9IQ
 Accept: application/json, */*
 Content-Type: application/json
 
@@ -19,7 +19,7 @@ Content-Type: application/json
 
 ### Update shop
 
-PUT {{ host }}/api/shop/update
+PUT {{ host }}/api/shop
 Accept: application/json, */*
 Content-Type: application/json
 Cookie: mercury-shop=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMWY0YTdlNi1mZDg2LTQ1NTItYWVhMS0wYWZiNDdhMThiYjQiLCJzaG9wIjoiOWQ4Zjg3OTItMDRkMy00M2FhLWI4YTQtOTNmZGUxMTgyNTllIiwiaXNzIjoibWVyY3VyeS1zaG9wIn0.IsMSv6hkJTU6caSCvMlDgNKJTR2AC-JWUzXztdpkdzs
