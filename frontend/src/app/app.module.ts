@@ -27,6 +27,7 @@ import {MatSortModule} from "@angular/material/sort";
 import {BookingPopupComponent} from './booking-popup/booking-popup.component';
 import {MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule} from '@angular/material/dialog';
 import {ErrorStateMatcher, ShowOnDirtyErrorStateMatcher} from '@angular/material/core';
+import { RegisterBusinessPopupComponent } from './register-business-popup/register-business-popup.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import {ErrorStateMatcher, ShowOnDirtyErrorStateMatcher} from '@angular/material
     ImprintPageComponent,
     AppHeaderComponent,
     AppFooterComponent,
-    BookingPopupComponent
+    BookingPopupComponent,
+    RegisterBusinessPopupComponent
   ],
   imports: [
     BrowserModule,

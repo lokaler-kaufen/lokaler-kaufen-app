@@ -6,11 +6,25 @@ Content-Type: application/json
     "id": "",
     "name": "Horst's Burgerladen",
     "ownerName": "Horst",
+    "email": "info@example.com",
     "street": "Münchner Straße 13",
     "zipCode": "83464",
-    "city": "MÜnchen",
-    "addressSupplement": ""
+    "city": "München",
+    "addressSupplement": "",
+    "contactTypes": [
+        "FACEBOOK_MESSENGER",
+        "WHATSAPP"
+    ]
+}
+
+### Send creation link
+
+POST {{ host }}/api/shop/send-create-link
+Accept: application/json
+Content-Type: application/json
+
+{
+    "email": "foo@localhost"
 }
 
 ###
-

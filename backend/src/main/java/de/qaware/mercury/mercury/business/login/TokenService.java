@@ -11,4 +11,8 @@ public interface TokenService {
     ShopToken createShopToken(ShopLogin.Id shopLoginId, Shop.Id shopId);
 
     ShopLogin.Id verifyShopToken(ShopToken token) throws LoginException;
+
+    ShopCreationToken createShopCreationToken(String email);
+
+    String verifyShopCreationToken(ShopCreationToken token) throws LoginException;
 }

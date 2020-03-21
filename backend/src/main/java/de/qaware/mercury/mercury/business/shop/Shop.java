@@ -1,9 +1,11 @@
 package de.qaware.mercury.mercury.business.shop;
 
 import de.qaware.mercury.mercury.business.location.GeoLocation;
+import de.qaware.mercury.mercury.storage.shop.ContactType;
 import lombok.Value;
 import lombok.With;
 
+import java.util.List;
 import java.util.UUID;
 
 @Value
@@ -11,10 +13,12 @@ public class Shop {
     Id id;
     String name;
     String ownerName;
+    String email;
     String street;
     String zipCode;
     String city;
     String addressSupplement;
+    List<ContactType> contactTypes;
     @With
     boolean enabled;
     GeoLocation geoLocation;

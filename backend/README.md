@@ -6,6 +6,12 @@ Start with looking at the `de.qaware.mercury.mercury.rest.shop.ShopController` c
 
 ## Run it
 
+First, start a local postgres database. Easiest way to do this is with docker:
+
+```
+docker run -e POSTGRES_PASSWORD=password -p 5432:5432 postgres:11
+```
+
 ### With gradle
 
 ```shell script
@@ -32,6 +38,10 @@ Start the `main()` method of the `de.qaware.mercury.mercury.MercuryApplication` 
 
 ## How To's
 
+### Get rid of all data in the postgres
+
+Just kill the docker container (pressing Ctrl+C in that terminal), and start it again.
+
 ### Create a DTO which Spring deserializes from JSON
 
 ```java
@@ -39,8 +49,8 @@ Start the `main()` method of the `de.qaware.mercury.mercury.MercuryApplication` 
 @NoArgsConstructor
 @AllArgsConstructor
 public class LoginDto {
-    String email;
-    String password;
+    private String email;
+    private String password;
 }
 ```
 

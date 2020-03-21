@@ -1,0 +1,11 @@
+Hallo,
+
+wir freuen uns, dass du deinen Laden bei uns registrieren möchtest! Klicke dazu einfach auf diesen Link:
+
+{{ link }}
+
+Falls das nicht funktioniert, kopiere den Link bitte in deinen Browser.
+
+Viele Grüße,
+
+dein lokaler.kaufen Team

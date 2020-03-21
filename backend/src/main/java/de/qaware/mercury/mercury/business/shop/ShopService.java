@@ -1,5 +1,6 @@
 package de.qaware.mercury.mercury.business.shop;
 
+import de.qaware.mercury.mercury.storage.shop.ContactType;
 import org.springframework.lang.Nullable;
 
 import java.util.List;
@@ -7,7 +8,7 @@ import java.util.List;
 public interface ShopService {
     List<Shop> listAll();
 
-    Shop create(String name, String ownerName, String street, String zipCode, String city, String addressSupplement);
+    Shop create(String name, String ownerName, String email, String street, String zipCode, String city, String addressSupplement, List<ContactType> contactTypes);
 
     void changeEnabled(Shop.Id id, boolean enabled) throws ShopNotFoundException;
 
@@ -17,4 +18,11 @@ public interface ShopService {
 
     @Nullable
     Shop findById(Shop.Id id);
+
+    /**
+     * Sends the email with the creation link for a new shop to the given email address
+     *
+     * @param email email address
+     */
+    void sendCreateLink(String email);
 }
