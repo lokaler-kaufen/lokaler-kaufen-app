@@ -2,7 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from "@angular/material/table";
 import {ShopOverviewDto} from "./shop-overview-dto";
 import {MatSort} from "@angular/material/sort";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
 
 @Component({
@@ -24,7 +24,7 @@ export class ShopSearchPageComponent implements OnInit {
     new ShopOverviewDto('def-123', 'Flos Kaffeeladen', 0.7, ['phone', 'facetime']),
     new ShopOverviewDto('ghi-123', 'Vronis Kleiderladen', 0.0, ['phone', 'facetime', 'whatsapp'])];
 
-  constructor(private route: ActivatedRoute, private client: HttpClient) {
+  constructor(private route: ActivatedRoute, private router: Router, private client: HttpClient) {
   }
 
   ngOnInit(): void {
@@ -46,8 +46,8 @@ export class ShopSearchPageComponent implements OnInit {
   }
 
   showDetailPage(row: any) {
-    console.log('Click on: ' + row.name);
-    console.log('Includes: ' + row.supportedContactTypes);
+    console.log('Row ID: ' + row.id);
+    this.router.navigate(['/shops/' + row.id]);
   }
 
   // Replace '_' with ' ' and capitalize first letter
