@@ -1,6 +1,20 @@
-# wir-vs-virus
+![lokaler.einkaufen](./lokaler.einkaufen.png "lokaler.einkaufen")
+
+Vielleicht habt ihr von dem [WirVSVirus Hackathon](https://wirvsvirushackathon.org) gehört, den die Bundesregierung gerade veranstaltet. 
+Dabei versuchen Freiwillige Helfer unterschiedliche Probleme mit Software zu lösen, die wir gerade wegen der Corona-Pandemie haben. 
+Eines der von der Regierung aufgestellten Themen war: Kleine Läden und lokalen Handel unterstützen. 
+Daraus ist bei uns die Idee von [lokaler.kaufen](http://lokaler.kaufen) entstanden um lokale Geschäfte mit den Kunden per 
+Videotelefonie in Kontakt zu bringen. Ihr macht einfach die gleiche Beratung wie sonst im Laden - 
+nur eben per Smartphone. Das ist für euch und eure Kunden kostenlos - wir bringen unsere Arbeit 
+für den wohltätigen Zweck ein. 
+
+Hier findet ihr unseren [Projekt-Flyer](https://docs.google.com/document/d/1yx54W_QEtFdauMYrpXMj0WsYILMoMqHO82LjrDRLSvA/edit?usp=sharing).
+
+... aber nun zum Code:
 
 ## Frontend
+
+[Backend documentation](frontend/README.md)
 
 ## Backend
 
