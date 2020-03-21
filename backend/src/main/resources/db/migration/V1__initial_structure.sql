@@ -39,5 +39,5 @@ CREATE TABLE reservation
     end_time            timestamp with time zone not null,
     contact_information varchar                  not null,
     email               varchar                  not null,
-    contact_type        contact_type[]           not null
+    contact_type contact_type not null
 );
