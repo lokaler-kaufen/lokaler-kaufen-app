@@ -70,7 +70,7 @@ class ShopController {
         return ShopCreateDto.of(shopService.create(new ShopCreation(
             email, request.getOwnerName(), request.getName(), request.getStreet(), request.getZipCode(), request.getCity(),
             request.getAddressSupplement(), request.getDetails(), request.getWebsite(), request.getPassword(),
-            Maps.mapValues(request.getContactTypes(), ContactType::valueOf),
+            Maps.mapKeys(request.getContactTypes(), ContactType::valueOf),
             Slots.none(request.getSlots().getTimePerSlot(), request.getSlots().getTimeBetweenSlots())
         )));
     }
