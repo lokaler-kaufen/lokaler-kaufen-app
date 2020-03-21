@@ -3,7 +3,7 @@ import {MatTableDataSource} from "@angular/material/table";
 import {ShopOverviewDto} from "./shop-overview-dto";
 import {MatSort} from "@angular/material/sort";
 import {ActivatedRoute, Router} from "@angular/router";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {ContactTypes} from "../shared/contact-types";
 
 @Component({
@@ -29,11 +29,16 @@ export class ShopSearchPageComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       console.log('Backend call for location: ' + params.location);
-      this.client.get<ShopOverviewDto[]>('/api/shop/find?location=' + params.location).subscribe(
+      const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
+      this.client.get('/api/shop/find?location=' + params.location, {headers: headers}).subscribe(
         response => {
-          this.dataSource = new MatTableDataSource<ShopOverviewDto>(response);
-          this.sort.sort({id: 'distance', start: 'asc', disableClear: false});
-          this.dataSource.sort = this.sort;
+          if (response['shops'].length > 0) {
+            this.dataSource = new MatTableDataSource<ShopOverviewDto>(response['shops']);
+            this.sort.sort({id: 'distance', start: 'asc', disableClear: false});
+            this.dataSource.sort = this.sort;
+          } else {
+            console.log('Keine Shops gefunden.');
+          }
         },
         error => {
           console.log('Error requesting shop overview: ' + error.status + ', ' + error.error.message);
