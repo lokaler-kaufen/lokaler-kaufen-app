@@ -1,4 +1,4 @@
-package de.qaware.mercury.mercury.storage.shop;
+package de.qaware.mercury.mercury.business.shop;
 
 public enum ContactType {
 

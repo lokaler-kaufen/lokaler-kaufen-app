@@ -2,8 +2,8 @@ package de.qaware.mercury.mercury.storage.shop.impl;
 
 import com.vladmihalcea.hibernate.type.array.ListArrayType;
 import de.qaware.mercury.mercury.business.location.GeoLocation;
+import de.qaware.mercury.mercury.business.shop.ContactType;
 import de.qaware.mercury.mercury.business.shop.Shop;
-import de.qaware.mercury.mercury.storage.shop.ContactType;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

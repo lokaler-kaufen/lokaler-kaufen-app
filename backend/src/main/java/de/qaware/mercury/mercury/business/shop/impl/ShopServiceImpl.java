@@ -3,12 +3,12 @@ package de.qaware.mercury.mercury.business.shop.impl;
 import de.qaware.mercury.mercury.business.email.EmailService;
 import de.qaware.mercury.mercury.business.location.GeoLocation;
 import de.qaware.mercury.mercury.business.location.GeoLocationLookup;
+import de.qaware.mercury.mercury.business.shop.ContactType;
 import de.qaware.mercury.mercury.business.shop.Shop;
 import de.qaware.mercury.mercury.business.shop.ShopNotFoundException;
 import de.qaware.mercury.mercury.business.shop.ShopService;
 import de.qaware.mercury.mercury.business.shop.ShopWithDistance;
 import de.qaware.mercury.mercury.business.uuid.UUIDFactory;
-import de.qaware.mercury.mercury.storage.shop.ContactType;
 import de.qaware.mercury.mercury.storage.shop.ShopRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.Nullable;
@@ -67,6 +67,15 @@ class ShopServiceImpl implements ShopService {
         Shop shop = new Shop(Shop.Id.of(id), name, ownerName, email, street, zipCode, city, addressSupplement, contactTypes, false, geoLocation);
 
         shopRepository.insert(shop);
+        return shop;
+    }
+
+    @Override
+    public Shop update(Shop.Id id, String name, String ownerName, String email, String street, String zipCode, String city, String addressSupplement, List<ContactType> contactTypes, boolean enabled) {
+        GeoLocation geoLocation = geoLocationLookup.fromZipCode(zipCode);
+        Shop shop = new Shop(id, name, ownerName, email, street, zipCode, city, addressSupplement, contactTypes, enabled, geoLocation);
+
+        shopRepository.update(shop);
         return shop;
     }
 

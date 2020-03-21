@@ -1,7 +1,7 @@
 package de.qaware.mercury.mercury.rest.shop.dto;
 
+import de.qaware.mercury.mercury.business.shop.ContactType;
 import de.qaware.mercury.mercury.business.shop.Shop;
-import de.qaware.mercury.mercury.storage.shop.ContactType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -1,7 +1,6 @@
 package de.qaware.mercury.mercury.business.shop;
 
 import de.qaware.mercury.mercury.business.location.GeoLocation;
-import de.qaware.mercury.mercury.storage.shop.ContactType;
 import lombok.Value;
 import lombok.With;
 
