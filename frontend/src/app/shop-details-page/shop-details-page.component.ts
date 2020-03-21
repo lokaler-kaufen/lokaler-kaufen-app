@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
 import {ActivatedRoute} from '@angular/router';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {
@@ -8,6 +7,11 @@ import {
   BookingPopupOutcome,
   BookingPopupResult
 } from '../booking-popup/booking-popup.component';
+import {ShopControllerService} from "../data/client";
+import {
+  BookingSuccessData,
+  BookingSuccessPopupComponent
+} from "../booking-success-popup/booking-success-popup.component";
 
 class ShopDetails {
   id: string;
@@ -39,7 +43,7 @@ export class ShopDetailsPageComponent implements OnInit {
   details: ShopDetails;
 
 
-  constructor(private httpClient: HttpClient,
+  constructor(private shopControllerService: ShopControllerService,
               private activatedRoute: ActivatedRoute,
               private matDialog: MatDialog) {
   }
@@ -106,7 +110,7 @@ export class ShopDetailsPageComponent implements OnInit {
       ],
       supportedContactTypes: ['WHATSAPP', 'PHONE']
     } as ShopDetails;
-    this.httpClient.get('/api/shop/' + this.shopId)
+    this.shopControllerService.getDetailsUsingGET(this.shopId)
       .subscribe((shopDetails: ShopDetails) => {
         this.details = shopDetails;
       });
@@ -123,8 +127,32 @@ export class ShopDetailsPageComponent implements OnInit {
       .afterClosed()
       .subscribe((data: BookingPopupResult) => {
         if (data.outcome === BookingPopupOutcome.BOOK) {
-          // TODO http call to the frontend api goes here
+
           console.warn('NOT IMPLEMENTED', data, id);
+          const registerSlotDto = {
+            shop: this.shopId,
+            slotId: id,
+            contactType: data.option,
+            contactNumber: data.phoneNumber,
+            customerName: data.name,
+            email: data.email
+          };
+          // TODO http call to the frontend api goes here
+
+          const successConfig = new MatDialogConfig();
+          successConfig.autoFocus = true;
+          successConfig.width = '100%';
+          successConfig.data = {
+            owner: this.details.name,
+            contactNumber: data.phoneNumber,
+            contactType: data.option,
+            start: this.details.slots.find(s => s.id === id).start,
+            end: this.details.slots.find(s => s.id === id).end,
+          } as BookingSuccessData;
+          this.shopControllerService.getDetailsUsingGET(this.shopId)
+            .toPromise()
+            .then(value => this.matDialog.open(BookingSuccessPopupComponent, successConfig),
+                value => this.matDialog.open(BookingSuccessPopupComponent, successConfig));
         }
       });
   }
