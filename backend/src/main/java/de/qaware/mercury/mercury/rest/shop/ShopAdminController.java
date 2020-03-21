@@ -1,14 +1,19 @@
 package de.qaware.mercury.mercury.rest.shop;
 
 import de.qaware.mercury.mercury.business.admin.Admin;
+import de.qaware.mercury.mercury.business.shop.ContactType;
 import de.qaware.mercury.mercury.business.shop.Shop;
 import de.qaware.mercury.mercury.business.shop.ShopNotFoundException;
 import de.qaware.mercury.mercury.business.shop.ShopService;
+import de.qaware.mercury.mercury.business.shop.ShopUpdate;
+import de.qaware.mercury.mercury.business.shop.Slots;
 import de.qaware.mercury.mercury.business.uuid.UUIDFactory;
 import de.qaware.mercury.mercury.rest.ErrorDto;
 import de.qaware.mercury.mercury.rest.plumbing.authentication.AuthenticationHelper;
 import de.qaware.mercury.mercury.rest.shop.dto.ShopAdminDto;
 import de.qaware.mercury.mercury.rest.shop.dto.ShopsAdminDto;
+import de.qaware.mercury.mercury.rest.shop.dto.UpdateShopRequestDto;
+import de.qaware.mercury.mercury.util.Maps;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -53,23 +58,29 @@ class ShopAdminController {
     }
 
     @PutMapping(path = "/{id}")
-    ShopAdminDto update(@PathVariable String id, @RequestBody ShopAdminDto shop, HttpServletRequest request) {
-        Admin admin = authenticationHelper.authenticateAdmin(request);
+    ShopAdminDto update(@PathVariable String id, @RequestBody UpdateShopRequestDto request, HttpServletRequest servletRequest) throws ShopNotFoundException {
+        Admin admin = authenticationHelper.authenticateAdmin(servletRequest);
         Shop.Id shopId = Shop.Id.parse(id);
 
-        log.info("Admin {} updated shop {}", admin.getEmail(), shopId);
-        return ShopAdminDto.of(shopService.update(
-            shopId,
-            shop.getName(),
-            shop.getOwnerName(),
-            shop.getEmail(), // Email is not taken from request body, but from the token which was in the email link
-            shop.getStreet(),
-            shop.getZipCode(),
-            shop.getCity(),
-            shop.getAddressSupplement(),
-            shop.getContactTypes(),
-            shop.isEnabled()
-        ));
+        Shop shop = shopService.findById(shopId);
+        if (shop == null) {
+            throw new ShopNotFoundException(shopId);
+        }
+
+        log.info("Admin {} updated shop '{}'", admin.getEmail(), shop.getName());
+        return ShopAdminDto.of(shopService.update(shop, new ShopUpdate(
+            request.getName(),
+            request.getOwnerName(),
+            request.getStreet(),
+            request.getZipCode(),
+            request.getCity(),
+            request.getAddressSupplement(),
+            request.getDetails(),
+            request.getWebsite(),
+            Maps.mapKeys(request.getContactTypes(), ContactType::valueOf),
+            // TODO MKA: Slots
+            Slots.none(request.getSlots().getTimePerSlot(), request.getSlots().getTimeBetweenSlots())
+        )));
     }
 
     @DeleteMapping(path = "/{id}")

@@ -8,14 +8,15 @@ import de.qaware.mercury.mercury.business.shop.Shop;
 import de.qaware.mercury.mercury.business.shop.ShopCreation;
 import de.qaware.mercury.mercury.business.shop.ShopNotFoundException;
 import de.qaware.mercury.mercury.business.shop.ShopService;
+import de.qaware.mercury.mercury.business.shop.ShopUpdate;
 import de.qaware.mercury.mercury.business.shop.Slots;
 import de.qaware.mercury.mercury.rest.plumbing.authentication.AuthenticationHelper;
 import de.qaware.mercury.mercury.rest.plumbing.authentication.InvalidCredentialsRestException;
 import de.qaware.mercury.mercury.rest.shop.dto.CreateShopRequestDto;
 import de.qaware.mercury.mercury.rest.shop.dto.SendCreateLinkDto;
-import de.qaware.mercury.mercury.rest.shop.dto.ShopCreateDto;
 import de.qaware.mercury.mercury.rest.shop.dto.ShopDetailDto;
 import de.qaware.mercury.mercury.rest.shop.dto.ShopListDto;
+import de.qaware.mercury.mercury.rest.shop.dto.UpdateShopRequestDto;
 import de.qaware.mercury.mercury.util.Maps;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -71,26 +72,22 @@ class ShopController {
             email, request.getOwnerName(), request.getName(), request.getStreet(), request.getZipCode(), request.getCity(),
             request.getAddressSupplement(), request.getDetails(), request.getWebsite(), request.getPassword(),
             Maps.mapKeys(request.getContactTypes(), ContactType::valueOf),
+            // TODO MKA: Slots
             Slots.none(request.getSlots().getTimePerSlot(), request.getSlots().getTimeBetweenSlots())
         )));
     }
 
     @PutMapping(path = "/", consumes = MediaType.APPLICATION_JSON_VALUE)
-    ShopCreateDto updateShop(@RequestBody ShopCreateDto shop, HttpServletRequest request) {
-        Shop authenticatedShop = authenticationHelper.authenticateShop(request);
+    ShopDetailDto updateShop(@RequestBody UpdateShopRequestDto request, HttpServletRequest servletRequest) {
+        Shop shop = authenticationHelper.authenticateShop(servletRequest);
 
-        return ShopCreateDto.of(shopService.update(
-            authenticatedShop.getId(),
-            shop.getName(),
-            shop.getOwnerName(),
-            authenticatedShop.getEmail(), // Not allowed to change email address
-            shop.getStreet(),
-            shop.getZipCode(),
-            shop.getCity(),
-            shop.getAddressSupplement(),
-            shop.getContactTypes(),
-            authenticatedShop.isEnabled()
-        ));
+        return ShopDetailDto.of(shopService.update(shop, new ShopUpdate(
+            request.getName(), request.getOwnerName(), request.getStreet(), request.getZipCode(), request.getCity(),
+            request.getAddressSupplement(), request.getDetails(), request.getWebsite(),
+            Maps.mapKeys(request.getContactTypes(), ContactType::valueOf),
+            // TODO MKA: Slots
+            Slots.none(request.getSlots().getTimePerSlot(), request.getSlots().getTimeBetweenSlots())
+        )));
     }
 
     @GetMapping("nearby")

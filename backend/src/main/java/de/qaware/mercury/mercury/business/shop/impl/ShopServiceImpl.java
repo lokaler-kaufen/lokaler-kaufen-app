@@ -4,12 +4,12 @@ import de.qaware.mercury.mercury.business.email.EmailService;
 import de.qaware.mercury.mercury.business.location.GeoLocation;
 import de.qaware.mercury.mercury.business.location.GeoLocationLookup;
 import de.qaware.mercury.mercury.business.login.ShopLoginService;
-import de.qaware.mercury.mercury.business.shop.ContactType;
 import de.qaware.mercury.mercury.business.shop.Shop;
 import de.qaware.mercury.mercury.business.shop.ShopCreation;
 import de.qaware.mercury.mercury.business.shop.ShopListEntry;
 import de.qaware.mercury.mercury.business.shop.ShopNotFoundException;
 import de.qaware.mercury.mercury.business.shop.ShopService;
+import de.qaware.mercury.mercury.business.shop.ShopUpdate;
 import de.qaware.mercury.mercury.business.uuid.UUIDFactory;
 import de.qaware.mercury.mercury.storage.shop.ShopRepository;
 import lombok.AccessLevel;
@@ -84,11 +84,16 @@ class ShopServiceImpl implements ShopService {
 
     @Override
     @Transactional
-    public Shop update(Shop.Id id, String name, String ownerName, String email, String street, String zipCode, String city, String addressSupplement, List<ContactType> contactTypes, boolean enabled) {
-        GeoLocation geoLocation = geoLocationLookup.fromZipCode(zipCode);
-        Shop shop = new Shop(id, name, ownerName, email, street, zipCode, city, addressSupplement, contactTypes, enabled, geoLocation);
+    public Shop update(Shop shop, ShopUpdate update) {
+        GeoLocation geoLocation = geoLocationLookup.fromZipCode(update.getZipCode());
+        Shop newShop = new Shop(
+            shop.getId(), update.getName(), update.getOwnerName(), shop.getName(), update.getStreet(), update.getZipCode(),
+            // TODO MKA: Slots, contact types
+            update.getCity(), update.getAddressSupplement(), new ArrayList<>(update.getContactTypes().keySet()),
+            shop.isEnabled(), geoLocation
+        );
 
-        shopRepository.update(shop);
+        shopRepository.update(newShop);
         return shop;
     }
 

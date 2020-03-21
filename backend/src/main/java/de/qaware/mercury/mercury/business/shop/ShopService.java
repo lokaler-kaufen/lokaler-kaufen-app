@@ -9,7 +9,7 @@ public interface ShopService {
 
     Shop create(ShopCreation creation);
 
-    Shop update(Shop.Id id, String name, String ownerName, String email, String street, String zipCode, String city, String addressSupplement, List<ContactType> contactTypes, boolean enabled);
+    Shop update(Shop shop, ShopUpdate update);
 
     void changeEnabled(Shop.Id id, boolean enabled) throws ShopNotFoundException;
 
