@@ -9,3 +9,9 @@
 a {
   margin: 0 1em;
 }
+
+.link {
+  text-decoration: underline;
+  color: -webkit-link;
+  cursor: pointer;
+}
