@@ -2,7 +2,12 @@ import {Component, OnInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {ActivatedRoute} from '@angular/router';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
-import {BookingPopupComponent, BookingPopupOutcome, BookingPopupResult} from '../booking-popup/booking-popup.component';
+import {
+  BookingDialogData,
+  BookingPopupComponent,
+  BookingPopupOutcome,
+  BookingPopupResult
+} from '../booking-popup/booking-popup.component';
 
 class ShopDetails {
   id: string;
@@ -13,7 +18,8 @@ class ShopDetails {
   zipcode: string;
   country: string;
   website: string;
-  slots: Array<Slot>;
+  slots: Slot[];
+  supportedContactTypes: string[];
 }
 
 class Slot {
@@ -97,7 +103,8 @@ export class ShopDetailsPageComponent implements OnInit {
           end: '16:00',
           available: true
         }
-      ]
+      ],
+      supportedContactTypes: ['WHATSAPP', 'PHONE']
     } as ShopDetails;
     this.httpClient.get('/api/shop/' + this.shopId)
       .subscribe((shopDetails: ShopDetails) => {
@@ -109,7 +116,9 @@ export class ShopDetailsPageComponent implements OnInit {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
     dialogConfig.width = '100%';
-
+    dialogConfig.data = {
+      supportedContactTypes: this.details.supportedContactTypes
+    } as BookingDialogData;
     this.matDialog.open(BookingPopupComponent, dialogConfig)
       .afterClosed()
       .subscribe((data: BookingPopupResult) => {

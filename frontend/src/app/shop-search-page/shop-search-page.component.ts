@@ -1,10 +1,10 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {MatTableDataSource} from "@angular/material/table";
-import {ShopOverviewDto} from "./shop-overview-dto";
-import {MatSort} from "@angular/material/sort";
-import {ActivatedRoute, Router} from "@angular/router";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {ContactTypes} from "../shared/contact-types";
+import {MatTableDataSource} from '@angular/material/table';
+import {ShopOverviewDto} from './shop-overview-dto';
+import {MatSort} from '@angular/material/sort';
+import {ActivatedRoute, Router} from '@angular/router';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {ContactTypes} from '../shared/contact-types';
 
 @Component({
   selector: 'shop-search-page',
@@ -19,9 +19,9 @@ export class ShopSearchPageComponent implements OnInit {
   displayedColumns: string[] = ['name', 'distance', 'supportedContactTypes'];
 
   // MOCK STUFF
-  shopOverviews = [new ShopOverviewDto('abc-123', 'Moes Whiskyladen', 5.7, ['facetime', 'whatsapp']),
-    new ShopOverviewDto('def-123', 'Flos Kaffeeladen', 0.7, ['phone', 'facetime']),
-    new ShopOverviewDto('ghi-123', 'Vronis Kleiderladen', 0.0, ['phone', 'facetime', 'whatsapp'])];
+  shopOverviews = [new ShopOverviewDto('abc-123', 'Moes Whiskyladen', 5.7, ['FACETIME', 'WHATSAPP']),
+    new ShopOverviewDto('def-123', 'Flos Kaffeeladen', 0.7, ['PHONE', 'FACETIME']),
+    new ShopOverviewDto('ghi-123', 'Vronis Kleiderladen', 0.0, ['PHONE', 'FACETIME', 'WHATSAPP'])];
 
   constructor(private route: ActivatedRoute, private router: Router, private client: HttpClient) {
   }

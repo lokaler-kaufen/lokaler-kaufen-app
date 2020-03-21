@@ -5,8 +5,8 @@
     <mat-form-field class="booking-popup-form-label">
       <mat-label>Wie können wir dich kontaktieren?</mat-label>
       <mat-select formControlName="option">
-        <mat-option *ngFor="let option of options" [value]="option">
-          {{option}}
+        <mat-option *ngFor="let option of data.supportedContactTypes" [value]="option">
+          <mat-icon svgIcon="{{option}}"></mat-icon>{{contactTypes.getDisplayName(option)}}
         </mat-option>
       </mat-select>
     </mat-form-field>

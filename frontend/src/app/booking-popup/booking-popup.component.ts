@@ -1,8 +1,10 @@
 import {Component, Inject, Input, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {ContactTypes} from '../shared/contact-types';
 
 export interface BookingDialogData {
+  supportedContactTypes: string[];
 }
 
 export interface BookingPopupResult {
@@ -23,7 +25,7 @@ export enum BookingPopupOutcome {
   styleUrls: ['./booking-popup.component.css']
 })
 export class BookingPopupComponent implements OnInit {
-
+  contactTypes = ContactTypes;
   formControl = new FormGroup({
     option: new FormControl('', [Validators.required]),
     phoneNumber: new FormControl('', [Validators.required]),
@@ -33,11 +35,6 @@ export class BookingPopupComponent implements OnInit {
       Validators.email]
     )
   });
-
-  options: string[] = [
-    "WhatsApp",
-    "Facetime"
-  ];
 
   constructor(public dialogRef: MatDialogRef<BookingPopupComponent>,
               @Inject(MAT_DIALOG_DATA) public data: BookingDialogData) {
