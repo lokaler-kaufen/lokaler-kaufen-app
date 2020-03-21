@@ -46,8 +46,8 @@ class ShopController {
         return ShopCreateDto.of(shopService.create(
             shop.getName(),
             shop.getOwnerName(),
-            shop.getEmail(),
             email, // Email is not taken from request body, but from the token which was in the email link
+            shop.getStreet(),
             shop.getZipCode(),
             shop.getCity(),
             shop.getAddressSupplement(),
