@@ -29,6 +29,7 @@ import {MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule} from '@angular/material/dia
 import {ErrorStateMatcher, ShowOnDirtyErrorStateMatcher} from '@angular/material/core';
 import {RegisterBusinessPopupComponent} from './register-business-popup/register-business-popup.component';
 import {MatStepperModule} from "@angular/material/stepper";
+import {ApiModule} from "./data/client";
 
 @NgModule({
   declarations: [
@@ -47,6 +48,8 @@ import {MatStepperModule} from "@angular/material/stepper";
     RegisterBusinessPopupComponent
   ],
   imports: [
+    ApiModule,
+    HttpClientModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
