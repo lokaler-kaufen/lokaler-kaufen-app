@@ -18,6 +18,8 @@ import { AppFooterComponent } from './app-footer/app-footer.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { BookingPopupComponent } from './booking-popup/booking-popup.component';
+import { MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -31,7 +33,8 @@ import { MatInputModule } from '@angular/material/input';
     PrivacyPageComponent,
     ImprintPageComponent,
     AppHeaderComponent,
-    AppFooterComponent
+    AppFooterComponent,
+    BookingPopupComponent
   ],
   imports: [
     BrowserModule,
@@ -41,9 +44,12 @@ import { MatInputModule } from '@angular/material/input';
     MatCardModule,
     MatButtonModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatDialogModule
   ],
-  providers: [],
+  providers: [
+    {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
