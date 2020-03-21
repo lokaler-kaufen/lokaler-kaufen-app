@@ -1,4 +1,4 @@
-![lokaler.einkaufen](./lokaler.einkaufen.png "lokaler.einkaufen")
+![lokaler.einkaufen](https://raw.githubusercontent.com/qaware/wir-vs-virus/master/lokaler.kaufen.png)
 
 Vielleicht habt ihr von dem [WirVSVirus Hackathon](https://wirvsvirushackathon.org) gehört, den die Bundesregierung gerade veranstaltet. 
 Dabei versuchen Freiwillige Helfer unterschiedliche Probleme mit Software zu lösen, die wir gerade wegen der Corona-Pandemie haben. 
