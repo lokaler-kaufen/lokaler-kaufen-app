@@ -1,12 +1,38 @@
-<!--<h1 mat-dialog-title>Hi {{data.name}}</h1>-->
+<h1 mat-dialog-title>Buchen</h1>
 <div mat-dialog-content>
   <p>What's your favorite animal?</p>
-  <mat-form-field>
-    <mat-label>Favorite Animal</mat-label>
-    <input matInput value="">
-  </mat-form-field>
+  <form>
+    <mat-form-field>
+      <mat-label>Wie können wir dich kontaktieren?</mat-label>
+      <mat-select>
+        <mat-option *ngFor="let option of options" [value]="option">
+          {{option}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Deine Telefonnummer</mat-label>
+      <input matInput value="">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Dein Name</mat-label>
+      <input matInput value="">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Deine E-Mail Adresse</mat-label>
+      <input matInput value="">
+    </mat-form-field>
+
+  </form>
 </div>
 <div mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">No Thanks</button>
-<!--  <button mat-button [mat-dialog-close]="data.animal" cdkFocusInitial>Ok</button>-->
+  <button mat-button
+          (click)="onNoClick()">Abbrechen</button>
+
+  <button mat-button
+          color="primary"
+          (click)="onBook()">Buchen!</button>
 </div>
