@@ -1,0 +1,23 @@
+## Login as admin
+
+POST {{ host }}/api/admin/login
+Content-Type: application/json
+Accept: application/json, */*
+
+{
+    "email": "admin-1@localhost",
+    "password": "admin-1"
+}
+
+### Login as user
+
+POST {{ host }}/api/shop/login
+Content-Type: application/json
+Accept: application/json, */*
+
+{
+    "email": "moe@localhost",
+    "password": "moe"
+}
+
+###
