@@ -25,6 +25,6 @@ Start the `main()` method of the `de.qaware.mercury.mercury.MercuryApplication` 
 * Everything is non-null by default. If something is nullable, mark it with `@Nullable` (`org.springframework.lang.Nullable`)
 * DTO classes stay in the `rest` package
 * Entity classes stay in the `storage` package
-* The service layer doesn't know the repository or the REST layer
+* The service layer doesn't know the storage or the REST layer
 * Use query parameters (`@RequestParam`) in URLs for optional parameters. If a parameter is required, better use a `@PathVariable`.
 * Use `text` for varchar colums ([Details](https://wiki.postgresql.org/wiki/Don%27t_Do_This#Don.27t_use_varchar.28n.29_by_default)).
