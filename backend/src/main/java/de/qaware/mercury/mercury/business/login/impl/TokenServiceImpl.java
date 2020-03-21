@@ -15,20 +15,26 @@ import de.qaware.mercury.mercury.business.login.TokenService;
 import de.qaware.mercury.mercury.business.login.TokenTechnicalException;
 import de.qaware.mercury.mercury.business.shop.Shop;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
+@EnableConfigurationProperties(TokenServiceConfigurationProperties.class)
 class TokenServiceImpl implements TokenService {
-    private static final String SHOP_JWT_SECRET = "u2WXgWEWhyop+qtpiH5jhQmDN+PVRbazKPNuseI0dmE="; // TODO MKA: Move to config!
     private static final String SHOP_ISSUER = "mercury-shop";
-    private static final String ADMIN_JWT_SECRET = "QXOm/a5//OFtmciYomnixCTDCzNUQFWNAiT3eGBOfhQ="; // TODO MKA: Move to config!
     private static final String ADMIN_ISSUER = "mercury-admin";
+
+    private final TokenServiceConfigurationProperties config;
+
+    TokenServiceImpl(TokenServiceConfigurationProperties config) {
+        this.config = config;
+    }
 
     @Override
     public AdminToken createAdminToken(Admin.Id adminId) {
         try {
-            Algorithm algorithm = getAlgorithm(ADMIN_JWT_SECRET);
+            Algorithm algorithm = getAlgorithm(config.getAdminJwtSecret());
             String token = JWT.create()
                 .withIssuer(ADMIN_ISSUER)
                 .withSubject(adminId.toString())
@@ -44,7 +50,7 @@ class TokenServiceImpl implements TokenService {
     @Override
     public Admin.Id verifyAdminToken(AdminToken token) throws LoginException {
         try {
-            Algorithm algorithm = getAlgorithm(ADMIN_JWT_SECRET);
+            Algorithm algorithm = getAlgorithm(config.getAdminJwtSecret());
             JWTVerifier verifier = JWT.require(algorithm)
                 .withIssuer(ADMIN_ISSUER)
                 .build();
@@ -62,7 +68,7 @@ class TokenServiceImpl implements TokenService {
     @Override
     public ShopToken createShopToken(ShopLogin.Id shopLoginId, Shop.Id shopId) {
         try {
-            Algorithm algorithm = getAlgorithm(SHOP_JWT_SECRET);
+            Algorithm algorithm = getAlgorithm(config.getShopJwtSecret());
             String token = JWT.create()
                 .withIssuer(SHOP_ISSUER)
                 .withSubject(shopLoginId.toString())
@@ -79,7 +85,7 @@ class TokenServiceImpl implements TokenService {
     @Override
     public ShopLogin.Id verifyShopToken(ShopToken token) throws LoginException {
         try {
-            Algorithm algorithm = getAlgorithm(SHOP_JWT_SECRET);
+            Algorithm algorithm = getAlgorithm(config.getShopJwtSecret());
             JWTVerifier verifier = JWT.require(algorithm)
                 .withIssuer(SHOP_ISSUER)
                 .build();
