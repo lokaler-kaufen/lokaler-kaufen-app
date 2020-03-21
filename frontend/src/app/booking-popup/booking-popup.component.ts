@@ -1,15 +1,16 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FormControl, FormGroup } from '@angular/forms';
+import {Component, Inject, Input, OnInit} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {FormControl, FormGroup} from '@angular/forms';
 
-export interface BookingDialogData {}
+export interface BookingDialogData {
+}
 
 export interface BookingPopupResult {
-  outcome : BookingPopupOutcome;
-  option : string;
-  phoneNumber : string;
-  name : string;
-  email : string;
+  outcome: BookingPopupOutcome;
+  option: string;
+  phoneNumber: string;
+  name: string;
+  email: string;
 }
 
 export enum BookingPopupOutcome {
@@ -30,21 +31,22 @@ export class BookingPopupComponent implements OnInit {
     email: new FormControl('')
   });
 
-  options : string[] = [
+  options: string[] = [
     "WhatsApp",
     "Facetime"
   ];
 
   constructor(public dialogRef: MatDialogRef<BookingPopupComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: BookingDialogData) { }
+              @Inject(MAT_DIALOG_DATA) public data: BookingDialogData) {
+  }
 
   ngOnInit(): void {
   }
 
   onSubmit(): void {
-    const formValue : any = this.formControl.value;
+    const formValue: any = this.formControl.value;
 
-    const popupResult : BookingPopupResult = {
+    const popupResult: BookingPopupResult = {
       outcome: BookingPopupOutcome.BOOK,
       phoneNumber: formValue.phoneNumber,
       name: formValue.name,
