@@ -1,3 +1,8 @@
+GET {{ host }}/api/shop/257f07f4-1481-4f5e-a47d-0a3406e27e8d/details
+Accept: application/json, */*
+
+###
+
 POST {{ host }}/api/shop?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmb29AYmFyLm9yZyIsImlzcyI6Im1lcmN1cnktc2hvcC1jcmVhdGlvbiJ9.WaUsDR89nzQtgqxXhfLZqazjf0PvywMzajQFZfKW9IQ
 Accept: application/json, */*
 Content-Type: application/json

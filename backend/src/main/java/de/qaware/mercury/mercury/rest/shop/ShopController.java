@@ -4,16 +4,20 @@ import de.qaware.mercury.mercury.business.login.LoginException;
 import de.qaware.mercury.mercury.business.login.ShopCreationToken;
 import de.qaware.mercury.mercury.business.login.TokenService;
 import de.qaware.mercury.mercury.business.shop.Shop;
+import de.qaware.mercury.mercury.business.shop.ShopNotFoundException;
 import de.qaware.mercury.mercury.business.shop.ShopService;
 import de.qaware.mercury.mercury.rest.plumbing.authentication.AuthenticationHelper;
 import de.qaware.mercury.mercury.rest.plumbing.authentication.InvalidCredentialsRestException;
 import de.qaware.mercury.mercury.rest.shop.dto.SendCreateLinkDto;
 import de.qaware.mercury.mercury.rest.shop.dto.ShopCreateDto;
+import de.qaware.mercury.mercury.rest.shop.dto.ShopDetailDto;
 import de.qaware.mercury.mercury.rest.shop.dto.ShopListDto;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 @RequestMapping(value = "/api/shop", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -30,6 +35,16 @@ class ShopController {
     private final ShopService shopService;
     private final TokenService tokenService;
     private final AuthenticationHelper authenticationHelper;
+
+    @GetMapping(path = "/{id}/details")
+    ShopDetailDto getDetails(@PathVariable String id) throws ShopNotFoundException {
+        Shop shop = shopService.findById(Shop.Id.parse(id));
+        if (shop == null) {
+            throw new ShopNotFoundException(Shop.Id.parse(id));
+        }
+
+        return ShopDetailDto.of(shop);
+    }
 
     @PostMapping(path = "/send-create-link", consumes = MediaType.APPLICATION_JSON_VALUE)
     void sendCreateLink(@RequestBody SendCreateLinkDto request) {

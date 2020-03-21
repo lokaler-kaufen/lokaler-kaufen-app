@@ -10,6 +10,8 @@ import de.qaware.mercury.mercury.business.shop.ShopNotFoundException;
 import de.qaware.mercury.mercury.business.shop.ShopService;
 import de.qaware.mercury.mercury.business.uuid.UUIDFactory;
 import de.qaware.mercury.mercury.storage.shop.ShopRepository;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
@@ -19,18 +21,12 @@ import java.util.UUID;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 class ShopServiceImpl implements ShopService {
     private final UUIDFactory uuidFactory;
     private final GeoLocationLookup geoLocationLookup;
     private final ShopRepository shopRepository;
     private final EmailService emailService;
-
-    ShopServiceImpl(UUIDFactory uuidFactory, GeoLocationLookup geoLocationLookup, ShopRepository shopRepository, EmailService emailService) {
-        this.uuidFactory = uuidFactory;
-        this.geoLocationLookup = geoLocationLookup;
-        this.shopRepository = shopRepository;
-        this.emailService = emailService;
-    }
 
     @Override
     public List<Shop> listAll() {
