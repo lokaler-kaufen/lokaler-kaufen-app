@@ -3,9 +3,11 @@ package de.qaware.mercury.mercury.rest.shop.dto;
 import de.qaware.mercury.mercury.business.shop.ContactType;
 import de.qaware.mercury.mercury.business.shop.ShopWithDistance;
 import de.qaware.mercury.mercury.util.Lists;
+import de.qaware.mercury.mercury.util.Sets;
 import lombok.Value;
 
 import java.util.List;
+import java.util.Set;
 
 @Value
 public class ShopListDto {
@@ -20,14 +22,14 @@ public class ShopListDto {
         String id;
         String name;
         double distance;
-        List<String> supportedContactTypes;
+        Set<String> supportedContactTypes;
 
         public static ShopListEntryDto of(ShopWithDistance shopListEntry) {
             return new ShopListEntryDto(
                 shopListEntry.getShop().getId().getId().toString(),
                 shopListEntry.getShop().getName(),
                 shopListEntry.getDistance(),
-                Lists.map(shopListEntry.getShop().getContactTypes(), ContactType::getValue)
+                Sets.map(shopListEntry.getShop().getContactTypes().keySet(), ContactType::getValue)
             );
         }
     }

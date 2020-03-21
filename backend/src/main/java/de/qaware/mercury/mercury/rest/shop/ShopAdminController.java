@@ -6,7 +6,6 @@ import de.qaware.mercury.mercury.business.shop.Shop;
 import de.qaware.mercury.mercury.business.shop.ShopNotFoundException;
 import de.qaware.mercury.mercury.business.shop.ShopService;
 import de.qaware.mercury.mercury.business.shop.ShopUpdate;
-import de.qaware.mercury.mercury.business.shop.Slots;
 import de.qaware.mercury.mercury.business.uuid.UUIDFactory;
 import de.qaware.mercury.mercury.rest.ErrorDto;
 import de.qaware.mercury.mercury.rest.plumbing.authentication.AuthenticationHelper;
@@ -78,8 +77,7 @@ class ShopAdminController {
             request.getDetails(),
             request.getWebsite(),
             Maps.mapKeys(request.getContactTypes(), ContactType::valueOf),
-            // TODO MKA: Slots
-            Slots.none(request.getSlots().getTimePerSlot(), request.getSlots().getTimeBetweenSlots())
+            request.getSlots().toSlots()
         )));
     }
 

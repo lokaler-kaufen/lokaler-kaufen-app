@@ -19,7 +19,6 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -72,9 +71,8 @@ class ShopServiceImpl implements ShopService {
         GeoLocation geoLocation = geoLocationLookup.fromZipCode(creation.getZipCode());
         Shop shop = new Shop(
             Shop.Id.of(id), creation.getName(), creation.getOwnerName(), creation.getEmail(), creation.getStreet(),
-            // TODO MKA: Slots, contact types
-            creation.getZipCode(), creation.getCity(), creation.getAddressSupplement(), new ArrayList<>(creation.getContactTypes().keySet()),
-            false, geoLocation, creation.getDetails(), creation.getWebsite()
+            creation.getZipCode(), creation.getCity(), creation.getAddressSupplement(), creation.getContactTypes(),
+            false, geoLocation, creation.getDetails(), creation.getWebsite(), creation.getSlots()
         );
 
         shopRepository.insert(shop);
@@ -88,9 +86,8 @@ class ShopServiceImpl implements ShopService {
         GeoLocation geoLocation = geoLocationLookup.fromZipCode(update.getZipCode());
         Shop newShop = new Shop(
             shop.getId(), update.getName(), update.getOwnerName(), shop.getName(), update.getStreet(), update.getZipCode(),
-            // TODO MKA: Slots, contact types
-            update.getCity(), update.getAddressSupplement(), new ArrayList<>(update.getContactTypes().keySet()),
-            shop.isEnabled(), geoLocation, shop.getDetails(), shop.getWebsite()
+            update.getCity(), update.getAddressSupplement(), update.getContactTypes(),
+            shop.isEnabled(), geoLocation, shop.getDetails(), shop.getWebsite(), shop.getSlots()
         );
 
         shopRepository.update(newShop);

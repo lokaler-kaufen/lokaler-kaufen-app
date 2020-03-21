@@ -4,6 +4,7 @@ import com.vladmihalcea.hibernate.type.array.ListArrayType;
 import de.qaware.mercury.mercury.business.location.GeoLocation;
 import de.qaware.mercury.mercury.business.shop.ContactType;
 import de.qaware.mercury.mercury.business.shop.Shop;
+import de.qaware.mercury.mercury.business.shop.Slots;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -18,7 +19,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Entity
@@ -106,13 +110,14 @@ public class ShopEntity {
             shop.getZipCode(),
             shop.getCity(),
             shop.getAddressSupplement(),
-            shop.getContactTypes(),
+            new ArrayList<>(shop.getContactTypes().keySet()), // TODO MKA: Store contact types with contact info
             shop.isEnabled(),
             shop.getGeoLocation().getLatitude(),
             shop.getGeoLocation().getLongitude(),
             shop.getDetails(),
             shop.getWebsite()
         );
+        // TODO MKA: Store slots
     }
 
     public Shop toShop() {
@@ -125,11 +130,20 @@ public class ShopEntity {
             zipCode,
             city,
             addressSupplement,
-            contactTypes,
+            fakeMap(contactTypes), // TODO MKA: Load contact types with contact info
             enabled,
             new GeoLocation(latitude, longitude),
             details,
-            website
+            website,
+            Slots.none(0, 0) // TODO MKA: Load slots
         );
+    }
+
+    private Map<ContactType, String> fakeMap(Iterable<ContactType> contactTypes) {
+        Map<ContactType, String> result = new HashMap<>();
+        for (ContactType contactType : contactTypes) {
+            result.put(contactType, "");
+        }
+        return result;
     }
 }
