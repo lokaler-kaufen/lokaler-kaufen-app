@@ -10,7 +10,6 @@ import de.qaware.mercury.mercury.rest.plumbing.authentication.InvalidCredentials
 import de.qaware.mercury.mercury.rest.shop.dto.SendCreateLinkDto;
 import de.qaware.mercury.mercury.rest.shop.dto.ShopCreateDto;
 import de.qaware.mercury.mercury.rest.shop.dto.ShopListDto;
-import de.qaware.mercury.mercury.rest.shop.dto.ShopsDto;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -80,9 +79,6 @@ class ShopController {
         ));
     }
 
-    @GetMapping("find")
-    ShopsDto findNearby(@RequestParam String location) {
-        return ShopsDto.of(shopService.findNearby(location));
     @GetMapping("nearby")
     ShopListDto listNearby(@RequestParam String location) {
         return ShopListDto.of(shopService.findNearby(location));
