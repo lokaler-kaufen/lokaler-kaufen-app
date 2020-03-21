@@ -1,6 +1,30 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {ContactTypes} from "../shared/contact-types";
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {ContactTypes} from '../shared/contact-types';
+
+export class OpeningHours {
+  constructor(enabled: boolean = true, from: string = '09:00', to: string = '16:00') {
+    this.enabled = enabled;
+    this.from = from;
+    this.to = to;
+  }
+
+  enabled: boolean;
+  from: string;
+  to: string;
+}
+
+export class BusinessHours {
+  static readonly POSSIBLE_BUSINESS_HOURS = new Map([
+    ['MONDAY', new OpeningHours()],
+    ['TUESDAY', new OpeningHours()],
+    ['WEDNESDAY', new OpeningHours()],
+    ['THURSDAY', new OpeningHours()],
+    ['FRIDAY', new OpeningHours()],
+    ['SATURDAY', new OpeningHours(false)],
+    ['SUNDAY', new OpeningHours(false)]
+  ]);
+}
 
 @Component({
   selector: 'shop-creation-page',
@@ -18,6 +42,8 @@ export class ShopCreationPageComponent implements OnInit {
   token: string;
   contactTypes = ContactTypes;
   hidePassword = true;
+
+  businessHours = BusinessHours;
 
   constructor(private formBuilder: FormBuilder) {
   }
@@ -61,6 +87,13 @@ export class ShopCreationPageComponent implements OnInit {
         return passwordConfirmationInput.setErrors(null);
       }
     };
+  }
+
+  toggleAvailability(day: string): void {
+    console.log('Toggle availability for day: ' + day);
+    let businessHoursForDay = this.businessHours.POSSIBLE_BUSINESS_HOURS.get(day);
+    businessHoursForDay.enabled = !businessHoursForDay.enabled;
+    console.log(businessHoursForDay);
   }
 
 }

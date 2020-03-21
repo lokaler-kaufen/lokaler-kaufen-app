@@ -1,8 +1,7 @@
 <p>Hallo und herzlich willkommen! Toll, dass du einen Shop auf lokaler.kaufen anlegen willst! Dafür brauchen wir noch
   ein paar Infos
   von dir. </p>
-
-<mat-vertical-stepper [linear]="true" #stepper>
+<mat-vertical-stepper [linear]="false" #stepper>
   <mat-step [stepControl]="nameFormGroup">
     <form [formGroup]="nameFormGroup">
       <ng-template matStepLabel>Starten wir ganz einfach</ng-template>
@@ -99,6 +98,113 @@
   <mat-step [stepControl]="openingFormGroup">
     <form [formGroup]="openingFormGroup">
       <ng-template matStepLabel>Was sind deine Öffnungszeiten?</ng-template>
+      <div style="margin-top: 15px; margin-bottom: 30px;">
+        <button mat-mini-fab color="primary"
+                [ngClass]="{'disabled' : !this.businessHours.POSSIBLE_BUSINESS_HOURS.get('MONDAY').enabled}"
+                (click)="toggleAvailability('MONDAY')">Mo
+        </button>
+        <button mat-mini-fab color="primary"
+                [ngClass]="{'disabled' : !this.businessHours.POSSIBLE_BUSINESS_HOURS.get('TUESDAY').enabled}"
+                (click)="toggleAvailability('TUESDAY')">Di
+        </button>
+        <button mat-mini-fab color="primary"
+                [ngClass]="{'disabled' : !this.businessHours.POSSIBLE_BUSINESS_HOURS.get('WEDNESDAY').enabled}"
+                (click)="toggleAvailability('WEDNESDAY')">Mi
+        </button>
+        <button mat-mini-fab color="primary"
+                [ngClass]="{'disabled' : !this.businessHours.POSSIBLE_BUSINESS_HOURS.get('THURSDAY').enabled}"
+                (click)="toggleAvailability('THURSDAY')">Do
+        </button>
+        <button mat-mini-fab color="primary"
+                [ngClass]="{'disabled' : !this.businessHours.POSSIBLE_BUSINESS_HOURS.get('FRIDAY').enabled}"
+                (click)="toggleAvailability('FRIDAY')">Fr
+        </button>
+        <button mat-mini-fab color="primary"
+                [ngClass]="{'disabled' : !this.businessHours.POSSIBLE_BUSINESS_HOURS.get('SATURDAY').enabled}"
+                (click)="toggleAvailability('SATURDAY')">Sa
+        </button>
+        <button mat-mini-fab id="SUNDAY" color="primary"
+                [ngClass]="{'disabled' : !this.businessHours.POSSIBLE_BUSINESS_HOURS.get('SUNDAY').enabled}"
+                (click)="toggleAvailability('SUNDAY')">So
+        </button>
+      </div>
+      <div>
+        <h2 style="float:left; margin-right: 50px; vertical-align: bottom; width: 15%;">Montag</h2>
+        <mat-form-field>
+          <mat-label>Von</mat-label>
+          <input matInput type="time" value="{{this.businessHours.POSSIBLE_BUSINESS_HOURS.get('MONDAY').from}}">
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Bis</mat-label>
+          <input matInput type="time" value="{{this.businessHours.POSSIBLE_BUSINESS_HOURS.get('MONDAY').to}}">
+        </mat-form-field>
+      </div>
+      <div>
+        <h2 style="float:left; margin-right: 50px; vertical-align: bottom; width: 15%;">Dienstag</h2>
+        <mat-form-field>
+          <mat-label>Von</mat-label>
+          <input matInput type="time" value="{{this.businessHours.POSSIBLE_BUSINESS_HOURS.get('TUESDAY').from}}">
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Bis</mat-label>
+          <input matInput type="time" value="{{this.businessHours.POSSIBLE_BUSINESS_HOURS.get('TUESDAY').to}}">
+        </mat-form-field>
+      </div>
+      <div>
+        <h2 style="float:left; margin-right: 50px; vertical-align: bottom; width: 15%;">Mittwoch</h2>
+        <mat-form-field>
+          <mat-label>Von</mat-label>
+          <input matInput type="time" value="{{this.businessHours.POSSIBLE_BUSINESS_HOURS.get('WEDNESDAY').from}}">
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Bis</mat-label>
+          <input matInput type="time" value="{{this.businessHours.POSSIBLE_BUSINESS_HOURS.get('WEDNESDAY').to}}">
+        </mat-form-field>
+      </div>
+      <div>
+        <h2 style="float:left; margin-right: 50px; vertical-align: bottom; width: 15%;">Donnerstag</h2>
+        <mat-form-field>
+          <mat-label>Von</mat-label>
+          <input matInput type="time" value="{{this.businessHours.POSSIBLE_BUSINESS_HOURS.get('THURSDAY').from}}">
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Bis</mat-label>
+          <input matInput type="time" value="{{this.businessHours.POSSIBLE_BUSINESS_HOURS.get('THURSDAY').to}}">
+        </mat-form-field>
+      </div>
+      <div>
+        <h2 style="float:left; margin-right: 50px; vertical-align: bottom; width: 15%;">Freitag</h2>
+        <mat-form-field>
+          <mat-label>Von</mat-label>
+          <input matInput type="time" value="{{this.businessHours.POSSIBLE_BUSINESS_HOURS.get('FRIDAY').from}}">
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Bis</mat-label>
+          <input matInput type="time" value="{{this.businessHours.POSSIBLE_BUSINESS_HOURS.get('FRIDAY').to}}">
+        </mat-form-field>
+      </div>
+      <div>
+        <h2 style="float:left; margin-right: 50px; vertical-align: bottom; width: 15%;">Samstag</h2>
+        <mat-form-field>
+          <mat-label>Von</mat-label>
+          <input matInput type="time" value="{{this.businessHours.POSSIBLE_BUSINESS_HOURS.get('SATURDAY').from}}">
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Bis</mat-label>
+          <input matInput type="time" value="{{this.businessHours.POSSIBLE_BUSINESS_HOURS.get('SATURDAY').to}}">
+        </mat-form-field>
+      </div>
+      <div>
+        <h2 style="float:left; margin-right: 50px; vertical-align: bottom; width: 15%;">Sonntag</h2>
+        <mat-form-field>
+          <mat-label>Von</mat-label>
+          <input matInput type="time" [(ngModel)]="this.businessHours.POSSIBLE_BUSINESS_HOURS.get('SUNDAY').from">
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Bis</mat-label>
+          <input matInput type="time" value="{{this.businessHours.POSSIBLE_BUSINESS_HOURS.get('SUNDAY').to}}">
+        </mat-form-field>
+      </div>
       <div>
         <button mat-button matStepperPrevious>Zurück</button>
         <button mat-button matStepperNext>Weiter</button>
