@@ -1,5 +1,6 @@
-package de.qaware.mercury.mercury.rest;
+package de.qaware.mercury.mercury.rest.plumbing.authentication;
 
+import de.qaware.mercury.mercury.rest.RestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 

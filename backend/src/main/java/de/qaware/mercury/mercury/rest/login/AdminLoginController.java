@@ -4,9 +4,9 @@ import de.qaware.mercury.mercury.business.admin.Admin;
 import de.qaware.mercury.mercury.business.login.AdminLoginService;
 import de.qaware.mercury.mercury.business.login.AdminToken;
 import de.qaware.mercury.mercury.business.login.LoginException;
-import de.qaware.mercury.mercury.rest.AuthenticationHelper;
 import de.qaware.mercury.mercury.rest.login.dto.LoginDto;
 import de.qaware.mercury.mercury.rest.login.dto.WhoAmIDto;
+import de.qaware.mercury.mercury.rest.plumbing.authentication.AuthenticationHelper;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +18,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import static de.qaware.mercury.mercury.rest.AuthenticationHelper.ADMIN_COOKIE_NAME;
+import static de.qaware.mercury.mercury.rest.plumbing.authentication.AuthenticationHelper.ADMIN_COOKIE_NAME;
 
 @RestController
 @RequestMapping(path = "/api/admin/login", produces = MediaType.APPLICATION_JSON_VALUE)
