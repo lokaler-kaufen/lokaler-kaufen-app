@@ -5,6 +5,7 @@ import de.qaware.mercury.mercury.rest.shop.dto.ShopsDto;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -17,7 +18,7 @@ class ShopController {
     }
 
     @GetMapping("find")
-    ShopsDto findNearby(String location) {
+    ShopsDto findNearby(@RequestParam String location) {
         return ShopsDto.of(shopService.findNearby(location));
     }
 }
