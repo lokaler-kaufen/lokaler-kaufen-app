@@ -1,4 +1,4 @@
-package de.qaware.mercury.mercury.rest;
+package de.qaware.mercury.mercury.rest.plumbing.authentication;
 
 import de.qaware.mercury.mercury.business.admin.Admin;
 import de.qaware.mercury.mercury.business.login.AdminLoginService;
