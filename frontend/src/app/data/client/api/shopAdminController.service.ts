@@ -19,6 +19,7 @@ import { Observable }                                        from 'rxjs';
 
 import { ShopAdminDto } from '../model/shopAdminDto';
 import { ShopsAdminDto } from '../model/shopsAdminDto';
+import { UpdateShopRequestDto } from '../model/updateShopRequestDto';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -27,7 +28,7 @@ import { Configuration }                                     from '../configurat
 @Injectable()
 export class ShopAdminControllerService {
 
-    protected basePath = '//localhost:4200/';
+    protected basePath = '//localhost:8080/';
     public defaultHeaders = new HttpHeaders();
     public configuration = new Configuration();
 
@@ -137,7 +138,7 @@ export class ShopAdminControllerService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<any>('delete',`${this.basePath}/api/admin/shop/${encodeURIComponent(String(id))}/delete`,
+        return this.httpClient.request<any>('delete',`${this.basePath}/api/admin/shop/${encodeURIComponent(String(id))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -186,15 +187,15 @@ export class ShopAdminControllerService {
     /**
      * update
      * 
-     * @param body shop
+     * @param body request
      * @param id id
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateUsingPUT(body: ShopAdminDto, id: string, observe?: 'body', reportProgress?: boolean): Observable<ShopAdminDto>;
-    public updateUsingPUT(body: ShopAdminDto, id: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ShopAdminDto>>;
-    public updateUsingPUT(body: ShopAdminDto, id: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ShopAdminDto>>;
-    public updateUsingPUT(body: ShopAdminDto, id: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public updateUsingPUT(body: UpdateShopRequestDto, id: string, observe?: 'body', reportProgress?: boolean): Observable<ShopAdminDto>;
+    public updateUsingPUT(body: UpdateShopRequestDto, id: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ShopAdminDto>>;
+    public updateUsingPUT(body: UpdateShopRequestDto, id: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ShopAdminDto>>;
+    public updateUsingPUT(body: UpdateShopRequestDto, id: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (body === null || body === undefined) {
             throw new Error('Required parameter body was null or undefined when calling updateUsingPUT.');
@@ -224,7 +225,7 @@ export class ShopAdminControllerService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.request<ShopAdminDto>('put',`${this.basePath}/api/admin/shop/${encodeURIComponent(String(id))}/update`,
+        return this.httpClient.request<ShopAdminDto>('put',`${this.basePath}/api/admin/shop/${encodeURIComponent(String(id))}`,
             {
                 body: body,
                 withCredentials: this.configuration.withCredentials,
