@@ -26,4 +26,6 @@ public interface ShopService {
      * @param email email address
      */
     void sendCreateLink(String email);
+
+    List<Shop> findByName(String name);
 }

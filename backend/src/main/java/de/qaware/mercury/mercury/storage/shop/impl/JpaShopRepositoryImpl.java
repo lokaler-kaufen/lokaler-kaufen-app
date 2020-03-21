@@ -75,4 +75,9 @@ class JpaShopRepositoryImpl implements ShopRepository {
     public void deleteById(Shop.Id id) {
         shopDataRepository.deleteById(id.getId());
     }
+
+    @Override
+    public List<Shop> findByName(String name) {
+        return Lists.map(shopDataRepository.findByName(name), ShopEntity::toShop);
+    }
 }

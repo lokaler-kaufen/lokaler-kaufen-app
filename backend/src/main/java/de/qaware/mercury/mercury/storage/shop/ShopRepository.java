@@ -19,4 +19,6 @@ public interface ShopRepository {
     void update(Shop updatedShop);
 
     void deleteById(Shop.Id id);
+
+    List<Shop> findByName(String name);
 }

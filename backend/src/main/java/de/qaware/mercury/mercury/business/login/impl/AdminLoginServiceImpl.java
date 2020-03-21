@@ -9,6 +9,7 @@ import de.qaware.mercury.mercury.business.login.TokenService;
 import de.qaware.mercury.mercury.business.uuid.UUIDFactory;
 import de.qaware.mercury.mercury.storage.admin.AdminRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -69,5 +70,12 @@ class AdminLoginServiceImpl implements AdminLoginService {
         }
 
         return admin;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    @Nullable
+    public Admin findByEmail(String email) {
+        return adminRepository.findByEmail(email);
     }
 }

@@ -116,4 +116,10 @@ class ShopServiceImpl implements ShopService {
 
         emailService.sendShopCreationLink(email);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Shop> findByName(String name) {
+        return shopRepository.findByName(name);
+    }
 }
