@@ -54,11 +54,11 @@ class ShopServiceImpl implements ShopService {
     }
 
     @Override
-    public Shop create(String name, String ownerName, String street, String zipCode, String city, String addressSupplement) {
+    public Shop create(String name, String ownerName, String email, String street, String zipCode, String city, String addressSupplement, String[] contactTypes) {
         UUID id = uuidFactory.create();
 
         GeoLocation geoLocation = geoLocationLookup.fromZipCode(zipCode);
-        Shop shop = new Shop(Shop.Id.of(id), name, ownerName, street, zipCode, city, addressSupplement, false, geoLocation);
+        Shop shop = new Shop(Shop.Id.of(id), name, ownerName, email, street, zipCode, city, addressSupplement, contactTypes, false, geoLocation);
 
         shopRepository.insert(shop);
         return shop;

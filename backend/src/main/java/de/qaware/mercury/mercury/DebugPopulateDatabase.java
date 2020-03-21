@@ -36,15 +36,15 @@ class DebugPopulateDatabase implements ApplicationRunner {
     }
 
     private void createShops() {
-        Shop shop = shopService.create("Moe's Whiskey", "Moe", "Lothstr. 64", "80335", "München", "");
+        Shop shop = shopService.create("Moe's Whiskey", "Moe", "moe@example.com", "Lothstr. 64", "80335", "München", "", new String[]{"facebook_messenger", "whatsapp"});
         shopLoginService.createLogin(shop, "moe@localhost", "moe");
         log.info("Created shop {}", shop);
 
-        shop = shopService.create("Flo's Kaffeeladen", "Flo", "Aschauer Str. 32", "81549", "München", "");
+        shop = shopService.create("Flo's Kaffeeladen", "Flo", "flo@coffeshop-profis.de", "Aschauer Str. 32", "81549", "München", "", new String[]{"telefon"});
         shopLoginService.createLogin(shop, "flo@localhost", "flo");
         log.info("Created shop {}", shop);
 
-        shop = shopService.create("Vroni's Kleiderladen", "Vroni", "Rheinstraße 4C", "55116", "Mainz", "");
+        shop = shopService.create("Vroni's Kleiderladen", "Vroni", "vroni@kranzhornsyndikat.at", "Rheinstraße 4C", "55116", "Mainz", "", new String[]{"google_duo", "skype"});
         shopLoginService.createLogin(shop, "vroni@localhost", "vroni");
         log.info("Created shop {}", shop);
     }

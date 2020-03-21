@@ -6,10 +6,15 @@ Content-Type: application/json
     "id": "",
     "name": "Horst's Burgerladen",
     "ownerName": "Horst",
+    "email": "info@example.com",
     "street": "Münchner Straße 13",
     "zipCode": "83464",
     "city": "MÜnchen",
-    "addressSupplement": ""
+    "addressSupplement": "",
+    "contactTypes": [
+        "facebook_messenger",
+        "whatsapp"
+    ]
 }
 
 ###

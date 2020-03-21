@@ -10,6 +10,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -38,6 +39,10 @@ public class ShopEntity {
 
     @Setter
     @Column(nullable = false)
+    private String email;
+
+    @Setter
+    @Column(nullable = false)
     private String street;
 
     @Setter
@@ -51,6 +56,11 @@ public class ShopEntity {
     @Setter
     @Column(nullable = false)
     private String addressSupplement;
+
+    @Setter
+    @Column(nullable = false)
+    @ElementCollection
+    private String[] contactTypes;
 
     @Setter
     @Column(nullable = false)
@@ -69,10 +79,12 @@ public class ShopEntity {
             shop.getId().getId(),
             shop.getName(),
             shop.getOwnerName(),
+            shop.getEmail(),
             shop.getStreet(),
             shop.getZipCode(),
             shop.getCity(),
             shop.getAddressSupplement(),
+            shop.getContactTypes(),
             shop.isEnabled(),
             shop.getGeoLocation().getLatitude(),
             shop.getGeoLocation().getLongitude()
@@ -84,10 +96,12 @@ public class ShopEntity {
             Shop.Id.of(id),
             name,
             ownerName,
+            email,
             street,
             zipCode,
             city,
             addressSupplement,
+            contactTypes,
             enabled,
             new GeoLocation(latitude, longitude)
         );

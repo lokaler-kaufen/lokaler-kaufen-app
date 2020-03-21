@@ -11,10 +11,12 @@ public class Shop {
     Id id;
     String name;
     String ownerName;
+    String email;
     String street;
     String zipCode;
     String city;
     String addressSupplement;
+    String[] contactTypes;
     @With
     boolean enabled;
     GeoLocation geoLocation;

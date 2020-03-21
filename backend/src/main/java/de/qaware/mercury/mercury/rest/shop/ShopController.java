@@ -25,10 +25,12 @@ class ShopController {
         return ShopCreateDto.of(shopService.create(
             shop.getName(),
             shop.getOwnerName(),
+            shop.getEmail(),
             shop.getStreet(),
             shop.getZipCode(),
             shop.getCity(),
-            shop.getAddressSupplement()
+            shop.getAddressSupplement(),
+            shop.getContactTypes()
         ));
     }
 

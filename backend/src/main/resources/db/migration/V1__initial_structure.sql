@@ -1,3 +1,5 @@
+CREATE TYPE contact_type AS ENUM ('facebook_messenger', 'glide', 'google_duo', 'whatsapp', 'skype', 'justalk', 'signal_private_messenger', 'snapchat', 'tango', 'viber', 'telefon');
+
 CREATE TABLE shop
 (
     id                 uuid primary key,
@@ -7,6 +9,7 @@ CREATE TABLE shop
     zip_code           varchar          not null,
     city               varchar          not null,
     address_supplement varchar          not null,
+    contact_type       contact_type[]   not null,
     enabled            boolean          not null,
     latitude           double precision not null,
     longitude          double precision not null
