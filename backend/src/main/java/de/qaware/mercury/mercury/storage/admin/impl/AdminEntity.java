@@ -22,7 +22,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "admin")
-class AdminEntity {
+public class AdminEntity {
     @Id
     @EqualsAndHashCode.Include
     private UUID id;
