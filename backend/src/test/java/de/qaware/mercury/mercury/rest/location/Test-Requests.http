@@ -1,0 +1,10 @@
+# searching for a city name
+GET localhost:8080/api/location/suggestions?query=rosenh
+
+###
+
+# searching for a zip code
+GET localhost:8080/api/location/suggestions?query=8154
+
+###
+
