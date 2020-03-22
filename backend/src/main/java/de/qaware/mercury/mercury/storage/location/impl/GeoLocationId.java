@@ -1,9 +1,12 @@
 package de.qaware.mercury.mercury.storage.location.impl;
 
+import lombok.Data;
+
 import java.io.Serializable;
 
+@Data
 public class GeoLocationId implements Serializable {
-    private String countryCode;
-    private String zipCode;
-    private String placeName;
+    String countryCode;
+    String zipCode;
+    String placeName;
 }
