@@ -24,14 +24,14 @@ export interface ShopDetailDto {
     zipCode?: string;
 }
 export namespace ShopDetailDto {
-    export type ContactTypesEnum = 'WHATSAPP' | 'PHONE' | 'FACETIME' | 'GOOGLE_DUO' | 'SKYPE' | 'SIGNAL_PRIVATE_MESSENGER' | 'VIBER';
+    export type ContactTypesEnum = 'WHATSAPP' | 'PHONE' | 'FACETIME' | 'GOOGLE_DUO' | 'SKYPE' | 'SIGNAL' | 'VIBER';
     export const ContactTypesEnum = {
         WHATSAPP: 'WHATSAPP' as ContactTypesEnum,
         PHONE: 'PHONE' as ContactTypesEnum,
         FACETIME: 'FACETIME' as ContactTypesEnum,
         GOOGLEDUO: 'GOOGLE_DUO' as ContactTypesEnum,
         SKYPE: 'SKYPE' as ContactTypesEnum,
-        SIGNALPRIVATEMESSENGER: 'SIGNAL_PRIVATE_MESSENGER' as ContactTypesEnum,
+        SIGNAL: 'SIGNAL' as ContactTypesEnum,
         VIBER: 'VIBER' as ContactTypesEnum
     };
 }
