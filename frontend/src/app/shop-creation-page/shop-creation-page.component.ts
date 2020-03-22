@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {ContactTypes} from '../shared/contact-types';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {ShopCreateDto} from '../data/client/model/shopCreateDto';
+import ContactTypesEnum = ShopCreateDto.ContactTypesEnum;
 
 export class OpeningHours {
   constructor(enabled: boolean = true, from: string = '09:00', to: string = '16:00') {
@@ -16,13 +17,13 @@ export class OpeningHours {
 
 export class BusinessHours {
   static readonly POSSIBLE_BUSINESS_HOURS = new Map([
-    ['MONDAY', new OpeningHours()],
-    ['TUESDAY', new OpeningHours()],
-    ['WEDNESDAY', new OpeningHours()],
-    ['THURSDAY', new OpeningHours()],
-    ['FRIDAY', new OpeningHours()],
-    ['SATURDAY', new OpeningHours(false)],
-    ['SUNDAY', new OpeningHours(false)]
+    ['Montag', new OpeningHours()],
+    ['Dienstag', new OpeningHours()],
+    ['Mittwoch', new OpeningHours()],
+    ['Donnerstag', new OpeningHours()],
+    ['Freitag', new OpeningHours()],
+    ['Samstag', new OpeningHours(false)],
+    ['Sonntag', new OpeningHours(false)]
   ]);
 }
 
@@ -35,20 +36,25 @@ export class ShopCreationPageComponent implements OnInit {
   nameFormGroup: FormGroup;
   addressFormGroup: FormGroup;
   descriptionFormGroup: FormGroup;
-  contactFormGroup: FormGroup;
-  openingFormGroup: FormGroup;
+  contactFormGroup = new FormGroup({});
+  openingFormGroup = new FormGroup({});
   passwordFormGroup: FormGroup;
 
   token: string;
-  contactTypes = ContactTypes;
+  contactTypes;
   hidePassword = true;
 
   businessHours = BusinessHours;
 
+  days;
+
   constructor(private formBuilder: FormBuilder) {
+    this.days = Array.from(this.businessHours.POSSIBLE_BUSINESS_HOURS.keys());
+    this.contactTypes = Object.keys(ContactTypesEnum).map(key => ContactTypesEnum[key]);
   }
 
   ngOnInit() {
+    console.log('Contact Types size ' + this.contactTypes);
     this.nameFormGroup = this.formBuilder.group({
       nameCtrl: ['', Validators.required],
       businessNameCtrl: ['', Validators.required]
@@ -63,17 +69,24 @@ export class ShopCreationPageComponent implements OnInit {
       descriptionCtrl: ['', Validators.required],
       urlCtrl: ['', [Validators.required, Validators.pattern('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]]
     });
-    this.contactFormGroup = this.formBuilder.group({
-      phoneCtrl: '',
-      facetimeCtrl: '',
-      whatsappCtrl: '',
+    this.contactTypes.forEach(type => {
+      const ctrl = type.toLowerCase() + 'Ctrl';
+      this.contactFormGroup.addControl(ctrl, new FormControl(''));
     });
-    this.openingFormGroup = this.formBuilder.group({});
+    // this.openingFormGroup = this.formBuilder.group({});
+    Array.from(this.businessHours.POSSIBLE_BUSINESS_HOURS.keys()).forEach((day: string) => {
+      const fromCtrl = day + 'FromCtrl';
+      const toCtrl = day + 'ToCtrl';
+      this.openingFormGroup.addControl(fromCtrl, new FormControl(''));
+      this.openingFormGroup.addControl(toCtrl, new FormControl(''));
+      // console.log('Day: ' + day);
+      this.openingFormGroup.controls[fromCtrl].setValue('09:00');
+      this.openingFormGroup.controls[toCtrl].setValue('16:00');
+    });
     this.passwordFormGroup = this.formBuilder.group({
       passwordCtrl: ['', [Validators.required, Validators.minLength(14)]],
       confirmPasswordCtrl: ['', Validators.required]
     }, {validator: this.checkMatchingPasswords('passwordCtrl', 'confirmPasswordCtrl')});
-
   }
 
   // Validation password equals confirmed password
@@ -91,9 +104,35 @@ export class ShopCreationPageComponent implements OnInit {
 
   toggleAvailability(day: string): void {
     console.log('Toggle availability for day: ' + day);
-    let businessHoursForDay = this.businessHours.POSSIBLE_BUSINESS_HOURS.get(day);
+    const businessHoursForDay = this.businessHours.POSSIBLE_BUSINESS_HOURS.get(day);
     businessHoursForDay.enabled = !businessHoursForDay.enabled;
     console.log(businessHoursForDay);
   }
 
+  createShop() {
+    let shopCreateDto: ShopCreateDto;
+    shopCreateDto.ownerName = this.nameFormGroup.get('nameCtrl').value;
+    shopCreateDto.name = this.nameFormGroup.get('businessNameCtrl').value;
+    shopCreateDto.street = this.addressFormGroup.get('streetCtrl').value;
+    shopCreateDto.zipCode = this.addressFormGroup.get('zipCtrl').value;
+    shopCreateDto.city = this.addressFormGroup.get('cityCtrl').value;
+    shopCreateDto.addressSupplement = this.addressFormGroup.get('suffixCtrl').value;
+    // shopCreateDto.description = this.descriptionFormGroup.get('descriptionCtrl').value;
+    // shopCreateDto.url = this.descriptionFormGroup.get('urlCtrl').value;
+    let availableContactTypes: ContactTypesEnum[];
+    this.contactTypes.forEach(contact => {
+      const contactCtrl = contact + 'Ctrl';
+      if (this.contactFormGroup.get(contactCtrl).value) {
+        // TODO: Add contactType
+      }
+    });
+  }
+
+  getEnumValue(contactType: any) {
+    let splitted = contactType.split('_');
+    splitted = splitted.map(split => {
+      return split.charAt(0) + split.slice(1).toLowerCase();
+    });
+    return splitted.join(' ');
+  }
 }
