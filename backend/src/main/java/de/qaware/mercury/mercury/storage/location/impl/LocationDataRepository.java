@@ -10,7 +10,16 @@ interface LocationDataRepository extends JpaRepository<GeoLocationEntity, String
 
     @Query(
         "SELECT g as geoLocationEntity " +
-            "FROM GeoLocationEntity AS g WHERE (g.zipCode LIKE lower(:zipCode))"
+            "FROM GeoLocationEntity AS g WHERE (g.zipCode = :zipCode)"
     )
     List<GeoLocationEntity> searchZipCode(@Param("zipCode") String zipCode);
+
+    @Query(
+        "SELECT g as geoLocationEntity " +
+            "FROM GeoLocationEntity AS g WHERE (" +
+            "      lower(g.zipCode) LIKE lower(:searchTerm)" +
+            "   OR lower(g.placeName) LIKE lower(:searchTerm)" +
+            ")"
+    )
+    List<GeoLocationEntity> search(@Param("searchTerm") String searchTerm);
 }

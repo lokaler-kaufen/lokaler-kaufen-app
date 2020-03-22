@@ -1,11 +1,9 @@
 package de.qaware.mercury.mercury;
 
+import de.qaware.mercury.mercury.business.location.GeoLocationLookup;
+import de.qaware.mercury.mercury.business.location.GeoLocationSuggestion;
 import de.qaware.mercury.mercury.business.login.AdminLoginService;
-import de.qaware.mercury.mercury.business.shop.ContactType;
-import de.qaware.mercury.mercury.business.shop.Shop;
-import de.qaware.mercury.mercury.business.shop.ShopCreation;
-import de.qaware.mercury.mercury.business.shop.ShopService;
-import de.qaware.mercury.mercury.business.shop.SlotConfig;
+import de.qaware.mercury.mercury.business.shop.*;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +12,7 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -21,6 +20,7 @@ import java.util.Map;
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 class DebugPopulateDatabase implements ApplicationRunner {
     private final ShopService shopService;
+    private final GeoLocationLookup geoLocationLookup;
     private final AdminLoginService adminLoginService;
 
     @Override
@@ -32,6 +32,10 @@ class DebugPopulateDatabase implements ApplicationRunner {
         createShops();
 
         shopService.findNearby("01998");
+        String term = "Rosenh";
+        List<GeoLocationSuggestion> locations = geoLocationLookup.search(term);
+        log.info("Search for location '{}' returned:", term);
+        locations.forEach(l -> log.info(l.toString()));
     }
 
     private void createAdmins() {
