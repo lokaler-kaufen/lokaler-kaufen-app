@@ -12,13 +12,13 @@ mercury:
     shopCreationJwtSecret: "8aaM086u9cpaNp8fMKURLOdpTEJYPqFy/xrN3M5ynT4=" # openssl rand -base64 32
   email:
     use-dummy: true # Set this to false to send real emails
-    from: "Lokaler.kaufen <lokaler.kaufen@gmail.com>"
+    from: "Lokaler.kaufen <info@lokaler.kaufen>"
     creationLinkTemplate: "http://localhost:4200/#/create-shop?token={{ token }}"
 
 spring.mail:
   host: "smtp.gmail.com"
   port: 587
-  username: "[]"
-  password: "[redacted]"
+  username: ""
+  password: ""
   properties:
     mail.smtp.starttls.enable: true

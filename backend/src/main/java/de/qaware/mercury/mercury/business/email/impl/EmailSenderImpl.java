@@ -33,5 +33,6 @@ class EmailSenderImpl implements EmailSender {
 
         log.debug("Sending email to '{}', subject '{}'", recipient, subject);
         mailSender.send(mail);
+        log.debug("Sent mail");
     }
 }
