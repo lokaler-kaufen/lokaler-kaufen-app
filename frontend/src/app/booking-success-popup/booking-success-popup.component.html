@@ -1,18 +1,19 @@
 <h1 mat-dialog-title>Buchen</h1>
 <div mat-dialog-content>
-
-  <div>
-    <p>Super! Deine Buchung wurde erfolgreich abgeschlossen.
-      {{data.owner}} ruft dich per {{contactTypes.getDisplayName(data.contactType)}} zwischen {{data.start}} und {{data.end}} Uhr
-      auf der {{data.contactNumber}} an. Bitte beachte, dass es zu Stoßzeiten ab und zu zu Verzögerungen kommen kann.
-    </p>
-    <p>
-      Wir haben dir eine Bestätigungsmail gesendet in der du auch einen Link findest,
-      mit dem du den Termin absagen kannst.
-    </p>
-  </div>
-
-    <button mat-stroked-button (click)="onClick()">Verstanden</button>
-
+  <form>
+    <div>
+      <p>Super! Deine Buchung wurde erfolgreich abgeschlossen.
+        {{data.owner}} ruft dich per {{contactTypes.getDisplayName(data.contactType)}} zwischen {{data.start}}
+        und {{data.end}} Uhr
+        auf der {{data.contactNumber}} an. Bitte beachte, dass es zu Stoßzeiten ab und zu zu Verzögerungen kommen kann.
+      </p>
+      <p>
+        Wir haben dir eine Bestätigungsmail gesendet in der du auch einen Link findest,
+        mit dem du den Termin absagen kannst.
+      </p>
+    </div>
+    <div mat-dialog-actions>
+      <button mat-button class="mat-raised-button" (click)="onClick()">Verstanden</button>
+    </div>
+  </form>
 </div>
-

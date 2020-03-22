@@ -38,7 +38,6 @@ export class BookingPopupComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<BookingPopupComponent>,
               @Inject(MAT_DIALOG_DATA) public data: BookingDialogData) {
-    console.log(data.supportedContactTypes);
   }
 
   ngOnInit(): void {

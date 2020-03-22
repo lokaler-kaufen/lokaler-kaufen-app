@@ -46,7 +46,6 @@ export class ShopDetailsPageComponent implements OnInit {
     this.client.get<SlotsDto>('/api/reservation/' + this.shopId + '/slot')
       .subscribe((slots: SlotsDto) => {
         this.slots = slots.slots;
-        console.log(this.slots);
       });
   }
 
@@ -72,10 +71,20 @@ export class ShopDetailsPageComponent implements OnInit {
             end: this.slots.find(s => s.id === id).end,
           } as BookingSuccessData;
           const reservationDto: CreateReservationDto = {
-            contact: data.phoneNumber, contactType: data.option.toUpperCase(), email: data.email, name: data.name, slotId: id
+            contact: data.phoneNumber,
+            contactType: data.option.toUpperCase(),
+            email: data.email,
+            name: data.name,
+            slotId: id
           };
           this.client.post<SlotsDto>('/api/reservation/' + this.shopId, reservationDto)
-            .subscribe(() => this.matDialog.open(BookingSuccessPopupComponent, successConfig));
+            .subscribe(() => {
+              this.matDialog.open(BookingSuccessPopupComponent, successConfig);
+              this.client.get<SlotsDto>('/api/reservation/' + this.shopId + '/slot')
+                .subscribe((slots: SlotsDto) => {
+                  this.slots = slots.slots;
+                });
+            });
         }
       });
   }
