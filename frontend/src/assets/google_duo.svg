@@ -1,16 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg">
-    <!-- Generator: Sketch 52.5 (67469) - http://www.bohemiancoding.com/sketch -->
-    <g id="Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Two-Tone" transform="translate(-136.000000, -1218.000000)">
-            <g id="Communication" transform="translate(100.000000, 1162.000000)">
-                <g id="Two-Tone-/-Communication-/-duo" transform="translate(34.000000, 54.000000)">
-                    <g>
-                        <polygon id="Path" points="0 0 24 0 24 24 0 24"></polygon>
-                        <path d="M20,2 L12,2 C6.38,2 2,6.66 2,12.28 C2,17.5 6.49,22 11.72,22 C17.39,22 22,17.62 22,12 L22,4 C22,2.9 21.1,2 20,2 Z M17,15 L14,13 L14,15 L7,15 L7,9 L14,9 L14,11 L17,9 L17,15 Z" id="🔹-Primary-Color" fill="#673ab7"></path>
-                    </g>
-                </g>
-            </g>
-        </g>
-    </g>
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <path fill="none" d="M0 0h24v24H0V0z"/>
+  <path
+    d="M20 2h-8C6.38 2 2 6.66 2 12.28 2 17.5 6.49 22 11.72 22 17.39 22 22 17.62 22 12V4c0-1.1-.9-2-2-2zm-3 13l-3-2v2H7V9h7v2l3-2v6z"/>
 </svg>
