@@ -15,8 +15,8 @@ GRADLE="./gradlew"
 (
     printf "Building Angular project ..."
     cd "${FRONTEND_DIR}"
-    ${NPM} install
-    ${NPM} run build
+    "${NPM}" install
+    "${NPM}" run build
     echo "  done."
 
 )
