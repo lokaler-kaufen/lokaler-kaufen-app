@@ -22,9 +22,17 @@
       <ng-container matColumnDef="available">
         <mat-header-cell *matHeaderCellDef> Verfügbar</mat-header-cell>
         <mat-cell *matCellDef="let element">
-          <button class="book-button" mat-stroked-button [disabled]="!element.available"
-                  [textContent]="element.available?'Jetzt buchen':'Belegt'"
-                  (click)="showBookingPopup(element.id)"></button>
+          <button class="book-button"
+                  mat-raised-button
+                  *ngIf="element.available"
+                  (click)="showBookingPopup(element.id)"
+                  color="primary">
+            Jetzt buchen
+          </button>
+
+          <button class="book-button" mat-stroked-button *ngIf="!element.available" disabled>
+            Belegt
+          </button>
         </mat-cell>
       </ng-container>
 
@@ -32,7 +40,6 @@
       <mat-row *matRowDef="let row; columns: ['from', 'to', 'available']"></mat-row>
     </mat-table>
   </div>
-
 
   <p class="mat-divider"></p>
 
