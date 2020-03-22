@@ -70,6 +70,6 @@ curlie :8080/api/shop/login email=moe@localhost password=moe
 
 The access token is set as a cookie.
 
-#Credits
+# Credits
 For geolocation lookups we are using data from [GeoNames](https://download.geonames.org/export/zip/)
-which is free to use under the [Creative Commons Attribution 3.0 License](https://creativecommons.org/licenses/by/3.0/)
+which is free to use under the [Creative Commons Attribution 3.0 License](https://creativecommons.org/licenses/by/3.0/).
