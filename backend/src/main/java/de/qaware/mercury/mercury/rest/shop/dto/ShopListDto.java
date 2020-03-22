@@ -29,7 +29,7 @@ public class ShopListDto {
                 shopListEntry.getShop().getId().getId().toString(),
                 shopListEntry.getShop().getName(),
                 shopListEntry.getDistance(),
-                Sets.map(shopListEntry.getShop().getContactTypes().keySet(), ContactType::getValue)
+                Sets.map(shopListEntry.getShop().getContactTypes().keySet(), ContactType::name)
             );
         }
     }
