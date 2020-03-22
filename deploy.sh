@@ -8,6 +8,9 @@ FRONTEND_DIR="${DIR}/frontend"
 BACKEND_DIR="${DIR}/backend"
 
 SPRING_STATIC_DIR="${BACKEND_DIR}/src/main/resources/static"
+ARTIFACT="${BACKEND_DIR}/build/libs/mercury-0.0.1-SNAPSHOT.jar"
+DEPLOY_DIR="/opt/mercury"
+USER="$1"
 
 NPM="npm"
 GRADLE="./gradlew"
@@ -33,5 +36,8 @@ echo "Copied Angular artifacts to ${SPRING_STATIC_DIR}"
 )
 
 echo "Build successful."
+echo "Deploying artifact ${ARTIFACT} ..."
+
+scp "${ARTIFACT}" "${USER}@lokaler.kaufen:${DEPLOY_DIR}"
 
 exit 0
