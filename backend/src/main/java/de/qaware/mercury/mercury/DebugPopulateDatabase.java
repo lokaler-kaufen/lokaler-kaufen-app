@@ -69,7 +69,7 @@ class DebugPopulateDatabase implements ApplicationRunner {
         ));
         createShop(new ShopCreation(
             "vroni@localhost", "Vroni", "Vroni's Kleiderladen", "Rheinstraße 4C", "55116", "Mainz", "", "", null,
-            "vroni", Map.of(ContactType.GOOGLE_DUO, "vroni@localhost", ContactType.SIGNAL_PRIVATE_MESSENGER, "@vroni"),
+            "vroni", Map.of(ContactType.GOOGLE_DUO, "vroni@localhost", ContactType.SIGNAL, "@vroni"),
             SlotConfig.builder().timePerSlot(60).timeBetweenSlots(15).build()
         ));
     }

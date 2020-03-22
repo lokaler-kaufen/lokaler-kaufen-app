@@ -6,6 +6,6 @@ public enum ContactType {
     FACETIME,
     GOOGLE_DUO,
     SKYPE,
-    SIGNAL_PRIVATE_MESSENGER,
+    SIGNAL,
     VIBER
 }
