@@ -48,6 +48,6 @@ echo "Build successful."
 echo "Deploying artifact ${ARTIFACT} ..."
 
 rsync -v -e ssh "${ARTIFACT}" "${USER}@${HOST}:${DEPLOY_DIR}"
-ssh "${USER}@${HOST}" systemctl restart mercury.service
+ssh "${USER}@${HOST}" sudo systemctl restart mercury.service
 
 exit 0
