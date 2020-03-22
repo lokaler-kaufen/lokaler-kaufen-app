@@ -28,7 +28,7 @@ export class AppComponent {
         'VIBER',
         this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/viber.svg'))
       .addSvgIcon(
-        'SIGNAL_PRIVATE_MESSENGER',
+        'SIGNAL',
         this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/signal.svg')
       );
   }
