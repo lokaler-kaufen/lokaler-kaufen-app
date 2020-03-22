@@ -10,25 +10,24 @@
  * Do not edit the class manually.
  *//* tslint:disable:no-unused-variable member-ordering */
 
-import { Inject, Injectable, Optional }                      from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams,
-         HttpResponse, HttpEvent }                           from '@angular/common/http';
-import { CustomHttpUrlEncodingCodec }                        from '../encoder';
+import {Inject, Injectable, Optional} from '@angular/core';
+import {HttpClient, HttpEvent, HttpHeaders, HttpParams, HttpResponse} from '@angular/common/http';
+import {CustomHttpUrlEncodingCodec} from '../encoder';
 
-import { Observable }                                        from 'rxjs';
+import {Observable} from 'rxjs';
 
-import { ShopAdminDto } from '../model/shopAdminDto';
-import { ShopsAdminDto } from '../model/shopsAdminDto';
-import { UpdateShopRequestDto } from '../model/updateShopRequestDto';
+import {ShopAdminDto} from '../model/shopAdminDto';
+import {ShopsAdminDto} from '../model/shopsAdminDto';
+import {UpdateShopRequestDto} from '../model/updateShopRequestDto';
 
-import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
-import { Configuration }                                     from '../configuration';
+import {BASE_PATH} from '../variables';
+import {Configuration} from '../configuration';
 
 
 @Injectable()
 export class ShopAdminControllerService {
 
-    protected basePath = '/api';
+    protected basePath = '//localhost:4200/';
     public defaultHeaders = new HttpHeaders();
     public configuration = new Configuration();
 
@@ -97,7 +96,7 @@ export class ShopAdminControllerService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<any>('put',`${this.basePath}/admin/shop/${encodeURIComponent(String(id))}/enable`,
+        return this.httpClient.request<any>('put',`${this.basePath}/api/admin/shop/${encodeURIComponent(String(id))}/enable`,
             {
                 params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
@@ -138,7 +137,7 @@ export class ShopAdminControllerService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<any>('delete',`${this.basePath}/admin/shop/${encodeURIComponent(String(id))}`,
+        return this.httpClient.request<any>('delete',`${this.basePath}/api/admin/shop/${encodeURIComponent(String(id))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -174,7 +173,7 @@ export class ShopAdminControllerService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<ShopsAdminDto>('get',`${this.basePath}/admin/shop`,
+        return this.httpClient.request<ShopsAdminDto>('get',`${this.basePath}/api/admin/shop`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -225,7 +224,7 @@ export class ShopAdminControllerService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.request<ShopAdminDto>('put',`${this.basePath}/admin/shop/${encodeURIComponent(String(id))}`,
+        return this.httpClient.request<ShopAdminDto>('put',`${this.basePath}/api/admin/shop/${encodeURIComponent(String(id))}`,
             {
                 body: body,
                 withCredentials: this.configuration.withCredentials,

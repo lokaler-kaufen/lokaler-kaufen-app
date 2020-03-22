@@ -11,5 +11,8 @@
  */
 
 export interface SlotDto { 
+    available?: boolean;
+    end?: string;
     id?: string;
+    start?: string;
 }

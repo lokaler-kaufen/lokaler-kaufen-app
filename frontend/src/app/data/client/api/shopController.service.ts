@@ -10,27 +10,26 @@
  * Do not edit the class manually.
  *//* tslint:disable:no-unused-variable member-ordering */
 
-import { Inject, Injectable, Optional }                      from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams,
-         HttpResponse, HttpEvent }                           from '@angular/common/http';
-import { CustomHttpUrlEncodingCodec }                        from '../encoder';
+import {Inject, Injectable, Optional} from '@angular/core';
+import {HttpClient, HttpEvent, HttpHeaders, HttpParams, HttpResponse} from '@angular/common/http';
+import {CustomHttpUrlEncodingCodec} from '../encoder';
 
-import { Observable }                                        from 'rxjs';
+import {Observable} from 'rxjs';
 
-import { CreateShopRequestDto } from '../model/createShopRequestDto';
-import { SendCreateLinkDto } from '../model/sendCreateLinkDto';
-import { ShopDetailDto } from '../model/shopDetailDto';
-import { ShopListDto } from '../model/shopListDto';
-import { UpdateShopRequestDto } from '../model/updateShopRequestDto';
+import {CreateShopRequestDto} from '../model/createShopRequestDto';
+import {SendCreateLinkDto} from '../model/sendCreateLinkDto';
+import {ShopDetailDto} from '../model/shopDetailDto';
+import {ShopListDto} from '../model/shopListDto';
+import {UpdateShopRequestDto} from '../model/updateShopRequestDto';
 
-import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
-import { Configuration }                                     from '../configuration';
+import {BASE_PATH} from '../variables';
+import {Configuration} from '../configuration';
 
 
 @Injectable()
 export class ShopControllerService {
 
-    protected basePath = '/api';
+    protected basePath = '//localhost:4200/';
     public defaultHeaders = new HttpHeaders();
     public configuration = new Configuration();
 
@@ -105,7 +104,7 @@ export class ShopControllerService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.request<ShopDetailDto>('post',`${this.basePath}/shop/`,
+        return this.httpClient.request<ShopDetailDto>('post',`${this.basePath}/api/shop`,
             {
                 body: body,
                 params: queryParameters,
@@ -148,7 +147,7 @@ export class ShopControllerService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<ShopDetailDto>('get',`${this.basePath}/shop/${encodeURIComponent(String(id))}`,
+        return this.httpClient.request<ShopDetailDto>('get',`${this.basePath}/api/shop/${encodeURIComponent(String(id))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -194,7 +193,7 @@ export class ShopControllerService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<ShopListDto>('get',`${this.basePath}/shop/nearby`,
+        return this.httpClient.request<ShopListDto>('get',`${this.basePath}/api/shop/nearby`,
             {
                 params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
@@ -249,7 +248,7 @@ export class ShopControllerService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<ShopListDto>('get',`${this.basePath}/shop/search`,
+        return this.httpClient.request<ShopListDto>('get',`${this.basePath}/api/shop/search`,
             {
                 params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
@@ -295,7 +294,7 @@ export class ShopControllerService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.request<any>('post',`${this.basePath}/shop/send-create-link`,
+        return this.httpClient.request<any>('post',`${this.basePath}/api/shop/send-create-link`,
             {
                 body: body,
                 withCredentials: this.configuration.withCredentials,
@@ -342,7 +341,7 @@ export class ShopControllerService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.request<ShopDetailDto>('put',`${this.basePath}/shop/`,
+        return this.httpClient.request<ShopDetailDto>('put',`${this.basePath}/api/shop`,
             {
                 body: body,
                 withCredentials: this.configuration.withCredentials,

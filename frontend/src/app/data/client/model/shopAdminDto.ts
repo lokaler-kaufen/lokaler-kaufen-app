@@ -25,18 +25,14 @@ export interface ShopAdminDto {
     zipCode?: string;
 }
 export namespace ShopAdminDto {
-    export type ContactTypesEnum = 'FACEBOOK_MESSENGER' | 'GLIDE' | 'GOOGLE_DUO' | 'WHATSAPP' | 'SKYPE' | 'JUSTALK' | 'SIGNAL_PRIVATE_MESSENGER' | 'SNAPCHAT' | 'TANGO' | 'VIBER' | 'TELEPHONE';
+    export type ContactTypesEnum = 'WHATSAPP' | 'PHONE' | 'FACETIME' | 'GOOGLE_DUO' | 'SKYPE' | 'SIGNAL_PRIVATE_MESSENGER' | 'VIBER';
     export const ContactTypesEnum = {
-        FACEBOOKMESSENGER: 'FACEBOOK_MESSENGER' as ContactTypesEnum,
-        GLIDE: 'GLIDE' as ContactTypesEnum,
-        GOOGLEDUO: 'GOOGLE_DUO' as ContactTypesEnum,
         WHATSAPP: 'WHATSAPP' as ContactTypesEnum,
+        PHONE: 'PHONE' as ContactTypesEnum,
+        FACETIME: 'FACETIME' as ContactTypesEnum,
+        GOOGLEDUO: 'GOOGLE_DUO' as ContactTypesEnum,
         SKYPE: 'SKYPE' as ContactTypesEnum,
-        JUSTALK: 'JUSTALK' as ContactTypesEnum,
         SIGNALPRIVATEMESSENGER: 'SIGNAL_PRIVATE_MESSENGER' as ContactTypesEnum,
-        SNAPCHAT: 'SNAPCHAT' as ContactTypesEnum,
-        TANGO: 'TANGO' as ContactTypesEnum,
-        VIBER: 'VIBER' as ContactTypesEnum,
-        TELEPHONE: 'TELEPHONE' as ContactTypesEnum
+        VIBER: 'VIBER' as ContactTypesEnum
     };
 }

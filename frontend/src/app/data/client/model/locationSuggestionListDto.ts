@@ -9,8 +9,8 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import {SlotDto} from './slotDto';
+import {LocationSuggestionDto} from './locationSuggestionDto';
 
-export interface SlotsDto {
-    slots?: Array<SlotDto>;
+export interface LocationSuggestionListDto {
+    locationSuggestions?: Array<LocationSuggestionDto>;
 }

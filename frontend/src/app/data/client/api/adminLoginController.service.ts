@@ -10,24 +10,22 @@
  * Do not edit the class manually.
  *//* tslint:disable:no-unused-variable member-ordering */
 
-import { Inject, Injectable, Optional }                      from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams,
-         HttpResponse, HttpEvent }                           from '@angular/common/http';
-import { CustomHttpUrlEncodingCodec }                        from '../encoder';
+import {Inject, Injectable, Optional} from '@angular/core';
+import {HttpClient, HttpEvent, HttpHeaders, HttpResponse} from '@angular/common/http';
 
-import { Observable }                                        from 'rxjs';
+import {Observable} from 'rxjs';
 
-import { LoginDto } from '../model/loginDto';
-import { WhoAmIDto } from '../model/whoAmIDto';
+import {LoginDto} from '../model/loginDto';
+import {WhoAmIDto} from '../model/whoAmIDto';
 
-import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
-import { Configuration }                                     from '../configuration';
+import {BASE_PATH} from '../variables';
+import {Configuration} from '../configuration';
 
 
 @Injectable()
 export class AdminLoginControllerService {
 
-    protected basePath = '/api';
+    protected basePath = '//localhost:4200/';
     public defaultHeaders = new HttpHeaders();
     public configuration = new Configuration();
 
@@ -91,7 +89,7 @@ export class AdminLoginControllerService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.request<any>('post',`${this.basePath}/admin/login`,
+        return this.httpClient.request<any>('post',`${this.basePath}/api/admin/login`,
             {
                 body: body,
                 withCredentials: this.configuration.withCredentials,
@@ -128,7 +126,7 @@ export class AdminLoginControllerService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<WhoAmIDto>('get',`${this.basePath}/admin/login`,
+        return this.httpClient.request<WhoAmIDto>('get',`${this.basePath}/api/admin/login`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

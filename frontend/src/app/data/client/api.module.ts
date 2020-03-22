@@ -1,14 +1,15 @@
-import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core';
-import { Configuration } from './configuration';
-import { HttpClient } from '@angular/common/http';
+import {ModuleWithProviders, NgModule, Optional, SkipSelf} from '@angular/core';
+import {Configuration} from './configuration';
+import {HttpClient} from '@angular/common/http';
 
 
-import { AdminLoginControllerService } from './api/adminLoginController.service';
-import { BasicErrorControllerService } from './api/basicErrorController.service';
-import { ReservationControllerService } from './api/reservationController.service';
-import { ShopAdminControllerService } from './api/shopAdminController.service';
-import { ShopControllerService } from './api/shopController.service';
-import { ShopLoginControllerService } from './api/shopLoginController.service';
+import {AdminLoginControllerService} from './api/adminLoginController.service';
+import {BasicErrorControllerService} from './api/basicErrorController.service';
+import {LocationControllerService} from './api/locationController.service';
+import {ReservationControllerService} from './api/reservationController.service';
+import {ShopAdminControllerService} from './api/shopAdminController.service';
+import {ShopControllerService} from './api/shopController.service';
+import {ShopLoginControllerService} from './api/shopLoginController.service';
 
 @NgModule({
   imports:      [],
@@ -17,6 +18,7 @@ import { ShopLoginControllerService } from './api/shopLoginController.service';
   providers: [
     AdminLoginControllerService,
     BasicErrorControllerService,
+    LocationControllerService,
     ReservationControllerService,
     ShopAdminControllerService,
     ShopControllerService,

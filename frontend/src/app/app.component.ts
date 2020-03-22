@@ -10,14 +10,26 @@ import {DomSanitizer} from '@angular/platform-browser';
 export class AppComponent {
   constructor(private matIconRegistry: MatIconRegistry, private domSanitizer: DomSanitizer) {
     this.matIconRegistry.addSvgIcon(
-      'whatsapp',
+      'WHATSAPP',
       this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/whatsapp.svg'))
       .addSvgIcon(
-        'facetime',
+        'FACETIME',
         this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/voice_chat.svg'))
       .addSvgIcon(
-        'phone',
-        this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/phone.svg')
+        'PHONE',
+        this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/phone.svg'))
+      .addSvgIcon(
+        'GOOGLE_DUO',
+        this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/google_duo.svg'))
+      .addSvgIcon(
+        'SKYPE',
+        this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/skype.svg'))
+      .addSvgIcon(
+        'VIBER',
+        this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/viber.svg'))
+      .addSvgIcon(
+        'SIGNAL_PRIVATE_MESSENGER',
+        this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/signal.svg')
       );
   }
 }

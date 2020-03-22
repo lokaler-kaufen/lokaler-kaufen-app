@@ -10,24 +10,22 @@
  * Do not edit the class manually.
  *//* tslint:disable:no-unused-variable member-ordering */
 
-import { Inject, Injectable, Optional }                      from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams,
-         HttpResponse, HttpEvent }                           from '@angular/common/http';
-import { CustomHttpUrlEncodingCodec }                        from '../encoder';
+import {Inject, Injectable, Optional} from '@angular/core';
+import {HttpClient, HttpEvent, HttpHeaders, HttpResponse} from '@angular/common/http';
 
-import { Observable }                                        from 'rxjs';
+import {Observable} from 'rxjs';
 
-import { ReservationDto } from '../model/reservationDto';
-import { SlotDto } from '../model/slotDto';
+import {CreateReservationDto} from '../model/createReservationDto';
+import {SlotsDto} from '../model/slotsDto';
 
-import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
-import { Configuration }                                     from '../configuration';
+import {BASE_PATH} from '../variables';
+import {Configuration} from '../configuration';
 
 
 @Injectable()
 export class ReservationControllerService {
 
-    protected basePath = '/api';
+    protected basePath = '//localhost:4200/';
     public defaultHeaders = new HttpHeaders();
     public configuration = new Configuration();
 
@@ -59,15 +57,15 @@ export class ReservationControllerService {
     /**
      * createReservation
      *
-     * @param body reservationDetails
+     * @param body request
      * @param shopId shopId
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createReservationUsingPOST(body: ReservationDto, shopId: string, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public createReservationUsingPOST(body: ReservationDto, shopId: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public createReservationUsingPOST(body: ReservationDto, shopId: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public createReservationUsingPOST(body: ReservationDto, shopId: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public createReservationUsingPOST(body: CreateReservationDto, shopId: string, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public createReservationUsingPOST(body: CreateReservationDto, shopId: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public createReservationUsingPOST(body: CreateReservationDto, shopId: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public createReservationUsingPOST(body: CreateReservationDto, shopId: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (body === null || body === undefined) {
             throw new Error('Required parameter body was null or undefined when calling createReservationUsingPOST.');
@@ -96,50 +94,9 @@ export class ReservationControllerService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.request<any>('post',`${this.basePath}/reservation/${encodeURIComponent(String(shopId))}`,
+        return this.httpClient.request<any>('post',`${this.basePath}/api/reservation/${encodeURIComponent(String(shopId))}`,
             {
                 body: body,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * getExistingReservations
-     *
-     * @param shopId shopId
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public getExistingReservationsUsingGET(shopId: string, observe?: 'body', reportProgress?: boolean): Observable<Array<ReservationDto>>;
-    public getExistingReservationsUsingGET(shopId: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<ReservationDto>>>;
-    public getExistingReservationsUsingGET(shopId: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<ReservationDto>>>;
-    public getExistingReservationsUsingGET(shopId: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (shopId === null || shopId === undefined) {
-            throw new Error('Required parameter shopId was null or undefined when calling getExistingReservationsUsingGET.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-        return this.httpClient.request<Array<ReservationDto>>('get',`${this.basePath}/reservation/${encodeURIComponent(String(shopId))}`,
-            {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -155,9 +112,9 @@ export class ReservationControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getSlotsForShopUsingGET(shopId: string, observe?: 'body', reportProgress?: boolean): Observable<Array<SlotDto>>;
-    public getSlotsForShopUsingGET(shopId: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<SlotDto>>>;
-    public getSlotsForShopUsingGET(shopId: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<SlotDto>>>;
+    public getSlotsForShopUsingGET(shopId: string, observe?: 'body', reportProgress?: boolean): Observable<SlotsDto>;
+    public getSlotsForShopUsingGET(shopId: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<SlotsDto>>;
+    public getSlotsForShopUsingGET(shopId: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<SlotsDto>>;
     public getSlotsForShopUsingGET(shopId: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (shopId === null || shopId === undefined) {
@@ -179,7 +136,7 @@ export class ReservationControllerService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<Array<SlotDto>>('get',`${this.basePath}/reservation/${encodeURIComponent(String(shopId))}/slots`,
+        return this.httpClient.request<SlotsDto>('get',`${this.basePath}/api/reservation/${encodeURIComponent(String(shopId))}/slot`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
