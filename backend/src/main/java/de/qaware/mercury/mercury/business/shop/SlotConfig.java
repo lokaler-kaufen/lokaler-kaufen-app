@@ -1,9 +1,13 @@
 package de.qaware.mercury.mercury.business.shop;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Value;
 import org.springframework.lang.Nullable;
 
 @Value
+@Builder
+@AllArgsConstructor
 public class SlotConfig {
     int timePerSlot;
     int timeBetweenSlots;
@@ -22,8 +26,4 @@ public class SlotConfig {
     DayConfig saturday;
     @Nullable
     DayConfig sunday;
-
-    public static SlotConfig none(int timePerSlot, int timeBetweenSlots) {
-        return new SlotConfig(timePerSlot, timeBetweenSlots, null, null, null, null, null, null, null);
-    }
 }

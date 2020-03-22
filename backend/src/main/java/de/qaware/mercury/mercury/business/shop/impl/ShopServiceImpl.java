@@ -64,6 +64,16 @@ class ShopServiceImpl implements ShopService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public Shop findByIdOrThrow(Shop.Id id) throws ShopNotFoundException {
+        Shop shop = findById(id);
+        if (shop == null) {
+            throw new ShopNotFoundException(id);
+        }
+        return shop;
+    }
+
+    @Override
     @Transactional
     public Shop create(ShopCreation creation) {
         UUID id = uuidFactory.create();

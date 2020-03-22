@@ -1,0 +1,7 @@
+### Get reservations
+
+GET {{ host }}/api/reservation/be37dac1-cc73-4ec2-861a-15db86ebeeee/slot
+Accept: application/json
+
+### Reserve slot
+POST {{ host }}/api/reservation

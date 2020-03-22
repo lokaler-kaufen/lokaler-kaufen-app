@@ -7,6 +7,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReservationDto {
-    public String id;
+public class CreateReservationDto {
+    private String slotId;
+    private String contactType;
+    private String contact;
+    private String name;
+    private String email;
 }
