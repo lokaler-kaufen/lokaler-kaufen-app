@@ -1,0 +1,22 @@
+.login-page {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+form {
+  width: 75%;
+  max-width: 480px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+
+  margin-bottom: 60px;
+}
+
+form-item {
+  width: 100%;
+}
