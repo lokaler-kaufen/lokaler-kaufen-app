@@ -1,0 +1,14 @@
+Hallo {{ name }},
+
+wir haben {{ ownerName }} informiert. {{ ownerName }} ruft dich per {{ contactType }} am {{ date }} zwischen
+{{ start }} und {{ end }} unter {{ contact }} an. Bitte beachte, dass es zu Stoßzeiten zu Verzögerungen kommen kann.
+
+Falls du den Termin absagen willst, klicke einfach diesen Link:
+
+{{ cancelReservationLink }}
+
+Falls das nicht funktioniert, kopiere den Link bitte in deinen Browser.
+
+Viele Grüße,
+
+dein lokaler.kaufen Team

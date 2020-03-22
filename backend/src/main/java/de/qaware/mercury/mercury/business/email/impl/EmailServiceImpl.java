@@ -3,8 +3,13 @@ package de.qaware.mercury.mercury.business.email.impl;
 import de.qaware.mercury.mercury.business.email.EmailSender;
 import de.qaware.mercury.mercury.business.email.EmailService;
 import de.qaware.mercury.mercury.business.email.SendEmailException;
+import de.qaware.mercury.mercury.business.i18n.DateTimeI18nService;
 import de.qaware.mercury.mercury.business.login.ShopCreationToken;
 import de.qaware.mercury.mercury.business.login.TokenService;
+import de.qaware.mercury.mercury.business.shop.ContactType;
+import de.qaware.mercury.mercury.business.shop.Shop;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Service;
@@ -12,21 +17,20 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 
 @Service
 @Slf4j
 @EnableConfigurationProperties(EmailConfigurationProperties.class)
+@RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 class EmailServiceImpl implements EmailService {
     private static final String SHOP_CREATION_SUBJECT = "Dein Laden auf lokaler.kaufen";
+    private static final String CUSTOMER_RESERVATION_CONFIRMATION_SUBJECT = "Reservierungsbestätigung auf lokaler.kaufen";
+    private static final String SHOP_NEW_RESERVATION_SUBJECT = "Es gibt eine neue Reservierung auf lokaler.kaufen";
     private final EmailSender emailSender;
     private final EmailConfigurationProperties config;
     private final TokenService tokenService;
-
-    EmailServiceImpl(EmailSender emailSender, EmailConfigurationProperties config, TokenService tokenService) {
-        this.emailSender = emailSender;
-        this.config = config;
-        this.tokenService = tokenService;
-    }
+    private final DateTimeI18nService dateTimeI18nService;
 
     @Override
     public void sendShopCreationLink(String email) {
@@ -38,6 +42,35 @@ class EmailServiceImpl implements EmailService {
             .replace("{{ link }}", creationLink);
 
         emailSender.sendEmail(email, SHOP_CREATION_SUBJECT, body);
+    }
+
+    @Override
+    public void sendCustomerReservationConfirmation(Shop shop, String email, String name, LocalDateTime slotStart, LocalDateTime slotEnd, ContactType contactType, String contact) {
+        String body = loadTemplate("/email/customer-reservation-confirmation.txt")
+            .replace("{{ name }}", name)
+            .replace("{{ ownerName }}", shop.getOwnerName())
+            .replace("{{ contactType }}", contactType.getHumanReadable())
+            .replace("{{ date }}", dateTimeI18nService.formatDate(slotStart))
+            .replace("{{ start }}", dateTimeI18nService.formatTime(slotStart))
+            .replace("{{ end }}", dateTimeI18nService.formatTime(slotEnd))
+            .replace("{{ contact }}", contact)
+            .replace("{{ cancelReservationLink }}", "TODO");
+
+        emailSender.sendEmail(email, CUSTOMER_RESERVATION_CONFIRMATION_SUBJECT, body);
+    }
+
+    @Override
+    public void sendShopNewReservation(Shop shop, String name, LocalDateTime slotStart, LocalDateTime slotEnd, ContactType contactType, String contact) {
+        String body = loadTemplate("/email/shop-new-reservation.txt")
+            .replace("{{ name }}", name)
+            .replace("{{ ownerName }}", shop.getOwnerName())
+            .replace("{{ contactType }}", contactType.getHumanReadable())
+            .replace("{{ date }}", dateTimeI18nService.formatDate(slotStart))
+            .replace("{{ start }}", dateTimeI18nService.formatTime(slotStart))
+            .replace("{{ end }}", dateTimeI18nService.formatTime(slotEnd))
+            .replace("{{ contact }}", contact);
+
+        emailSender.sendEmail(shop.getEmail(), SHOP_NEW_RESERVATION_SUBJECT, body);
     }
 
     private String loadTemplate(String location) {

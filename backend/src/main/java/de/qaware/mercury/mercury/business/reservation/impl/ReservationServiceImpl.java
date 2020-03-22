@@ -1,5 +1,6 @@
 package de.qaware.mercury.mercury.business.reservation.impl;
 
+import de.qaware.mercury.mercury.business.email.EmailService;
 import de.qaware.mercury.mercury.business.reservation.Interval;
 import de.qaware.mercury.mercury.business.reservation.Reservation;
 import de.qaware.mercury.mercury.business.reservation.ReservationService;
@@ -14,6 +15,7 @@ import de.qaware.mercury.mercury.util.Lists;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -26,8 +28,10 @@ class ReservationServiceImpl implements ReservationService {
     private final ReservationRepository reservationRepository;
     private final Clock clock;
     private final UUIDFactory uuidFactory;
+    private final EmailService emailService;
 
     @Override
+    @Transactional(readOnly = true)
     public List<Slot> listSlots(Shop shop) {
         LocalDate today = clock.today();
         // Find all reservations in the time range
@@ -37,6 +41,7 @@ class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
+    @Transactional
     public void createReservation(Shop shop, Slot.Id slotId, ContactType contactType, String contact, String name, String email) {
         // TODO: Validate that slot is available
         // TODO: Validate if this is a valid slot
@@ -48,6 +53,9 @@ class ReservationServiceImpl implements ReservationService {
         LocalDateTime end = start.plusMinutes(shop.getSlotConfig().getTimePerSlot());
 
         reservationRepository.insert(new Reservation(id, shop.getId(), start, end, contact, email, contactType));
+
+        emailService.sendCustomerReservationConfirmation(shop, email, name, start, end, contactType, contact);
+        emailService.sendShopNewReservation(shop, name, start, end, contactType, contact);
     }
 
     private List<Interval> mapReservations(List<Reservation> reservations) {
