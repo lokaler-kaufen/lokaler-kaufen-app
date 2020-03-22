@@ -22,5 +22,5 @@ public class UpdateShopRequestDto {
     private String website;
     // Maps from WHATSAPP -> Telephone number, for example
     private Map<String, String> contactTypes;
-    private SlotsDto slots;
+    private SlotConfigDto slots;
 }

@@ -23,5 +23,5 @@ public class CreateShopRequestDto {
     private String password;
     // Maps from WHATSAPP -> Telephone number, for example
     private Map<String, String> contactTypes;
-    private SlotsDto slots;
+    private SlotConfigDto slots;
 }

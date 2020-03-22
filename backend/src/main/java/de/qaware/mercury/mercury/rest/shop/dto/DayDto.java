@@ -10,7 +10,7 @@ import java.time.LocalTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SlotDto {
+public class DayDto {
     private String start;
     private String end;
 

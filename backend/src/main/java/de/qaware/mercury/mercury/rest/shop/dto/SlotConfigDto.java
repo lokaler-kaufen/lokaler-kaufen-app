@@ -10,30 +10,30 @@ import org.springframework.lang.Nullable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SlotsDto {
+public class SlotConfigDto {
     private int timePerSlot;
     private int timeBetweenSlots;
 
     @Nullable
-    private SlotDto monday;
+    private DayDto monday;
     @Nullable
-    private SlotDto tuesday;
+    private DayDto tuesday;
     @Nullable
-    private SlotDto wednesday;
+    private DayDto wednesday;
     @Nullable
-    private SlotDto thursday;
+    private DayDto thursday;
     @Nullable
-    private SlotDto friday;
+    private DayDto friday;
     @Nullable
-    private SlotDto saturday;
+    private DayDto saturday;
     @Nullable
-    private SlotDto sunday;
+    private DayDto sunday;
 
     public Slots toSlots() {
         return new Slots(
-            timePerSlot, timeBetweenSlots, Null.map(monday, SlotDto::toSlot), Null.map(tuesday, SlotDto::toSlot),
-            Null.map(wednesday, SlotDto::toSlot), Null.map(thursday, SlotDto::toSlot), Null.map(friday, SlotDto::toSlot),
-            Null.map(saturday, SlotDto::toSlot), Null.map(sunday, SlotDto::toSlot)
+            timePerSlot, timeBetweenSlots, Null.map(monday, DayDto::toSlot), Null.map(tuesday, DayDto::toSlot),
+            Null.map(wednesday, DayDto::toSlot), Null.map(thursday, DayDto::toSlot), Null.map(friday, DayDto::toSlot),
+            Null.map(saturday, DayDto::toSlot), Null.map(sunday, DayDto::toSlot)
         );
     }
 }
