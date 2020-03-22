@@ -3,8 +3,8 @@ import {MatTableDataSource} from '@angular/material/table';
 import {MatSort} from '@angular/material/sort';
 import {ActivatedRoute, Router} from '@angular/router';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {ContactTypes} from '../shared/contact-types';
-import {ShopListDto, ShopListEntryDto} from '../data/client';
+import {ShopDetailDto, ShopListDto, ShopListEntryDto} from '../data/client';
+import ContactTypesEnum = ShopDetailDto.ContactTypesEnum;
 
 @Component({
   selector: 'shop-search-page',
@@ -12,7 +12,7 @@ import {ShopListDto, ShopListEntryDto} from '../data/client';
   styleUrls: ['./shop-search-page.component.css']
 })
 export class ShopSearchPageComponent implements OnInit {
-  contactTypes = ContactTypes;
+  contactTypes = Object.keys(ContactTypesEnum).map(key => ContactTypesEnum[key]);
   searchBusiness: string;
   dataSource = new MatTableDataSource();
   @ViewChild(MatSort, {static: true}) sort: MatSort;
@@ -53,6 +53,14 @@ export class ShopSearchPageComponent implements OnInit {
 
   private dataUpdate(data: ShopListDto): void {
     this.dataSource = new MatTableDataSource<ShopListEntryDto>(data.shops);
+  }
+
+  getEnumValue(contactType: any) {
+    let splitted = contactType.split('_');
+    splitted = splitted.map(split => {
+      return split.charAt(0) + split.slice(1).toLowerCase();
+    });
+    return splitted.join(' ');
   }
 
 }

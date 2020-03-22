@@ -1,10 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {ShopCreateDto} from '../data/client/model/shopCreateDto';
 import {HttpClient} from "@angular/common/http";
 import {ActivatedRoute} from "@angular/router";
-import {CreateShopRequestDto, SlotConfigDto} from "../data/client";
-import ContactTypesEnum = ShopCreateDto.ContactTypesEnum;
+import {CreateShopRequestDto, ShopDetailDto, SlotConfigDto} from "../data/client";
+import ContactTypesEnum = ShopDetailDto.ContactTypesEnum;
 
 export class OpeningHours {
   constructor(enabled: boolean = true, from: string = '09:00', to: string = '16:00') {
