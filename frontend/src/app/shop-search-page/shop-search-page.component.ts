@@ -14,6 +14,7 @@ import ContactTypesEnum = ShopDetailDto.ContactTypesEnum;
 export class ShopSearchPageComponent implements OnInit {
   contactTypes = Object.keys(ContactTypesEnum).map(key => ContactTypesEnum[key]);
   searchBusiness: string;
+  location: string;
   dataSource = new MatTableDataSource();
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   displayedColumns: string[] = ['name', 'distance', 'supportedContactTypes'];
@@ -35,6 +36,7 @@ export class ShopSearchPageComponent implements OnInit {
 
   private handleParamsUpdate(params): void {
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
+    this.location = params.location;
     this.client.get<ShopListDto>('/api/shop/nearby?location=' + params.location, {headers: headers}).subscribe(
       response => {
         if (response.shops.length > 0) {
@@ -63,4 +65,20 @@ export class ShopSearchPageComponent implements OnInit {
     return splitted.join(' ');
   }
 
+  performSearch() {
+    this.client.get<ShopListDto>('/api/shop/search?location=' + this.location + '&query=' + this.searchBusiness).subscribe(
+      response => {
+        if (response.shops.length > 0) {
+          this.dataSource = new MatTableDataSource<ShopListEntryDto>(response.shops);
+          this.sort.sort({id: 'distance', start: 'asc', disableClear: false});
+          this.dataSource.sort = this.sort;
+        } else {
+          console.log('Keine Shops gefunden.');
+        }
+      },
+      error => {
+        console.log('Error requesting shop overview: ' + error.status + ', ' + error.error.message);
+      }
+    );
+  }
 }

@@ -1,7 +1,7 @@
 <div style="width: 100%;">
   <mat-form-field style="width: 100%;">
     <mat-label>Suche</mat-label>
-    <input matInput placeholder="Dein Lieblingsgeschäft..." [(ngModel)]="searchBusiness">
+    <input matInput placeholder="Dein Lieblingsgeschäft..." [(ngModel)]="searchBusiness" (keyup.enter)="performSearch()">
     <mat-icon matSuffix>search</mat-icon>
   </mat-form-field>
 </div>
