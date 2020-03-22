@@ -1,12 +1,12 @@
 <h1 mat-dialog-title>Buchen</h1>
 <div mat-dialog-content>
-  <p>What's your favorite animal?</p>
   <form [formGroup]="formControl" (ngSubmit)="onSubmit()">
     <mat-form-field class="booking-popup-form-label">
       <mat-label>Wie können wir dich kontaktieren?</mat-label>
       <mat-select formControlName="option">
-        <mat-option *ngFor="let option of data.supportedContactTypes" [value]="option">
-          <mat-icon svgIcon="{{option}}"></mat-icon>{{contactTypes.getDisplayName(option)}}
+        <mat-option *ngFor="let option of data.supportedContactTypes" [value]="contactTypes.getDisplayName(option)">
+          <mat-icon svgIcon="{{option}}"></mat-icon>
+          {{contactTypes.getDisplayName(option)}}
         </mat-option>
       </mat-select>
     </mat-form-field>

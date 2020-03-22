@@ -1,4 +1,4 @@
-import {Component, Inject, Input, OnInit} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ContactTypes} from '../shared/contact-types';
@@ -38,9 +38,11 @@ export class BookingPopupComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<BookingPopupComponent>,
               @Inject(MAT_DIALOG_DATA) public data: BookingDialogData) {
+    console.log(data.supportedContactTypes);
   }
 
   ngOnInit(): void {
+
   }
 
   onSubmit(): void {
