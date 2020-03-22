@@ -1,6 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {ShopCreateDto} from '../data/client/model/shopCreateDto';
+import {CreateShopRequestDto, SlotsDto} from "../data/client";
+import {HttpClient} from "@angular/common/http";
+import {ActivatedRoute} from "@angular/router";
 import ContactTypesEnum = ShopCreateDto.ContactTypesEnum;
 
 export class OpeningHours {
@@ -48,13 +51,15 @@ export class ShopCreationPageComponent implements OnInit {
 
   days;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private client: HttpClient, private formBuilder: FormBuilder, private route: ActivatedRoute) {
     this.days = Array.from(this.businessHours.POSSIBLE_BUSINESS_HOURS.keys());
     this.contactTypes = Object.keys(ContactTypesEnum).map(key => ContactTypesEnum[key]);
   }
 
   ngOnInit() {
-    console.log('Contact Types size ' + this.contactTypes);
+    this.route.queryParams.subscribe(params => {
+      this.token = params.token;
+    });
     this.nameFormGroup = this.formBuilder.group({
       nameCtrl: ['', Validators.required],
       businessNameCtrl: ['', Validators.required]
@@ -110,22 +115,37 @@ export class ShopCreationPageComponent implements OnInit {
   }
 
   createShop() {
-    let shopCreateDto: ShopCreateDto;
-    shopCreateDto.ownerName = this.nameFormGroup.get('nameCtrl').value;
-    shopCreateDto.name = this.nameFormGroup.get('businessNameCtrl').value;
-    shopCreateDto.street = this.addressFormGroup.get('streetCtrl').value;
-    shopCreateDto.zipCode = this.addressFormGroup.get('zipCtrl').value;
-    shopCreateDto.city = this.addressFormGroup.get('cityCtrl').value;
-    shopCreateDto.addressSupplement = this.addressFormGroup.get('suffixCtrl').value;
-    // shopCreateDto.description = this.descriptionFormGroup.get('descriptionCtrl').value;
-    // shopCreateDto.url = this.descriptionFormGroup.get('urlCtrl').value;
-    let availableContactTypes: ContactTypesEnum[];
+    console.log('Create shop');
+    let createShopRequestDto: CreateShopRequestDto = {};
+    createShopRequestDto.ownerName = this.nameFormGroup.get('nameCtrl').value;
+    createShopRequestDto.name = this.nameFormGroup.get('businessNameCtrl').value;
+    createShopRequestDto.street = this.addressFormGroup.get('streetCtrl').value;
+    createShopRequestDto.zipCode = this.addressFormGroup.get('zipCtrl').value;
+    createShopRequestDto.city = this.addressFormGroup.get('cityCtrl').value;
+    createShopRequestDto.addressSupplement = this.addressFormGroup.get('suffixCtrl').value;
+    createShopRequestDto.details = this.descriptionFormGroup.get('descriptionCtrl').value;
+    createShopRequestDto.website = this.descriptionFormGroup.get('urlCtrl').value;
+    let availableContactTypes = {};
     this.contactTypes.forEach(contact => {
-      const contactCtrl = contact + 'Ctrl';
-      if (this.contactFormGroup.get(contactCtrl).value) {
-        // TODO: Add contactType
+      const contactCtrl = contact.toLowerCase() + 'Ctrl';
+      const value = this.contactFormGroup.get(contactCtrl).value;
+      if (value) {
+        availableContactTypes[contact] = value;
       }
     });
+    createShopRequestDto.contactTypes = availableContactTypes;
+    let slots: SlotsDto = {};
+    this.businessHours.POSSIBLE_BUSINESS_HOURS.forEach((opening, day) => {
+      if (opening.enabled) {
+        const fromCtrl = day + 'FromCtrl';
+        const toCtrl = day + 'ToCtrl';
+        console.log('FromCtrl: ' + fromCtrl);
+        slots = this.setRightSlot(day, this.openingFormGroup.get(fromCtrl).value, this.openingFormGroup.get(toCtrl).value, slots);
+      }
+    });
+    createShopRequestDto.slots = slots;
+    createShopRequestDto.password = this.passwordFormGroup.get('passwordCtrl').value;
+    this.client.post('/api/shop?token=' + this.token, createShopRequestDto).subscribe();
   }
 
   getEnumValue(contactType: any) {
@@ -134,5 +154,54 @@ export class ShopCreationPageComponent implements OnInit {
       return split.charAt(0) + split.slice(1).toLowerCase();
     });
     return splitted.join(' ');
+  }
+
+  // this is hacky, we need to implement a reasonable mapping from slotsDto to the frontend
+  private setRightSlot(dayString: string, from: string, to: string, slots: SlotsDto) {
+    switch (dayString) {
+      case 'Montag':
+        slots.monday = {
+          start: from,
+          end: to,
+        };
+        break;
+      case 'Dienstag':
+        slots.tuesday = {
+          start: from,
+          end: to,
+        };
+        break;
+      case 'Mittwoch':
+        slots.wednesday = {
+          start: from,
+          end: to,
+        };
+        break;
+      case 'Donnerstag':
+        slots.thursday = {
+          start: from,
+          end: to,
+        };
+        break;
+      case 'Freitag':
+        slots.friday = {
+          start: from,
+          end: to,
+        };
+        break;
+      case 'Samstag':
+        slots.saturday = {
+          start: from,
+          end: to,
+        };
+        break;
+      case 'Sonntag':
+        slots.sunday = {
+          start: from,
+          end: to,
+        };
+        break;
+    }
+    return slots;
   }
 }
