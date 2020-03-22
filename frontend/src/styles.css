@@ -6,3 +6,16 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .mat-header-cell {
   background: rgba(141, 141, 141, 0.6);
 }
+
+a,
+a:link,
+a:visited {
+  text-decoration: underline;
+  color: #673ab7;
+  cursor: pointer;
+}
+
+a:hover,
+a:active {
+  color: #ffc107;
+}
