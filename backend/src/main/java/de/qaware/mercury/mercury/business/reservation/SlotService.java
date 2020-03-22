@@ -6,5 +6,5 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface SlotService {
-    List<Slot> generateSlots(LocalDate start, LocalDate end, SlotConfig slotConfig, List<Reservation> existingReservations);
+    List<Slot> generateSlots(LocalDate start, LocalDate end, SlotConfig slotConfig, List<Interval> existingReservations);
 }

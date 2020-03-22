@@ -1,6 +1,6 @@
 package de.qaware.mercury.mercury.business.reservation.impl;
 
-import de.qaware.mercury.mercury.business.reservation.Reservation;
+import de.qaware.mercury.mercury.business.reservation.Interval;
 import de.qaware.mercury.mercury.business.reservation.Slot;
 import de.qaware.mercury.mercury.business.reservation.SlotService;
 import de.qaware.mercury.mercury.business.shop.DayConfig;
@@ -19,7 +19,7 @@ import java.util.List;
 @Slf4j
 class SlotServiceImpl implements SlotService {
     @Override
-    public List<Slot> generateSlots(LocalDate start, LocalDate end, SlotConfig slotConfig, List<Reservation> existingReservations) {
+    public List<Slot> generateSlots(LocalDate start, LocalDate end, SlotConfig slotConfig, List<Interval> existingReservations) {
         LocalDate current = start;
 
         List<Slot> result = new ArrayList<>();
@@ -32,7 +32,7 @@ class SlotServiceImpl implements SlotService {
         return result;
     }
 
-    private List<Slot> generateSlotsForDay(LocalDate date, SlotConfig slotConfig, List<Reservation> existingReservations) {
+    private List<Slot> generateSlotsForDay(LocalDate date, SlotConfig slotConfig, List<Interval> existingReservations) {
         DayConfig dayConfig = getDayConfig(date.getDayOfWeek(), slotConfig);
         if (dayConfig == null) {
             return List.of();
@@ -45,14 +45,26 @@ class SlotServiceImpl implements SlotService {
         while (!currentStart.plusMinutes(slotConfig.getTimePerSlot()).isAfter(dayConfig.getEnd())) {
             // start + length of slot
             LocalTime slotEnd = currentStart.plusMinutes(slotConfig.getTimePerSlot());
+            Interval slot = Interval.of(date.atTime(currentStart), date.atTime(slotEnd));
 
-            slots.add(new Slot(date.atTime(currentStart), date.atTime(slotEnd), true)); // TODO: Availability
+            boolean available = checkAvailability(slot, existingReservations);
+            slots.add(new Slot(slot.getStart(), slot.getEnd(), available));
 
             // Next start = end of slot + pause
             currentStart = slotEnd.plusMinutes(slotConfig.getTimeBetweenSlots());
         }
 
         return slots;
+    }
+
+    private boolean checkAvailability(Interval slot, List<Interval> existingReservations) {
+        for (Interval reservation : existingReservations) {
+            if (slot.overlaps(reservation)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     @Nullable

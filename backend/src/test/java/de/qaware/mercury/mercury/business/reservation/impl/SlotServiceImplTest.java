@@ -1,5 +1,6 @@
 package de.qaware.mercury.mercury.business.reservation.impl;
 
+import de.qaware.mercury.mercury.business.reservation.Interval;
 import de.qaware.mercury.mercury.business.reservation.Slot;
 import de.qaware.mercury.mercury.business.shop.DayConfig;
 import de.qaware.mercury.mercury.business.shop.SlotConfig;
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -34,10 +36,13 @@ class SlotServiceImplTest {
             null,
             null
         );
-        List<Slot> slots = sut.generateSlots(LocalDate.of(2020, 3, 16), LocalDate.of(2020, 3, 22), slotConfig, List.of());
+        List<Slot> slots = sut.generateSlots(LocalDate.of(2020, 3, 16), LocalDate.of(2020, 3, 22), slotConfig, List.of(
+            Interval.of(LocalDateTime.of(2020, 3, 16, 8, 30), LocalDateTime.of(2020, 3, 16, 10, 0))
+        ));
 
         for (Slot slot : slots) {
             System.out.println(slot);
         }
     }
+
 }
