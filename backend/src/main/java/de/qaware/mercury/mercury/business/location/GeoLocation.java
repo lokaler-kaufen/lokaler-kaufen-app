@@ -7,6 +7,10 @@ public class GeoLocation {
     double latitude;
     double longitude;
 
+    public static final GeoLocation QAWARE_M = new GeoLocation(48.104346, 11.600851);
+    public static final GeoLocation QAWARE_RO = new GeoLocation(47.848543, 12.139199);
+    public static final GeoLocation QAWARE_MZ = new GeoLocation(49.996637, 8.280625);
+
     public double distanceTo(GeoLocation other) {
         double STATUTE_MILES_PER_NAUTICAL_MILE = 1.15077945;
         double KM_PER_NAUTICAL_MILE = 1.852216;

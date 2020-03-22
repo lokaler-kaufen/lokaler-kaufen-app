@@ -30,6 +30,8 @@ class DebugPopulateDatabase implements ApplicationRunner {
 
         createAdmins();
         createShops();
+
+        shopService.findNearby("01998");
     }
 
     private void createAdmins() {

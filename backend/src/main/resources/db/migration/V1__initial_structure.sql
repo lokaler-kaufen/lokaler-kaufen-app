@@ -57,5 +57,22 @@ CREATE TABLE reservation
     end_time            timestamp with time zone not null,
     contact_information varchar                  not null,
     email               varchar                  not null,
-    contact_type contact_type not null
+    contact_type        contact_type             not null
+);
+
+-- schema derived from https://www.geonames.org/
+CREATE TABLE geolocation
+(
+    country_code varchar(2),
+    zip_code     varchar(20),
+    place_name   varchar(180),
+    admin_name1  varchar(100),
+    admin_code1  varchar(100),
+    admin_name2  varchar(100),
+    admin_code2  varchar(100),
+    admin_name3  varchar(100),
+    admin_code3  varchar(100),
+    latitude     double precision not null,
+    longitude    double precision not null,
+    accuracy     int
 );

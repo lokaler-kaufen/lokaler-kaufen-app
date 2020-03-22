@@ -2,21 +2,22 @@ package de.qaware.mercury.mercury.business.location.impl;
 
 import de.qaware.mercury.mercury.business.location.GeoLocation;
 import de.qaware.mercury.mercury.business.location.GeoLocationLookup;
+import de.qaware.mercury.mercury.storage.location.LocationRepository;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Slf4j
+@RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 public class GeoLocationLookupImpl implements GeoLocationLookup {
+    private final LocationRepository locationRepository;
+
     @Override
+    @Transactional(readOnly = true)
     public GeoLocation fromZipCode(String zipCode) {
-        switch (zipCode) {
-            case "85579":
-                return new GeoLocation(48.08140, 11.63480);
-            case "81549":
-                return new GeoLocation(48.137154, 11.576124);
-            case "55116":
-                return new GeoLocation(49.98419, 8.2791);
-            default:
-                return new GeoLocation(48.137154, 11.576124);
-        }
+        return locationRepository.fromZipCode(zipCode);
     }
 }
