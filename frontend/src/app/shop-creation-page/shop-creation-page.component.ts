@@ -44,6 +44,8 @@ export class ShopCreationPageComponent implements OnInit {
   openingFormGroup = new FormGroup({});
   passwordFormGroup: FormGroup;
 
+  passwordRegex: RegExp = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{14,})');
+
   token: string;
   contactTypes;
   hidePassword = true;
@@ -94,7 +96,7 @@ export class ShopCreationPageComponent implements OnInit {
       this.openingFormGroup.controls['pauseCtrl'].setValue(5);
     });
     this.passwordFormGroup = this.formBuilder.group({
-      passwordCtrl: ['', [Validators.required, Validators.minLength(14)]],
+      passwordCtrl: ['', [Validators.required, Validators.pattern(this.passwordRegex), Validators.minLength(14)]],
       confirmPasswordCtrl: ['', Validators.required]
     }, {validator: this.checkMatchingPasswords('passwordCtrl', 'confirmPasswordCtrl')});
   }

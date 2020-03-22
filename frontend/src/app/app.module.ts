@@ -33,6 +33,7 @@ import {ApiModule} from './data/client';
 import {AdminOverviewPageComponent} from './admin-overview/admin-overview-page.component';
 import {ShopCreationSuccessPopupComponent} from './shop-creation-success-popup/shop-creation-success-popup.component';
 import {AdminLoginPageComponent} from './admin-login/admin-login-page.component';
+import {MatPasswordStrengthModule} from '@angular-material-extensions/password-strength';
 
 @NgModule({
   declarations: [
@@ -83,7 +84,7 @@ import {AdminLoginPageComponent} from './admin-login/admin-login-page.component'
     MatSortModule,
     HttpClientModule,
     MatStepperModule,
-    
+    MatPasswordStrengthModule,
   ],
   providers: [
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}},
