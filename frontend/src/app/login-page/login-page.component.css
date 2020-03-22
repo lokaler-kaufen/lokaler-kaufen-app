@@ -18,3 +18,8 @@ form {
 .form-item {
   width: 100%;
 }
+
+.error {
+  margin-top: 2em;
+  color: red;
+}
