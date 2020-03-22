@@ -1,9 +1,10 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ShopAdminControllerService, ShopAdminDto, ShopListDto, ShopListEntryDto} from '../data/client';
-import ContactTypesEnum = ShopAdminDto.ContactTypesEnum;
 import {MatTableDataSource} from '@angular/material/table';
 import {MatSort} from '@angular/material/sort';
 import {Router} from '@angular/router';
+import ContactTypesEnum = ShopAdminDto.ContactTypesEnum;
+import {throwError} from 'rxjs';
 
 @Component({
   selector: 'admin-overview',
@@ -38,22 +39,23 @@ export class AdminOverviewPageComponent implements OnInit {
   private generateDummyData() {
     function data() {
       return {
-        addressSupplement: Math.random().toString(36),
-        city: Math.random().toString(36),
+        addressSupplement: Math.random().toString(10),
+        city: Math.random().toString(10),
         contactTypes: Object.values(ContactTypesEnum).filter(e => Math.random() >= 0.5),
-        details: Math.random().toString(36),
-        email: Math.random().toString(36),
+        details: Math.random().toString(10),
+        email: Math.random().toString(10),
         enabled: Math.random() * 10 > 5,
-        id: Math.random().toString(36),
-        name: Math.random().toString(36),
-        ownerName: Math.random().toString(36),
-        street: Math.random().toString(36),
-        website: Math.random().toString(36),
-        zipCode: Math.random().toString(36)
+        id: Math.random().toString(10).slice(3),
+        name: Math.random().toString(10),
+        ownerName: Math.random().toString(10),
+        street: Math.random().toString(10),
+        website: Math.random().toString(10),
+        zipCode: Math.random().toString(10)
       } as ShopAdminDto;
     }
+
     const shopList: Array<ShopAdminDto> = [];
-    const n: number =  Number.parseInt((Math.random() * 10).toString(), 10);
+    const n: number = Number.parseInt((Math.random() * 10).toString(), 10) + 1;
     for (let i = 0; i < n; i++) {
       const tempShop = data();
       shopList.push(tempShop);

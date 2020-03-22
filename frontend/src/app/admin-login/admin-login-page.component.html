@@ -1,0 +1,40 @@
+<header>
+  <h2>Login für Admins</h2>
+</header>
+
+<form [formGroup]="formController" (ngSubmit)="onSubmit()">
+  <mat-form-field class="form-item">
+    <mat-label>E-Mail</mat-label>
+    <input
+      type="text"
+      formControlName="email"
+      placeholder="E-Mail"
+      required
+      matInput
+    />
+  </mat-form-field>
+
+  <mat-form-field class="form-item">
+    <mat-label>Passwort</mat-label>
+    <input
+      type="password"
+      formControlName="password"
+      placeholder="Passwort"
+      required
+      matInput
+    />
+  </mat-form-field>
+
+  <button mat-raised-button
+          [disabled]="!formController.valid"
+          type="submit"
+          class="form-item"
+          color="primary">
+    Login
+  </button>
+
+  <p class="error" *ngIf="isFailed()">
+    Sorry, Login fehlgeschlagen. Entweder hast Du Dich bei Deiner E-Mail-Adresse und/oder beim Passwort vertippt oder
+    das System hat gerade ein paar Problemchen.
+  </p>
+</form>

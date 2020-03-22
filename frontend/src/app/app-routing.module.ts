@@ -9,6 +9,7 @@ import {LoginPageComponent} from './login-page/login-page.component';
 import {ImprintPageComponent} from './imprint-page/imprint-page.component';
 import {PrivacyPageComponent} from './privacy-page/privacy-page.component';
 import {AdminOverviewPageComponent} from './admin-overview/admin-overview-page.component';
+import {AdminLoginPageComponent} from './admin-login/admin-login-page.component';
 
 const routes: Routes = [
   {path: '', component: LandingPageComponent},
@@ -19,7 +20,8 @@ const routes: Routes = [
   {path: 'login', component: LoginPageComponent},
   {path: 'imprint', component: ImprintPageComponent},
   {path: 'privacy', component: PrivacyPageComponent},
-  {path: 'admin/overview', component: AdminOverviewPageComponent}
+  {path: 'admin/overview', component: AdminOverviewPageComponent},
+  {path: 'admin', component: AdminLoginPageComponent}
 ];
 
 @NgModule({
