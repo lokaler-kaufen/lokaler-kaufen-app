@@ -1,5 +1,3 @@
-CREATE TYPE contact_type AS ENUM ('WHATSAPP','FACETIME','GOOGLE_DUO','SKYPE','SIGNAL_PRIVATE_MESSENGER','VIBER','PHONE');
-
 CREATE TABLE shop
 (
     id                 uuid primary key,
@@ -10,7 +8,7 @@ CREATE TABLE shop
     zip_code           varchar          not null,
     city               varchar          not null,
     address_supplement varchar          not null,
-    contact_types      contact_type[] not null,
+    contact_types      varchar[] not null,
     enabled            boolean          not null,
     latitude           double precision not null,
     longitude          double precision not null,
@@ -56,8 +54,8 @@ CREATE TABLE reservation
     start_time   timestamp with time zone not null,
     end_time     timestamp with time zone not null,
     contact      varchar                  not null,
-    email        varchar                  not null,
-    contact_type contact_type             not null
+    email        varchar not null,
+    contact_type varchar not null
 );
 
 -- schema derived from https://www.geonames.org/
@@ -76,3 +74,5 @@ CREATE TABLE geolocation
     longitude    double precision not null,
     accuracy     int              not null
 );
+
+CREATE INDEX idx_geolocation_zipcode ON geolocation (zip_code);

@@ -1,19 +1,18 @@
 package de.qaware.mercury.mercury.storage.shop.impl;
 
-import com.vladmihalcea.hibernate.type.array.ListArrayType;
 import de.qaware.mercury.mercury.business.location.GeoLocation;
 import de.qaware.mercury.mercury.business.shop.ContactType;
 import de.qaware.mercury.mercury.business.shop.DayConfig;
 import de.qaware.mercury.mercury.business.shop.Shop;
 import de.qaware.mercury.mercury.business.shop.SlotConfig;
 import de.qaware.mercury.mercury.util.Null;
+import de.qaware.mercury.mercury.util.Sets;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 import org.springframework.lang.Nullable;
 
@@ -22,9 +21,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.Supplier;
@@ -71,17 +68,9 @@ public class ShopEntity {
     private String addressSupplement;
 
     @Setter
-    @Type(
-        type = "com.vladmihalcea.hibernate.type.array.ListArrayType",
-        parameters = {
-            @Parameter(
-                name = ListArrayType.SQL_ARRAY_TYPE,
-                value = "contact_type"
-            )
-        }
-    )
-    @Column(nullable = false, columnDefinition = "contact_type[]")
-    private List<ContactType> contactTypes;
+    @Type(type = "com.vladmihalcea.hibernate.type.array.StringArrayType")
+    @Column(nullable = false)
+    private String[] contactTypes;
 
     @Setter
     @Column(nullable = false)
@@ -171,7 +160,7 @@ public class ShopEntity {
             shop.getZipCode(),
             shop.getCity(),
             shop.getAddressSupplement(),
-            new ArrayList<>(shop.getContactTypes().keySet()), // TODO MKA: Store contact types with contact info
+            Sets.map(shop.getContactTypes().keySet(), ContactType::name).toArray(new String[0]), // TODO MKA: Store contact types with contact info
             shop.isEnabled(),
             shop.getGeoLocation().getLatitude(),
             shop.getGeoLocation().getLongitude(),
@@ -235,10 +224,10 @@ public class ShopEntity {
         return new DayConfig(startValue, endValue);
     }
 
-    private Map<ContactType, String> fakeMap(Iterable<ContactType> contactTypes) {
+    private Map<ContactType, String> fakeMap(String[] contactTypes) {
         Map<ContactType, String> result = new HashMap<>();
-        for (ContactType contactType : contactTypes) {
-            result.put(contactType, "");
+        for (String contactType : contactTypes) {
+            result.put(ContactType.valueOf(contactType), "");
         }
         return result;
     }
