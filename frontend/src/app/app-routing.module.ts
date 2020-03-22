@@ -8,6 +8,7 @@ import {ShopManagementPageComponent} from './shop-management-page/shop-managemen
 import {LoginPageComponent} from './login-page/login-page.component';
 import {ImprintPageComponent} from './imprint-page/imprint-page.component';
 import {PrivacyPageComponent} from './privacy-page/privacy-page.component';
+import {AdminOverviewPageComponent} from './admin-overview/admin-overview-page.component';
 
 const routes: Routes = [
   {path: '', component: LandingPageComponent},
@@ -17,7 +18,8 @@ const routes: Routes = [
   {path: 'manage-shop', component: ShopManagementPageComponent},
   {path: 'login', component: LoginPageComponent},
   {path: 'imprint', component: ImprintPageComponent},
-  {path: 'privacy', component: PrivacyPageComponent}
+  {path: 'privacy', component: PrivacyPageComponent},
+  {path: 'admin/overview', component: AdminOverviewPageComponent}
 ];
 
 @NgModule({

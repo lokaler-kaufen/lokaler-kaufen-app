@@ -16,23 +16,25 @@ import {ImprintPageComponent} from './imprint-page/imprint-page.component';
 import {AppHeaderComponent} from './app-header/app-header.component';
 import {AppFooterComponent} from './app-footer/app-footer.component';
 import {MatCardModule} from '@angular/material/card';
-import {MatFormFieldModule} from "@angular/material/form-field";
-import {MatIconModule} from "@angular/material/icon";
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {MatInputModule} from "@angular/material/input";
-import {MatSelectModule} from "@angular/material/select";
-import {MatTableModule} from "@angular/material/table";
-import {HttpClientModule} from "@angular/common/http";
-import {MatSortModule} from "@angular/material/sort";
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatIconModule} from '@angular/material/icon';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {MatInputModule} from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
+import {MatTableModule} from '@angular/material/table';
+import {HttpClientModule} from '@angular/common/http';
+import {MatSortModule} from '@angular/material/sort';
 import {BookingPopupComponent} from './booking-popup/booking-popup.component';
 import {MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule} from '@angular/material/dialog';
 import {ErrorStateMatcher, ShowOnDirtyErrorStateMatcher} from '@angular/material/core';
 import {RegisterBusinessPopupComponent} from './register-business-popup/register-business-popup.component';
-import {MatStepperModule} from "@angular/material/stepper";
-import {ApiModule} from "./data/client";
+import {MatStepperModule} from '@angular/material/stepper';
+import {ApiModule} from './data/client';
+import {AdminOverviewPageComponent} from './admin-overview/admin-overview-page.component';
 
 @NgModule({
   declarations: [
+    AdminOverviewPageComponent,
     AppComponent,
     LandingPageComponent,
     ShopSearchPageComponent,
@@ -45,7 +47,8 @@ import {ApiModule} from "./data/client";
     AppHeaderComponent,
     AppFooterComponent,
     BookingPopupComponent,
-    RegisterBusinessPopupComponent
+    RegisterBusinessPopupComponent,
+    AdminOverviewPageComponent
   ],
   imports: [
     ApiModule,
