@@ -79,7 +79,7 @@
       <p>Fülle einfach alle Möglichkeiten, die du hast, aus. </p>
       <div *ngFor="let contactType of contactTypes">
         <p>
-          <mat-icon svgIcon="whatsapp"
+          <mat-icon svgIcon="{{contactType}}"
                     style="margin-right: 5px; vertical-align: bottom"></mat-icon>
           {{getEnumValue(contactType)}}
         </p>
