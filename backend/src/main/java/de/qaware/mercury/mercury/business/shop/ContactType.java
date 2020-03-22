@@ -5,6 +5,7 @@ import lombok.Getter;
 public enum ContactType {
 
     WHATSAPP("WHATSAPP"),
+    PHONE("PHONE"),
     FACETIME("FACETIME"),
     GOOGLE_DUO("GOOGLE_DUO"),
     SKYPE("SKYPE"),
