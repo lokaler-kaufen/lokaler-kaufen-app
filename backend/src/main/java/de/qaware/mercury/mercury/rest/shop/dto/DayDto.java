@@ -1,6 +1,6 @@
 package de.qaware.mercury.mercury.rest.shop.dto;
 
-import de.qaware.mercury.mercury.business.shop.Slot;
+import de.qaware.mercury.mercury.business.shop.DayConfig;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,8 +14,8 @@ public class DayDto {
     private String start;
     private String end;
 
-    public Slot toSlot() {
-        return new Slot(parse(start), parse(end));
+    public DayConfig toSlot() {
+        return new DayConfig(parse(start), parse(end));
     }
 
     private LocalTime parse(String time) {

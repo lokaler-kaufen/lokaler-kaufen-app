@@ -20,5 +20,5 @@ public class ShopCreation {
     String password;
     // Maps from WHATSAPP -> Telephone number, for example
     Map<ContactType, String> contactTypes;
-    Slots slots;
+    SlotConfig slotConfig;
 }

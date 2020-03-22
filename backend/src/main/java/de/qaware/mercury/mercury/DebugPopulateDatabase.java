@@ -5,7 +5,7 @@ import de.qaware.mercury.mercury.business.shop.ContactType;
 import de.qaware.mercury.mercury.business.shop.Shop;
 import de.qaware.mercury.mercury.business.shop.ShopCreation;
 import de.qaware.mercury.mercury.business.shop.ShopService;
-import de.qaware.mercury.mercury.business.shop.Slots;
+import de.qaware.mercury.mercury.business.shop.SlotConfig;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,15 +47,15 @@ class DebugPopulateDatabase implements ApplicationRunner {
         createShop(new ShopCreation(
             "moe@localhost", "Moe", "Moe's Whiskey", "Lothstr. 64", "85579", "Neubiberg", "", "Bester Whiskey in ganz Neubiberg!",
             "https://www.moes-whiskey.com/", "moe",
-            Map.of(ContactType.WHATSAPP, "0151/123456789", ContactType.FACEBOOK_MESSENGER, "moe@localhost"), Slots.none(15, 5)
+            Map.of(ContactType.WHATSAPP, "0151/123456789", ContactType.FACEBOOK_MESSENGER, "moe@localhost"), SlotConfig.none(15, 5)
         ));
         createShop(new ShopCreation(
             "flo@localhost", "Flo", "Flo's Kaffeeladen", "Aschauer Str. 32", "81549", "München", "", "", null,
-            "flo", Map.of(ContactType.GLIDE, "@vlow"), Slots.none(30, 10)
+            "flo", Map.of(ContactType.GLIDE, "@vlow"), SlotConfig.none(30, 10)
         ));
         createShop(new ShopCreation(
             "vroni@localhost", "Vroni", "Vroni's Kleiderladen", "Rheinstraße 4C", "55116", "Mainz", "", "", null,
-            "vroni", Map.of(ContactType.GOOGLE_DUO, "vroni@localhost", ContactType.TANGO, "@vroni"), Slots.none(60, 15)
+            "vroni", Map.of(ContactType.GOOGLE_DUO, "vroni@localhost", ContactType.TANGO, "@vroni"), SlotConfig.none(60, 15)
         ));
     }
 

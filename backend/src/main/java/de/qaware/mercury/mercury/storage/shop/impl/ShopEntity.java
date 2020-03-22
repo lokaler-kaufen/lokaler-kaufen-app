@@ -3,9 +3,9 @@ package de.qaware.mercury.mercury.storage.shop.impl;
 import com.vladmihalcea.hibernate.type.array.ListArrayType;
 import de.qaware.mercury.mercury.business.location.GeoLocation;
 import de.qaware.mercury.mercury.business.shop.ContactType;
+import de.qaware.mercury.mercury.business.shop.DayConfig;
 import de.qaware.mercury.mercury.business.shop.Shop;
-import de.qaware.mercury.mercury.business.shop.Slot;
-import de.qaware.mercury.mercury.business.shop.Slots;
+import de.qaware.mercury.mercury.business.shop.SlotConfig;
 import de.qaware.mercury.mercury.util.Null;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -177,22 +177,22 @@ public class ShopEntity {
             shop.getGeoLocation().getLongitude(),
             shop.getDetails(),
             shop.getWebsite(),
-            shop.getSlots().getTimePerSlot(),
-            shop.getSlots().getTimeBetweenSlots(),
-            Null.map(shop.getSlots().getMonday(), Slot::getStart),
-            Null.map(shop.getSlots().getMonday(), Slot::getEnd),
-            Null.map(shop.getSlots().getTuesday(), Slot::getStart),
-            Null.map(shop.getSlots().getTuesday(), Slot::getEnd),
-            Null.map(shop.getSlots().getWednesday(), Slot::getStart),
-            Null.map(shop.getSlots().getWednesday(), Slot::getEnd),
-            Null.map(shop.getSlots().getThursday(), Slot::getStart),
-            Null.map(shop.getSlots().getThursday(), Slot::getEnd),
-            Null.map(shop.getSlots().getFriday(), Slot::getStart),
-            Null.map(shop.getSlots().getFriday(), Slot::getEnd),
-            Null.map(shop.getSlots().getSaturday(), Slot::getStart),
-            Null.map(shop.getSlots().getSaturday(), Slot::getEnd),
-            Null.map(shop.getSlots().getSunday(), Slot::getStart),
-            Null.map(shop.getSlots().getSunday(), Slot::getEnd)
+            shop.getSlotConfig().getTimePerSlot(),
+            shop.getSlotConfig().getTimeBetweenSlots(),
+            Null.map(shop.getSlotConfig().getMonday(), DayConfig::getStart),
+            Null.map(shop.getSlotConfig().getMonday(), DayConfig::getEnd),
+            Null.map(shop.getSlotConfig().getTuesday(), DayConfig::getStart),
+            Null.map(shop.getSlotConfig().getTuesday(), DayConfig::getEnd),
+            Null.map(shop.getSlotConfig().getWednesday(), DayConfig::getStart),
+            Null.map(shop.getSlotConfig().getWednesday(), DayConfig::getEnd),
+            Null.map(shop.getSlotConfig().getThursday(), DayConfig::getStart),
+            Null.map(shop.getSlotConfig().getThursday(), DayConfig::getEnd),
+            Null.map(shop.getSlotConfig().getFriday(), DayConfig::getStart),
+            Null.map(shop.getSlotConfig().getFriday(), DayConfig::getEnd),
+            Null.map(shop.getSlotConfig().getSaturday(), DayConfig::getStart),
+            Null.map(shop.getSlotConfig().getSaturday(), DayConfig::getEnd),
+            Null.map(shop.getSlotConfig().getSunday(), DayConfig::getStart),
+            Null.map(shop.getSlotConfig().getSunday(), DayConfig::getEnd)
         );
     }
 
@@ -211,7 +211,7 @@ public class ShopEntity {
             new GeoLocation(latitude, longitude),
             details,
             website,
-            new Slots(
+            new SlotConfig(
                 timePerSlot, timeBetweenSlots,
                 loadSlot(this::getMondayStart, this::getMondayEnd),
                 loadSlot(this::getTuesdayStart, this::getTuesdayEnd),
@@ -224,7 +224,7 @@ public class ShopEntity {
         );
     }
 
-    private Slot loadSlot(Supplier<LocalTime> start, Supplier<LocalTime> end) {
+    private DayConfig loadSlot(Supplier<LocalTime> start, Supplier<LocalTime> end) {
         LocalTime startValue = start.get();
         LocalTime endValue = end.get();
 
@@ -232,7 +232,7 @@ public class ShopEntity {
             return null;
         }
 
-        return new Slot(startValue, endValue);
+        return new DayConfig(startValue, endValue);
     }
 
     private Map<ContactType, String> fakeMap(Iterable<ContactType> contactTypes) {

@@ -72,7 +72,7 @@ class ShopServiceImpl implements ShopService {
         Shop shop = new Shop(
             Shop.Id.of(id), creation.getName(), creation.getOwnerName(), creation.getEmail(), creation.getStreet(),
             creation.getZipCode(), creation.getCity(), creation.getAddressSupplement(), creation.getContactTypes(),
-            false, geoLocation, creation.getDetails(), creation.getWebsite(), creation.getSlots()
+            false, geoLocation, creation.getDetails(), creation.getWebsite(), creation.getSlotConfig()
         );
 
         shopRepository.insert(shop);
@@ -87,7 +87,7 @@ class ShopServiceImpl implements ShopService {
         Shop newShop = new Shop(
             shop.getId(), update.getName(), update.getOwnerName(), shop.getName(), update.getStreet(), update.getZipCode(),
             update.getCity(), update.getAddressSupplement(), update.getContactTypes(),
-            shop.isEnabled(), geoLocation, shop.getDetails(), shop.getWebsite(), shop.getSlots()
+            shop.isEnabled(), geoLocation, shop.getDetails(), shop.getWebsite(), shop.getSlotConfig()
         );
 
         shopRepository.update(newShop);

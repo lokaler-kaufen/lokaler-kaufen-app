@@ -1,6 +1,6 @@
 package de.qaware.mercury.mercury.rest.shop.dto;
 
-import de.qaware.mercury.mercury.business.shop.Slots;
+import de.qaware.mercury.mercury.business.shop.SlotConfig;
 import de.qaware.mercury.mercury.util.Null;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,8 +29,8 @@ public class SlotConfigDto {
     @Nullable
     private DayDto sunday;
 
-    public Slots toSlots() {
-        return new Slots(
+    public SlotConfig toSlots() {
+        return new SlotConfig(
             timePerSlot, timeBetweenSlots, Null.map(monday, DayDto::toSlot), Null.map(tuesday, DayDto::toSlot),
             Null.map(wednesday, DayDto::toSlot), Null.map(thursday, DayDto::toSlot), Null.map(friday, DayDto::toSlot),
             Null.map(saturday, DayDto::toSlot), Null.map(sunday, DayDto::toSlot)

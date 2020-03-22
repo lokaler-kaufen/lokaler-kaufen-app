@@ -1,8 +1,8 @@
 package de.qaware.mercury.mercury.storage.reservation.impl;
 
 import de.qaware.mercury.mercury.business.reservation.Reservation;
+import de.qaware.mercury.mercury.business.shop.DayConfig;
 import de.qaware.mercury.mercury.business.shop.Shop;
-import de.qaware.mercury.mercury.business.shop.Slot;
 import de.qaware.mercury.mercury.storage.reservation.ReservationRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +33,7 @@ class JpaReservationRepositoryImpl implements ReservationRepository {
     }
 
     @Override
-    public List<Slot> findSlotsForShop(Shop.Id shopId) {
+    public List<DayConfig> findSlotsForShop(Shop.Id shopId) {
         // TODO: Implement
         return new ArrayList<>();
     }

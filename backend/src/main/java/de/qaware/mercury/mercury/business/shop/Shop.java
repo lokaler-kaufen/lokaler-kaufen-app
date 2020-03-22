@@ -25,7 +25,7 @@ public class Shop {
     String details;
     @Nullable
     String website;
-    Slots slots;
+    SlotConfig slotConfig;
 
     @Value(staticConstructor = "of")
     public static class Id {

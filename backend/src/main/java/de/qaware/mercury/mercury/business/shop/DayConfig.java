@@ -5,7 +5,7 @@ import lombok.Value;
 import java.time.LocalTime;
 
 @Value
-public class Slot {
+public class DayConfig {
     LocalTime start;
     LocalTime end;
 }
