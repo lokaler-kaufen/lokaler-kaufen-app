@@ -2,6 +2,13 @@
 
 set -e
 
+if [[ -z "$1" ]]
+then
+    echo "Please specify your user name."
+    echo "Usage: ./deploy.sh <user>"
+    exit 1
+fi
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 FRONTEND_DIR="${DIR}/frontend"
