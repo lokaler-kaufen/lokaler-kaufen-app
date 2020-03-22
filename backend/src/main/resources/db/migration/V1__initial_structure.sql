@@ -63,16 +63,16 @@ CREATE TABLE reservation
 -- schema derived from https://www.geonames.org/
 CREATE TABLE geolocation
 (
-    country_code varchar(2),
-    zip_code     varchar(20),
-    place_name   varchar(180),
-    admin_name1  varchar(100),
-    admin_code1  varchar(100),
-    admin_name2  varchar(100),
-    admin_code2  varchar(100),
-    admin_name3  varchar(100),
-    admin_code3  varchar(100),
+    country_code varchar          not null,
+    zip_code     varchar          not null,
+    place_name   varchar          not null,
+    admin_name1  varchar          not null,
+    admin_code1  varchar          not null,
+    admin_name2  varchar          not null,
+    admin_code2  varchar          not null,
+    admin_name3  varchar          not null,
+    admin_code3  varchar          not null,
     latitude     double precision not null,
     longitude    double precision not null,
-    accuracy     int
+    accuracy     int              not null
 );
