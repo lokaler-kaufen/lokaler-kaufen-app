@@ -4,17 +4,12 @@ import lombok.Getter;
 
 public enum ContactType {
 
-    FACEBOOK_MESSENGER("FACEBOOK_MESSENGER"),
-    GLIDE("GLIDE"),
-    GOOGLE_DUO("GOOGLE_DUO"),
     WHATSAPP("WHATSAPP"),
+    FACETIME("FACETIME"),
+    GOOGLE_DUO("GOOGLE_DUO"),
     SKYPE("SKYPE"),
-    JUSTALK("JUSTALK"),
     SIGNAL_PRIVATE_MESSENGER("SIGNAL_PRIVATE_MESSENGER"),
-    SNAPCHAT("SNAPCHAT"),
-    TANGO("TANGO"),
-    VIBER("VIBER"),
-    TELEPHONE("TELEPHONE");
+    VIBER("VIBER");
 
     @Getter
     private final String value;

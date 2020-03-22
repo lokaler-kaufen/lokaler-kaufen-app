@@ -1,4 +1,4 @@
-CREATE TYPE contact_type AS ENUM ('FACEBOOK_MESSENGER', 'GLIDE', 'GOOGLE_DUO', 'WHATSAPP', 'SKYPE', 'JUSTALK', 'SIGNAL_PRIVATE_MESSENGER', 'SNAPCHAT', 'TANGO', 'VIBER', 'TELEFON');
+CREATE TYPE contact_type AS ENUM ('WHATSAPP','FACETIME','GOOGLE_DUO','SKYPE','SIGNAL_PRIVATE_MESSENGER','VIBER');
 
 CREATE TABLE shop
 (
@@ -10,7 +10,7 @@ CREATE TABLE shop
     zip_code           varchar          not null,
     city               varchar          not null,
     address_supplement varchar          not null,
-    contact_types      contact_type[] not null,
+    contact_types      contact_type[]   not null,
     enabled            boolean          not null,
     latitude           double precision not null,
     longitude          double precision not null,
