@@ -13,10 +13,8 @@ form {
   justify-content: center;
   flex-direction: column;
   align-items: center;
-
-  margin-bottom: 60px;
 }
 
-form-item {
+.form-item {
   width: 100%;
 }

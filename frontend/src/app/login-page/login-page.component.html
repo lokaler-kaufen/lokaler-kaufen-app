@@ -1,24 +1,33 @@
 <div class="login-page">
+
   <header>
-    <h2>Login</h2>
+    <h2>Login für Ladenbesitzer</h2>
   </header>
 
   <form [formGroup]="formController" (ngSubmit)="onSubmit()">
     <mat-form-field class="form-item">
       <mat-label>E-Mail</mat-label>
-      <input matInput required placeholder="E-Mail" formControlName="email"/>
+      <input
+        type="text"
+        formControlName="email"
+        placeholder="E-Mail"
+        required
+        matInput
+      />
     </mat-form-field>
 
     <mat-form-field class="form-item">
       <mat-label>Passwort</mat-label>
-      <input matInput required type="password" placeholder="Passwort" formControlName="password"/>
+      <input
+        type="password"
+        formControlName="password"
+        placeholder="Passwort"
+        required
+        matInput
+      />
     </mat-form-field>
 
     <button mat-raised-button class="form-item" type="submit" color="primary">Login</button>
   </form>
-
-  <div>
-    <a [routerLink]="">Passwort vergessen?</a>
-  </div>
 
 </div>

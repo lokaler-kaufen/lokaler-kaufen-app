@@ -7,14 +7,24 @@
   <form>
     <mat-form-field class="form-item">
       <mat-label>Deine Postleitzahl</mat-label>
-      <input matInput placeholder="PLZ" [(ngModel)]="location" name="location" required maxlength="5" minlength="5">
+      <input
+        type="text"
+        name="location"
+        placeholder="PLZ"
+        required
+        maxlength="5"
+        minlength="5"
+        matInput
+        [(ngModel)]="location"
+      />
     </mat-form-field>
 
     <button class="form-item"
             [routerLink]="['/shops']"
             [queryParams]="{ location: this.location}"
             mat-raised-button
-            color="primary">Los geht's!
+            color="primary">
+      Los geht's!
     </button>
   </form>
 
