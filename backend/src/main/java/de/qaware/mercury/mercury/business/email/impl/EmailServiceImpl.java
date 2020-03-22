@@ -48,6 +48,7 @@ class EmailServiceImpl implements EmailService {
     public void sendCustomerReservationConfirmation(Shop shop, String email, String name, LocalDateTime slotStart, LocalDateTime slotEnd, ContactType contactType, String contact) {
         String body = loadTemplate("/email/customer-reservation-confirmation.txt")
             .replace("{{ name }}", name)
+            .replace("{{ shopName }}", shop.getName())
             .replace("{{ ownerName }}", shop.getOwnerName())
             .replace("{{ contactType }}", contactType.getHumanReadable())
             .replace("{{ date }}", dateTimeI18nService.formatDate(slotStart))
