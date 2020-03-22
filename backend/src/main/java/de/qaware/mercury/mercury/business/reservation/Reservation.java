@@ -2,18 +2,19 @@ package de.qaware.mercury.mercury.business.reservation;
 
 import de.qaware.mercury.mercury.business.shop.ContactType;
 import de.qaware.mercury.mercury.business.shop.Shop;
+import de.qaware.mercury.mercury.business.uuid.UUIDFactory;
 import lombok.Value;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Value
 public class Reservation {
     Id id;
     Shop.Id shopId;
-    OffsetDateTime startTime;
-    OffsetDateTime endTime;
-    String contactInformation;
+    LocalDateTime start;
+    LocalDateTime end;
+    String contact;
     String email;
     ContactType contactType;
 
@@ -23,6 +24,10 @@ public class Reservation {
 
         public static Reservation.Id parse(String input) {
             return Reservation.Id.of(UUID.fromString(input));
+        }
+
+        public static Id random(UUIDFactory uuidFactory) {
+            return Id.of(uuidFactory.create());
         }
 
         @Override

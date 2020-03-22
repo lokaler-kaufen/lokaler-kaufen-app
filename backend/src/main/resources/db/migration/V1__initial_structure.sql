@@ -10,7 +10,7 @@ CREATE TABLE shop
     zip_code           varchar          not null,
     city               varchar          not null,
     address_supplement varchar          not null,
-    contact_types      contact_type[]   not null,
+    contact_types      contact_type[] not null,
     enabled            boolean          not null,
     latitude           double precision not null,
     longitude          double precision not null,
@@ -51,13 +51,13 @@ CREATE TABLE shop_login
 
 CREATE TABLE reservation
 (
-    id                  uuid primary key,
-    shop_id             uuid                     not null references shop (id),
-    start_time          timestamp with time zone not null,
-    end_time            timestamp with time zone not null,
-    contact_information varchar                  not null,
-    email               varchar                  not null,
-    contact_type        contact_type             not null
+    id           uuid primary key,
+    shop_id      uuid                     not null references shop (id),
+    start_time   timestamp with time zone not null,
+    end_time     timestamp with time zone not null,
+    contact      varchar                  not null,
+    email        varchar                  not null,
+    contact_type contact_type             not null
 );
 
 -- schema derived from https://www.geonames.org/

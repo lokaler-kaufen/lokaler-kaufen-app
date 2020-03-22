@@ -48,7 +48,7 @@ class SlotServiceImpl implements SlotService {
             Interval slot = Interval.of(date.atTime(currentStart), date.atTime(slotEnd));
 
             boolean available = checkAvailability(slot, existingReservations);
-            slots.add(new Slot(slot.getStart(), slot.getEnd(), available));
+            slots.add(new Slot(Slot.Id.of(slot.getStart()), slot.getStart(), slot.getEnd(), available));
 
             // Next start = end of slot + pause
             currentStart = slotEnd.plusMinutes(slotConfig.getTimeBetweenSlots());

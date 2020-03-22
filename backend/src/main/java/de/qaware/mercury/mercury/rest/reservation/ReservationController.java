@@ -2,6 +2,7 @@ package de.qaware.mercury.mercury.rest.reservation;
 
 import de.qaware.mercury.mercury.business.reservation.ReservationService;
 import de.qaware.mercury.mercury.business.reservation.Slot;
+import de.qaware.mercury.mercury.business.shop.ContactType;
 import de.qaware.mercury.mercury.business.shop.Shop;
 import de.qaware.mercury.mercury.business.shop.ShopNotFoundException;
 import de.qaware.mercury.mercury.business.shop.ShopService;
@@ -29,8 +30,12 @@ public class ReservationController {
     private final ShopService shopService;
 
     @PostMapping(path = "/{shopId}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    void createReservation(@PathVariable("shopId") String shopId, @RequestBody CreateReservationDto reservationDetails) {
-
+    void createReservation(@PathVariable("shopId") String shopId, @RequestBody CreateReservationDto request) throws ShopNotFoundException {
+        Shop shop = shopService.findByIdOrThrow(Shop.Id.parse(shopId));
+        reservationService.createReservation(
+            shop, Slot.Id.parse(request.getSlotId()), ContactType.valueOf(request.getContactType()),
+            request.getContact(), request.getName(), request.getEmail()
+        );
     }
 
     @GetMapping(path = "/{shopId}/slot")

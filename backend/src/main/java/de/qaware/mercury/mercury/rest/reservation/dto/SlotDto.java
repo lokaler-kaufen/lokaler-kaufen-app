@@ -20,7 +20,7 @@ public class SlotDto {
 
     public static SlotDto of(Slot slot) {
         return new SlotDto(
-            slot.getStart().toString(),
+            slot.getId().getId(),
             slot.getStart().toLocalTime().format(TIME_FORMATTER),
             slot.getEnd().toLocalTime().format(TIME_FORMATTER),
             slot.isAvailable()

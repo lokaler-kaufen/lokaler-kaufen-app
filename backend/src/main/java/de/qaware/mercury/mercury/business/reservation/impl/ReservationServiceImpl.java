@@ -5,8 +5,10 @@ import de.qaware.mercury.mercury.business.reservation.Reservation;
 import de.qaware.mercury.mercury.business.reservation.ReservationService;
 import de.qaware.mercury.mercury.business.reservation.Slot;
 import de.qaware.mercury.mercury.business.reservation.SlotService;
+import de.qaware.mercury.mercury.business.shop.ContactType;
 import de.qaware.mercury.mercury.business.shop.Shop;
 import de.qaware.mercury.mercury.business.time.Clock;
+import de.qaware.mercury.mercury.business.uuid.UUIDFactory;
 import de.qaware.mercury.mercury.storage.reservation.ReservationRepository;
 import de.qaware.mercury.mercury.util.Lists;
 import lombok.AccessLevel;
@@ -14,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -22,6 +25,7 @@ class ReservationServiceImpl implements ReservationService {
     private final SlotService slotService;
     private final ReservationRepository reservationRepository;
     private final Clock clock;
+    private final UUIDFactory uuidFactory;
 
     @Override
     public List<Slot> listSlots(Shop shop) {
@@ -32,7 +36,21 @@ class ReservationServiceImpl implements ReservationService {
         return slotService.generateSlots(today, today, shop.getSlotConfig(), mapReservations(reservations));
     }
 
+    @Override
+    public void createReservation(Shop shop, Slot.Id slotId, ContactType contactType, String contact, String name, String email) {
+        // TODO: Validate that slot is available
+        // TODO: Validate if this is a valid slot
+        // TODO: Send emails
+
+        Reservation.Id id = Reservation.Id.random(uuidFactory);
+
+        LocalDateTime start = slotId.toLocalDateTime();
+        LocalDateTime end = start.plusMinutes(shop.getSlotConfig().getTimePerSlot());
+
+        reservationRepository.insert(new Reservation(id, shop.getId(), start, end, contact, email, contactType));
+    }
+
     private List<Interval> mapReservations(List<Reservation> reservations) {
-        return Lists.map(reservations, r -> Interval.of(r.getStartTime().toLocalDateTime(), r.getEndTime().toLocalDateTime()));
+        return Lists.map(reservations, r -> Interval.of(r.getStart(), r.getEnd()));
     }
 }

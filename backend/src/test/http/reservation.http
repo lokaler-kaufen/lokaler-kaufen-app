@@ -1,7 +1,18 @@
 ### Get reservations
 
-GET {{ host }}/api/reservation/be37dac1-cc73-4ec2-861a-15db86ebeeee/slot
+GET {{ host }}/api/reservation/f681144e-55cf-4d8a-ae28-be77d4544cb8/slot
 Accept: application/json
 
 ### Reserve slot
-POST {{ host }}/api/reservation
+POST {{ host }}/api/reservation/f681144e-55cf-4d8a-ae28-be77d4544cb8
+Content-Type: application/json
+
+{
+    "slotId": "2020-03-22T16:40",
+    "contactType": "WHATSAPP",
+    "contact": "01511234567",
+    "name": "Bernd",
+    "email": "bernd@localhost"
+}
+
+###

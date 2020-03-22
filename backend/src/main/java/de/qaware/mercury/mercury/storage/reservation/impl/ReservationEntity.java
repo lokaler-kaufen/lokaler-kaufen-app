@@ -12,9 +12,12 @@ import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.UUID;
 
 @Entity
@@ -44,7 +47,7 @@ class ReservationEntity {
 
     @Setter
     @Column(nullable = false)
-    private String contactInformation;
+    private String contact;
 
     @Setter
     @Column(nullable = false)
@@ -52,15 +55,16 @@ class ReservationEntity {
 
     @Setter
     @Column(nullable = false, columnDefinition = "contact_type")
+    @Enumerated(value = EnumType.STRING)
     private ContactType contactType;
 
     public static ReservationEntity of(Reservation reservation) {
         return new ReservationEntity(
             reservation.getId().getId(),
             reservation.getShopId().getId(),
-            reservation.getStartTime(),
-            reservation.getEndTime(),
-            reservation.getContactInformation(),
+            reservation.getStart().atOffset(ZoneOffset.UTC),
+            reservation.getEnd().atOffset(ZoneOffset.UTC),
+            reservation.getContact(),
             reservation.getEmail(),
             reservation.getContactType()
         );
@@ -70,9 +74,9 @@ class ReservationEntity {
         return new Reservation(
             Reservation.Id.of(id),
             Shop.Id.of(shopId),
-            startTime,
-            endTime,
-            contactInformation,
+            startTime.toLocalDateTime(),
+            endTime.toLocalDateTime(),
+            contact,
             email,
             contactType
         );
