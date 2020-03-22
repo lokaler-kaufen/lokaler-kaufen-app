@@ -31,6 +31,7 @@ import {RegisterBusinessPopupComponent} from './register-business-popup/register
 import {MatStepperModule} from '@angular/material/stepper';
 import {ApiModule} from './data/client';
 import {AdminOverviewPageComponent} from './admin-overview/admin-overview-page.component';
+import {ShopCreationSuccessPopupComponent} from './shop-creation-success-popup/shop-creation-success-popup.component';
 import {AdminLoginPageComponent} from './admin-login/admin-login-page.component';
 
 @NgModule({
@@ -49,6 +50,8 @@ import {AdminLoginPageComponent} from './admin-login/admin-login-page.component'
     AppFooterComponent,
     BookingPopupComponent,
     RegisterBusinessPopupComponent,
+    AdminOverviewPageComponent,
+    ShopCreationSuccessPopupComponent,
     AdminOverviewPageComponent,
     AdminLoginPageComponent
   ],

@@ -3,6 +3,8 @@ import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {HttpClient} from "@angular/common/http";
 import {ActivatedRoute} from "@angular/router";
 import {CreateShopRequestDto, ShopDetailDto, SlotConfigDto} from "../data/client";
+import {MatDialog} from "@angular/material/dialog";
+import {ShopCreationSuccessPopupComponent} from "../shop-creation-success-popup/shop-creation-success-popup.component";
 import ContactTypesEnum = ShopDetailDto.ContactTypesEnum;
 
 export class OpeningHours {
@@ -50,7 +52,7 @@ export class ShopCreationPageComponent implements OnInit {
 
   days;
 
-  constructor(private client: HttpClient, private formBuilder: FormBuilder, private route: ActivatedRoute) {
+  constructor(private client: HttpClient, private formBuilder: FormBuilder, private route: ActivatedRoute, private matDialog: MatDialog) {
     this.days = Array.from(this.businessHours.POSSIBLE_BUSINESS_HOURS.keys());
     this.contactTypes = Object.keys(ContactTypesEnum).map(key => ContactTypesEnum[key]);
   }
@@ -86,6 +88,10 @@ export class ShopCreationPageComponent implements OnInit {
       // console.log('Day: ' + day);
       this.openingFormGroup.controls[fromCtrl].setValue('09:00');
       this.openingFormGroup.controls[toCtrl].setValue('16:00');
+      this.openingFormGroup.addControl('defaultCtrl', new FormControl(''));
+      this.openingFormGroup.addControl('pauseCtrl', new FormControl(''));
+      this.openingFormGroup.controls['defaultCtrl'].setValue(15);
+      this.openingFormGroup.controls['pauseCtrl'].setValue(5);
     });
     this.passwordFormGroup = this.formBuilder.group({
       passwordCtrl: ['', [Validators.required, Validators.minLength(14)]],
@@ -142,9 +148,18 @@ export class ShopCreationPageComponent implements OnInit {
         slots = this.setRightSlot(day, this.openingFormGroup.get(fromCtrl).value, this.openingFormGroup.get(toCtrl).value, slots);
       }
     });
+    slots.timeBetweenSlots = this.openingFormGroup.get('pauseCtrl').value;
+    slots.timePerSlot = this.openingFormGroup.get('defaultCtrl').value;
     createShopRequestDto.slots = slots;
     createShopRequestDto.password = this.passwordFormGroup.get('passwordCtrl').value;
-    this.client.post('/api/shop?token=' + this.token, createShopRequestDto).subscribe();
+    this.client.post('/api/shop?token=' + this.token, createShopRequestDto).subscribe(response => {
+      this.matDialog.open(ShopCreationSuccessPopupComponent, {
+        width: '500px',
+        data: createShopRequestDto.name
+      })
+        .afterClosed()
+        .subscribe();
+    });
   }
 
   getEnumValue(contactType: any) {
