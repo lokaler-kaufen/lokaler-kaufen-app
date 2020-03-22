@@ -8,7 +8,7 @@
 
   <p class="mat-divider"></p>
   <div class="mat-card">
-<!--    <mat-table [dataSource]="details.slots" class="mat-table" id="calendar">
+    <mat-table [dataSource]="slots" class="mat-table" id="calendar">
       <ng-container matColumnDef="from">
         <mat-header-cell *matHeaderCellDef> Start</mat-header-cell>
         <mat-cell *matCellDef="let element">{{element.start}}</mat-cell>
@@ -30,7 +30,7 @@
 
       <mat-header-row *matHeaderRowDef="['from', 'to', 'available']"></mat-header-row>
       <mat-row *matRowDef="let row; columns: ['from', 'to', 'available']"></mat-row>
-    </mat-table>-->
+    </mat-table>
   </div>
 
 
