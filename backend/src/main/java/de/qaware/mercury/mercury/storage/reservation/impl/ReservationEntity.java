@@ -14,8 +14,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -37,11 +36,11 @@ class ReservationEntity {
 
     @Setter
     @Column(nullable = false)
-    private OffsetDateTime startTime;
+    private LocalDateTime startTime;
 
     @Setter
     @Column(nullable = false)
-    private OffsetDateTime endTime;
+    private LocalDateTime endTime;
 
     @Setter
     @Column(nullable = false)
@@ -59,8 +58,8 @@ class ReservationEntity {
         return new ReservationEntity(
             reservation.getId().getId(),
             reservation.getShopId().getId(),
-            reservation.getStart().atOffset(ZoneOffset.UTC),
-            reservation.getEnd().atOffset(ZoneOffset.UTC),
+            reservation.getStart(),
+            reservation.getEnd(),
             reservation.getContact(),
             reservation.getEmail(),
             reservation.getContactType().name()
@@ -71,8 +70,8 @@ class ReservationEntity {
         return new Reservation(
             Reservation.Id.of(id),
             Shop.Id.of(shopId),
-            startTime.toLocalDateTime(),
-            endTime.toLocalDateTime(),
+            startTime,
+            endTime,
             contact,
             email,
             ContactType.valueOf(contactType)

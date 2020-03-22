@@ -10,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.List;
 
 @Slf4j
@@ -27,7 +26,7 @@ class JpaReservationRepositoryImpl implements ReservationRepository {
 
     @Override
     public List<Reservation> findReservationsForShop(Shop.Id shopId, LocalDateTime start, LocalDateTime end) {
-        List<ReservationEntity> entities = reservationDataRepository.findReservationsForShop(shopId.getId(), start.atOffset(ZoneOffset.UTC), end.atOffset(ZoneOffset.UTC));
+        List<ReservationEntity> entities = reservationDataRepository.findReservationsForShop(shopId.getId(), start, end);
 
         return Lists.map(entities, ReservationEntity::toReservation);
     }

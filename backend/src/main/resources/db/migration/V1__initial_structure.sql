@@ -50,10 +50,10 @@ CREATE TABLE shop_login
 CREATE TABLE reservation
 (
     id           uuid primary key,
-    shop_id      uuid                     not null references shop (id),
-    start_time   timestamp with time zone not null,
-    end_time     timestamp with time zone not null,
-    contact      varchar                  not null,
+    shop_id      uuid    not null references shop (id),
+    start_time   timestamp without time zone not null,
+    end_time     timestamp without time zone not null,
+    contact      varchar not null,
     email        varchar not null,
     contact_type varchar not null
 );
