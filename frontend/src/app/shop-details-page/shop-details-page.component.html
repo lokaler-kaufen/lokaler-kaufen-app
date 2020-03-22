@@ -3,12 +3,12 @@
   <h1 id="title" class="mat-title">{{details.name}}</h1>
 
   <div id="description" class="mat-card">
-    <p class="mat-card-content">{{details.description}}</p>
+    <p class="mat-card-content">{{details.details}}</p>
   </div>
 
   <p class="mat-divider"></p>
   <div class="mat-card">
-    <mat-table [dataSource]="details.slots" class="mat-table" id="calendar">
+<!--    <mat-table [dataSource]="details.slots" class="mat-table" id="calendar">
       <ng-container matColumnDef="from">
         <mat-header-cell *matHeaderCellDef> Start</mat-header-cell>
         <mat-cell *matCellDef="let element">{{element.start}}</mat-cell>
@@ -30,7 +30,7 @@
 
       <mat-header-row *matHeaderRowDef="['from', 'to', 'available']"></mat-header-row>
       <mat-row *matRowDef="let row; columns: ['from', 'to', 'available']"></mat-row>
-    </mat-table>
+    </mat-table>-->
   </div>
 
 
@@ -39,8 +39,8 @@
   <div id="contact" class="mat-small mat-card">
     <div>{{details.name}}</div>
     <div>{{details.street}}</div>
-    <div>{{details.zipcode}}</div>
-    <div>{{details.country}}</div>
+    <div>{{details.zipCode}}</div>
+    <div>{{details.city}}</div>
     <div>{{details.website}}</div>
     <div>{{details.email}}</div>
   </div>

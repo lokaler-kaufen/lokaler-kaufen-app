@@ -1,6 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {MatDialogRef} from "@angular/material/dialog";
 import {HttpClient} from "@angular/common/http";
+import {ShopControllerService} from "../data/client";
 
 @Component({
   selector: 'register-business-popup',
@@ -12,7 +13,8 @@ export class RegisterBusinessPopupComponent {
   showConfirmDialog = false;
 
   constructor(private client: HttpClient,
-              public dialogRef: MatDialogRef<RegisterBusinessPopupComponent>) {
+              public dialogRef: MatDialogRef<RegisterBusinessPopupComponent>,
+              private shopClient: ShopControllerService) {
   }
 
   onNoClick(): void {

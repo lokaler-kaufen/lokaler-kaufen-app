@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {ShopCreateDto} from '../data/client/model/shopCreateDto';
-import {CreateShopRequestDto, SlotsDto} from "../data/client";
 import {HttpClient} from "@angular/common/http";
 import {ActivatedRoute} from "@angular/router";
+import {CreateShopRequestDto, SlotConfigDto} from "../data/client";
 import ContactTypesEnum = ShopCreateDto.ContactTypesEnum;
 
 export class OpeningHours {
@@ -134,7 +134,7 @@ export class ShopCreationPageComponent implements OnInit {
       }
     });
     createShopRequestDto.contactTypes = availableContactTypes;
-    let slots: SlotsDto = {};
+    let slots: SlotConfigDto = {};
     this.businessHours.POSSIBLE_BUSINESS_HOURS.forEach((opening, day) => {
       if (opening.enabled) {
         const fromCtrl = day + 'FromCtrl';
@@ -157,7 +157,7 @@ export class ShopCreationPageComponent implements OnInit {
   }
 
   // this is hacky, we need to implement a reasonable mapping from slotsDto to the frontend
-  private setRightSlot(dayString: string, from: string, to: string, slots: SlotsDto) {
+  private setRightSlot(dayString: string, from: string, to: string, slots: SlotConfigDto) {
     switch (dayString) {
       case 'Montag':
         slots.monday = {

@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 
-export interface SlotDto { 
-    id?: string;
+export interface DayDto { 
+    end?: string;
+    start?: string;
 }

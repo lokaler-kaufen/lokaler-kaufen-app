@@ -2,10 +2,9 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatSort} from '@angular/material/sort';
 import {ActivatedRoute, Router} from '@angular/router';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {ContactTypes} from '../shared/contact-types';
-import {Observable} from 'rxjs';
-import {ShopControllerService, ShopListDto, ShopListEntryDto} from '../data/client';
+import {ShopListDto, ShopListEntryDto} from '../data/client';
 
 @Component({
   selector: 'shop-search-page',
@@ -19,8 +18,7 @@ export class ShopSearchPageComponent implements OnInit {
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   displayedColumns: string[] = ['name', 'distance', 'supportedContactTypes'];
 
-  constructor(private route: ActivatedRoute, private router: Router, private client: HttpClient,
-              private shopClient: ShopControllerService) {
+  constructor(private route: ActivatedRoute, private router: Router, private client: HttpClient) {
 
     this.dataUpdate = this.dataUpdate.bind(this);
     this.handleParamsUpdate = this.handleParamsUpdate.bind(this);
@@ -36,13 +34,21 @@ export class ShopSearchPageComponent implements OnInit {
   }
 
   private handleParamsUpdate(params): void {
-    const obs: Observable<ShopListDto> = this.shopClient.listNearbyUsingGET(params.location);
-    obs.subscribe({
-      next: this.dataUpdate,
-      error(msg) {
-        console.error(msg);
+    const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
+    this.client.get<ShopListDto>('/api/shop/nearby?location=' + params.location, {headers: headers}).subscribe(
+      response => {
+        if (response.shops.length > 0) {
+          this.dataSource = new MatTableDataSource<ShopListEntryDto>(response.shops);
+          this.sort.sort({id: 'distance', start: 'asc', disableClear: false});
+          this.dataSource.sort = this.sort;
+        } else {
+          console.log('Keine Shops gefunden.');
+        }
+      },
+      error => {
+        console.log('Error requesting shop overview: ' + error.status + ', ' + error.error.message);
       }
-    });
+    );
   }
 
   private dataUpdate(data: ShopListDto): void {

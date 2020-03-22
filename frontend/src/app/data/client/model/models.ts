@@ -1,4 +1,5 @@
 export * from './createShopRequestDto';
+export * from './dayDto';
 export * from './loginDto';
 export * from './modelAndView';
 export * from './reservationDto';
@@ -8,8 +9,8 @@ export * from './shopDetailDto';
 export * from './shopListDto';
 export * from './shopListEntryDto';
 export * from './shopsAdminDto';
+export * from './slotConfigDto';
 export * from './slotDto';
-export * from './slotsDto';
 export * from './updateShopRequestDto';
 export * from './view';
 export * from './whoAmIDto';
