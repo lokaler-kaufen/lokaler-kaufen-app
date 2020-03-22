@@ -43,6 +43,6 @@ class ShopLoginController {
     @GetMapping
     WhoAmIDto whoami(HttpServletRequest request) {
         Shop shop = authenticationHelper.authenticateShop(request);
-        return new WhoAmIDto(shop.getName());
+        return new WhoAmIDto(shop.getEmail());
     }
 }
