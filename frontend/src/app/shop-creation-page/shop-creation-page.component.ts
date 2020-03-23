@@ -69,13 +69,13 @@ export class ShopCreationPageComponent implements OnInit {
     });
     this.addressFormGroup = this.formBuilder.group({
       streetCtrl: ['', Validators.required],
-      zipCtrl: ['', Validators.required],
+      zipCtrl: ['', [Validators.required, Validators.pattern(new RegExp(/^\d{5}$/))]],
       cityCtrl: ['', Validators.required],
       suffixCtrl: '',
     });
     this.descriptionFormGroup = this.formBuilder.group({
       descriptionCtrl: ['', Validators.required],
-      urlCtrl: ['', [Validators.required, Validators.pattern('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]]
+      urlCtrl: ['', [Validators.pattern('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]]
     });
     this.contactTypes.forEach(type => {
       const ctrl = type.toLowerCase() + 'Ctrl';

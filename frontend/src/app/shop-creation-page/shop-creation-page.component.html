@@ -29,6 +29,8 @@
       <mat-form-field>
         <mat-label>PLZ</mat-label>
         <input matInput formControlName="zipCtrl" placeholder="12345" type="number"
+               oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+               maxlength="5"
                required>
       </mat-form-field>
       <mat-form-field>
@@ -63,8 +65,7 @@
           deinem Laden zeigen.</p>
         <mat-form-field>
           <mat-label>Website Link</mat-label>
-          <input matInput formControlName="urlCtrl" placeholder="https://mywebsite.de"
-                 required>
+          <input matInput formControlName="urlCtrl" placeholder="https://mywebsite.de">
         </mat-form-field>
       </div>
       <div>
