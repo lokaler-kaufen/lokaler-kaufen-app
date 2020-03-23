@@ -9,9 +9,10 @@
       <mat-label>Deine Postleitzahl</mat-label>
       <input [matAutocomplete]="auto"
              formControlName="zipCode"
-             type="text"
+             type="number"
              name="location"
              placeholder="PLZ"
+             oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
              required
              maxlength="50"
              minlength="5"
