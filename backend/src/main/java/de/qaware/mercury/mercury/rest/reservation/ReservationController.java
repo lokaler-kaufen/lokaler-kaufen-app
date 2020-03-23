@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Slf4j
@@ -30,7 +31,7 @@ public class ReservationController {
     private final ShopService shopService;
 
     @PostMapping(path = "/{shopId}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    void createReservation(@PathVariable("shopId") String shopId, @RequestBody CreateReservationDto request) throws ShopNotFoundException {
+    void createReservation(@PathVariable("shopId") String shopId, @Valid @RequestBody CreateReservationDto request) throws ShopNotFoundException {
         Shop shop = shopService.findByIdOrThrow(Shop.Id.parse(shopId));
         reservationService.createReservation(
             shop, Slot.Id.parse(request.getSlotId()), ContactType.valueOf(request.getContactType()),

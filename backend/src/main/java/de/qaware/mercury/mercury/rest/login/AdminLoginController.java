@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import static de.qaware.mercury.mercury.rest.plumbing.authentication.AuthenticationHelper.ADMIN_COOKIE_NAME;
 
@@ -32,7 +33,7 @@ class AdminLoginController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    void login(@RequestBody LoginDto request, HttpServletResponse response) throws LoginException {
+    void login(@RequestBody @Valid LoginDto request, HttpServletResponse response) throws LoginException {
         AdminToken token = adminLoginService.login(request.getEmail(), request.getPassword());
 
         Cookie cookie = new Cookie(ADMIN_COOKIE_NAME, token.getToken());

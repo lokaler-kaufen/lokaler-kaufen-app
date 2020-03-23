@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping(path = "/api/shop/login", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -30,7 +31,7 @@ class ShopLoginController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    void login(@RequestBody LoginDto request, HttpServletResponse response) throws LoginException {
+    void login(@Valid @RequestBody LoginDto request, HttpServletResponse response) throws LoginException {
         ShopToken token = shopLoginService.login(request.getEmail(), request.getPassword());
 
         Cookie cookie = new Cookie(AuthenticationHelper.SHOP_COOKIE_NAME, token.getToken());
