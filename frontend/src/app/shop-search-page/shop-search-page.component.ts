@@ -4,6 +4,7 @@ import {MatSort} from '@angular/material/sort';
 import {ActivatedRoute, Router} from '@angular/router';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {ShopDetailDto, ShopListDto, ShopListEntryDto} from '../data/client';
+import {NotificationsService} from "angular2-notifications";
 import ContactTypesEnum = ShopDetailDto.ContactTypesEnum;
 
 @Component({
@@ -19,7 +20,7 @@ export class ShopSearchPageComponent implements OnInit {
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   displayedColumns: string[] = ['name', 'distance', 'supportedContactTypes'];
 
-  constructor(private route: ActivatedRoute, private router: Router, private client: HttpClient) {
+  constructor(private route: ActivatedRoute, private router: Router, private client: HttpClient, private notificationsService: NotificationsService) {
 
     this.dataUpdate = this.dataUpdate.bind(this);
     this.handleParamsUpdate = this.handleParamsUpdate.bind(this);
@@ -52,6 +53,7 @@ export class ShopSearchPageComponent implements OnInit {
       },
       error => {
         console.log('Error requesting shop overview: ' + error.status + ', ' + error.error.message);
+        this.notificationsService.error('Tut uns leid!', 'Ein Fehler beim Laden der Shops ist aufgetreten.');
       }
     );
   }
@@ -71,6 +73,7 @@ export class ShopSearchPageComponent implements OnInit {
   performSearch() {
     this.client.get<ShopListDto>('/api/shop/search?location=' + this.location + '&query=' + this.searchBusiness).subscribe(
       response => {
+        this.dataSource = new MatTableDataSource<ShopListEntryDto>();
         if (response.shops.length > 0) {
           this.dataSource = new MatTableDataSource<ShopListEntryDto>(response.shops);
           this.sort.sort({id: 'distance', start: 'asc', disableClear: false});
@@ -81,6 +84,7 @@ export class ShopSearchPageComponent implements OnInit {
       },
       error => {
         console.log('Error requesting shop overview: ' + error.status + ', ' + error.error.message);
+        this.notificationsService.error('Tut uns leid!', 'Es ist ein Fehler bei der Suche aufgetreten.');
       }
     );
   }

@@ -34,6 +34,7 @@ import {AdminOverviewPageComponent} from './admin-overview/admin-overview-page.c
 import {ShopCreationSuccessPopupComponent} from './shop-creation-success-popup/shop-creation-success-popup.component';
 import {AdminLoginPageComponent} from './admin-login/admin-login-page.component';
 import {MatPasswordStrengthModule} from '@angular-material-extensions/password-strength';
+import {SimpleNotificationsModule} from "angular2-notifications";
 
 @NgModule({
   declarations: [
@@ -85,6 +86,7 @@ import {MatPasswordStrengthModule} from '@angular-material-extensions/password-s
     HttpClientModule,
     MatStepperModule,
     MatPasswordStrengthModule,
+    SimpleNotificationsModule.forRoot(),
   ],
   providers: [
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}},

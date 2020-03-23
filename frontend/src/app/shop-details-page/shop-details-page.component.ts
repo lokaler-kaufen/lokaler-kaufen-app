@@ -13,6 +13,7 @@ import {
   BookingSuccessPopupComponent
 } from "../booking-success-popup/booking-success-popup.component";
 import {HttpClient} from "@angular/common/http";
+import {NotificationsService} from "angular2-notifications";
 
 @Component({
   selector: 'shop-details-page',
@@ -27,7 +28,8 @@ export class ShopDetailsPageComponent implements OnInit {
 
   constructor(private client: HttpClient,
               private activatedRoute: ActivatedRoute,
-              private matDialog: MatDialog) {
+              private matDialog: MatDialog,
+              private notificationsService: NotificationsService) {
   }
 
   ngOnInit(): void {
@@ -41,12 +43,20 @@ export class ShopDetailsPageComponent implements OnInit {
   refresh() {
     this.client.get<ShopDetailDto>('/api/shop/' + this.shopId)
       .subscribe((shopDetails: ShopDetailDto) => {
-        this.details = shopDetails;
-      });
+          this.details = shopDetails;
+        },
+        error => {
+          console.log('Error requesting shop details: ' + error.status + ', ' + error.error.message);
+          this.notificationsService.error('Tut uns leid!', 'Es ist ein Fehler beim Laden der Details aufgetreten.');
+        });
     this.client.get<SlotsDto>('/api/reservation/' + this.shopId + '/slot')
       .subscribe((slots: SlotsDto) => {
-        this.slots = slots.slots;
-      });
+          this.slots = slots.slots;
+        },
+        error => {
+          console.log('Error requesting slots: ' + error.status + ', ' + error.error.message);
+          this.notificationsService.error('Tut uns leid!', 'Es ist ein Fehler beim Laden der Slots aufgetreten.');
+        });
   }
 
   showBookingPopup(id: string) {
@@ -79,12 +89,16 @@ export class ShopDetailsPageComponent implements OnInit {
           };
           this.client.post<SlotsDto>('/api/reservation/' + this.shopId, reservationDto)
             .subscribe(() => {
-              this.matDialog.open(BookingSuccessPopupComponent, successConfig);
-              this.client.get<SlotsDto>('/api/reservation/' + this.shopId + '/slot')
-                .subscribe((slots: SlotsDto) => {
-                  this.slots = slots.slots;
-                });
-            });
+                this.matDialog.open(BookingSuccessPopupComponent, successConfig);
+                this.client.get<SlotsDto>('/api/reservation/' + this.shopId + '/slot')
+                  .subscribe((slots: SlotsDto) => {
+                    this.slots = slots.slots;
+                  });
+              },
+              error => {
+                console.log('Error booking time slot: ' + error.status + ', ' + error.error.message);
+                this.notificationsService.error('Tut uns leid!', 'Es ist ein Fehler bei der Buchung aufgetreten.');
+              });
         }
       });
   }

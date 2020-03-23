@@ -5,6 +5,7 @@ import {ActivatedRoute} from "@angular/router";
 import {CreateShopRequestDto, ShopDetailDto, SlotConfigDto} from "../data/client";
 import {MatDialog} from "@angular/material/dialog";
 import {ShopCreationSuccessPopupComponent} from "../shop-creation-success-popup/shop-creation-success-popup.component";
+import {NotificationsService} from "angular2-notifications";
 import ContactTypesEnum = ShopDetailDto.ContactTypesEnum;
 
 export class OpeningHours {
@@ -54,7 +55,7 @@ export class ShopCreationPageComponent implements OnInit {
 
   days;
 
-  constructor(private client: HttpClient, private formBuilder: FormBuilder, private route: ActivatedRoute, private matDialog: MatDialog) {
+  constructor(private client: HttpClient, private formBuilder: FormBuilder, private route: ActivatedRoute, private matDialog: MatDialog, private notificationsService: NotificationsService) {
     this.days = Array.from(this.businessHours.POSSIBLE_BUSINESS_HOURS.keys());
     this.contactTypes = Object.keys(ContactTypesEnum).map(key => ContactTypesEnum[key]);
   }
@@ -154,14 +155,18 @@ export class ShopCreationPageComponent implements OnInit {
     slots.timePerSlot = this.openingFormGroup.get('defaultCtrl').value;
     createShopRequestDto.slots = slots;
     createShopRequestDto.password = this.passwordFormGroup.get('passwordCtrl').value;
-    this.client.post('/api/shop?token=' + this.token, createShopRequestDto).subscribe(response => {
-      this.matDialog.open(ShopCreationSuccessPopupComponent, {
-        width: '500px',
-        data: createShopRequestDto.name
-      })
-        .afterClosed()
-        .subscribe();
-    });
+    this.client.post('/api/shop?token=' + this.token, createShopRequestDto).subscribe(() => {
+        this.matDialog.open(ShopCreationSuccessPopupComponent, {
+          width: '500px',
+          data: createShopRequestDto.name
+        })
+          .afterClosed()
+          .subscribe();
+      },
+      error => {
+        console.log('Error creating new shop: ' + error.status + ', ' + error.error.message);
+        this.notificationsService.error('Tut uns leid!', 'Dein Laden konnte nicht angelegt werden.');
+      });
   }
 
   getEnumValue(contactType: any) {

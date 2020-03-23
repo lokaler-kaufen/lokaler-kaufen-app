@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {MatDialogRef} from "@angular/material/dialog";
 import {HttpClient} from "@angular/common/http";
-import {ShopControllerService} from "../data/client";
+import {NotificationsService} from "angular2-notifications";
 
 @Component({
   selector: 'register-business-popup',
@@ -14,7 +14,7 @@ export class RegisterBusinessPopupComponent {
 
   constructor(private client: HttpClient,
               public dialogRef: MatDialogRef<RegisterBusinessPopupComponent>,
-              private shopClient: ShopControllerService) {
+              private notificationsService: NotificationsService) {
   }
 
   onNoClick(): void {
@@ -25,6 +25,10 @@ export class RegisterBusinessPopupComponent {
     this.showConfirmDialog = !this.showConfirmDialog;
     this.client.post('/api/shop/send-create-link', {
       email: this.email
-    }).subscribe();
+    }).subscribe(() => console.log('Shop creation link sent. '),
+      error => {
+        console.log('Error sending creation link: ' + error.status + ', ' + error.error.message);
+        this.notificationsService.error('Tut uns leid!', 'Ein Fehler beim Laden der Shops ist aufgetreten.');
+      });
   }
 }
