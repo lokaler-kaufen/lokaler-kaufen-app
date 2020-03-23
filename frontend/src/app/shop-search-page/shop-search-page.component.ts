@@ -37,6 +37,9 @@ export class ShopSearchPageComponent implements OnInit {
   private handleParamsUpdate(params): void {
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
     this.location = params.location;
+    if (!this.location) {
+      this.router.navigate(['']);
+    }
     this.client.get<ShopListDto>('/api/shop/nearby?location=' + params.location, {headers: headers}).subscribe(
       response => {
         if (response.shops.length > 0) {

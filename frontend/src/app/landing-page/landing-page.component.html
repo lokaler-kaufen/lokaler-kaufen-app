@@ -4,22 +4,21 @@
     <h2>Hast Du Bock, Deine lokalen Läden zu unterstützen?</h2>
   </header>
 
-  <form>
+  <form [formGroup]="form">
     <mat-form-field class="form-item">
       <mat-label>Deine Postleitzahl</mat-label>
-      <input
-        type="text"
-        name="location"
-        placeholder="PLZ"
-        required
-        maxlength="5"
-        minlength="5"
-        matInput
-        [(ngModel)]="location"
-      />
+      <input formControlName="zipCode"
+             type="text"
+             name="location"
+             placeholder="PLZ"
+             required
+             maxlength="5"
+             minlength="5"
+             matInput
+             [(ngModel)]="location"/>
     </mat-form-field>
 
-    <button class="form-item"
+    <button class="form-item" type="submit" [disabled]="!form.valid"
             [routerLink]="['/shops']"
             [queryParams]="{ location: this.location}"
             mat-raised-button
