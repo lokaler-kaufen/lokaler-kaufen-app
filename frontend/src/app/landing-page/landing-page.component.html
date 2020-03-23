@@ -8,19 +8,19 @@
     <mat-form-field class="form-item">
       <mat-label>Deine Postleitzahl</mat-label>
       <input formControlName="zipCode"
-             type="text"
+             type="number"
              name="location"
              placeholder="PLZ"
+             oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
              required
              maxlength="5"
              minlength="5"
-             matInput
-             [(ngModel)]="location"/>
+             matInput/>
     </mat-form-field>
 
     <button class="form-item" type="submit" [disabled]="!form.valid"
             [routerLink]="['/shops']"
-            [queryParams]="{ location: this.location}"
+            [queryParams]="{ location: this.form.controls.zipCode.value}"
             mat-raised-button
             color="primary">
       Los geht's!
