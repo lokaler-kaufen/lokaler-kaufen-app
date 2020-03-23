@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 @Slf4j
 @RestController
@@ -51,12 +52,12 @@ class ShopController {
     }
 
     @PostMapping(path = "/send-create-link", consumes = MediaType.APPLICATION_JSON_VALUE)
-    void sendCreateLink(@RequestBody SendCreateLinkDto request) {
+    void sendCreateLink(@Valid @RequestBody SendCreateLinkDto request) {
         shopService.sendCreateLink(request.getEmail());
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    ShopDetailDto createShop(@RequestBody CreateShopRequestDto request, @RequestParam String token) throws LoginException {
+    ShopDetailDto createShop(@Valid @RequestBody CreateShopRequestDto request, @RequestParam String token) throws LoginException {
         // The token is taken from the link which the user got with email
         // It contains the email address, and is used to verify that the user really has access to this email address
         String email = tokenService.verifyShopCreationToken(ShopCreationToken.of(token));
@@ -69,7 +70,7 @@ class ShopController {
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    ShopDetailDto updateShop(@RequestBody UpdateShopRequestDto request, HttpServletRequest servletRequest) throws LoginException {
+    ShopDetailDto updateShop(@Valid @RequestBody UpdateShopRequestDto request, HttpServletRequest servletRequest) throws LoginException {
         Shop shop = authenticationHelper.authenticateShop(servletRequest);
 
         return ShopDetailDto.of(shopService.update(shop, new ShopUpdate(

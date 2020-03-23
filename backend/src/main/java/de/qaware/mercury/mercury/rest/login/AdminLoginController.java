@@ -33,7 +33,7 @@ class AdminLoginController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    void login(@RequestBody @Valid LoginDto request, HttpServletResponse response) throws LoginException {
+    void login(@Valid @RequestBody LoginDto request, HttpServletResponse response) throws LoginException {
         AdminToken token = adminLoginService.login(request.getEmail(), request.getPassword());
 
         Cookie cookie = new Cookie(ADMIN_COOKIE_NAME, token.getToken());

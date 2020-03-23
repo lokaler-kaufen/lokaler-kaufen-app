@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/api/admin/shop", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -54,7 +55,7 @@ class ShopAdminController {
     }
 
     @PutMapping(path = "/{id}")
-    ShopAdminDto update(@PathVariable String id, @RequestBody UpdateShopRequestDto request, HttpServletRequest servletRequest) throws ShopNotFoundException, LoginException {
+    ShopAdminDto update(@PathVariable String id, @Valid @RequestBody UpdateShopRequestDto request, HttpServletRequest servletRequest) throws ShopNotFoundException, LoginException {
         Admin admin = authenticationHelper.authenticateAdmin(servletRequest);
         Shop.Id shopId = Shop.Id.parse(id);
 
