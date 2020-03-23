@@ -47,7 +47,6 @@ class ReservationServiceImpl implements ReservationService {
     public void createReservation(Shop shop, Slot.Id slotId, ContactType contactType, String contact, String name, String email) {
         // TODO: Validate that slot is available
         // TODO: Validate if this is a valid slot
-        // TODO: Send emails
 
         Reservation.Id id = Reservation.Id.random(uuidFactory);
 
