@@ -9,3 +9,7 @@
 .disabled {
   background: lightgrey;
 }
+
+.disabled-font {
+  color: lightgrey;
+}

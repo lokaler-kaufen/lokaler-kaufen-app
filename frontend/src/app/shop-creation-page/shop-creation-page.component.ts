@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {HttpClient} from "@angular/common/http";
-import {ActivatedRoute} from "@angular/router";
-import {CreateShopRequestDto, ShopDetailDto, SlotConfigDto} from "../data/client";
-import {MatDialog} from "@angular/material/dialog";
-import {ShopCreationSuccessPopupComponent} from "../shop-creation-success-popup/shop-creation-success-popup.component";
-import {NotificationsService} from "angular2-notifications";
+import {HttpClient} from '@angular/common/http';
+import {ActivatedRoute} from '@angular/router';
+import {CreateShopRequestDto, ShopDetailDto, SlotConfigDto} from '../data/client';
+import {MatDialog} from '@angular/material/dialog';
+import {ShopCreationSuccessPopupComponent} from '../shop-creation-success-popup/shop-creation-success-popup.component';
+import {NotificationsService} from 'angular2-notifications';
 import ContactTypesEnum = ShopDetailDto.ContactTypesEnum;
 
 export class OpeningHours {
@@ -82,20 +82,23 @@ export class ShopCreationPageComponent implements OnInit {
       const ctrl = type.toLowerCase() + 'Ctrl';
       this.contactFormGroup.addControl(ctrl, new FormControl(''));
     });
-    // this.openingFormGroup = this.formBuilder.group({});
     Array.from(this.businessHours.POSSIBLE_BUSINESS_HOURS.keys()).forEach((day: string) => {
       const fromCtrl = day + 'FromCtrl';
       const toCtrl = day + 'ToCtrl';
       this.openingFormGroup.addControl(fromCtrl, new FormControl(''));
       this.openingFormGroup.addControl(toCtrl, new FormControl(''));
-      // console.log('Day: ' + day);
       this.openingFormGroup.controls[fromCtrl].setValue('09:00');
       this.openingFormGroup.controls[toCtrl].setValue('16:00');
       this.openingFormGroup.addControl('defaultCtrl', new FormControl(''));
       this.openingFormGroup.addControl('pauseCtrl', new FormControl(''));
-      this.openingFormGroup.controls['defaultCtrl'].setValue(15);
-      this.openingFormGroup.controls['pauseCtrl'].setValue(5);
+      this.openingFormGroup.controls.defaultCtrl.setValue(15);
+      this.openingFormGroup.controls.pauseCtrl.setValue(5);
     });
+    // disable default disabled saturday and sunday controls
+    this.openingFormGroup.controls.SamstagFromCtrl.disable();
+    this.openingFormGroup.controls.SonntagFromCtrl.disable();
+    this.openingFormGroup.controls.SamstagToCtrl.disable();
+    this.openingFormGroup.controls.SonntagToCtrl.disable();
     this.passwordFormGroup = this.formBuilder.group({
       passwordCtrl: ['', [Validators.required, Validators.pattern(this.passwordRegex), Validators.minLength(14)]],
       confirmPasswordCtrl: ['', Validators.required]
@@ -116,15 +119,22 @@ export class ShopCreationPageComponent implements OnInit {
   }
 
   toggleAvailability(day: string): void {
-    console.log('Toggle availability for day: ' + day);
     const businessHoursForDay = this.businessHours.POSSIBLE_BUSINESS_HOURS.get(day);
     businessHoursForDay.enabled = !businessHoursForDay.enabled;
-    console.log(businessHoursForDay);
+    const fromCtrl = day + 'FromCtrl';
+    const toCtrl = day + 'ToCtrl';
+    if (businessHoursForDay.enabled) {
+      this.openingFormGroup.controls[fromCtrl].enable();
+      this.openingFormGroup.controls[toCtrl].enable();
+    } else {
+      this.openingFormGroup.controls[fromCtrl].disable();
+      this.openingFormGroup.controls[toCtrl].disable();
+    }
   }
 
   createShop() {
     console.log('Create shop');
-    let createShopRequestDto: CreateShopRequestDto = {};
+    const createShopRequestDto: CreateShopRequestDto = {};
     createShopRequestDto.ownerName = this.nameFormGroup.get('nameCtrl').value;
     createShopRequestDto.name = this.nameFormGroup.get('businessNameCtrl').value;
     createShopRequestDto.street = this.addressFormGroup.get('streetCtrl').value;
@@ -133,7 +143,7 @@ export class ShopCreationPageComponent implements OnInit {
     createShopRequestDto.addressSupplement = this.addressFormGroup.get('suffixCtrl').value;
     createShopRequestDto.details = this.descriptionFormGroup.get('descriptionCtrl').value;
     createShopRequestDto.website = this.descriptionFormGroup.get('urlCtrl').value;
-    let availableContactTypes = {};
+    const availableContactTypes = {};
     this.contactTypes.forEach(contact => {
       const contactCtrl = contact.toLowerCase() + 'Ctrl';
       const value = this.contactFormGroup.get(contactCtrl).value;

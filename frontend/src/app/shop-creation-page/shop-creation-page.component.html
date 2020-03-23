@@ -106,7 +106,8 @@
         </button>
       </div>
       <div *ngFor="let day of days" style="clear: both;">
-        <h2 style="float:left; margin-right: 50px; vertical-align: bottom; width: 15%;">{{day}}</h2>
+        <h2 [ngClass]="{'disabled-font' : !this.businessHours.POSSIBLE_BUSINESS_HOURS.get(day).enabled}"
+            style="float:left; margin-right: 50px; vertical-align: bottom; width: 15%;">{{day}}</h2>
         <mat-form-field>
           <mat-label>Von</mat-label>
           <input formControlName="{{day}}FromCtrl" matInput type="time"
