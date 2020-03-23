@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {LocationControllerService, LocationSuggestionDto} from "../data/client";
+import {debounceTime, map, switchMap} from "rxjs/operators";
 import {Observable} from "rxjs";
-import {map} from "rxjs/operators";
 
 @Component({
   selector: 'landing-page',
@@ -15,21 +15,24 @@ export class LandingPageComponent implements OnInit {
   form: FormGroup;
 
   constructor(private formBuilder: FormBuilder,
-              private locationControllerService: LocationControllerService) { }
+              private locationControllerService: LocationControllerService) {
+  }
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
       zipCode: ['', [Validators.required, Validators.pattern(new RegExp(/^\d{5}$/))]]
     });
-  }
-
-  doSuggest(): void {
-    if (!this.location) {
-      return;
-    }
-
-    this.suggestions = this.locationControllerService.getSuggestionsUsingGET(this.location)
-      .pipe(map((response) => response.locationSuggestions));
+    this.suggestions = this.form.controls.zipCode.valueChanges
+      .pipe(
+        debounceTime(100),
+        switchMap(value => {
+          if (value) {
+            return this.locationControllerService.getSuggestionsUsingGET(value)
+              .pipe(map((response) => response.locationSuggestions));
+          } else {
+            return [];
+          }
+        }));
   }
 
   filter(values) {
