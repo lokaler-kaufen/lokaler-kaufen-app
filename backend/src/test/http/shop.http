@@ -20,7 +20,7 @@ Content-Type: application/json
     "details": "Beste Burger in ganz München. Vielleicht.",
     "website": "http://www.horsts-burgerladen.muenchen",
     "contactTypes": {
-        "FACEBOOK_MESSENGER": "Der_Horst",
+        "SIGNAL": "Der_Horst",
         "WHATSAPP": "0151/1234567"
     },
     "slots": {
