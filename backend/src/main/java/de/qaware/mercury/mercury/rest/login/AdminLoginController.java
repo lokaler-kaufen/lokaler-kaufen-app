@@ -7,6 +7,8 @@ import de.qaware.mercury.mercury.business.login.LoginException;
 import de.qaware.mercury.mercury.rest.login.dto.LoginDto;
 import de.qaware.mercury.mercury.rest.login.dto.WhoAmIDto;
 import de.qaware.mercury.mercury.rest.plumbing.authentication.AuthenticationHelper;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,14 +27,10 @@ import static de.qaware.mercury.mercury.rest.plumbing.authentication.Authenticat
 @RestController
 @RequestMapping(path = "/api/admin/login", produces = MediaType.APPLICATION_JSON_VALUE)
 @Validated
+@RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 class AdminLoginController {
     private final AuthenticationHelper authenticationHelper;
     private final AdminLoginService adminLoginService;
-
-    AdminLoginController(AuthenticationHelper authenticationHelper, AdminLoginService adminLoginService) {
-        this.authenticationHelper = authenticationHelper;
-        this.adminLoginService = adminLoginService;
-    }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     void login(@Valid @RequestBody LoginDto request, HttpServletResponse response) throws LoginException {

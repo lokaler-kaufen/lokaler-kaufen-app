@@ -7,6 +7,8 @@ import de.qaware.mercury.mercury.business.login.LoginException;
 import de.qaware.mercury.mercury.business.login.ShopLoginService;
 import de.qaware.mercury.mercury.business.login.ShopToken;
 import de.qaware.mercury.mercury.business.shop.Shop;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
@@ -17,17 +19,13 @@ import java.util.Objects;
 
 @Component
 @Slf4j
+@RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 public class AuthenticationHelper {
     public static final String ADMIN_COOKIE_NAME = "mercury-admin";
     public static final String SHOP_COOKIE_NAME = "mercury-shop";
 
     private final AdminLoginService adminLoginService;
     private final ShopLoginService shopLoginService;
-
-    public AuthenticationHelper(AdminLoginService adminLoginService, ShopLoginService shopLoginService) {
-        this.adminLoginService = adminLoginService;
-        this.shopLoginService = shopLoginService;
-    }
 
     public Admin authenticateAdmin(HttpServletRequest request) throws LoginException {
         Cookie cookie = findCookie(request, ADMIN_COOKIE_NAME);

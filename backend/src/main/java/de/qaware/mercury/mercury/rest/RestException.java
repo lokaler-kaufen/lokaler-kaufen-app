@@ -1,9 +1,9 @@
 package de.qaware.mercury.mercury.rest;
 
-public abstract class RestException extends RuntimeException {
-    public RestException() {
-    }
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
+public abstract class RestException extends RuntimeException {
     public RestException(String message) {
         super(message);
     }

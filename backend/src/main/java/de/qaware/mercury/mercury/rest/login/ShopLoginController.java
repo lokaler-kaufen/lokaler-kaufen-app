@@ -7,6 +7,8 @@ import de.qaware.mercury.mercury.business.shop.Shop;
 import de.qaware.mercury.mercury.rest.login.dto.LoginDto;
 import de.qaware.mercury.mercury.rest.login.dto.WhoAmIDto;
 import de.qaware.mercury.mercury.rest.plumbing.authentication.AuthenticationHelper;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,14 +25,10 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping(path = "/api/shop/login", produces = MediaType.APPLICATION_JSON_VALUE)
 @Validated
+@RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 class ShopLoginController {
     private final ShopLoginService shopLoginService;
     private final AuthenticationHelper authenticationHelper;
-
-    ShopLoginController(ShopLoginService shopLoginService, AuthenticationHelper authenticationHelper) {
-        this.shopLoginService = shopLoginService;
-        this.authenticationHelper = authenticationHelper;
-    }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     void login(@Valid @RequestBody LoginDto request, HttpServletResponse response) throws LoginException {

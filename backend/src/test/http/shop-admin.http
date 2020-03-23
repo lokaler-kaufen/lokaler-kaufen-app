@@ -3,8 +3,9 @@ Accept: application/json, */*
 
 ###
 
-PUT {{ host }}/api/admin/shop/781f733f-1581-4247-b03c-0b741ad2cdd6/enable?enabled=false
+PUT {{ host }}/api/admin/shop/7e0d77f7-bc2c-46cb-b16b-cfd20fe42919/enable?enabled=true
 Accept: application/json, */*
+Cookie: mercury-admin=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjYzk3MjM1Mi05ODk2LTQzMmYtYjU0Mi0wMTk3ZDFlM2VkYTYiLCJpc3MiOiJtZXJjdXJ5LWFkbWluIn0.Jlpw_f6qVxOOgAVQ3OaqemD7MgzwoojgNsdLpR2kDvc
 
 ###
 
