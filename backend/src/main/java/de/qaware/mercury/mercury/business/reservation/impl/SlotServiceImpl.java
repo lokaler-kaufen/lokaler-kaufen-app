@@ -20,6 +20,11 @@ import java.util.List;
 class SlotServiceImpl implements SlotService {
     @Override
     public List<Slot> generateSlots(LocalDate start, LocalDate end, SlotConfig slotConfig, List<Interval> existingReservations) {
+        // Safeguard against endless loops
+        if (slotConfig.getTimePerSlot() < 1) {
+            return List.of();
+        }
+
         LocalDate current = start;
 
         List<Slot> result = new ArrayList<>();
