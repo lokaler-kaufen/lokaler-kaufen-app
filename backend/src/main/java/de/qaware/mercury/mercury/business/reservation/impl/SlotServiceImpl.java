@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +53,10 @@ class SlotServiceImpl implements SlotService {
             LocalTime slotEnd = currentStart.plusMinutes(slotConfig.getTimePerSlot());
             Interval slot = Interval.of(date.atTime(currentStart), date.atTime(slotEnd));
 
+            if (hasAlreadyStarted(slot)) {
+                continue;
+            }
+
             boolean available = checkAvailability(slot, existingReservations);
             slots.add(new Slot(Slot.Id.of(slot.getStart()), slot.getStart(), slot.getEnd(), available));
 
@@ -60,6 +65,10 @@ class SlotServiceImpl implements SlotService {
         }
 
         return slots;
+    }
+
+    private boolean hasAlreadyStarted(Interval slot) {
+        return slot.getStart().isBefore(LocalDateTime.now());
     }
 
     private boolean checkAvailability(Interval slot, List<Interval> existingReservations) {
