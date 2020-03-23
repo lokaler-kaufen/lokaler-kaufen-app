@@ -149,6 +149,7 @@
           <mat-label>Password</mat-label>
           <mat-pass-toggle-visibility #toggleVisbility matSuffix></mat-pass-toggle-visibility>
           <input matInput #passwordWithValidation
+                 [type]="toggleVisbility.type"
                  required
                  formControlName="passwordCtrl"
                  placeholder="Password">
@@ -163,6 +164,7 @@
           <mat-label>Password wiederholen</mat-label>
           <mat-pass-toggle-visibility #toggleVisbility matSuffix></mat-pass-toggle-visibility>
           <input matInput #passwordConfirm
+                 [type]="toggleVisbility.type"
                  required
                  formControlName="confirmPasswordCtrl"
                  placeholder="Password wiederholen">
