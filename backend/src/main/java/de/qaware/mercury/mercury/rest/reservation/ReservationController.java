@@ -10,6 +10,7 @@ import de.qaware.mercury.mercury.business.shop.ShopNotFoundException;
 import de.qaware.mercury.mercury.business.shop.ShopService;
 import de.qaware.mercury.mercury.rest.reservation.dto.CreateReservationDto;
 import de.qaware.mercury.mercury.rest.reservation.dto.SlotsDto;
+import de.qaware.mercury.mercury.util.validation.GuidValidation;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Pattern;
 import java.util.List;
 
 @Slf4j
@@ -35,7 +37,7 @@ public class ReservationController {
     private final ShopService shopService;
 
     @PostMapping(path = "/{shopId}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    void createReservation(@PathVariable("shopId") String shopId, @Valid @RequestBody CreateReservationDto request) throws ShopNotFoundException, InvalidShopIdException, InvalidContactTypeException {
+    void createReservation(@PathVariable("shopId") @Pattern(regexp = GuidValidation.REGEX) String shopId, @Valid @RequestBody CreateReservationDto request) throws ShopNotFoundException, InvalidShopIdException, InvalidContactTypeException {
         Shop shop = shopService.findByIdOrThrow(Shop.Id.parse(shopId));
         reservationService.createReservation(
             shop, Slot.Id.parse(request.getSlotId()), ContactType.parse(request.getContactType()),
@@ -44,7 +46,7 @@ public class ReservationController {
     }
 
     @GetMapping(path = "/{shopId}/slot")
-    SlotsDto getSlotsForShop(@PathVariable("shopId") String shopId) throws ShopNotFoundException {
+    SlotsDto getSlotsForShop(@PathVariable("shopId") @Pattern(regexp = GuidValidation.REGEX) String shopId) throws ShopNotFoundException {
         Shop shop = shopService.findByIdOrThrow(Shop.Id.parse(shopId));
         List<Slot> slots = reservationService.listSlots(shop);
 

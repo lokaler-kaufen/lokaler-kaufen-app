@@ -16,6 +16,7 @@ import de.qaware.mercury.mercury.rest.shop.dto.ShopDetailDto;
 import de.qaware.mercury.mercury.rest.shop.dto.ShopListDto;
 import de.qaware.mercury.mercury.rest.shop.dto.UpdateShopRequestDto;
 import de.qaware.mercury.mercury.util.Maps;
+import de.qaware.mercury.mercury.util.validation.GuidValidation;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
 @Slf4j
 @RestController
@@ -45,7 +47,7 @@ class ShopController {
     private final AuthenticationHelper authenticationHelper;
 
     @GetMapping(path = "/{id}")
-    ShopDetailDto getDetails(@PathVariable String id) throws ShopNotFoundException {
+    ShopDetailDto getDetails(@PathVariable @Pattern(regexp = GuidValidation.REGEX) String id) throws ShopNotFoundException {
         Shop shop = shopService.findById(Shop.Id.parse(id));
         if (shop == null) {
             throw new ShopNotFoundException(Shop.Id.parse(id));
