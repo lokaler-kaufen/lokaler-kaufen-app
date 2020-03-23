@@ -32,7 +32,7 @@ public class UpdateShopRequestDto {
     private String city;
     @NotNull
     private String addressSupplement;
-    @NotNull
+    @NotBlank
     private String details;
     @Nullable
     private String website;

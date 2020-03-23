@@ -33,7 +33,7 @@ public class CreateShopRequestDto {
     @NotNull
     // TODO: Validate pattern
     private String addressSupplement;
-    @NotNull
+    @NotBlank
     // TODO: Validate pattern
     private String details;
     @Nullable
