@@ -35,6 +35,7 @@ import {ShopCreationSuccessPopupComponent} from './shop-creation-success-popup/s
 import {AdminLoginPageComponent} from './admin-login/admin-login-page.component';
 import {MatPasswordStrengthModule} from '@angular-material-extensions/password-strength';
 import {SimpleNotificationsModule} from "angular2-notifications";
+import {LoginFormComponent} from './login-form/login-form.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import {SimpleNotificationsModule} from "angular2-notifications";
     AdminOverviewPageComponent,
     ShopCreationSuccessPopupComponent,
     AdminOverviewPageComponent,
-    AdminLoginPageComponent
+    AdminLoginPageComponent,
+    LoginFormComponent
   ],
   imports: [
     ApiModule,
