@@ -36,6 +36,7 @@ import {AdminLoginPageComponent} from './admin-login/admin-login-page.component'
 import {MatPasswordStrengthModule} from '@angular-material-extensions/password-strength';
 import {SimpleNotificationsModule} from "angular2-notifications";
 import {LoginFormComponent} from './login-form/login-form.component';
+import {MatAutocompleteModule} from "@angular/material/autocomplete";
 
 @NgModule({
   declarations: [
@@ -89,6 +90,7 @@ import {LoginFormComponent} from './login-form/login-form.component';
     MatStepperModule,
     MatPasswordStrengthModule,
     SimpleNotificationsModule.forRoot(),
+    MatAutocompleteModule,
   ],
   providers: [
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}},

@@ -14,7 +14,7 @@
              placeholder="PLZ"
              oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
              required
-             maxlength="50"
+             maxlength="5"
              minlength="5"
              matInput/>
       <mat-autocomplete #auto="matAutocomplete">
@@ -23,7 +23,6 @@
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>
-
 
     <button class="form-item" type="submit" [disabled]="!form.valid"
             [routerLink]="['/shops']"
