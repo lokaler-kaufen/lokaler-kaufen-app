@@ -3,7 +3,6 @@ package de.qaware.mercury.mercury.business.location.impl;
 import de.qaware.mercury.mercury.business.location.GeoLocation;
 import de.qaware.mercury.mercury.business.location.GeoLocationLookup;
 import de.qaware.mercury.mercury.business.location.GeoLocationSuggestion;
-import de.qaware.mercury.mercury.business.location.LocationNotFoundException;
 import de.qaware.mercury.mercury.storage.location.LocationRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -21,12 +20,8 @@ public class GeoLocationLookupImpl implements GeoLocationLookup {
 
     @Override
     @Transactional(readOnly = true)
-    public GeoLocation fromZipCode(String zipCode) throws LocationNotFoundException {
-        GeoLocation geoLocation = locationRepository.fromZipCode(zipCode);
-        if(geoLocation == null) {
-            throw new LocationNotFoundException(zipCode);
-        }
-        return geoLocation;
+    public GeoLocation fromZipCode(String zipCode) {
+        return locationRepository.fromZipCode(zipCode);
     }
 
     @Override

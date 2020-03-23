@@ -1,8 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {LocationControllerService, LocationSuggestionDto} from "../data/client";
-import {Observable} from "rxjs";
-import {map} from "rxjs/operators";
 
 @Component({
   selector: 'landing-page',
@@ -11,11 +8,9 @@ import {map} from "rxjs/operators";
 })
 export class LandingPageComponent implements OnInit {
   location: string;
-  suggestions: Observable<LocationSuggestionDto[]>;
   form: FormGroup;
 
-  constructor(private formBuilder: FormBuilder,
-              private locationControllerService: LocationControllerService) { }
+  constructor(private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
@@ -23,16 +18,4 @@ export class LandingPageComponent implements OnInit {
     });
   }
 
-  doSuggest(): void {
-    if (!this.location) {
-      return;
-    }
-
-    this.suggestions = this.locationControllerService.getSuggestionsUsingGET(this.location)
-      .pipe(map((response) => response.locationSuggestions));
-  }
-
-  filter(values) {
-    console.log(values);
-  }
 }

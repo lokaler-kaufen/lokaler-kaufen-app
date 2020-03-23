@@ -17,7 +17,6 @@ import {AppHeaderComponent} from './app-header/app-header.component';
 import {AppFooterComponent} from './app-footer/app-footer.component';
 import {MatCardModule} from '@angular/material/card';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatIconModule} from '@angular/material/icon';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
@@ -70,7 +69,6 @@ import {LoginFormComponent} from './login-form/login-form.component';
     MatCardModule,
     MatButtonModule,
     MatFormFieldModule,
-    MatAutocompleteModule,
     MatInputModule,
     MatDialogModule,
     MatSelectModule,
