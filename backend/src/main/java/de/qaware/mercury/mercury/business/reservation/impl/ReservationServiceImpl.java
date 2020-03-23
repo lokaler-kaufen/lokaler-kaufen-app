@@ -14,6 +14,7 @@ import de.qaware.mercury.mercury.storage.reservation.ReservationRepository;
 import de.qaware.mercury.mercury.util.Lists;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +24,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
+@Slf4j
 class ReservationServiceImpl implements ReservationService {
     private final SlotService slotService;
     private final ReservationRepository reservationRepository;
@@ -54,7 +56,9 @@ class ReservationServiceImpl implements ReservationService {
 
         reservationRepository.insert(new Reservation(id, shop.getId(), start, end, contact, email, contactType));
 
+        log.info("Sending customer reservation confirmation to '{}'", email);
         emailService.sendCustomerReservationConfirmation(shop, email, name, start, end, contactType, contact);
+        log.info("Sending new shop reservation to '{}'", shop.getEmail());
         emailService.sendShopNewReservation(shop, name, start, end, contactType, contact);
     }
 
