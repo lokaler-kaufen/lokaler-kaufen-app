@@ -26,4 +26,8 @@ public class LoginException extends BusinessException {
     public static LoginException forShopCreationToken(ShopCreationToken token) {
         return new LoginException(String.format("Login failed for shop creation with token '%s'", token.getToken()));
     }
+
+    public static LoginException noCredentialsFound() {
+        return new LoginException("No cookie or authorization header found");
+    }
 }

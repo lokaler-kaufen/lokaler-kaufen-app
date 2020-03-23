@@ -41,7 +41,7 @@ class ShopLoginController {
     }
 
     @GetMapping
-    WhoAmIDto whoami(HttpServletRequest request) {
+    WhoAmIDto whoami(HttpServletRequest request) throws LoginException {
         Shop shop = authenticationHelper.authenticateShop(request);
         return new WhoAmIDto(shop.getEmail());
     }

@@ -43,7 +43,7 @@ class AdminLoginController {
     }
 
     @GetMapping
-    WhoAmIDto whoami(HttpServletRequest request) {
+    WhoAmIDto whoami(HttpServletRequest request) throws LoginException {
         Admin admin = authenticationHelper.authenticateAdmin(request);
         return new WhoAmIDto(admin.getEmail());
     }

@@ -10,7 +10,6 @@ import de.qaware.mercury.mercury.business.shop.ShopNotFoundException;
 import de.qaware.mercury.mercury.business.shop.ShopService;
 import de.qaware.mercury.mercury.business.shop.ShopUpdate;
 import de.qaware.mercury.mercury.rest.plumbing.authentication.AuthenticationHelper;
-import de.qaware.mercury.mercury.rest.plumbing.authentication.InvalidCredentialsRestException;
 import de.qaware.mercury.mercury.rest.shop.dto.CreateShopRequestDto;
 import de.qaware.mercury.mercury.rest.shop.dto.SendCreateLinkDto;
 import de.qaware.mercury.mercury.rest.shop.dto.ShopDetailDto;
@@ -57,15 +56,10 @@ class ShopController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    ShopDetailDto createShop(@RequestBody CreateShopRequestDto request, @RequestParam String token) {
+    ShopDetailDto createShop(@RequestBody CreateShopRequestDto request, @RequestParam String token) throws LoginException {
         // The token is taken from the link which the user got with email
         // It contains the email address, and is used to verify that the user really has access to this email address
-        String email;
-        try {
-            email = tokenService.verifyShopCreationToken(ShopCreationToken.of(token));
-        } catch (LoginException e) {
-            throw new InvalidCredentialsRestException(e.getMessage());
-        }
+        String email = tokenService.verifyShopCreationToken(ShopCreationToken.of(token));
 
         return ShopDetailDto.of(shopService.create(new ShopCreation(
             email, request.getOwnerName(), request.getName(), request.getStreet(), request.getZipCode(), request.getCity(),
@@ -75,7 +69,7 @@ class ShopController {
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    ShopDetailDto updateShop(@RequestBody UpdateShopRequestDto request, HttpServletRequest servletRequest) {
+    ShopDetailDto updateShop(@RequestBody UpdateShopRequestDto request, HttpServletRequest servletRequest) throws LoginException {
         Shop shop = authenticationHelper.authenticateShop(servletRequest);
 
         return ShopDetailDto.of(shopService.update(shop, new ShopUpdate(

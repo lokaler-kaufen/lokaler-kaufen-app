@@ -1,13 +1,13 @@
 package de.qaware.mercury.mercury.rest.shop;
 
 import de.qaware.mercury.mercury.business.admin.Admin;
+import de.qaware.mercury.mercury.business.login.LoginException;
 import de.qaware.mercury.mercury.business.shop.ContactType;
 import de.qaware.mercury.mercury.business.shop.Shop;
 import de.qaware.mercury.mercury.business.shop.ShopNotFoundException;
 import de.qaware.mercury.mercury.business.shop.ShopService;
 import de.qaware.mercury.mercury.business.shop.ShopUpdate;
 import de.qaware.mercury.mercury.business.uuid.UUIDFactory;
-import de.qaware.mercury.mercury.rest.ErrorDto;
 import de.qaware.mercury.mercury.rest.plumbing.authentication.AuthenticationHelper;
 import de.qaware.mercury.mercury.rest.shop.dto.ShopAdminDto;
 import de.qaware.mercury.mercury.rest.shop.dto.ShopsAdminDto;
@@ -16,11 +16,8 @@ import de.qaware.mercury.mercury.util.Maps;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -41,14 +38,14 @@ class ShopAdminController {
     private final AuthenticationHelper authenticationHelper;
 
     @GetMapping
-    ShopsAdminDto listAll(HttpServletRequest request) {
+    ShopsAdminDto listAll(HttpServletRequest request) throws LoginException {
         authenticationHelper.authenticateAdmin(request);
 
         return ShopsAdminDto.of(shopService.listAll());
     }
 
     @PutMapping(path = "/{id}/enable")
-    void changeEnabled(@PathVariable String id, @RequestParam boolean enabled, HttpServletRequest request) throws ShopNotFoundException {
+    void changeEnabled(@PathVariable String id, @RequestParam boolean enabled, HttpServletRequest request) throws ShopNotFoundException, LoginException {
         Admin admin = authenticationHelper.authenticateAdmin(request);
         Shop.Id shopId = Shop.Id.parse(id);
 
@@ -57,7 +54,7 @@ class ShopAdminController {
     }
 
     @PutMapping(path = "/{id}")
-    ShopAdminDto update(@PathVariable String id, @RequestBody UpdateShopRequestDto request, HttpServletRequest servletRequest) throws ShopNotFoundException {
+    ShopAdminDto update(@PathVariable String id, @RequestBody UpdateShopRequestDto request, HttpServletRequest servletRequest) throws ShopNotFoundException, LoginException {
         Admin admin = authenticationHelper.authenticateAdmin(servletRequest);
         Shop.Id shopId = Shop.Id.parse(id);
 
@@ -82,18 +79,11 @@ class ShopAdminController {
     }
 
     @DeleteMapping(path = "/{id}")
-    void delete(@PathVariable String id, HttpServletRequest request) throws ShopNotFoundException {
+    void delete(@PathVariable String id, HttpServletRequest request) throws ShopNotFoundException, LoginException {
         Admin admin = authenticationHelper.authenticateAdmin(request);
         Shop.Id shopId = Shop.Id.parse(id);
 
         log.info("Admin {} deleted shop {}", admin.getEmail(), shopId);
         shopService.delete(shopId);
-    }
-
-    @ExceptionHandler(ShopNotFoundException.class)
-    ResponseEntity<ErrorDto> handleShopNotFoundException(ShopNotFoundException exception) {
-        ErrorDto errorDto = ErrorDto.of(uuidFactory, "SHOP_NOT_FOUND", exception.getMessage());
-        log.debug("Handled ShopNotFoundException with exception id {}", errorDto.getId());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorDto);
     }
 }

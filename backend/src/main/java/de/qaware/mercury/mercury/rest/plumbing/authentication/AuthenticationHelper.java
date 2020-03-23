@@ -29,58 +29,42 @@ public class AuthenticationHelper {
         this.shopLoginService = shopLoginService;
     }
 
-    public Admin authenticateAdmin(HttpServletRequest request) {
+    public Admin authenticateAdmin(HttpServletRequest request) throws LoginException {
         Cookie cookie = findCookie(request, ADMIN_COOKIE_NAME);
         String authorizationHeader = findAuthorizationHeader(request);
 
         if (authorizationHeader != null) {
             log.debug("Token found in Authorization header");
-            try {
-                return adminLoginService.verify(AdminToken.of(authorizationHeader));
-            } catch (LoginException e) {
-                throw new InvalidCredentialsRestException(e.getMessage());
-            }
+            return adminLoginService.verify(AdminToken.of(authorizationHeader));
         }
 
         if (cookie != null) {
             log.debug("Token found in cookie");
-            try {
-                return adminLoginService.verify(AdminToken.of(cookie.getValue()));
-            } catch (LoginException e) {
-                throw new InvalidCredentialsRestException(e.getMessage());
-            }
+            return adminLoginService.verify(AdminToken.of(cookie.getValue()));
         }
 
         // Neither cookie nor header set
         log.debug("Neither cookie nor Authorization header contain token");
-        throw new NotAuthenticatedRestException("No cookie or authorization header found");
+        throw LoginException.noCredentialsFound();
     }
 
-    public Shop authenticateShop(HttpServletRequest request) {
+    public Shop authenticateShop(HttpServletRequest request) throws LoginException {
         Cookie cookie = findCookie(request, SHOP_COOKIE_NAME);
         String authorizationHeader = findAuthorizationHeader(request);
 
         if (authorizationHeader != null) {
             log.debug("Token found in Authorization header");
-            try {
-                return shopLoginService.verify(ShopToken.of(authorizationHeader));
-            } catch (LoginException e) {
-                throw new InvalidCredentialsRestException(e.getMessage());
-            }
+            return shopLoginService.verify(ShopToken.of(authorizationHeader));
         }
 
         if (cookie != null) {
             log.debug("Token found in cookie");
-            try {
                 return shopLoginService.verify(ShopToken.of(cookie.getValue()));
-            } catch (LoginException e) {
-                throw new InvalidCredentialsRestException(e.getMessage());
-            }
         }
 
         // Neither cookie nor header set
         log.debug("Neither cookie nor Authorization header contain token");
-        throw new NotAuthenticatedRestException("No cookie or authorization header found");
+        throw LoginException.noCredentialsFound();
     }
 
     @Nullable
