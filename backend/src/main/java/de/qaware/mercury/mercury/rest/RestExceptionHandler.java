@@ -1,9 +1,11 @@
 package de.qaware.mercury.mercury.rest;
 
 import de.qaware.mercury.mercury.business.login.LoginException;
+import de.qaware.mercury.mercury.business.reservation.InvalidSlotIdException;
 import de.qaware.mercury.mercury.business.shop.InvalidShopIdException;
 import de.qaware.mercury.mercury.business.shop.ShopNotFoundException;
 import de.qaware.mercury.mercury.business.uuid.UUIDFactory;
+import de.qaware.mercury.mercury.rest.shop.InvalidTimeException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -46,6 +48,20 @@ class RestExceptionHandler extends ResponseEntityExceptionHandler {
     ResponseEntity<ErrorDto> handleConstraintViolationException(ConstraintViolationException exception) {
         ErrorDto errorDto = ErrorDto.of(uuidFactory, "REQUEST_VALIDATION_FAILED", exception.getMessage());
         log.debug("Handled ConstraintViolationException with exception id {}", errorDto.getId(), exception);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDto);
+    }
+
+    @ExceptionHandler(InvalidSlotIdException.class)
+    ResponseEntity<ErrorDto> handleInvalidSlotIdException(InvalidSlotIdException exception) {
+        ErrorDto errorDto = ErrorDto.of(uuidFactory, "INVALID_SLOT_ID", exception.getMessage());
+        log.debug("Handled InvalidSlotIdException with exception id {}", errorDto.getId(), exception);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDto);
+    }
+
+    @ExceptionHandler(InvalidTimeException.class)
+    ResponseEntity<ErrorDto> handleInvalidTimeException(InvalidTimeException exception) {
+        ErrorDto errorDto = ErrorDto.of(uuidFactory, "INVALID_TIME", exception.getMessage());
+        log.debug("Handled InvalidTimeException with exception id {}", errorDto.getId(), exception);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDto);
     }
 }

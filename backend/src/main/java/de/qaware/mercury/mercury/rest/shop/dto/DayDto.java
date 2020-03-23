@@ -1,17 +1,22 @@
 package de.qaware.mercury.mercury.rest.shop.dto;
 
 import de.qaware.mercury.mercury.business.shop.DayConfig;
+import de.qaware.mercury.mercury.rest.shop.InvalidTimeException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class DayDto {
+    private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
+
     @NotBlank
     // TODO: Validate pattern
     private String start;
@@ -24,7 +29,10 @@ public class DayDto {
     }
 
     private LocalTime parse(String time) {
-        String[] parts = time.split(":");
-        return LocalTime.of(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]));
+        try {
+            return LocalTime.parse(time, TIME_FORMATTER);
+        } catch (DateTimeParseException e) {
+            throw new InvalidTimeException(time, e);
+        }
     }
 }

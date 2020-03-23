@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Value;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 
 @Value
 public class Slot {
@@ -27,7 +28,11 @@ public class Slot {
         }
 
         public static Id parse(String input) {
-            LocalDateTime.parse(input); // Validates input
+            try {
+                LocalDateTime.parse(input); // Validates input
+            } catch (DateTimeParseException e) {
+                throw new InvalidSlotIdException(input, e);
+            }
             return new Id(input);
         }
     }

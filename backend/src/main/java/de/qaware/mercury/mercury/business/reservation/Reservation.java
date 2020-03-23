@@ -22,10 +22,6 @@ public class Reservation {
     public static class Id {
         UUID id;
 
-        public static Reservation.Id parse(String input) {
-            return Reservation.Id.of(UUID.fromString(input));
-        }
-
         public static Id random(UUIDFactory uuidFactory) {
             return Id.of(uuidFactory.create());
         }
