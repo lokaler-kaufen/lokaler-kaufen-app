@@ -20,6 +20,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,11 +32,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 @RequestMapping(value = "/api/shop", produces = MediaType.APPLICATION_JSON_VALUE)
+@Validated
 class ShopController {
     private final ShopService shopService;
     private final TokenService tokenService;
@@ -57,7 +60,7 @@ class ShopController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    ShopDetailDto createShop(@Valid @RequestBody CreateShopRequestDto request, @RequestParam String token) throws LoginException {
+    ShopDetailDto createShop(@Valid @RequestBody CreateShopRequestDto request, @RequestParam @NotBlank String token) throws LoginException {
         // The token is taken from the link which the user got with email
         // It contains the email address, and is used to verify that the user really has access to this email address
         String email = tokenService.verifyShopCreationToken(ShopCreationToken.of(token));
@@ -65,7 +68,7 @@ class ShopController {
         return ShopDetailDto.of(shopService.create(new ShopCreation(
             email, request.getOwnerName(), request.getName(), request.getStreet(), request.getZipCode(), request.getCity(),
             request.getAddressSupplement(), request.getDetails(), request.getWebsite(), request.getPassword(),
-            Maps.mapKeys(request.getContactTypes(), ContactType::valueOf), request.getSlots().toSlots()
+            Maps.mapKeys(request.getContactTypes(), ContactType::parse), request.getSlots().toSlots()
         )));
     }
 
@@ -76,18 +79,17 @@ class ShopController {
         return ShopDetailDto.of(shopService.update(shop, new ShopUpdate(
             request.getName(), request.getOwnerName(), request.getStreet(), request.getZipCode(), request.getCity(),
             request.getAddressSupplement(), request.getDetails(), request.getWebsite(),
-            Maps.mapKeys(request.getContactTypes(), ContactType::valueOf), request.getSlots().toSlots()
+            Maps.mapKeys(request.getContactTypes(), ContactType::parse), request.getSlots().toSlots()
         )));
     }
 
     @GetMapping("nearby")
-    ShopListDto listNearby(@RequestParam String location) {
+    ShopListDto listNearby(@RequestParam @NotBlank String location) {
         return ShopListDto.of(shopService.findNearby(location));
     }
 
     @GetMapping("search")
-    ShopListDto listNearby(@RequestParam String query, @RequestParam String location) {
+    ShopListDto listNearby(@RequestParam @NotBlank String query, @NotBlank @RequestParam String location) {
         return ShopListDto.of(shopService.search(query, location));
     }
-
 }

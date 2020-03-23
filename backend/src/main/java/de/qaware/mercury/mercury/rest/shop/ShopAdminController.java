@@ -7,7 +7,6 @@ import de.qaware.mercury.mercury.business.shop.Shop;
 import de.qaware.mercury.mercury.business.shop.ShopNotFoundException;
 import de.qaware.mercury.mercury.business.shop.ShopService;
 import de.qaware.mercury.mercury.business.shop.ShopUpdate;
-import de.qaware.mercury.mercury.business.uuid.UUIDFactory;
 import de.qaware.mercury.mercury.rest.plumbing.authentication.AuthenticationHelper;
 import de.qaware.mercury.mercury.rest.shop.dto.ShopAdminDto;
 import de.qaware.mercury.mercury.rest.shop.dto.ShopsAdminDto;
@@ -17,6 +16,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,9 +33,9 @@ import javax.validation.Valid;
 @RequestMapping(value = "/api/admin/shop", produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
+@Validated
 class ShopAdminController {
     private final ShopService shopService;
-    private final UUIDFactory uuidFactory;
     private final AuthenticationHelper authenticationHelper;
 
     @GetMapping
@@ -74,7 +74,7 @@ class ShopAdminController {
             request.getAddressSupplement(),
             request.getDetails(),
             request.getWebsite(),
-            Maps.mapKeys(request.getContactTypes(), ContactType::valueOf),
+            Maps.mapKeys(request.getContactTypes(), ContactType::parse),
             request.getSlots().toSlots()
         )));
     }

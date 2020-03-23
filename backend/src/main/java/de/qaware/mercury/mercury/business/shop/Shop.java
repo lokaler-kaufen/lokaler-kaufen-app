@@ -32,7 +32,11 @@ public class Shop {
         UUID id;
 
         public static Id parse(String input) {
-            return Id.of(UUID.fromString(input));
+            try {
+                return Id.of(UUID.fromString(input));
+            } catch (IllegalArgumentException e) {
+                throw new InvalidShopIdException(input, e);
+            }
         }
 
         @Override

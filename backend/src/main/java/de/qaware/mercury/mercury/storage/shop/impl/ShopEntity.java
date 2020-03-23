@@ -227,7 +227,7 @@ public class ShopEntity {
     private Map<ContactType, String> fakeMap(String[] contactTypes) {
         Map<ContactType, String> result = new HashMap<>();
         for (String contactType : contactTypes) {
-            result.put(ContactType.valueOf(contactType), "");
+            result.put(ContactType.parse(contactType), "");
         }
         return result;
     }

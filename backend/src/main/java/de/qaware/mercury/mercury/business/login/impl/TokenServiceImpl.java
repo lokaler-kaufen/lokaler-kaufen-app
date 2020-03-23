@@ -14,6 +14,7 @@ import de.qaware.mercury.mercury.business.login.ShopLogin;
 import de.qaware.mercury.mercury.business.login.ShopToken;
 import de.qaware.mercury.mercury.business.login.TokenService;
 import de.qaware.mercury.mercury.business.login.TokenTechnicalException;
+import de.qaware.mercury.mercury.business.shop.InvalidShopIdException;
 import de.qaware.mercury.mercury.business.shop.Shop;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -101,6 +102,8 @@ class TokenServiceImpl implements TokenService {
         } catch (JWTVerificationException e) {
             log.warn("Shop token verification failed for token '{}'", token, e);
             throw LoginException.forShopToken(token);
+        } catch (InvalidShopIdException e) {
+            throw new AssertionError("Invalid shop id in token", e);
         }
     }
 

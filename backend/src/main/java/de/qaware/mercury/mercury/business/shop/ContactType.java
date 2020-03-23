@@ -17,4 +17,12 @@ public enum ContactType {
     ContactType(String humanReadable) {
         this.humanReadable = humanReadable;
     }
+
+    public static ContactType parse(String input) {
+        try {
+            return valueOf(input);
+        } catch (IllegalArgumentException e) {
+            throw new InvalidContactTypeException(input, e);
+        }
+    }
 }

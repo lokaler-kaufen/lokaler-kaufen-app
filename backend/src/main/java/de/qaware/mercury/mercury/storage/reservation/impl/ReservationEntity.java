@@ -74,7 +74,7 @@ class ReservationEntity {
             endTime,
             contact,
             email,
-            ContactType.valueOf(contactType)
+            ContactType.parse(contactType)
         );
     }
 }

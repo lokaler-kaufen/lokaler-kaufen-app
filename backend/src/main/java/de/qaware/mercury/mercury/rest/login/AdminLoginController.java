@@ -8,6 +8,7 @@ import de.qaware.mercury.mercury.rest.login.dto.LoginDto;
 import de.qaware.mercury.mercury.rest.login.dto.WhoAmIDto;
 import de.qaware.mercury.mercury.rest.plumbing.authentication.AuthenticationHelper;
 import org.springframework.http.MediaType;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,6 +24,7 @@ import static de.qaware.mercury.mercury.rest.plumbing.authentication.Authenticat
 
 @RestController
 @RequestMapping(path = "/api/admin/login", produces = MediaType.APPLICATION_JSON_VALUE)
+@Validated
 class AdminLoginController {
     private final AuthenticationHelper authenticationHelper;
     private final AdminLoginService adminLoginService;
