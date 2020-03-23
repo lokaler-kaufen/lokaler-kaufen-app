@@ -25,7 +25,7 @@ import {Configuration} from '../configuration';
 @Injectable()
 export class LocationControllerService {
 
-    protected basePath = '//localhost:4200/';
+    protected basePath = '//localhost:4200';
     public defaultHeaders = new HttpHeaders();
     public configuration = new Configuration();
 

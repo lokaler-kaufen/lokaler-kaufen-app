@@ -4,7 +4,7 @@ GET localhost:8080/api/location/suggestions?query=rosenh
 ###
 
 # searching for a zip code
-GET localhost:8080/api/location/suggestions?query=8154
+GET localhost:8080/api/location/suggestions?query=99999
 
 ###
 

@@ -1,6 +1,7 @@
 package de.qaware.mercury.mercury;
 
 import de.qaware.mercury.mercury.business.location.GeoLocationLookup;
+import de.qaware.mercury.mercury.business.location.LocationNotFoundException;
 import de.qaware.mercury.mercury.business.login.AdminLoginService;
 import de.qaware.mercury.mercury.business.shop.ContactType;
 import de.qaware.mercury.mercury.business.shop.DayConfig;
@@ -48,7 +49,7 @@ class DebugPopulateDatabase implements ApplicationRunner {
         }
     }
 
-    private void createShops() throws ShopNotFoundException {
+    private void createShops() throws ShopNotFoundException, LocationNotFoundException {
         createShop(new ShopCreation(
             "moe@localhost", "Moe", "Moe's Whiskey", "Lothstr. 64", "85579", "Neubiberg", "", "Bester Whiskey in ganz Neubiberg!",
             "https://www.moes-whiskey.com/", "moe",
@@ -75,7 +76,7 @@ class DebugPopulateDatabase implements ApplicationRunner {
         ));
     }
 
-    private void createShop(ShopCreation creation) throws ShopNotFoundException {
+    private void createShop(ShopCreation creation) throws ShopNotFoundException, LocationNotFoundException {
         if (shopService.findByName(creation.getName()).isEmpty()) {
             Shop shop = shopService.create(creation);
             shopService.changeEnabled(shop.getId(), true);

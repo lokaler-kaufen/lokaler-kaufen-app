@@ -6,17 +6,26 @@
 
   <form [formGroup]="form">
     <mat-form-field class="form-item">
-      <mat-label>Deine Postleitzahl</mat-label>
-      <input formControlName="zipCode"
-             type="text"
-             name="location"
-             placeholder="PLZ"
-             required
-             maxlength="5"
-             minlength="5"
-             matInput
-             [(ngModel)]="location"/>
+      <mat-label>Deine Ort</mat-label>
+      <input
+        formControlName="zipCode"
+        type="text"
+        name="location"
+        placeholder="Ort oder PLZ"
+        required
+        maxlength="50"
+        minlength="5"
+        matInput
+        [matAutocomplete]="auto"
+        [(ngModel)]="location"
+        (ngModelChange)="doSuggest()"
+      />
     </mat-form-field>
+    <mat-autocomplete #auto="matAutocomplete">
+      <mat-option *ngFor="let suggestion of suggestions | async" [value]="suggestion.zipCode">
+        {{suggestion.zipCode}} {{suggestion.placeName}} - {{suggestion.adminName1}}
+      </mat-option>
+    </mat-autocomplete>
 
     <button class="form-item" type="submit" [disabled]="!form.valid"
             [routerLink]="['/shops']"

@@ -1,5 +1,6 @@
 package de.qaware.mercury.mercury.rest;
 
+import de.qaware.mercury.mercury.business.location.LocationNotFoundException;
 import de.qaware.mercury.mercury.business.login.LoginException;
 import de.qaware.mercury.mercury.business.reservation.InvalidSlotIdException;
 import de.qaware.mercury.mercury.business.shop.InvalidShopIdException;
@@ -63,5 +64,12 @@ class RestExceptionHandler extends ResponseEntityExceptionHandler {
         ErrorDto errorDto = ErrorDto.of(uuidFactory, "INVALID_TIME", exception.getMessage());
         log.debug("Handled InvalidTimeException with exception id {}", errorDto.getId(), exception);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDto);
+    }
+
+    @ExceptionHandler(LocationNotFoundException.class)
+    ResponseEntity<ErrorDto> handleLocationNotFoundException(LocationNotFoundException exception) {
+        ErrorDto errorDto = ErrorDto.of(uuidFactory, "LOCATION_NOT_FOUND", exception.getMessage());
+        log.debug("Handled LocationNotFoundException with exception id {}", errorDto.getId(), exception);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorDto);
     }
 }

@@ -3,6 +3,7 @@ package de.qaware.mercury.mercury.business.shop.impl;
 import de.qaware.mercury.mercury.business.email.EmailService;
 import de.qaware.mercury.mercury.business.location.GeoLocation;
 import de.qaware.mercury.mercury.business.location.GeoLocationLookup;
+import de.qaware.mercury.mercury.business.location.LocationNotFoundException;
 import de.qaware.mercury.mercury.business.login.ShopLoginService;
 import de.qaware.mercury.mercury.business.shop.Shop;
 import de.qaware.mercury.mercury.business.shop.ShopCreation;
@@ -40,7 +41,7 @@ class ShopServiceImpl implements ShopService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<ShopWithDistance> findNearby(String zipCode) {
+    public List<ShopWithDistance> findNearby(String zipCode) throws LocationNotFoundException {
         GeoLocation location = geoLocationLookup.fromZipCode(zipCode);
         return shopRepository.findNearby(location);
     }
@@ -75,7 +76,7 @@ class ShopServiceImpl implements ShopService {
 
     @Override
     @Transactional
-    public Shop create(ShopCreation creation) {
+    public Shop create(ShopCreation creation) throws LocationNotFoundException {
         UUID id = uuidFactory.create();
 
         GeoLocation geoLocation = geoLocationLookup.fromZipCode(creation.getZipCode());
@@ -92,7 +93,7 @@ class ShopServiceImpl implements ShopService {
 
     @Override
     @Transactional
-    public Shop update(Shop shop, ShopUpdate update) {
+    public Shop update(Shop shop, ShopUpdate update) throws LocationNotFoundException {
         GeoLocation geoLocation = geoLocationLookup.fromZipCode(update.getZipCode());
         Shop newShop = new Shop(
             shop.getId(), update.getName(), update.getOwnerName(), shop.getName(), update.getStreet(), update.getZipCode(),
@@ -132,7 +133,7 @@ class ShopServiceImpl implements ShopService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<ShopWithDistance> search(String query, String zipCode) {
+    public List<ShopWithDistance> search(String query, String zipCode) throws LocationNotFoundException {
         GeoLocation location = geoLocationLookup.fromZipCode(zipCode);
         return shopRepository.search(query, location);
     }
