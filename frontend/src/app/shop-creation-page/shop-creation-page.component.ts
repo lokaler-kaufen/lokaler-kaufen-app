@@ -45,7 +45,7 @@ export class ShopCreationPageComponent implements OnInit {
   openingFormGroup = new FormGroup({});
   passwordFormGroup: FormGroup;
 
-  passwordRegex: RegExp = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{14,})');
+  passwordRegex: RegExp = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.{14,})');
 
   token: string;
   contactTypes;
