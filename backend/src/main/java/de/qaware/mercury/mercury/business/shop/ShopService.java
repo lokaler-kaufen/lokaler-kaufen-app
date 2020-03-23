@@ -1,6 +1,5 @@
 package de.qaware.mercury.mercury.business.shop;
 
-import de.qaware.mercury.mercury.business.location.LocationNotFoundException;
 import org.springframework.lang.Nullable;
 
 import java.util.List;
@@ -8,13 +7,13 @@ import java.util.List;
 public interface ShopService {
     List<Shop> listAll();
 
-    Shop create(ShopCreation creation) throws LocationNotFoundException;
+    Shop create(ShopCreation creation);
 
-    Shop update(Shop shop, ShopUpdate update) throws LocationNotFoundException;
+    Shop update(Shop shop, ShopUpdate update);
 
     void changeEnabled(Shop.Id id, boolean enabled) throws ShopNotFoundException;
 
-    List<ShopWithDistance> findNearby(String zipCode) throws LocationNotFoundException;
+    List<ShopWithDistance> findNearby(String zipCode);
 
     void delete(Shop.Id parse) throws ShopNotFoundException;
 
@@ -32,5 +31,5 @@ public interface ShopService {
 
     List<Shop> findByName(String name);
 
-    List<ShopWithDistance> search(String query, String zipCode) throws LocationNotFoundException;
+    List<ShopWithDistance> search(String query, String zipCode);
 }
