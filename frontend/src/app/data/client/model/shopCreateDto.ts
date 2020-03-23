@@ -35,16 +35,16 @@ export namespace ShopCreateDto {
     | 'VIBER'
     | 'TELEPHONE';
     export const ContactTypesEnum = {
-        FACEBOOKMESSENGER: 'FACEBOOK_MESSENGER' as ContactTypesEnum,
-        GLIDE: 'GLIDE' as ContactTypesEnum,
-        GOOGLEDUO: 'GOOGLE_DUO' as ContactTypesEnum,
-        WHATSAPP: 'WHATSAPP' as ContactTypesEnum,
-        SKYPE: 'SKYPE' as ContactTypesEnum,
-        JUSTALK: 'JUSTALK' as ContactTypesEnum,
-        SIGNALPRIVATEMESSENGER: 'SIGNAL_PRIVATE_MESSENGER' as ContactTypesEnum,
-        SNAPCHAT: 'SNAPCHAT' as ContactTypesEnum,
-        TANGO: 'TANGO' as ContactTypesEnum,
-        VIBER: 'VIBER' as ContactTypesEnum,
-        TELEPHONE: 'TELEPHONE' as ContactTypesEnum
+      FACEBOOKMESSENGER: 'FACEBOOK_MESSENGER' as ContactTypesEnum,
+      GLIDE: 'GLIDE' as ContactTypesEnum,
+      GOOGLEDUO: 'GOOGLE_DUO' as ContactTypesEnum,
+      WHATSAPP: 'WHATSAPP' as ContactTypesEnum,
+      SKYPE: 'SKYPE' as ContactTypesEnum,
+      JUSTALK: 'JUSTALK' as ContactTypesEnum,
+      SIGNAL: 'SIGNAL' as ContactTypesEnum,
+      SNAPCHAT: 'SNAPCHAT' as ContactTypesEnum,
+      TANGO: 'TANGO' as ContactTypesEnum,
+      VIBER: 'VIBER' as ContactTypesEnum,
+      TELEPHONE: 'TELEPHONE' as ContactTypesEnum
     };
 }
