@@ -59,9 +59,18 @@ export class ShopDetailsPageComponent implements OnInit {
                 });
     }
 
-    showBookingPopup(id: string) {
+    public get shopHasNoDescription(): boolean {
+      return this.nullOrUndefined(this.details) ||
+        this.nullOrUndefined(this.details.details) ||
+        (this.details.details.trim().length === 0);
+    }
+
+  private nullOrUndefined(value) {
+    return !value || value === undefined;
+  }
+
+  showBookingPopup(id: string) {
         const dialogConfig = new MatDialogConfig();
-        dialogConfig.autoFocus = true;
         dialogConfig.width = '100%';
         dialogConfig.data = {
             supportedContactTypes: this.details.contactTypes

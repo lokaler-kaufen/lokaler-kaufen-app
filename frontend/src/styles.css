@@ -19,3 +19,7 @@ a:hover,
 a:active {
   color: #ffc107;
 }
+
+.text-no-values {
+  color: darkgray;
+}
