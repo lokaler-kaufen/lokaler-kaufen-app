@@ -37,6 +37,7 @@ import {MatPasswordStrengthModule} from '@angular-material-extensions/password-s
 import {SimpleNotificationsModule} from "angular2-notifications";
 import {LoginFormComponent} from './login-form/login-form.component';
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
+import {PasswordResetPopupComponent} from './password-reset-popup/password-reset-popup.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +59,8 @@ import {MatAutocompleteModule} from "@angular/material/autocomplete";
     ShopCreationSuccessPopupComponent,
     AdminOverviewPageComponent,
     AdminLoginPageComponent,
-    LoginFormComponent
+    LoginFormComponent,
+    PasswordResetPopupComponent
   ],
   imports: [
     ApiModule,
