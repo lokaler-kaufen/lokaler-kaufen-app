@@ -16,7 +16,7 @@ import {CustomHttpUrlEncodingCodec} from '../encoder';
 
 import {Observable} from 'rxjs';
 
-import {LocationSuggestionListDto} from '../model/locationSuggestionListDto';
+import {LocationSuggestionsDto} from '../model/locationSuggestionsDto';
 
 import {BASE_PATH} from '../variables';
 import {Configuration} from '../configuration';
@@ -25,7 +25,7 @@ import {Configuration} from '../configuration';
 @Injectable()
 export class LocationControllerService {
 
-    protected basePath = '//localhost:4200/';
+    protected basePath = '//localhost:4200';
     public defaultHeaders = new HttpHeaders();
     public configuration = new Configuration();
 
@@ -57,22 +57,22 @@ export class LocationControllerService {
     /**
      * getSuggestions
      *
-     * @param query query
+     * @param zipCode zipCode
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getSuggestionsUsingGET(query: string, observe?: 'body', reportProgress?: boolean): Observable<LocationSuggestionListDto>;
-    public getSuggestionsUsingGET(query: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<LocationSuggestionListDto>>;
-    public getSuggestionsUsingGET(query: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<LocationSuggestionListDto>>;
-    public getSuggestionsUsingGET(query: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getSuggestionsUsingGET(zipCode: string, observe?: 'body', reportProgress?: boolean): Observable<LocationSuggestionsDto>;
+    public getSuggestionsUsingGET(zipCode: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<LocationSuggestionsDto>>;
+    public getSuggestionsUsingGET(zipCode: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<LocationSuggestionsDto>>;
+    public getSuggestionsUsingGET(zipCode: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
-        if (query === null || query === undefined) {
-            throw new Error('Required parameter query was null or undefined when calling getSuggestionsUsingGET.');
+        if (zipCode === null || zipCode === undefined) {
+            throw new Error('Required parameter zipCode was null or undefined when calling getSuggestionsUsingGET.');
         }
 
         let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
-        if (query !== undefined && query !== null) {
-            queryParameters = queryParameters.set('query', <any>query);
+        if (zipCode !== undefined && zipCode !== null) {
+            queryParameters = queryParameters.set('zipCode', <any>zipCode);
         }
 
         let headers = this.defaultHeaders;
@@ -90,7 +90,7 @@ export class LocationControllerService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<LocationSuggestionListDto>('get',`${this.basePath}/api/location/suggestions`,
+        return this.httpClient.request<LocationSuggestionsDto>('get',`${this.basePath}/api/location/suggestion`,
             {
                 params: queryParameters,
                 withCredentials: this.configuration.withCredentials,

@@ -16,11 +16,13 @@ import {CustomHttpUrlEncodingCodec} from '../encoder';
 
 import {Observable} from 'rxjs';
 
-import {CreateShopRequestDto} from '../model/createShopRequestDto';
+import {CreateShopDto} from '../model/createShopDto';
+import {ResetPasswordDto} from '../model/resetPasswordDto';
 import {SendCreateLinkDto} from '../model/sendCreateLinkDto';
+import {SendPasswordResetLinkDto} from '../model/sendPasswordResetLinkDto';
 import {ShopDetailDto} from '../model/shopDetailDto';
 import {ShopListDto} from '../model/shopListDto';
-import {UpdateShopRequestDto} from '../model/updateShopRequestDto';
+import {UpdateShopDto} from '../model/updateShopDto';
 
 import {BASE_PATH} from '../variables';
 import {Configuration} from '../configuration';
@@ -66,10 +68,10 @@ export class ShopControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createShopUsingPOST(body: CreateShopRequestDto, token: string, observe?: 'body', reportProgress?: boolean): Observable<ShopDetailDto>;
-    public createShopUsingPOST(body: CreateShopRequestDto, token: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ShopDetailDto>>;
-    public createShopUsingPOST(body: CreateShopRequestDto, token: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ShopDetailDto>>;
-    public createShopUsingPOST(body: CreateShopRequestDto, token: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public createShopUsingPOST(body: CreateShopDto, token: string, observe?: 'body', reportProgress?: boolean): Observable<ShopDetailDto>;
+    public createShopUsingPOST(body: CreateShopDto, token: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ShopDetailDto>>;
+    public createShopUsingPOST(body: CreateShopDto, token: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ShopDetailDto>>;
+    public createShopUsingPOST(body: CreateShopDto, token: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (body === null || body === undefined) {
             throw new Error('Required parameter body was null or undefined when calling createShopUsingPOST.');
@@ -260,6 +262,63 @@ export class ShopControllerService {
     }
 
     /**
+     * resetPassword
+     *
+     * @param body request
+     * @param token token
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public resetPasswordUsingPOST(body: ResetPasswordDto, token: string, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public resetPasswordUsingPOST(body: ResetPasswordDto, token: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public resetPasswordUsingPOST(body: ResetPasswordDto, token: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public resetPasswordUsingPOST(body: ResetPasswordDto, token: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (body === null || body === undefined) {
+            throw new Error('Required parameter body was null or undefined when calling resetPasswordUsingPOST.');
+        }
+
+        if (token === null || token === undefined) {
+            throw new Error('Required parameter token was null or undefined when calling resetPasswordUsingPOST.');
+        }
+
+        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        if (token !== undefined && token !== null) {
+            queryParameters = queryParameters.set('token', <any>token);
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected != undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        return this.httpClient.request<any>('post',`${this.basePath}/api/shop/reset-password`,
+            {
+                body: body,
+                params: queryParameters,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * sendCreateLink
      *
      * @param body request
@@ -306,16 +365,62 @@ export class ShopControllerService {
     }
 
     /**
+     * sendPasswordResetLink
+     *
+     * @param body request
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public sendPasswordResetLinkUsingPOST(body: SendPasswordResetLinkDto, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public sendPasswordResetLinkUsingPOST(body: SendPasswordResetLinkDto, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public sendPasswordResetLinkUsingPOST(body: SendPasswordResetLinkDto, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public sendPasswordResetLinkUsingPOST(body: SendPasswordResetLinkDto, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (body === null || body === undefined) {
+            throw new Error('Required parameter body was null or undefined when calling sendPasswordResetLinkUsingPOST.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected != undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        return this.httpClient.request<any>('post',`${this.basePath}/api/shop/send-password-reset-link`,
+            {
+                body: body,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * updateShop
      *
      * @param body request
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateShopUsingPUT(body: UpdateShopRequestDto, observe?: 'body', reportProgress?: boolean): Observable<ShopDetailDto>;
-    public updateShopUsingPUT(body: UpdateShopRequestDto, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ShopDetailDto>>;
-    public updateShopUsingPUT(body: UpdateShopRequestDto, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ShopDetailDto>>;
-    public updateShopUsingPUT(body: UpdateShopRequestDto, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public updateShopUsingPUT(body: UpdateShopDto, observe?: 'body', reportProgress?: boolean): Observable<ShopDetailDto>;
+    public updateShopUsingPUT(body: UpdateShopDto, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ShopDetailDto>>;
+    public updateShopUsingPUT(body: UpdateShopDto, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ShopDetailDto>>;
+    public updateShopUsingPUT(body: UpdateShopDto, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (body === null || body === undefined) {
             throw new Error('Required parameter body was null or undefined when calling updateShopUsingPUT.');

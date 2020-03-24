@@ -18,7 +18,7 @@ import {Observable} from 'rxjs';
 
 import {ShopAdminDto} from '../model/shopAdminDto';
 import {ShopsAdminDto} from '../model/shopsAdminDto';
-import {UpdateShopRequestDto} from '../model/updateShopRequestDto';
+import {UpdateShopDto} from '../model/updateShopDto';
 
 import {BASE_PATH} from '../variables';
 import {Configuration} from '../configuration';
@@ -191,10 +191,10 @@ export class ShopAdminControllerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateUsingPUT(body: UpdateShopRequestDto, id: string, observe?: 'body', reportProgress?: boolean): Observable<ShopAdminDto>;
-    public updateUsingPUT(body: UpdateShopRequestDto, id: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ShopAdminDto>>;
-    public updateUsingPUT(body: UpdateShopRequestDto, id: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ShopAdminDto>>;
-    public updateUsingPUT(body: UpdateShopRequestDto, id: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public updateUsingPUT(body: UpdateShopDto, id: string, observe?: 'body', reportProgress?: boolean): Observable<ShopAdminDto>;
+    public updateUsingPUT(body: UpdateShopDto, id: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ShopAdminDto>>;
+    public updateUsingPUT(body: UpdateShopDto, id: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ShopAdminDto>>;
+    public updateUsingPUT(body: UpdateShopDto, id: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (body === null || body === undefined) {
             throw new Error('Required parameter body was null or undefined when calling updateUsingPUT.');

@@ -10,8 +10,6 @@
  * Do not edit the class manually.
  */
 
-export interface LocationSuggestionDto { 
-    countryCode?: string;
-    placeName?: string;
-    zipCode?: string;
+export interface SendPasswordResetLinkDto { 
+    email?: string;
 }
