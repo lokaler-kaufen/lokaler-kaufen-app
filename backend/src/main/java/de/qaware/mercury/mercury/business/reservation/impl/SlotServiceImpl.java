@@ -14,10 +14,10 @@ import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -41,7 +41,7 @@ class SlotServiceImpl implements SlotService {
             current = current.plusDays(1);
         }
 
-        return result.stream().filter(s -> s.getStart().isAfter(clock.now())).collect(Collectors.toList());
+        return result;
     }
 
     private List<Slot> generateSlotsForDay(LocalDate date, SlotConfig slotConfig, List<Interval> existingReservations) {
@@ -53,14 +53,17 @@ class SlotServiceImpl implements SlotService {
         List<Slot> slots = new ArrayList<>();
 
         LocalTime currentStart = dayConfig.getStart();
+        LocalDateTime now = clock.now();
         // while slot end <= end of day
         while (!currentStart.plusMinutes(slotConfig.getTimePerSlot()).isAfter(dayConfig.getEnd())) {
             // start + length of slot
             LocalTime slotEnd = currentStart.plusMinutes(slotConfig.getTimePerSlot());
             Interval slot = Interval.of(date.atTime(currentStart), date.atTime(slotEnd));
 
-            boolean available = checkAvailability(slot, existingReservations);
-            slots.add(new Slot(Slot.Id.of(slot.getStart()), slot.getStart(), slot.getEnd(), available));
+            if (slot.getStart().isAfter(now)) {
+                boolean available = checkAvailability(slot, existingReservations);
+                slots.add(new Slot(Slot.Id.of(slot.getStart()), slot.getStart(), slot.getEnd(), available));
+            }
 
             // Next start = end of slot + pause
             currentStart = slotEnd.plusMinutes(slotConfig.getTimeBetweenSlots());
