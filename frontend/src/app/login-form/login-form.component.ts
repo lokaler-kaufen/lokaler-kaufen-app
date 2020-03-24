@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
@@ -19,6 +19,12 @@ enum LoginState {
 })
 export class LoginFormComponent {
 
+  @Input()
+  apiPath: string;
+
+  @Input()
+  redirectPath: string;
+
   formController = new FormGroup({
     email: new FormControl('', [Validators.email, Validators.required]),
     password: new FormControl('', [Validators.required])
@@ -37,11 +43,11 @@ export class LoginFormComponent {
     this.loginState = LoginState.PENDING;
     const credentials: LoginFormValue = this.formController.value;
 
-    this.client.post('/api/shop/login', credentials)
+    this.client.post(this.apiPath, credentials)
       .subscribe(
         () => {
           this.loginState = LoginState.BLANK;
-          this.router.navigate(['manage-shop']);
+          this.router.navigate([this.redirectPath]);
         },
         error => {
           console.error('Login request failed.', error);
