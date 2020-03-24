@@ -28,7 +28,11 @@ export class RegisterBusinessPopupComponent {
     }).subscribe(() => console.log('Shop creation link sent. '),
       error => {
         console.log('Error sending creation link: ' + error.status + ', ' + error.error.message);
-        this.notificationsService.error('Tut uns leid!', 'Ein Fehler beim Laden der Shops ist aufgetreten.');
+        if (error.status === '409') {
+          this.notificationsService.error('Moment mal...', 'Du hast dich bereits registriert. Du kannst dich unter Login für Ladenbesitzer anmelden.');
+        } else {
+          this.notificationsService.error('Tut uns leid!', 'Ein Fehler beim Senden deines Links ist aufgetreten.');
+        }
       });
   }
 }
