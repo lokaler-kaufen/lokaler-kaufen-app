@@ -14,6 +14,8 @@ mercury:
     use-dummy: true # Set this to false to send real emails
     from: "Lokaler.kaufen <info@lokaler.kaufen>"
     creationLinkTemplate: "http://localhost:4200/#/create-shop?token={{ token }}"
+  features:
+    enableShopsOnCreation: true
 
 spring.mail:
   host: "smtp.gmail.com"
