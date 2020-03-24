@@ -5,20 +5,25 @@ import de.qaware.mercury.mercury.business.reservation.Slot;
 import de.qaware.mercury.mercury.business.reservation.SlotService;
 import de.qaware.mercury.mercury.business.shop.DayConfig;
 import de.qaware.mercury.mercury.business.shop.SlotConfig;
+import de.qaware.mercury.mercury.business.time.Clock;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 class SlotServiceImpl implements SlotService {
+    private final Clock clock;
+
     @Override
     public List<Slot> generateSlots(LocalDate start, LocalDate end, SlotConfig slotConfig, List<Interval> existingReservations) {
         // Safeguard against endless loops
@@ -68,7 +73,7 @@ class SlotServiceImpl implements SlotService {
     }
 
     private boolean hasAlreadyStarted(Interval slot) {
-        return slot.getStart().isBefore(LocalDateTime.now());
+        return slot.getStart().isBefore(clock.now());
     }
 
     private boolean checkAvailability(Interval slot, List<Interval> existingReservations) {

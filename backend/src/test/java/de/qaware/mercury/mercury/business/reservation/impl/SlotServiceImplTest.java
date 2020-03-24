@@ -4,6 +4,7 @@ import de.qaware.mercury.mercury.business.reservation.Interval;
 import de.qaware.mercury.mercury.business.reservation.Slot;
 import de.qaware.mercury.mercury.business.shop.DayConfig;
 import de.qaware.mercury.mercury.business.shop.SlotConfig;
+import de.qaware.mercury.mercury.business.time.impl.WallClock;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -22,7 +23,7 @@ class SlotServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        sut = new SlotServiceImpl();
+        sut = new SlotServiceImpl(new WallClock());
     }
 
     @Test
