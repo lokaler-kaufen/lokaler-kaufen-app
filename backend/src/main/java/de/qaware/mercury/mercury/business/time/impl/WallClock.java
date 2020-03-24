@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 
 @Component
-class WallClock implements Clock {
+public class WallClock implements Clock {
     @Override
     public LocalDateTime now() {
         return LocalDateTime.now();
