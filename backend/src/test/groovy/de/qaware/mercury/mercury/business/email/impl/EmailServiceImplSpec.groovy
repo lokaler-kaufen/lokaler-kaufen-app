@@ -2,6 +2,7 @@ package de.qaware.mercury.mercury.business.email.impl
 
 import de.qaware.mercury.mercury.business.email.EmailSender
 import de.qaware.mercury.mercury.business.i18n.DateTimeI18nService
+import de.qaware.mercury.mercury.business.login.PasswordResetToken
 import de.qaware.mercury.mercury.business.login.ShopCreationToken
 import de.qaware.mercury.mercury.business.login.TokenService
 import de.qaware.mercury.mercury.business.shop.ContactType
@@ -46,6 +47,32 @@ class EmailServiceImplSpec extends Specification {
 
         when:
         emailService.sendCustomerReservationConfirmation(shop, 'test@shop.de', 'Test Shop', slot, slot, ContactType.WHATSAPP, 'Spock')
+
+        then:
+        1 * i18nService.formatDate(_) >> '24.12.12412'
+        2 * i18nService.formatTime(_) >> '00:00:00'
+        noExceptionThrown()
+    }
+
+    def "Send password reset email"() {
+        given:
+        def token = PasswordResetToken.of(UUID.randomUUID().toString())
+
+        when:
+        emailService.sendShopPasswordResetEmail('test@loakler.kaufen', token)
+
+        then:
+        1 * properties.getShopPasswordResetLinkTemplate() >> '{{ token }}'
+        noExceptionThrown()
+    }
+
+    def "Send shop news reservation"() {
+        given:
+        def shop = Shop.builder().ownerName('Spock').build()
+        def slot = LocalDateTime.now()
+
+        when:
+        emailService.sendShopNewReservation(shop, 'Test Shop', slot, slot, ContactType.WHATSAPP, 'Spock')
 
         then:
         1 * i18nService.formatDate(_) >> '24.12.12412'
