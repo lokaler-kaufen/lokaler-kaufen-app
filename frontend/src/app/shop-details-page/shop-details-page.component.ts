@@ -71,6 +71,7 @@ export class ShopDetailsPageComponent implements OnInit {
 
   showBookingPopup(id: string) {
         const dialogConfig = new MatDialogConfig();
+        dialogConfig.autoFocus = true;
         dialogConfig.width = '100%';
         dialogConfig.data = {
             supportedContactTypes: this.details.contactTypes
