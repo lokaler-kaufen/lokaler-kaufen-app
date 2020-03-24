@@ -6,6 +6,12 @@ steps:
     entrypoint: gradle
     args: ["--no-daemon", "test", "assemble"]
     dir: backend
+  # Analyze code quality
+  - name: gradle:jdk11
+    entrypoint: gradle
+    args: ["--no-daemon", "sonarqube", "-Dsonar.login=$$SONAR_PASSWORD"]
+    dir: backend
+    secretEnv: ['SONAR_PASSWORD']
   # Build Docker image
   - name: gcr.io/cloud-builders/docker
     args: ["build", "-t", "gcr.io/$PROJECT_ID/lokaler.kaufen", "--build-arg=JAR_FILE=backend/build/libs/mercury-0.0.1-SNAPSHOT.jar", "."]
