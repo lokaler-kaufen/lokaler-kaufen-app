@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.function.Function;
 
 public final class Maps {
+    private Maps() {
+    }
+
     /**
      * Maps the keys of the given input map to an output map by applying a mapper function.
      *
