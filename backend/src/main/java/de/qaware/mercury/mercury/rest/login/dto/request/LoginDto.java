@@ -1,4 +1,4 @@
-package de.qaware.mercury.mercury.rest.login.dto;
+package de.qaware.mercury.mercury.rest.login.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

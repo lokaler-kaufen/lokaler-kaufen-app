@@ -1,4 +1,4 @@
-package de.qaware.mercury.mercury.rest.location.dto;
+package de.qaware.mercury.mercury.rest.location.dto.response;
 
 import de.qaware.mercury.mercury.business.location.GeoLocationSuggestion;
 import de.qaware.mercury.mercury.util.Lists;
