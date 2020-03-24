@@ -3,6 +3,7 @@ plugins {
 	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
 	id 'java'
     id 'groovy'
+    id 'jacoco'
 	id "org.sonarqube" version "2.8"
 }
 
