@@ -2,6 +2,7 @@ package de.qaware.mercury.mercury.storage.reservation.impl;
 
 import de.qaware.mercury.mercury.business.reservation.Reservation;
 import de.qaware.mercury.mercury.business.shop.Shop;
+import de.qaware.mercury.mercury.business.time.Clock;
 import de.qaware.mercury.mercury.storage.reservation.ReservationRepository;
 import de.qaware.mercury.mercury.util.Lists;
 import lombok.AccessLevel;
@@ -17,11 +18,12 @@ import java.util.List;
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 class JpaReservationRepositoryImpl implements ReservationRepository {
     private final ReservationDataRepository reservationDataRepository;
+    private final Clock clock;
 
     @Override
     public void insert(Reservation reservation) {
         log.debug("Update {}", reservation);
-        reservationDataRepository.save(ReservationEntity.of(reservation));
+        reservationDataRepository.save(ReservationEntity.of(reservation.withCreated(clock.nowZoned())));
     }
 
     @Override

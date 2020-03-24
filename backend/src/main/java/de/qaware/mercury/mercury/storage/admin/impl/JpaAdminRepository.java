@@ -1,19 +1,20 @@
 package de.qaware.mercury.mercury.storage.admin.impl;
 
 import de.qaware.mercury.mercury.business.admin.Admin;
+import de.qaware.mercury.mercury.business.time.Clock;
 import de.qaware.mercury.mercury.storage.admin.AdminRepository;
 import de.qaware.mercury.mercury.util.Null;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
-class AdminRepositoryImpl implements AdminRepository {
+@RequiredArgsConstructor(access = AccessLevel.PACKAGE)
+class JpaAdminRepository implements AdminRepository {
     private final AdminDataRepository adminDataRepository;
-
-    AdminRepositoryImpl(AdminDataRepository adminDataRepository) {
-        this.adminDataRepository = adminDataRepository;
-    }
+    private final Clock clock;
 
     @Override
     public Admin findByEmail(String email) {
@@ -32,6 +33,6 @@ class AdminRepositoryImpl implements AdminRepository {
     @Override
     public void insert(Admin admin) {
         log.debug("Insert admin {}", admin);
-        adminDataRepository.save(AdminEntity.of(admin));
+        adminDataRepository.save(AdminEntity.of(admin.withCreated(clock.nowZoned())));
     }
 }

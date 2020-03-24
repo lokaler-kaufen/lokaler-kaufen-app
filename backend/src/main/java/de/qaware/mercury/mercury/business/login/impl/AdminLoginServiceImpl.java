@@ -6,8 +6,11 @@ import de.qaware.mercury.mercury.business.login.AdminToken;
 import de.qaware.mercury.mercury.business.login.LoginException;
 import de.qaware.mercury.mercury.business.login.PasswordHasher;
 import de.qaware.mercury.mercury.business.login.TokenService;
+import de.qaware.mercury.mercury.business.time.Clock;
 import de.qaware.mercury.mercury.business.uuid.UUIDFactory;
 import de.qaware.mercury.mercury.storage.admin.AdminRepository;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
@@ -15,18 +18,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 class AdminLoginServiceImpl implements AdminLoginService {
     private final AdminRepository adminRepository;
     private final PasswordHasher passwordHasher;
     private final TokenService tokenService;
     private final UUIDFactory uuidFactory;
-
-    AdminLoginServiceImpl(AdminRepository adminRepository, PasswordHasher passwordHasher, TokenService tokenService, UUIDFactory uuidFactory) {
-        this.adminRepository = adminRepository;
-        this.passwordHasher = passwordHasher;
-        this.tokenService = tokenService;
-        this.uuidFactory = uuidFactory;
-    }
+    private final Clock clock;
 
     @Override
     @Transactional
@@ -34,7 +32,7 @@ class AdminLoginServiceImpl implements AdminLoginService {
         Admin.Id id = Admin.Id.random(uuidFactory);
         String hash = passwordHasher.hash(password);
 
-        Admin admin = new Admin(id, email, hash);
+        Admin admin = new Admin(id, email, hash, clock.nowZoned(), clock.nowZoned());
         adminRepository.insert(admin);
         log.info("Created admin '{}', id {}", email, id);
         return admin;

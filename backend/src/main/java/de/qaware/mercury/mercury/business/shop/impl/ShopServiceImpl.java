@@ -10,6 +10,7 @@ import de.qaware.mercury.mercury.business.shop.ShopNotFoundException;
 import de.qaware.mercury.mercury.business.shop.ShopService;
 import de.qaware.mercury.mercury.business.shop.ShopUpdate;
 import de.qaware.mercury.mercury.business.shop.ShopWithDistance;
+import de.qaware.mercury.mercury.business.time.Clock;
 import de.qaware.mercury.mercury.business.uuid.UUIDFactory;
 import de.qaware.mercury.mercury.storage.shop.ShopRepository;
 import lombok.AccessLevel;
@@ -31,6 +32,7 @@ class ShopServiceImpl implements ShopService {
     private final ShopRepository shopRepository;
     private final EmailService emailService;
     private final ShopLoginService shopLoginService;
+    private final Clock clock;
 
     @Override
     @Transactional(readOnly = true)
@@ -82,7 +84,8 @@ class ShopServiceImpl implements ShopService {
         Shop shop = new Shop(
             Shop.Id.of(id), creation.getName(), creation.getOwnerName(), creation.getEmail(), creation.getStreet(),
             creation.getZipCode(), creation.getCity(), creation.getAddressSupplement(), creation.getContactTypes(),
-            false, geoLocation, creation.getDetails(), creation.getWebsite(), creation.getSlotConfig()
+            false, geoLocation, creation.getDetails(), creation.getWebsite(), creation.getSlotConfig(), clock.nowZoned(),
+            clock.nowZoned()
         );
 
         shopRepository.insert(shop);
@@ -94,10 +97,12 @@ class ShopServiceImpl implements ShopService {
     @Transactional
     public Shop update(Shop shop, ShopUpdate update) {
         GeoLocation geoLocation = geoLocationLookup.fromZipCode(update.getZipCode());
+
         Shop newShop = new Shop(
             shop.getId(), update.getName(), update.getOwnerName(), shop.getName(), update.getStreet(), update.getZipCode(),
             update.getCity(), update.getAddressSupplement(), update.getContactTypes(),
-            shop.isEnabled(), geoLocation, shop.getDetails(), shop.getWebsite(), shop.getSlotConfig()
+            shop.isEnabled(), geoLocation, shop.getDetails(), shop.getWebsite(), shop.getSlotConfig(), shop.getCreated(),
+            clock.nowZoned()
         );
 
         shopRepository.update(newShop);

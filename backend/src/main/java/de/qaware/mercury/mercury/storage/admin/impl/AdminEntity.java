@@ -12,6 +12,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.time.ZonedDateTime;
 import java.util.UUID;
 
 @Entity
@@ -35,11 +36,19 @@ public class AdminEntity {
     @Column(name = "password_hash", nullable = false)
     private String passwordHash;
 
-    public static Admin toAdmin(AdminEntity entity) {
-        return new Admin(Admin.Id.of(entity.getId()), entity.getEmail(), entity.getPasswordHash());
+    @Column(nullable = false)
+    private ZonedDateTime created;
+
+    @Column(nullable = false)
+    private ZonedDateTime updated;
+
+    public Admin toAdmin() {
+        return new Admin(Admin.Id.of(id), email, passwordHash, created, updated);
     }
 
     public static AdminEntity of(Admin admin) {
-        return new AdminEntity(admin.getId().getId(), admin.getEmail(), admin.getPasswordHash());
+        return new AdminEntity(
+            admin.getId().getId(), admin.getEmail(), admin.getPasswordHash(), admin.getCreated(), admin.getUpdated()
+        );
     }
 }

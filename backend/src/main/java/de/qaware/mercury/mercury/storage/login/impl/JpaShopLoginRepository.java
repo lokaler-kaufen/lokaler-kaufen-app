@@ -1,24 +1,25 @@
 package de.qaware.mercury.mercury.storage.login.impl;
 
 import de.qaware.mercury.mercury.business.login.ShopLogin;
+import de.qaware.mercury.mercury.business.time.Clock;
 import de.qaware.mercury.mercury.storage.login.ShopLoginRepository;
 import de.qaware.mercury.mercury.util.Null;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
-class ShopLoginRepositoryImpl implements ShopLoginRepository {
+@RequiredArgsConstructor(access = AccessLevel.PACKAGE)
+class JpaShopLoginRepository implements ShopLoginRepository {
     private final ShopLoginDataRepository shopLoginDataRepository;
-
-    ShopLoginRepositoryImpl(ShopLoginDataRepository shopLoginDataRepository) {
-        this.shopLoginDataRepository = shopLoginDataRepository;
-    }
+    private final Clock clock;
 
     @Override
     public void insert(ShopLogin shopLogin) {
         log.debug("Insert shop login {}", shopLogin);
-        shopLoginDataRepository.save(ShopLoginEntity.of(shopLogin));
+        shopLoginDataRepository.save(ShopLoginEntity.of(shopLogin.withCreated(clock.nowZoned())));
     }
 
     @Override
