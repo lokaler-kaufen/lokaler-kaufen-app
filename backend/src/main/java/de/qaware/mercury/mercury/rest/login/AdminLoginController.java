@@ -33,7 +33,7 @@ class AdminLoginController {
     private final AdminLoginService adminLoginService;
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    void login(@Valid @RequestBody LoginDto request, HttpServletResponse response) throws LoginException {
+    public void login(@Valid @RequestBody LoginDto request, HttpServletResponse response) throws LoginException {
         AdminToken token = adminLoginService.login(request.getEmail(), request.getPassword());
 
         Cookie cookie = new Cookie(ADMIN_COOKIE_NAME, token.getToken());
@@ -44,7 +44,7 @@ class AdminLoginController {
     }
 
     @GetMapping
-    WhoAmIDto whoami(HttpServletRequest request) throws LoginException {
+    public WhoAmIDto whoami(HttpServletRequest request) throws LoginException {
         Admin admin = authenticationHelper.authenticateAdmin(request);
         return new WhoAmIDto(admin.getEmail());
     }
