@@ -2,6 +2,7 @@ package de.qaware.mercury.mercury.rest.shop.dto;
 
 import de.qaware.mercury.mercury.business.shop.DayConfig;
 import de.qaware.mercury.mercury.rest.shop.InvalidTimeException;
+import de.qaware.mercury.mercury.rest.shop.dto.request.DayDto;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;

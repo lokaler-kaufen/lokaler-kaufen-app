@@ -1,4 +1,4 @@
-package de.qaware.mercury.mercury.rest.shop.dto;
+package de.qaware.mercury.mercury.rest.shop.dto.response;
 
 import de.qaware.mercury.mercury.business.shop.ContactType;
 import de.qaware.mercury.mercury.business.shop.ShopWithDistance;

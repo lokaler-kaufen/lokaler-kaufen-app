@@ -1,4 +1,4 @@
-package de.qaware.mercury.mercury.rest.shop.dto;
+package de.qaware.mercury.mercury.rest.shop.dto.request;
 
 import de.qaware.mercury.mercury.business.shop.DayConfig;
 import de.qaware.mercury.mercury.rest.shop.InvalidTimeException;

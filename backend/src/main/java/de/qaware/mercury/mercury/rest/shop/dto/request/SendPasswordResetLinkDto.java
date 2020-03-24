@@ -1,4 +1,4 @@
-package de.qaware.mercury.mercury.rest.shop.dto;
+package de.qaware.mercury.mercury.rest.shop.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PasswordResetRequestDto {
+public class SendPasswordResetLinkDto {
     @Email
     @NotNull
     String email;
