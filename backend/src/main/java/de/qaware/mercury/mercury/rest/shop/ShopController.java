@@ -54,7 +54,7 @@ class ShopController {
     private final ShopLoginService shopLoginService;
 
     @GetMapping(path = "/{id}")
-    ShopDetailDto getDetails(@PathVariable @Pattern(regexp = GuidValidation.REGEX) String id) throws ShopNotFoundException {
+    public ShopDetailDto getDetails(@PathVariable @Pattern(regexp = GuidValidation.REGEX) String id) throws ShopNotFoundException {
         Shop shop = shopService.findById(Shop.Id.parse(id));
         if (shop == null) {
             throw new ShopNotFoundException(Shop.Id.parse(id));
@@ -64,25 +64,25 @@ class ShopController {
     }
 
     @PostMapping(path = "/send-create-link", consumes = MediaType.APPLICATION_JSON_VALUE)
-    void sendCreateLink(@Valid @RequestBody SendCreateLinkDto request) {
+    public void sendCreateLink(@Valid @RequestBody SendCreateLinkDto request) {
         shopService.sendCreateLink(request.getEmail());
     }
 
 
     @PostMapping(path = "/send-password-reset-link", consumes = MediaType.APPLICATION_JSON_VALUE)
-    void sendPasswordResetLink(@Valid @RequestBody SendPasswordResetLinkDto request) {
+    public void sendPasswordResetLink(@Valid @RequestBody SendPasswordResetLinkDto request) {
         shopLoginService.sendPasswordResetLink(request.getEmail());
     }
 
     @PostMapping(path = "/reset-password", consumes = MediaType.APPLICATION_JSON_VALUE)
-    void resetPassword(@Valid @RequestBody ResetPasswordDto request, @RequestParam @NotBlank String token) throws LoginException, ShopLoginNotFoundException {
+    public void resetPassword(@Valid @RequestBody ResetPasswordDto request, @RequestParam @NotBlank String token) throws LoginException, ShopLoginNotFoundException {
         String email = tokenService.verifyPasswordResetToken(PasswordResetToken.of(token));
 
         shopLoginService.resetPassword(email, request.getPassword());
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    ShopDetailDto createShop(@Valid @RequestBody CreateShopDto request, @RequestParam @NotBlank String token) throws LoginException, ShopAlreadyExistsException {
+    public ShopDetailDto createShop(@Valid @RequestBody CreateShopDto request, @RequestParam @NotBlank String token) throws LoginException, ShopAlreadyExistsException {
         // The token is taken from the link which the user got with email
         // It contains the email address, and is used to verify that the user really has access to this email address
         String email = tokenService.verifyShopCreationToken(ShopCreationToken.of(token));
@@ -95,7 +95,7 @@ class ShopController {
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    ShopDetailDto updateShop(@Valid @RequestBody UpdateShopDto request, HttpServletRequest servletRequest) throws LoginException {
+    public ShopDetailDto updateShop(@Valid @RequestBody UpdateShopDto request, HttpServletRequest servletRequest) throws LoginException {
         Shop shop = authenticationHelper.authenticateShop(servletRequest);
 
         return ShopDetailDto.of(shopService.update(shop, new ShopUpdate(
@@ -106,12 +106,12 @@ class ShopController {
     }
 
     @GetMapping("nearby")
-    ShopListDto listNearby(@RequestParam @NotBlank String location) {
+    public ShopListDto listNearby(@RequestParam @NotBlank String location) {
         return ShopListDto.of(shopService.findNearby(location));
     }
 
     @GetMapping("search")
-    ShopListDto listNearby(@RequestParam @NotBlank String query, @NotBlank @RequestParam String location) {
+    public ShopListDto listNearby(@RequestParam @NotBlank String query, @NotBlank @RequestParam String location) {
         return ShopListDto.of(shopService.search(query, location));
     }
 }

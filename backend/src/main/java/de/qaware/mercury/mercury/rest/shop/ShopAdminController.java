@@ -41,14 +41,14 @@ class ShopAdminController {
     private final AuthenticationHelper authenticationHelper;
 
     @GetMapping
-    ShopsAdminDto listAll(HttpServletRequest request) throws LoginException {
+    public ShopsAdminDto listAll(HttpServletRequest request) throws LoginException {
         authenticationHelper.authenticateAdmin(request);
 
         return ShopsAdminDto.of(shopService.listAll());
     }
 
     @PutMapping(path = "/{id}/enable")
-    void changeEnabled(@PathVariable @Pattern(regexp = GuidValidation.REGEX) String id, @RequestParam boolean enabled, HttpServletRequest request) throws ShopNotFoundException, LoginException {
+    public void changeEnabled(@PathVariable @Pattern(regexp = GuidValidation.REGEX) String id, @RequestParam boolean enabled, HttpServletRequest request) throws ShopNotFoundException, LoginException {
         Admin admin = authenticationHelper.authenticateAdmin(request);
         Shop.Id shopId = Shop.Id.parse(id);
 
@@ -57,7 +57,7 @@ class ShopAdminController {
     }
 
     @PutMapping(path = "/{id}")
-    ShopAdminDto update(@PathVariable @Pattern(regexp = GuidValidation.REGEX) String id, @Valid @RequestBody UpdateShopDto request, HttpServletRequest servletRequest) throws ShopNotFoundException, LoginException {
+    public ShopAdminDto update(@PathVariable @Pattern(regexp = GuidValidation.REGEX) String id, @Valid @RequestBody UpdateShopDto request, HttpServletRequest servletRequest) throws ShopNotFoundException, LoginException {
         Admin admin = authenticationHelper.authenticateAdmin(servletRequest);
         Shop.Id shopId = Shop.Id.parse(id);
 
@@ -82,7 +82,7 @@ class ShopAdminController {
     }
 
     @DeleteMapping(path = "/{id}")
-    void delete(@PathVariable @Pattern(regexp = GuidValidation.REGEX) String id, HttpServletRequest request) throws ShopNotFoundException, LoginException {
+    public void delete(@PathVariable @Pattern(regexp = GuidValidation.REGEX) String id, HttpServletRequest request) throws ShopNotFoundException, LoginException {
         Admin admin = authenticationHelper.authenticateAdmin(request);
         Shop.Id shopId = Shop.Id.parse(id);
 

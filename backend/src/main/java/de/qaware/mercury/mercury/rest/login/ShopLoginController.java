@@ -31,7 +31,7 @@ class ShopLoginController {
     private final AuthenticationHelper authenticationHelper;
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    void login(@Valid @RequestBody LoginDto request, HttpServletResponse response) throws LoginException {
+    public void login(@Valid @RequestBody LoginDto request, HttpServletResponse response) throws LoginException {
         ShopToken token = shopLoginService.login(request.getEmail(), request.getPassword());
 
         Cookie cookie = new Cookie(AuthenticationHelper.SHOP_COOKIE_NAME, token.getToken());
@@ -42,7 +42,7 @@ class ShopLoginController {
     }
 
     @GetMapping
-    WhoAmIDto whoami(HttpServletRequest request) throws LoginException {
+    public WhoAmIDto whoami(HttpServletRequest request) throws LoginException {
         Shop shop = authenticationHelper.authenticateShop(request);
         return new WhoAmIDto(shop.getEmail());
     }

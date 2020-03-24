@@ -25,7 +25,7 @@ class LocationController {
     private final LocationService locationService;
 
     @GetMapping(path = "/suggestion")
-    LocationSuggestionsDto getSuggestions(@RequestParam @NotBlank String zipCode) {
+    public LocationSuggestionsDto getSuggestions(@RequestParam @NotBlank String zipCode) {
         List<LocationSuggestion> result = locationService.suggest(zipCode);
         return LocationSuggestionsDto.of(result);
     }

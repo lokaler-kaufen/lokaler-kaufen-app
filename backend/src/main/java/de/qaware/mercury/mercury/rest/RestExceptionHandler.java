@@ -26,56 +26,56 @@ class RestExceptionHandler extends ResponseEntityExceptionHandler {
     private final UUIDFactory uuidFactory;
 
     @ExceptionHandler(ShopNotFoundException.class)
-    ResponseEntity<ErrorDto> handleShopNotFoundException(ShopNotFoundException exception) {
+    public ResponseEntity<ErrorDto> handleShopNotFoundException(ShopNotFoundException exception) {
         ErrorDto errorDto = ErrorDto.of(uuidFactory, "SHOP_NOT_FOUND", exception.getMessage());
         log.debug("Handled ShopNotFoundException with exception id {}", errorDto.getId(), exception);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorDto);
     }
 
     @ExceptionHandler(ShopLoginNotFoundException.class)
-    ResponseEntity<ErrorDto> handleShopLoginNotFoundException(ShopLoginNotFoundException exception) {
+    public ResponseEntity<ErrorDto> handleShopLoginNotFoundException(ShopLoginNotFoundException exception) {
         ErrorDto errorDto = ErrorDto.of(uuidFactory, "SHOP_LOGIN_NOT_FOUND", exception.getMessage());
         log.debug("Handled ShopLoginNotFoundException with exception id {}", errorDto.getId(), exception);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorDto);
     }
 
     @ExceptionHandler(LoginException.class)
-    ResponseEntity<ErrorDto> handleLoginException(LoginException exception) {
+    public ResponseEntity<ErrorDto> handleLoginException(LoginException exception) {
         ErrorDto errorDto = ErrorDto.of(uuidFactory, "AUTHENTICATION_FAILED", exception.getMessage());
         log.debug("Handled LoginException with exception id {}", errorDto.getId(), exception);
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorDto);
     }
 
     @ExceptionHandler(InvalidShopIdException.class)
-    ResponseEntity<ErrorDto> handleInvalidShopIdException(InvalidShopIdException exception) {
+    public ResponseEntity<ErrorDto> handleInvalidShopIdException(InvalidShopIdException exception) {
         ErrorDto errorDto = ErrorDto.of(uuidFactory, "INVALID_SHOP_ID", exception.getMessage());
         log.debug("Handled InvalidShopIdException with exception id {}", errorDto.getId(), exception);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDto);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
-    ResponseEntity<ErrorDto> handleConstraintViolationException(ConstraintViolationException exception) {
+    public ResponseEntity<ErrorDto> handleConstraintViolationException(ConstraintViolationException exception) {
         ErrorDto errorDto = ErrorDto.of(uuidFactory, "REQUEST_VALIDATION_FAILED", exception.getMessage());
         log.debug("Handled ConstraintViolationException with exception id {}", errorDto.getId(), exception);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDto);
     }
 
     @ExceptionHandler(InvalidSlotIdException.class)
-    ResponseEntity<ErrorDto> handleInvalidSlotIdException(InvalidSlotIdException exception) {
+    public ResponseEntity<ErrorDto> handleInvalidSlotIdException(InvalidSlotIdException exception) {
         ErrorDto errorDto = ErrorDto.of(uuidFactory, "INVALID_SLOT_ID", exception.getMessage());
         log.debug("Handled InvalidSlotIdException with exception id {}", errorDto.getId(), exception);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDto);
     }
 
     @ExceptionHandler(InvalidTimeException.class)
-    ResponseEntity<ErrorDto> handleInvalidTimeException(InvalidTimeException exception) {
+    public ResponseEntity<ErrorDto> handleInvalidTimeException(InvalidTimeException exception) {
         ErrorDto errorDto = ErrorDto.of(uuidFactory, "INVALID_TIME", exception.getMessage());
         log.debug("Handled InvalidTimeException with exception id {}", errorDto.getId(), exception);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDto);
     }
 
     @ExceptionHandler(ShopAlreadyExistsException.class)
-    ResponseEntity<ErrorDto> handleShopAlreadyExistsException(ShopAlreadyExistsException exception) {
+    public ResponseEntity<ErrorDto> handleShopAlreadyExistsException(ShopAlreadyExistsException exception) {
         ErrorDto errorDto = ErrorDto.of(uuidFactory, "SHOP_ALREADY_EXISTS", exception.getMessage());
         log.debug("Handled ShopAlreadyExistsException with exception id {}", errorDto.getId(), exception);
         return ResponseEntity.status(HttpStatus.CONFLICT).body(errorDto);
