@@ -4,7 +4,7 @@ import {MatSort} from '@angular/material/sort';
 import {ActivatedRoute, Router} from '@angular/router';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {ShopDetailDto, ShopListDto, ShopListEntryDto} from '../data/client';
-import {NotificationsService} from "angular2-notifications";
+import {NotificationsService} from 'angular2-notifications';
 import ContactTypesEnum = ShopDetailDto.ContactTypesEnum;
 
 @Component({
@@ -20,7 +20,10 @@ export class ShopSearchPageComponent implements OnInit {
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   displayedColumns: string[] = ['name', 'distance', 'supportedContactTypes'];
 
-  constructor(private route: ActivatedRoute, private router: Router, private client: HttpClient, private notificationsService: NotificationsService) {
+  constructor(private route: ActivatedRoute,
+              private router: Router,
+              private client: HttpClient,
+              private notificationsService: NotificationsService) {
 
     this.dataUpdate = this.dataUpdate.bind(this);
     this.handleParamsUpdate = this.handleParamsUpdate.bind(this);
@@ -56,7 +59,7 @@ export class ShopSearchPageComponent implements OnInit {
   }
 
   performSearch() {
-    if(!this.searchBusiness || this.searchBusiness.trim().length == 0) {
+    if (!this.searchBusiness || this.searchBusiness.trim().length === 0) {
       this.findAllShopsNearby();
     } else {
       this.findShopsBySearchQuery(this.searchBusiness);
@@ -65,9 +68,9 @@ export class ShopSearchPageComponent implements OnInit {
 
   private findAllShopsNearby(): void {
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
-    const params = new HttpParams().append("location",  this.location);
+    const params = new HttpParams().append('location',  this.location);
 
-    this.client.get<ShopListDto>('/api/shop/nearby', {headers: headers, params: params}).subscribe(
+    this.client.get<ShopListDto>('/api/shop/nearby', {headers, params}).subscribe(
       response => {
         if (response.shops.length > 0) {
           this.dataSource = new MatTableDataSource<ShopListEntryDto>(response.shops);
@@ -85,9 +88,9 @@ export class ShopSearchPageComponent implements OnInit {
   }
 
   private findShopsBySearchQuery(query: string): void {
-    const params = new HttpParams().append("location",  this.location).append("query", query);
+    const params = new HttpParams().append('location',  this.location).append('query', query);
 
-    this.client.get<ShopListDto>('/api/shop/search',  {params: params}).subscribe(
+    this.client.get<ShopListDto>('/api/shop/search',  {params}).subscribe(
       response => {
         this.dataSource = new MatTableDataSource<ShopListEntryDto>();
         if (response.shops.length > 0) {
