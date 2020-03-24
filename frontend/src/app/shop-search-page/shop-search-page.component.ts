@@ -2,7 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatSort} from '@angular/material/sort';
 import {ActivatedRoute, Router} from '@angular/router';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {ShopDetailDto, ShopListDto, ShopListEntryDto} from '../data/client';
 import {NotificationsService} from "angular2-notifications";
 import ContactTypesEnum = ShopDetailDto.ContactTypesEnum;
@@ -36,26 +36,11 @@ export class ShopSearchPageComponent implements OnInit {
   }
 
   private handleParamsUpdate(params): void {
-    const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
     this.location = params.location;
     if (!this.location) {
       this.router.navigate(['']);
     }
-    this.client.get<ShopListDto>('/api/shop/nearby?location=' + params.location, {headers: headers}).subscribe(
-      response => {
-        if (response.shops.length > 0) {
-          this.dataSource = new MatTableDataSource<ShopListEntryDto>(response.shops);
-          this.sort.sort({id: 'distance', start: 'asc', disableClear: false});
-          this.dataSource.sort = this.sort;
-        } else {
-          console.log('Keine Shops gefunden.');
-        }
-      },
-      error => {
-        console.log('Error requesting shop overview: ' + error.status + ', ' + error.error.message);
-        this.notificationsService.error('Tut uns leid!', 'Ein Fehler beim Laden der Shops ist aufgetreten.');
-      }
-    );
+    this.findAllShopsNearby();
   }
 
   private dataUpdate(data: ShopListDto): void {
@@ -72,15 +57,37 @@ export class ShopSearchPageComponent implements OnInit {
 
   performSearch() {
     if(!this.searchBusiness || this.searchBusiness.trim().length == 0) {
-      this.notificationsService.info("Ungültige Suche", "Die Sucheingabe darf nicht leer sein.")
+      this.findAllShopsNearby();
     } else {
-      this.doSearchRequest();
+      this.findShopsBySearchQuery(this.searchBusiness);
     }
   }
 
-  private doSearchRequest() {
-    let urlEscapedSearchInput = encodeURIComponent(this.searchBusiness);
-    this.client.get<ShopListDto>('/api/shop/search?location=' + this.location + '&query=' + urlEscapedSearchInput).subscribe(
+  private findAllShopsNearby(): void {
+    const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
+    const params = new HttpParams().append("location",  this.location);
+
+    this.client.get<ShopListDto>('/api/shop/nearby', {headers: headers, params: params}).subscribe(
+      response => {
+        if (response.shops.length > 0) {
+          this.dataSource = new MatTableDataSource<ShopListEntryDto>(response.shops);
+          this.sort.sort({id: 'distance', start: 'asc', disableClear: false});
+          this.dataSource.sort = this.sort;
+        } else {
+          console.log('Keine Shops gefunden.');
+        }
+      },
+      error => {
+        console.log('Error requesting shop overview: ' + error.status + ', ' + error.error.message);
+        this.notificationsService.error('Tut uns leid!', 'Ein Fehler beim Laden der Shops ist aufgetreten.');
+      }
+    );
+  }
+
+  private findShopsBySearchQuery(query: string): void {
+    const params = new HttpParams().append("location",  this.location).append("query", query);
+
+    this.client.get<ShopListDto>('/api/shop/search',  {params: params}).subscribe(
       response => {
         this.dataSource = new MatTableDataSource<ShopListEntryDto>();
         if (response.shops.length > 0) {
