@@ -1,4 +1,4 @@
-package de.qaware.mercury.mercury.rest.reservation.dto;
+package de.qaware.mercury.mercury.rest.reservation.dto.response;
 
 import de.qaware.mercury.mercury.business.reservation.Slot;
 import lombok.AllArgsConstructor;

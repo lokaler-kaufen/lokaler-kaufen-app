@@ -2,7 +2,7 @@ package de.qaware.mercury.mercury.rest.location;
 
 import de.qaware.mercury.mercury.business.location.GeoLocationLookup;
 import de.qaware.mercury.mercury.business.location.GeoLocationSuggestion;
-import de.qaware.mercury.mercury.rest.location.dto.LocationSuggestionListDto;
+import de.qaware.mercury.mercury.rest.location.dto.response.LocationSuggestionListDto;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
