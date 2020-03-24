@@ -1,6 +1,7 @@
 package de.qaware.mercury.mercury.rest;
 
 import de.qaware.mercury.mercury.business.login.LoginException;
+import de.qaware.mercury.mercury.business.login.ShopLoginNotFoundException;
 import de.qaware.mercury.mercury.business.reservation.InvalidSlotIdException;
 import de.qaware.mercury.mercury.business.shop.InvalidShopIdException;
 import de.qaware.mercury.mercury.business.shop.ShopNotFoundException;
@@ -27,6 +28,13 @@ class RestExceptionHandler extends ResponseEntityExceptionHandler {
     ResponseEntity<ErrorDto> handleShopNotFoundException(ShopNotFoundException exception) {
         ErrorDto errorDto = ErrorDto.of(uuidFactory, "SHOP_NOT_FOUND", exception.getMessage());
         log.debug("Handled ShopNotFoundException with exception id {}", errorDto.getId(), exception);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorDto);
+    }
+
+    @ExceptionHandler(ShopLoginNotFoundException.class)
+    ResponseEntity<ErrorDto> handleShopLoginNotFoundException(ShopLoginNotFoundException exception) {
+        ErrorDto errorDto = ErrorDto.of(uuidFactory, "SHOP_LOGIN_NOT_FOUND", exception.getMessage());
+        log.debug("Handled ShopLoginNotFoundException with exception id {}", errorDto.getId(), exception);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorDto);
     }
 

@@ -1,7 +1,9 @@
 package de.qaware.mercury.mercury.rest.shop;
 
 import de.qaware.mercury.mercury.business.login.LoginException;
+import de.qaware.mercury.mercury.business.login.PasswordResetToken;
 import de.qaware.mercury.mercury.business.login.ShopCreationToken;
+import de.qaware.mercury.mercury.business.login.ShopLoginNotFoundException;
 import de.qaware.mercury.mercury.business.login.ShopLoginService;
 import de.qaware.mercury.mercury.business.login.TokenService;
 import de.qaware.mercury.mercury.business.shop.ContactType;
@@ -11,10 +13,11 @@ import de.qaware.mercury.mercury.business.shop.ShopNotFoundException;
 import de.qaware.mercury.mercury.business.shop.ShopService;
 import de.qaware.mercury.mercury.business.shop.ShopUpdate;
 import de.qaware.mercury.mercury.rest.plumbing.authentication.AuthenticationHelper;
-import de.qaware.mercury.mercury.rest.shop.dto.request.CreateShopRequestDto;
+import de.qaware.mercury.mercury.rest.shop.dto.request.CreateShopDto;
+import de.qaware.mercury.mercury.rest.shop.dto.request.ResetPasswordDto;
 import de.qaware.mercury.mercury.rest.shop.dto.request.SendCreateLinkDto;
 import de.qaware.mercury.mercury.rest.shop.dto.request.SendPasswordResetLinkDto;
-import de.qaware.mercury.mercury.rest.shop.dto.request.UpdateShopRequestDto;
+import de.qaware.mercury.mercury.rest.shop.dto.request.UpdateShopDto;
 import de.qaware.mercury.mercury.rest.shop.dto.response.ShopDetailDto;
 import de.qaware.mercury.mercury.rest.shop.dto.response.ShopListDto;
 import de.qaware.mercury.mercury.util.Maps;
@@ -70,8 +73,15 @@ class ShopController {
         shopLoginService.sendPasswordResetLink(request.getEmail());
     }
 
+    @PostMapping(path = "/reset-password", consumes = MediaType.APPLICATION_JSON_VALUE)
+    void resetPassword(@Valid @RequestBody ResetPasswordDto request, @RequestParam @NotBlank String token) throws LoginException, ShopLoginNotFoundException {
+        String email = tokenService.verifyPasswordResetToken(PasswordResetToken.of(token));
+
+        shopLoginService.resetPassword(email, request.getPassword());
+    }
+
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    ShopDetailDto createShop(@Valid @RequestBody CreateShopRequestDto request, @RequestParam @NotBlank String token) throws LoginException {
+    ShopDetailDto createShop(@Valid @RequestBody CreateShopDto request, @RequestParam @NotBlank String token) throws LoginException {
         // The token is taken from the link which the user got with email
         // It contains the email address, and is used to verify that the user really has access to this email address
         String email = tokenService.verifyShopCreationToken(ShopCreationToken.of(token));
@@ -84,7 +94,7 @@ class ShopController {
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    ShopDetailDto updateShop(@Valid @RequestBody UpdateShopRequestDto request, HttpServletRequest servletRequest) throws LoginException {
+    ShopDetailDto updateShop(@Valid @RequestBody UpdateShopDto request, HttpServletRequest servletRequest) throws LoginException {
         Shop shop = authenticationHelper.authenticateShop(servletRequest);
 
         return ShopDetailDto.of(shopService.update(shop, new ShopUpdate(

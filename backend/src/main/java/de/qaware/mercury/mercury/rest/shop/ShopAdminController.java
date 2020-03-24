@@ -8,7 +8,7 @@ import de.qaware.mercury.mercury.business.shop.ShopNotFoundException;
 import de.qaware.mercury.mercury.business.shop.ShopService;
 import de.qaware.mercury.mercury.business.shop.ShopUpdate;
 import de.qaware.mercury.mercury.rest.plumbing.authentication.AuthenticationHelper;
-import de.qaware.mercury.mercury.rest.shop.dto.request.UpdateShopRequestDto;
+import de.qaware.mercury.mercury.rest.shop.dto.request.UpdateShopDto;
 import de.qaware.mercury.mercury.rest.shop.dto.response.ShopAdminDto;
 import de.qaware.mercury.mercury.rest.shop.dto.response.ShopsAdminDto;
 import de.qaware.mercury.mercury.util.Maps;
@@ -57,7 +57,7 @@ class ShopAdminController {
     }
 
     @PutMapping(path = "/{id}")
-    ShopAdminDto update(@PathVariable @Pattern(regexp = GuidValidation.REGEX) String id, @Valid @RequestBody UpdateShopRequestDto request, HttpServletRequest servletRequest) throws ShopNotFoundException, LoginException {
+    ShopAdminDto update(@PathVariable @Pattern(regexp = GuidValidation.REGEX) String id, @Valid @RequestBody UpdateShopDto request, HttpServletRequest servletRequest) throws ShopNotFoundException, LoginException {
         Admin admin = authenticationHelper.authenticateAdmin(servletRequest);
         Shop.Id shopId = Shop.Id.parse(id);
 
