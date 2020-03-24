@@ -14,6 +14,7 @@ import de.qaware.mercury.mercury.storage.shop.ShopRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -75,5 +76,11 @@ class ShopLoginServiceImpl implements ShopLoginService {
         }
 
         return shop;
+    }
+
+    @Override
+    @Nullable
+    public ShopLogin findByEmail(String email) {
+        return shopLoginRepository.findByEmail(email);
     }
 }

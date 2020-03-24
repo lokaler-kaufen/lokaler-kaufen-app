@@ -11,6 +11,7 @@ import de.qaware.mercury.mercury.business.shop.ShopService;
 import de.qaware.mercury.mercury.business.shop.ShopUpdate;
 import de.qaware.mercury.mercury.rest.plumbing.authentication.AuthenticationHelper;
 import de.qaware.mercury.mercury.rest.shop.dto.CreateShopRequestDto;
+import de.qaware.mercury.mercury.rest.shop.dto.PasswordResetRequestDto;
 import de.qaware.mercury.mercury.rest.shop.dto.SendCreateLinkDto;
 import de.qaware.mercury.mercury.rest.shop.dto.ShopDetailDto;
 import de.qaware.mercury.mercury.rest.shop.dto.ShopListDto;
@@ -59,6 +60,12 @@ class ShopController {
     @PostMapping(path = "/send-create-link", consumes = MediaType.APPLICATION_JSON_VALUE)
     void sendCreateLink(@Valid @RequestBody SendCreateLinkDto request) {
         shopService.sendCreateLink(request.getEmail());
+    }
+
+
+    @PostMapping(path = "/send-password-reset-link", consumes = MediaType.APPLICATION_JSON_VALUE)
+    void sendPasswordResetLink(@Valid @RequestBody PasswordResetRequestDto request) {
+        shopService.sendPasswordResetLink(request.getEmail());
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)

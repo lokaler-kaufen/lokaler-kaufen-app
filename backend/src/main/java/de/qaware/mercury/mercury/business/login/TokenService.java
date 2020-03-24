@@ -15,4 +15,8 @@ public interface TokenService {
     ShopCreationToken createShopCreationToken(String email);
 
     String verifyShopCreationToken(ShopCreationToken token) throws LoginException;
+
+    PasswordResetToken createPasswordResetToken(String email);
+
+    String verifyPasswordResetToken(PasswordResetToken token) throws LoginException;
 }

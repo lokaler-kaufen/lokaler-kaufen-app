@@ -73,4 +73,23 @@ Content-Type: application/json
     "email": "foo@localhost"
 }
 
-###
+### Send password reset link
+
+POST {{ host }}/api/shop/send-password-reset-link
+Accept: application/json
+Content-Type: application/json
+
+{
+    "email": "moe@localhost"
+}
+
+### Reset password
+
+POST {{ host }}/api/shop/reset-password?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtb2VAbG9jYWxob3N0IiwiaXNzIjoibWVyY3VyeS1wYXNzd29yZC1yZXNldCJ9.11CYC7igayF1UesJ7KaBFvq2DLHmqjy367w1ggUjxo8
+Accept: application/json
+Content-Type: application/json
+
+{
+    "password": "new-password"
+}
+

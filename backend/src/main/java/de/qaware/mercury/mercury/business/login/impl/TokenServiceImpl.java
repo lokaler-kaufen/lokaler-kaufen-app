@@ -9,6 +9,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import de.qaware.mercury.mercury.business.admin.Admin;
 import de.qaware.mercury.mercury.business.login.AdminToken;
 import de.qaware.mercury.mercury.business.login.LoginException;
+import de.qaware.mercury.mercury.business.login.PasswordResetToken;
 import de.qaware.mercury.mercury.business.login.ShopCreationToken;
 import de.qaware.mercury.mercury.business.login.ShopLogin;
 import de.qaware.mercury.mercury.business.login.ShopToken;
@@ -27,6 +28,7 @@ class TokenServiceImpl implements TokenService {
     private static final String SHOP_ISSUER = "mercury-shop";
     private static final String ADMIN_ISSUER = "mercury-admin";
     private static final String SHOP_CREATION_ISSUER = "mercury-shop-creation";
+    private static final String PASSWORD_RESET_ISSUER = "mercury-password-reset";
 
     private final TokenServiceConfigurationProperties config;
 
@@ -46,7 +48,7 @@ class TokenServiceImpl implements TokenService {
 
             return AdminToken.of(token);
         } catch (JWTCreationException exception) {
-            throw new TokenTechnicalException("Failed to created admin token for " + adminId, exception);
+            throw new TokenTechnicalException("Failed to create admin token for " + adminId, exception);
         }
     }
 
@@ -81,7 +83,7 @@ class TokenServiceImpl implements TokenService {
 
             return ShopToken.of(token);
         } catch (JWTCreationException exception) {
-            throw new TokenTechnicalException(String.format("Failed to created shop token for login %s, shop %s", shopLoginId, shopId), exception);
+            throw new TokenTechnicalException(String.format("Failed to create shop token for login %s, shop %s", shopLoginId, shopId), exception);
         }
     }
 
@@ -119,7 +121,7 @@ class TokenServiceImpl implements TokenService {
 
             return ShopCreationToken.of(token);
         } catch (JWTCreationException exception) {
-            throw new TokenTechnicalException(String.format("Failed to created shop creation token for email '%s'", email), exception);
+            throw new TokenTechnicalException(String.format("Failed to create shop creation token for email '%s'", email), exception);
         }
     }
 
@@ -138,6 +140,40 @@ class TokenServiceImpl implements TokenService {
         } catch (JWTVerificationException e) {
             log.warn("Shop creation token verification failed for token '{}'", token, e);
             throw LoginException.forShopCreationToken(token);
+        }
+    }
+
+    @Override
+    public PasswordResetToken createPasswordResetToken(String email) {
+        try {
+            Algorithm algorithm = getAlgorithm(config.getPasswordResetJwtSecret());
+            String token = JWT.create()
+                .withIssuer(PASSWORD_RESET_ISSUER)
+                .withSubject(email)
+                .sign(algorithm);
+            // TODO MKA: Add expiry!
+
+            return PasswordResetToken.of(token);
+        } catch (JWTCreationException exception) {
+            throw new TokenTechnicalException(String.format("Failed to create password reset token for email '%s'", email), exception);
+        }
+    }
+
+    @Override
+    public String verifyPasswordResetToken(PasswordResetToken token) throws LoginException {
+        try {
+            Algorithm algorithm = getAlgorithm(config.getPasswordResetJwtSecret());
+            JWTVerifier verifier = JWT.require(algorithm)
+                .withIssuer(PASSWORD_RESET_ISSUER)
+                .build();
+            DecodedJWT jwt = verifier.verify(token.getToken());
+            String email = jwt.getSubject();
+
+            log.debug("Verified token for password reset, email '{}'", email);
+            return email;
+        } catch (JWTVerificationException e) {
+            log.warn("Password reset token verification failed for token '{}'", token, e);
+            throw LoginException.forPasswordResetToken(token);
         }
     }
 
