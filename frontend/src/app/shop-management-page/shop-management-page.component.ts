@@ -45,12 +45,12 @@ export class ShopManagementPageComponent implements OnInit {
                   this.slots = slots;
                 },
                 error => {
-                  console.log('Error requesting slots: ' + error.status + ', ' + error.error.message);
+                  console.log('Error requesting slots: ' + error.status + ', ' + error.message);
                   this.notificationsService.error('Tut uns leid!', 'Es ist ein Fehler beim Laden der Slots aufgetreten.');
                 });
           },
           error => {
-            console.log('Error requesting shop details: ' + error.status + ', ' + error.error.message);
+            console.log('Error requesting shop details: ' + error.status + ', ' + error.message);
             this.notificationsService.error('Tut uns leid!', 'Es ist ein Fehler beim Laden der Details aufgetreten.');
           });
 

@@ -175,7 +175,7 @@ export class ShopCreationPageComponent implements OnInit {
           .subscribe();
       },
       error => {
-        console.log('Error creating new shop: ' + error.status + ', ' + error.error.message);
+        console.log('Error creating new shop: ' + error.status + ', ' + error.message);
         this.notificationsService.error('Tut uns leid!', 'Dein Laden konnte nicht angelegt werden.');
       });
   }
