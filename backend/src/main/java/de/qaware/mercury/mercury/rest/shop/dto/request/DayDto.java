@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -19,7 +18,7 @@ public class DayDto {
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
 
     @NotBlank
-    @FutureOrPresent
+    // TODO: Validate pattern
     private String start;
     @NotBlank
     // TODO: Validate pattern
