@@ -3,8 +3,6 @@ package de.qaware.mercury.mercury.business.shop.impl;
 import de.qaware.mercury.mercury.business.email.EmailService;
 import de.qaware.mercury.mercury.business.location.GeoLocation;
 import de.qaware.mercury.mercury.business.location.GeoLocationLookup;
-import de.qaware.mercury.mercury.business.login.PasswordResetToken;
-import de.qaware.mercury.mercury.business.login.ShopLogin;
 import de.qaware.mercury.mercury.business.login.ShopLoginService;
 import de.qaware.mercury.mercury.business.login.TokenService;
 import de.qaware.mercury.mercury.business.shop.Shop;
@@ -147,19 +145,5 @@ class ShopServiceImpl implements ShopService {
     public List<ShopWithDistance> search(String query, String zipCode) {
         GeoLocation location = geoLocationLookup.fromZipCode(zipCode);
         return shopRepository.search(query, location);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public void sendPasswordResetLink(String email) {
-        ShopLogin shopLogin = shopLoginService.findByEmail(email);
-        if (shopLogin == null) {
-            log.warn("Password reset request for non-existing login '{}'", email);
-            return;
-        }
-
-        PasswordResetToken token = tokenService.createPasswordResetToken(email);
-        log.info("Sending shop passwort reset email to '{}'", email);
-        emailService.sendShopPasswordResetEmail(email, token);
     }
 }

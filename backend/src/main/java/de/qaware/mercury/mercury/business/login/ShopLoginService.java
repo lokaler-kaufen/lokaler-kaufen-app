@@ -1,7 +1,6 @@
 package de.qaware.mercury.mercury.business.login;
 
 import de.qaware.mercury.mercury.business.shop.Shop;
-import org.springframework.lang.Nullable;
 
 public interface ShopLoginService {
     ShopLogin createLogin(Shop shop, String email, String password);
@@ -10,6 +9,5 @@ public interface ShopLoginService {
 
     Shop verify(ShopToken token) throws LoginException;
 
-    @Nullable
-    ShopLogin findByEmail(String email);
+    void sendPasswordResetLink(String email);
 }

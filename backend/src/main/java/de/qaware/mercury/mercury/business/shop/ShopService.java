@@ -32,6 +32,4 @@ public interface ShopService {
     List<Shop> findByName(String name);
 
     List<ShopWithDistance> search(String query, String zipCode);
-
-    void sendPasswordResetLink(String email);
 }

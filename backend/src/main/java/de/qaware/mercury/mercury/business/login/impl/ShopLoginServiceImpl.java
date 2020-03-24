@@ -1,7 +1,9 @@
 package de.qaware.mercury.mercury.business.login.impl;
 
+import de.qaware.mercury.mercury.business.email.EmailService;
 import de.qaware.mercury.mercury.business.login.LoginException;
 import de.qaware.mercury.mercury.business.login.PasswordHasher;
+import de.qaware.mercury.mercury.business.login.PasswordResetToken;
 import de.qaware.mercury.mercury.business.login.ShopLogin;
 import de.qaware.mercury.mercury.business.login.ShopLoginService;
 import de.qaware.mercury.mercury.business.login.ShopToken;
@@ -14,7 +16,6 @@ import de.qaware.mercury.mercury.storage.shop.ShopRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +29,7 @@ class ShopLoginServiceImpl implements ShopLoginService {
     private final UUIDFactory uuidFactory;
     private final ShopRepository shopRepository;
     private final Clock clock;
+    private final EmailService emailService;
 
     @Override
     @Transactional
@@ -79,8 +81,16 @@ class ShopLoginServiceImpl implements ShopLoginService {
     }
 
     @Override
-    @Nullable
-    public ShopLogin findByEmail(String email) {
-        return shopLoginRepository.findByEmail(email);
+    @Transactional(readOnly = true)
+    public void sendPasswordResetLink(String email) {
+        ShopLogin shopLogin = shopLoginRepository.findByEmail(email);
+        if (shopLogin == null) {
+            log.warn("Password reset request for non-existing login '{}'", email);
+            return;
+        }
+
+        PasswordResetToken token = tokenService.createPasswordResetToken(email);
+        log.info("Sending shop passwort reset email to '{}'", email);
+        emailService.sendShopPasswordResetEmail(email, token);
     }
 }
