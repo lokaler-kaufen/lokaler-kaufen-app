@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +23,7 @@ import java.util.Map;
 @Component
 @Slf4j
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
+@ConditionalOnProperty(name = "mercury.features.enable-debug-data-creation", havingValue = "true")
 class DebugPopulateDatabase implements ApplicationRunner {
     private final ShopService shopService;
     private final AdminLoginService adminLoginService;

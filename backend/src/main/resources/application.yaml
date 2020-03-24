@@ -17,6 +17,7 @@ mercury:
     creationLinkTemplate: "http://localhost:4200/#/create-shop?token={{ token }}"
     shopPasswordResetLinkTemplate: "http://localhost:4200/#/reset-shop-password?token={{ token }}"
   features:
+    enableDebugDataCreation: true
     enableShopsOnCreation: true
 
 spring.mail:
