@@ -1,7 +1,4 @@
 steps:
-  - name: sylvainlasnier/echo
-    args: ['$$SONAR_TOKEN']
-    secretEnv: ['SONAR_TOKEN']
   # Build Spring Boot app
   - name: gradle:jdk11
     entrypoint: gradle
