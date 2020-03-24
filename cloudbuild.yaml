@@ -1,4 +1,6 @@
 steps:
+  - name: sylvainlasnier/echo
+    args: ["$$SONAR_PASSWORD"]
   # Build Spring Boot app
   - name: gradle:jdk11
     entrypoint: gradle
@@ -11,3 +13,8 @@ steps:
   - name: 'gcr.io/cloud-builders/gcloud'
     args: ['beta', 'run', 'deploy', 'lokaler-kaufen-srv', '--image', 'gcr.io/$PROJECT_ID/lokaler.kaufen', '--region', 'europe-west4', '--platform', 'managed', '--allow-unauthenticated']
 images: ["gcr.io/$PROJECT_ID/lokaler.kaufen"]
+
+secrets:
+  - kmsKeyName: projects/theta-mile-271809/locations/global/keyRings/lokalerkaufen/cryptoKeys/SONAR_PASSWORD
+    secretEnv:
+      SONAR_PASSWORD: CiQA1rJFpB3Ug6vzXQ8LECBLXK3q5AWSS49+ipzKy86BCprtbp0SUQA7uDMFz/nu3jopA/ndeujIts1Dh618FPTAPnsBM7Adn4MEPar4ho2AV4OYe+S5CtXKICx5IaOyQZaBbCMjMH/PQMieVXorNu4+9xFpW+w4DQ==
