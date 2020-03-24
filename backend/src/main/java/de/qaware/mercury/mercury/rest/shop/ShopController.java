@@ -2,6 +2,7 @@ package de.qaware.mercury.mercury.rest.shop;
 
 import de.qaware.mercury.mercury.business.login.LoginException;
 import de.qaware.mercury.mercury.business.login.ShopCreationToken;
+import de.qaware.mercury.mercury.business.login.ShopLoginService;
 import de.qaware.mercury.mercury.business.login.TokenService;
 import de.qaware.mercury.mercury.business.shop.ContactType;
 import de.qaware.mercury.mercury.business.shop.Shop;
@@ -46,6 +47,7 @@ class ShopController {
     private final ShopService shopService;
     private final TokenService tokenService;
     private final AuthenticationHelper authenticationHelper;
+    private final ShopLoginService shopLoginService;
 
     @GetMapping(path = "/{id}")
     ShopDetailDto getDetails(@PathVariable @Pattern(regexp = GuidValidation.REGEX) String id) throws ShopNotFoundException {
@@ -65,7 +67,7 @@ class ShopController {
 
     @PostMapping(path = "/send-password-reset-link", consumes = MediaType.APPLICATION_JSON_VALUE)
     void sendPasswordResetLink(@Valid @RequestBody PasswordResetRequestDto request) {
-        shopService.sendPasswordResetLink(request.getEmail());
+        shopLoginService.sendPasswordResetLink(request.getEmail());
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
