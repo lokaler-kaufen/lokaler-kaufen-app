@@ -15,6 +15,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.UUID;
 
 @Entity
@@ -54,6 +55,12 @@ class ReservationEntity {
     @Column(nullable = false)
     private String contactType;
 
+    @Column(nullable = false)
+    private ZonedDateTime created;
+
+    @Column(nullable = false)
+    private ZonedDateTime updated;
+
     public static ReservationEntity of(Reservation reservation) {
         return new ReservationEntity(
             reservation.getId().getId(),
@@ -62,7 +69,9 @@ class ReservationEntity {
             reservation.getEnd(),
             reservation.getContact(),
             reservation.getEmail(),
-            reservation.getContactType().name()
+            reservation.getContactType().name(),
+            reservation.getCreated(),
+            reservation.getUpdated()
         );
     }
 
@@ -74,7 +83,9 @@ class ReservationEntity {
             endTime,
             contact,
             email,
-            ContactType.parse(contactType)
+            ContactType.parse(contactType),
+            created,
+            updated
         );
     }
 }

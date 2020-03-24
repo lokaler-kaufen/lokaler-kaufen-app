@@ -4,8 +4,10 @@ import de.qaware.mercury.mercury.business.shop.ContactType;
 import de.qaware.mercury.mercury.business.shop.Shop;
 import de.qaware.mercury.mercury.business.uuid.UUIDFactory;
 import lombok.Value;
+import lombok.With;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.UUID;
 
 @Value
@@ -17,6 +19,10 @@ public class Reservation {
     String contact;
     String email;
     ContactType contactType;
+    @With
+    ZonedDateTime created;
+    @With
+    ZonedDateTime updated;
 
     @Value(staticConstructor = "of")
     public static class Id {

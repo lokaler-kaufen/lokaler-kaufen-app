@@ -3,6 +3,7 @@ package de.qaware.mercury.mercury.storage.shop.impl;
 import de.qaware.mercury.mercury.business.location.GeoLocation;
 import de.qaware.mercury.mercury.business.shop.Shop;
 import de.qaware.mercury.mercury.business.shop.ShopWithDistance;
+import de.qaware.mercury.mercury.business.time.Clock;
 import de.qaware.mercury.mercury.storage.shop.ShopRepository;
 import de.qaware.mercury.mercury.util.Lists;
 import de.qaware.mercury.mercury.util.Null;
@@ -12,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 
 @Slf4j
@@ -20,7 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 class JpaShopRepositoryImpl implements ShopRepository {
     private final ShopDataRepository shopDataRepository;
-    private final EntityManager entityManager;
+    private final Clock clock;
 
     @Override
     public List<Shop> listAll() {
@@ -30,7 +30,7 @@ class JpaShopRepositoryImpl implements ShopRepository {
     @Override
     public void insert(Shop shop) {
         log.debug("Insert {}", shop);
-        shopDataRepository.save(ShopEntity.of(shop));
+        shopDataRepository.save(ShopEntity.of(shop.withCreated(clock.nowZoned())));
     }
 
     @Override
@@ -59,7 +59,7 @@ class JpaShopRepositoryImpl implements ShopRepository {
     @Override
     public void update(Shop updatedShop) {
         log.debug("Update {}", updatedShop);
-        shopDataRepository.save(ShopEntity.of(updatedShop));
+        shopDataRepository.save(ShopEntity.of(updatedShop.withUpdated(clock.nowZoned())));
     }
 
     @Override

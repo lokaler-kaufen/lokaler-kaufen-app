@@ -3,7 +3,9 @@ package de.qaware.mercury.mercury.business.login;
 import de.qaware.mercury.mercury.business.shop.Shop;
 import de.qaware.mercury.mercury.business.uuid.UUIDFactory;
 import lombok.Value;
+import lombok.With;
 
+import java.time.ZonedDateTime;
 import java.util.UUID;
 
 @Value
@@ -12,6 +14,10 @@ public class ShopLogin {
     Shop.Id shopId;
     String email;
     String passwordHash;
+    @With
+    ZonedDateTime created;
+    @With
+    ZonedDateTime updated;
 
     @Value(staticConstructor = "of")
     public static class Id {

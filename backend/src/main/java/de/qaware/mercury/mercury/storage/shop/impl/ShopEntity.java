@@ -21,6 +21,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.time.LocalTime;
+import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -150,6 +151,12 @@ public class ShopEntity {
     @Column(nullable = true, columnDefinition = "varchar")
     private LocalTime sundayEnd;
 
+    @Column(nullable = false)
+    private ZonedDateTime created;
+
+    @Column(nullable = false)
+    private ZonedDateTime updated;
+
     public static ShopEntity of(Shop shop) {
         return new ShopEntity(
             shop.getId().getId(),
@@ -181,7 +188,9 @@ public class ShopEntity {
             Null.map(shop.getSlotConfig().getSaturday(), DayConfig::getStart),
             Null.map(shop.getSlotConfig().getSaturday(), DayConfig::getEnd),
             Null.map(shop.getSlotConfig().getSunday(), DayConfig::getStart),
-            Null.map(shop.getSlotConfig().getSunday(), DayConfig::getEnd)
+            Null.map(shop.getSlotConfig().getSunday(), DayConfig::getEnd),
+            shop.getCreated(),
+            shop.getUpdated()
         );
     }
 
@@ -209,7 +218,9 @@ public class ShopEntity {
                 loadSlot(this::getFridayStart, this::getFridayEnd),
                 loadSlot(this::getSaturdayStart, this::getSaturdayEnd),
                 loadSlot(this::getSundayStart, this::getSundayEnd)
-            )
+            ),
+            created,
+            updated
         );
     }
 

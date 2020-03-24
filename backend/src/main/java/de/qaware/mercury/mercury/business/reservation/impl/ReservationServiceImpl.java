@@ -53,7 +53,7 @@ class ReservationServiceImpl implements ReservationService {
         LocalDateTime start = slotId.toLocalDateTime();
         LocalDateTime end = start.plusMinutes(shop.getSlotConfig().getTimePerSlot());
 
-        reservationRepository.insert(new Reservation(id, shop.getId(), start, end, contact, email, contactType));
+        reservationRepository.insert(new Reservation(id, shop.getId(), start, end, contact, email, contactType, clock.nowZoned(), clock.nowZoned()));
 
         log.info("Sending customer reservation confirmation to '{}'", email);
         emailService.sendCustomerReservationConfirmation(shop, email, name, start, end, contactType, contact);

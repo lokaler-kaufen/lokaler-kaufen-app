@@ -7,6 +7,7 @@ import de.qaware.mercury.mercury.business.login.ShopLoginService;
 import de.qaware.mercury.mercury.business.login.ShopToken;
 import de.qaware.mercury.mercury.business.login.TokenService;
 import de.qaware.mercury.mercury.business.shop.Shop;
+import de.qaware.mercury.mercury.business.time.Clock;
 import de.qaware.mercury.mercury.business.uuid.UUIDFactory;
 import de.qaware.mercury.mercury.storage.login.ShopLoginRepository;
 import de.qaware.mercury.mercury.storage.shop.ShopRepository;
@@ -25,13 +26,14 @@ class ShopLoginServiceImpl implements ShopLoginService {
     private final TokenService tokenService;
     private final UUIDFactory uuidFactory;
     private final ShopRepository shopRepository;
+    private final Clock clock;
 
     @Override
     @Transactional
     public ShopLogin createLogin(Shop shop, String email, String password) {
         String hash = passwordHasher.hash(password);
 
-        ShopLogin shopLogin = new ShopLogin(ShopLogin.Id.random(uuidFactory), shop.getId(), email, hash);
+        ShopLogin shopLogin = new ShopLogin(ShopLogin.Id.random(uuidFactory), shop.getId(), email, hash, clock.nowZoned(), clock.nowZoned());
         shopLoginRepository.insert(shopLogin);
         log.info("Created shop login '{}' for shop '{}'", email, shop.getName());
         return shopLogin;

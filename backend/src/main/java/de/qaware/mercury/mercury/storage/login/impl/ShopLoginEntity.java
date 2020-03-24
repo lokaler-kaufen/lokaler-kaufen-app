@@ -13,6 +13,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.time.ZonedDateTime;
 import java.util.UUID;
 
 @Entity
@@ -40,11 +41,17 @@ public class ShopLoginEntity {
     @Column(name = "password_hash", nullable = false)
     private String passwordHash;
 
+    @Column(nullable = false)
+    private ZonedDateTime created;
+
+    @Column(nullable = false)
+    private ZonedDateTime updated;
+
     public static ShopLoginEntity of(ShopLogin shopLogin) {
-        return new ShopLoginEntity(shopLogin.getId().getId(), shopLogin.getShopId().getId(), shopLogin.getEmail(), shopLogin.getPasswordHash());
+        return new ShopLoginEntity(shopLogin.getId().getId(), shopLogin.getShopId().getId(), shopLogin.getEmail(), shopLogin.getPasswordHash(), shopLogin.getCreated(), shopLogin.getUpdated());
     }
 
-    public static ShopLogin toShopLogin(ShopLoginEntity entity) {
-        return new ShopLogin(ShopLogin.Id.of(entity.getId()), Shop.Id.of(entity.getShopId()), entity.getEmail(), entity.getPasswordHash());
+    public ShopLogin toShopLogin() {
+        return new ShopLogin(ShopLogin.Id.of(id), Shop.Id.of(shopId), email, passwordHash, created, updated);
     }
 }

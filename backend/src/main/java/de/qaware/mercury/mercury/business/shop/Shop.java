@@ -5,6 +5,7 @@ import lombok.Value;
 import lombok.With;
 import org.springframework.lang.Nullable;
 
+import java.time.ZonedDateTime;
 import java.util.Map;
 import java.util.UUID;
 
@@ -26,6 +27,10 @@ public class Shop {
     @Nullable
     String website;
     SlotConfig slotConfig;
+    @With
+    ZonedDateTime created;
+    @With
+    ZonedDateTime updated;
 
     @Value(staticConstructor = "of")
     public static class Id {
