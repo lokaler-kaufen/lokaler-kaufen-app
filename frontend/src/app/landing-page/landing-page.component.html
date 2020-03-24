@@ -7,7 +7,8 @@
   <form [formGroup]="form">
     <mat-form-field class="form-item">
       <mat-label>Deine Postleitzahl</mat-label>
-      <input formControlName="zipCode"
+      <input [matAutocomplete]="auto"
+             formControlName="zipCode"
              type="number"
              name="location"
              placeholder="PLZ"
@@ -16,9 +17,14 @@
              maxlength="5"
              minlength="5"
              matInput/>
+      <mat-autocomplete #auto="matAutocomplete">
+        <mat-option *ngFor="let suggestion of suggestions" [value]="suggestion.zipCode">
+          {{suggestion.zipCode}} {{suggestion.placeName}} - {{suggestion.countryCode}}
+        </mat-option>
+      </mat-autocomplete>
     </mat-form-field>
 
-    <button class="form-item" type="submit" [disabled]="!form.valid"
+    <button class="form-item" type="submit" [disabled]="!form.valid || this.suggestions.length < 1"
             [routerLink]="['/shops']"
             [queryParams]="{ location: this.form.controls.zipCode.value}"
             mat-raised-button
