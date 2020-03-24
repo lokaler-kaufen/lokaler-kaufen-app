@@ -1,7 +1,7 @@
 Hallo {{ ownerName }},
 
-{{ name }} möchte am {{ date }} zwischen {{ start }} und {{ end }} kontaktiert werden. Du erreichst {{ name }}
-mittels {{ contactType }} unter {{ contact }}.
+{{ name }} möchte am {{ date }} zwischen {{ start }} Uhr und {{ end }} Uhr kontaktiert werden.
+Du erreichst {{ name }} mittels {{ contactType }} unter {{ contact }}.
 
 Viele Grüße,
 

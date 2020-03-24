@@ -1,7 +1,7 @@
 Hallo {{ name }},
 
-{{ shopName }} ruft dich per {{ contactType }} am {{ date }} zwischen
-{{ start }} und {{ end }} unter {{ contact }} an. Bitte beachte, dass es zu Stoßzeiten zu Verzögerungen kommen kann.
+{{ shopName }} ruft dich per {{ contactType }} am {{ date }} zwischen {{ start }} Uhr und {{ end }} Uhr unter {{ contact }} an.
+Bitte beachte, dass es zu Stoßzeiten zu Verzögerungen kommen kann.
 
 Viele Grüße,
 
