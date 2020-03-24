@@ -6,7 +6,7 @@ import {ShopDetailDto, SlotConfigDto} from '../data/client';
 import {MatDialog} from '@angular/material/dialog';
 import {ShopCreationSuccessPopupComponent} from '../shop-creation-success-popup/shop-creation-success-popup.component';
 import {NotificationsService} from 'angular2-notifications';
-import {CreateShopRequestDto} from "../data/client/model/createShopRequestDto";
+import {CreateShopRequestDto} from '../data/client/model/createShopRequestDto';
 import ContactTypesEnum = ShopDetailDto.ContactTypesEnum;
 
 export class OpeningHours {
@@ -159,7 +159,7 @@ export class ShopCreationPageComponent implements OnInit {
         const fromCtrl = day + 'FromCtrl';
         const toCtrl = day + 'ToCtrl';
         console.log('FromCtrl: ' + fromCtrl);
-        slots = this.setRightSlot(day, this.openingFormGroup.get(fromCtrl).value, this.openingFormGroup.get(toCtrl).value, slots);
+        slots = setRightSlot(day, this.openingFormGroup.get(fromCtrl).value, this.openingFormGroup.get(toCtrl).value, slots);
       }
     });
     slots.timeBetweenSlots = this.openingFormGroup.get('pauseCtrl').value;
@@ -188,52 +188,52 @@ export class ShopCreationPageComponent implements OnInit {
     return splitted.join(' ');
   }
 
-  // this is hacky, we need to implement a reasonable mapping from slotsDto to the frontend
-  private setRightSlot(dayString: string, from: string, to: string, slots: SlotConfigDto) {
-    switch (dayString) {
-      case 'Montag':
-        slots.monday = {
-          start: from,
-          end: to,
-        };
-        break;
-      case 'Dienstag':
-        slots.tuesday = {
-          start: from,
-          end: to,
-        };
-        break;
-      case 'Mittwoch':
-        slots.wednesday = {
-          start: from,
-          end: to,
-        };
-        break;
-      case 'Donnerstag':
-        slots.thursday = {
-          start: from,
-          end: to,
-        };
-        break;
-      case 'Freitag':
-        slots.friday = {
-          start: from,
-          end: to,
-        };
-        break;
-      case 'Samstag':
-        slots.saturday = {
-          start: from,
-          end: to,
-        };
-        break;
-      case 'Sonntag':
-        slots.sunday = {
-          start: from,
-          end: to,
-        };
-        break;
-    }
-    return slots;
+}
+
+export function setRightSlot(dayString: string, from: string, to: string, slots: SlotConfigDto) {
+  switch (dayString) {
+    case 'Montag':
+      slots.monday = {
+        start: from,
+        end: to,
+      };
+      break;
+    case 'Dienstag':
+      slots.tuesday = {
+        start: from,
+        end: to,
+      };
+      break;
+    case 'Mittwoch':
+      slots.wednesday = {
+        start: from,
+        end: to,
+      };
+      break;
+    case 'Donnerstag':
+      slots.thursday = {
+        start: from,
+        end: to,
+      };
+      break;
+    case 'Freitag':
+      slots.friday = {
+        start: from,
+        end: to,
+      };
+      break;
+    case 'Samstag':
+      slots.saturday = {
+        start: from,
+        end: to,
+      };
+      break;
+    case 'Sonntag':
+      slots.sunday = {
+        start: from,
+        end: to,
+      };
+      break;
   }
+  return slots;
 }
