@@ -71,6 +71,14 @@ export class ShopSearchPageComponent implements OnInit {
   }
 
   performSearch() {
+    if(!this.searchBusiness || this.searchBusiness.trim().length == 0) {
+      this.notificationsService.info("Ungültige Suche", "Die Sucheingabe darf nicht leer sein.")
+    } else {
+      this.doSearchRequest();
+    }
+  }
+
+  private doSearchRequest() {
     this.client.get<ShopListDto>('/api/shop/search?location=' + this.location + '&query=' + this.searchBusiness).subscribe(
       response => {
         this.dataSource = new MatTableDataSource<ShopListEntryDto>();
