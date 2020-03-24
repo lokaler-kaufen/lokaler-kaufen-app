@@ -16,6 +16,7 @@ import de.qaware.mercury.mercury.storage.shop.ShopRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +27,7 @@ import java.util.UUID;
 @Service
 @Slf4j
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
+@EnableConfigurationProperties(ShopServiceConfigurationProperties.class)
 class ShopServiceImpl implements ShopService {
     private final UUIDFactory uuidFactory;
     private final GeoLocationLookup geoLocationLookup;
@@ -33,6 +35,7 @@ class ShopServiceImpl implements ShopService {
     private final EmailService emailService;
     private final ShopLoginService shopLoginService;
     private final Clock clock;
+    private final ShopServiceConfigurationProperties config;
 
     @Override
     @Transactional(readOnly = true)
@@ -84,7 +87,7 @@ class ShopServiceImpl implements ShopService {
         Shop shop = new Shop(
             Shop.Id.of(id), creation.getName(), creation.getOwnerName(), creation.getEmail(), creation.getStreet(),
             creation.getZipCode(), creation.getCity(), creation.getAddressSupplement(), creation.getContactTypes(),
-            false, geoLocation, creation.getDetails(), creation.getWebsite(), creation.getSlotConfig(), clock.nowZoned(),
+            config.isEnableShopsOnCreation(), geoLocation, creation.getDetails(), creation.getWebsite(), creation.getSlotConfig(), clock.nowZoned(),
             clock.nowZoned()
         );
 
