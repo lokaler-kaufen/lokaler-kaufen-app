@@ -2,11 +2,23 @@
 
 set -e
 
-if [[ -z "$1" ]]
+if [[ -z "$1" ]] || [[ -z "$2" && "$1" = "-p" ]]
 then
     echo "Please specify your user name."
-    echo "Usage: ./deploy.sh <user>"
+    echo "Usage: ./deploy.sh [-p] <user>"
     exit 1
+fi
+
+NC='\033[0m' # No Color	echo -e "INFO: Deploying to ${RED}PRODUCTION${NC}"
+if [[ "$1" = "-p" ]]
+then
+	RED='\033[0;31m'
+	echo -e "INFO: Deploying to ${RED}PRODUCTION${NC}."
+	PROD=true
+else
+	YELLOW='\033[1;33m'
+	echo -e "INFO: Deploying to ${YELLOW}TEST${NC}."
+	PROD=false
 fi
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
@@ -17,7 +29,8 @@ BACKEND_DIR="${DIR}/backend"
 SPRING_STATIC_DIR="${BACKEND_DIR}/src/main/resources/static"
 ARTIFACT="${BACKEND_DIR}/build/libs/mercury-0.0.1-SNAPSHOT.jar"
 
-DEPLOY_DIR="/opt/mercury"
+DEPLOY_DIR_PROD="/opt/mercury/prod"
+DEPLOY_DIR_TEST="/opt/mercury/test"
 USER="$1"
 HOST="lokaler.kaufen"
 
@@ -47,7 +60,13 @@ echo "Copied Angular artifacts to ${SPRING_STATIC_DIR}"
 echo "Build successful."
 echo "Deploying artifact ${ARTIFACT} ..."
 
-rsync -v -e ssh "${ARTIFACT}" "${USER}@${HOST}:${DEPLOY_DIR}"
-ssh "${USER}@${HOST}" sudo systemctl restart mercury.service
+if [ "$PROD" = true ]
+then
+	rsync -v -e ssh "${ARTIFACT}" "${USER}@${HOST}:${DEPLOY_DIR_PROD}"
+	ssh "${USER}@${HOST}" sudo systemctl restart mercury-prod.service
+else
+	rsync -v -e ssh "${ARTIFACT}" "${USER}@${HOST}:${DEPLOY_DIR_TEST}"
+	ssh "${USER}@${HOST}" sudo systemctl restart mercury-test.service
+fi
 
 exit 0
