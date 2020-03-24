@@ -22,7 +22,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.Supplier;
@@ -206,7 +206,7 @@ public class ShopEntity {
             addressSupplement,
             fakeMap(contactTypes), // TODO MKA: Load contact types with contact info
             enabled,
-            new GeoLocation(latitude, longitude),
+            GeoLocation.of(latitude, longitude),
             details,
             website,
             new SlotConfig(
@@ -236,7 +236,7 @@ public class ShopEntity {
     }
 
     private Map<ContactType, String> fakeMap(String[] contactTypes) {
-        Map<ContactType, String> result = new HashMap<>();
+        Map<ContactType, String> result = new EnumMap<>(ContactType.class);
         for (String contactType : contactTypes) {
             result.put(ContactType.parse(contactType), "");
         }

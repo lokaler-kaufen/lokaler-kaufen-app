@@ -5,12 +5,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class ResetPasswordDto {
     @NotBlank
-    // TODO: Add more validation
-        String password;
+    @Size(min = 14)
+    String password;
 }

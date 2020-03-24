@@ -1,8 +1,8 @@
 package de.qaware.mercury.mercury.rest.location;
 
-import de.qaware.mercury.mercury.business.location.GeoLocationLookup;
-import de.qaware.mercury.mercury.business.location.GeoLocationSuggestion;
-import de.qaware.mercury.mercury.rest.location.dto.response.LocationSuggestionListDto;
+import de.qaware.mercury.mercury.business.location.LocationService;
+import de.qaware.mercury.mercury.business.location.LocationSuggestion;
+import de.qaware.mercury.mercury.rest.location.dto.response.LocationSuggestionsDto;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,11 +22,11 @@ import java.util.List;
 @RequestMapping(value = "/api/location", produces = MediaType.APPLICATION_JSON_VALUE)
 @Validated
 class LocationController {
-    private final GeoLocationLookup geoLocationLookup;
+    private final LocationService locationService;
 
-    @GetMapping(path = "/suggestions")
-    LocationSuggestionListDto getSuggestions(@RequestParam @NotBlank String query) {
-        List<GeoLocationSuggestion> result = geoLocationLookup.search(query);
-        return LocationSuggestionListDto.of(result);
+    @GetMapping(path = "/suggestion")
+    public LocationSuggestionsDto getSuggestions(@RequestParam @NotBlank String zipCode) {
+        List<LocationSuggestion> result = locationService.suggest(zipCode);
+        return LocationSuggestionsDto.of(result);
     }
 }

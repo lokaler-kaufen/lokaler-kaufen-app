@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Map;
 
 @Data
@@ -26,6 +27,7 @@ public class CreateShopDto {
     private String street;
     @NotBlank
     // TODO: Validate pattern
+    @Size(min = 5, max = 5)
     private String zipCode;
     @NotBlank
     // TODO: Validate pattern
@@ -39,7 +41,7 @@ public class CreateShopDto {
     @Nullable
     private String website;
     @NotBlank
-    // TODO: Validate pattern
+    @Size(min = 14)
     private String password;
     // Maps from WHATSAPP -> Telephone number, for example
     @NotEmpty

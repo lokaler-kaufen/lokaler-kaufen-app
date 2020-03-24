@@ -2,7 +2,7 @@ package de.qaware.mercury.mercury.business.shop.impl;
 
 import de.qaware.mercury.mercury.business.email.EmailService;
 import de.qaware.mercury.mercury.business.location.GeoLocation;
-import de.qaware.mercury.mercury.business.location.GeoLocationLookup;
+import de.qaware.mercury.mercury.business.location.LocationService;
 import de.qaware.mercury.mercury.business.login.ShopLoginService;
 import de.qaware.mercury.mercury.business.login.TokenService;
 import de.qaware.mercury.mercury.business.shop.Shop;
@@ -32,7 +32,7 @@ import java.util.UUID;
 @EnableConfigurationProperties(ShopServiceConfigurationProperties.class)
 class ShopServiceImpl implements ShopService {
     private final UUIDFactory uuidFactory;
-    private final GeoLocationLookup geoLocationLookup;
+    private final LocationService locationService;
     private final ShopRepository shopRepository;
     private final EmailService emailService;
     private final ShopLoginService shopLoginService;
@@ -49,7 +49,7 @@ class ShopServiceImpl implements ShopService {
     @Override
     @Transactional(readOnly = true)
     public List<ShopWithDistance> findNearby(String zipCode) {
-        GeoLocation location = geoLocationLookup.fromZipCode(zipCode);
+        GeoLocation location = locationService.lookup(zipCode);
         return shopRepository.findNearby(location);
     }
 
@@ -90,7 +90,7 @@ class ShopServiceImpl implements ShopService {
 
         UUID id = uuidFactory.create();
 
-        GeoLocation geoLocation = geoLocationLookup.fromZipCode(creation.getZipCode());
+        GeoLocation geoLocation = locationService.lookup(creation.getZipCode());
         Shop shop = new Shop(
             Shop.Id.of(id), creation.getName(), creation.getOwnerName(), creation.getEmail(), creation.getStreet(),
             creation.getZipCode(), creation.getCity(), creation.getAddressSupplement(), creation.getContactTypes(),
@@ -106,7 +106,7 @@ class ShopServiceImpl implements ShopService {
     @Override
     @Transactional
     public Shop update(Shop shop, ShopUpdate update) {
-        GeoLocation geoLocation = geoLocationLookup.fromZipCode(update.getZipCode());
+        GeoLocation geoLocation = locationService.lookup(update.getZipCode());
 
         Shop newShop = new Shop(
             shop.getId(), update.getName(), update.getOwnerName(), shop.getName(), update.getStreet(), update.getZipCode(),
@@ -148,7 +148,7 @@ class ShopServiceImpl implements ShopService {
     @Override
     @Transactional(readOnly = true)
     public List<ShopWithDistance> search(String query, String zipCode) {
-        GeoLocation location = geoLocationLookup.fromZipCode(zipCode);
+        GeoLocation location = locationService.lookup(zipCode);
         return shopRepository.search(query, location);
     }
 }
