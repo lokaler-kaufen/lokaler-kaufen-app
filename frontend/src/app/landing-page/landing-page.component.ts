@@ -31,7 +31,7 @@ export class LandingPageComponent implements OnInit {
     });
     this.form.controls.zipCode.valueChanges
       .pipe(
-        debounceTime(300),
+        debounceTime(150),
         switchMap(value => {
           if (value) {
             return this.client.get<LocationSuggestionsDto>('/api/location/suggestion?zipCode=' + value)
