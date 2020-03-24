@@ -4,6 +4,7 @@ import de.qaware.mercury.mercury.business.login.AdminLoginService;
 import de.qaware.mercury.mercury.business.shop.ContactType;
 import de.qaware.mercury.mercury.business.shop.DayConfig;
 import de.qaware.mercury.mercury.business.shop.Shop;
+import de.qaware.mercury.mercury.business.shop.ShopAlreadyExistsException;
 import de.qaware.mercury.mercury.business.shop.ShopCreation;
 import de.qaware.mercury.mercury.business.shop.ShopNotFoundException;
 import de.qaware.mercury.mercury.business.shop.ShopService;
@@ -48,7 +49,7 @@ class DebugPopulateDatabase implements ApplicationRunner {
         }
     }
 
-    private void createShops() throws ShopNotFoundException {
+    private void createShops() throws ShopNotFoundException, ShopAlreadyExistsException {
         createShop(new ShopCreation(
             "moe@localhost", "Moe", "Moe's Whiskey", "Lothstr. 64", "85579", "Neubiberg", "", "Bester Whiskey in ganz Neubiberg!",
             "https://www.moes-whiskey.com/", "moe",
@@ -75,7 +76,7 @@ class DebugPopulateDatabase implements ApplicationRunner {
         ));
     }
 
-    private void createShop(ShopCreation creation) throws ShopNotFoundException {
+    private void createShop(ShopCreation creation) throws ShopNotFoundException, ShopAlreadyExistsException {
         if (shopService.findByName(creation.getName()).isEmpty()) {
             Shop shop = shopService.create(creation);
             shopService.changeEnabled(shop.getId(), true);

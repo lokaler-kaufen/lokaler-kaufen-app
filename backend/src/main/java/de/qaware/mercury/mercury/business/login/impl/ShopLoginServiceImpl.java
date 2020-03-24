@@ -107,4 +107,10 @@ class ShopLoginServiceImpl implements ShopLoginService {
         String newPasswordHash = passwordHasher.hash(newPassword);
         shopLoginRepository.update(login.withPasswordHash(newPasswordHash));
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public boolean hasLogin(String email) {
+        return shopLoginRepository.findByEmail(email) != null;
+    }
 }
