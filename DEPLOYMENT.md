@@ -20,7 +20,6 @@ Usage:
 $ ./deploy.sh [-p] <username>
 ```
 
-This will deploy to `TEST` [https://test.lokaler.kaufen](https://test.lokaler.kaufen).
+This will deploy to `TEST` ([https://test.lokaler.kaufen](https://test.lokaler.kaufen)).
 
-The `-p` parameter changes the deployment target to `PROD` [https://demo.lokaler.kaufen](https://demo.lokaler.kaufen).
-.
+The `-p` parameter changes the deployment target to `PROD` ([https://demo.lokaler.kaufen](https://demo.lokaler.kaufen)).
