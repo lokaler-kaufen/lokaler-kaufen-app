@@ -6,6 +6,7 @@ import de.qaware.mercury.mercury.business.location.GeoLocationLookup;
 import de.qaware.mercury.mercury.business.login.ShopLoginService;
 import de.qaware.mercury.mercury.business.login.TokenService;
 import de.qaware.mercury.mercury.business.shop.Shop;
+import de.qaware.mercury.mercury.business.shop.ShopAlreadyExistsException;
 import de.qaware.mercury.mercury.business.shop.ShopCreation;
 import de.qaware.mercury.mercury.business.shop.ShopNotFoundException;
 import de.qaware.mercury.mercury.business.shop.ShopService;
@@ -82,7 +83,11 @@ class ShopServiceImpl implements ShopService {
 
     @Override
     @Transactional
-    public Shop create(ShopCreation creation) {
+    public Shop create(ShopCreation creation) throws ShopAlreadyExistsException {
+        if (shopLoginService.hasLogin(creation.getEmail())) {
+            throw new ShopAlreadyExistsException(creation.getEmail());
+        }
+
         UUID id = uuidFactory.create();
 
         GeoLocation geoLocation = geoLocationLookup.fromZipCode(creation.getZipCode());

@@ -4,6 +4,7 @@ import de.qaware.mercury.mercury.business.login.LoginException;
 import de.qaware.mercury.mercury.business.login.ShopLoginNotFoundException;
 import de.qaware.mercury.mercury.business.reservation.InvalidSlotIdException;
 import de.qaware.mercury.mercury.business.shop.InvalidShopIdException;
+import de.qaware.mercury.mercury.business.shop.ShopAlreadyExistsException;
 import de.qaware.mercury.mercury.business.shop.ShopNotFoundException;
 import de.qaware.mercury.mercury.business.uuid.UUIDFactory;
 import de.qaware.mercury.mercury.rest.shop.InvalidTimeException;
@@ -71,5 +72,12 @@ class RestExceptionHandler extends ResponseEntityExceptionHandler {
         ErrorDto errorDto = ErrorDto.of(uuidFactory, "INVALID_TIME", exception.getMessage());
         log.debug("Handled InvalidTimeException with exception id {}", errorDto.getId(), exception);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDto);
+    }
+
+    @ExceptionHandler(ShopAlreadyExistsException.class)
+    ResponseEntity<ErrorDto> handleShopAlreadyExistsException(ShopAlreadyExistsException exception) {
+        ErrorDto errorDto = ErrorDto.of(uuidFactory, "SHOP_ALREADY_EXISTS", exception.getMessage());
+        log.debug("Handled ShopAlreadyExistsException with exception id {}", errorDto.getId(), exception);
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(errorDto);
     }
 }

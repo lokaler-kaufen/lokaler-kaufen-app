@@ -12,4 +12,6 @@ public interface ShopLoginService {
     void sendPasswordResetLink(String email);
 
     void resetPassword(String email, String newPassword) throws ShopLoginNotFoundException;
+
+    boolean hasLogin(String email);
 }

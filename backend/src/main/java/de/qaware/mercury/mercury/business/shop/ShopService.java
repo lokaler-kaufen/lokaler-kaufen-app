@@ -7,7 +7,7 @@ import java.util.List;
 public interface ShopService {
     List<Shop> listAll();
 
-    Shop create(ShopCreation creation);
+    Shop create(ShopCreation creation) throws ShopAlreadyExistsException;
 
     Shop update(Shop shop, ShopUpdate update);
 
