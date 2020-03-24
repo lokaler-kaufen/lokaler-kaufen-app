@@ -110,7 +110,7 @@ export class ShopDetailsPageComponent implements OnInit {
         if (url.startsWith(startingUrl) || url.startsWith(httpsStartingUrl)) {
             result = url;
         } else {
-            result = httpsStartingUrl + url;
+            result = startingUrl + url;
         }
         return result;
     }
