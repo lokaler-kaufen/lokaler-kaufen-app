@@ -206,7 +206,7 @@ public class ShopEntity {
             addressSupplement,
             fakeMap(contactTypes), // TODO MKA: Load contact types with contact info
             enabled,
-            new GeoLocation(latitude, longitude),
+            GeoLocation.of(latitude, longitude),
             details,
             website,
             new SlotConfig(
