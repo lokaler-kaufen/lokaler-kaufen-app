@@ -13,8 +13,14 @@ class EmailConfigurationProperties {
     @NotBlank
     private String from;
     /**
-     * {{ token }} will be replaced with the creation link token
+     * {{ token }} will be replaced with the creation link token.
      */
     @NotBlank
     private String creationLinkTemplate;
+
+    /**
+     * {{ token }} will be replaced with the password reset link token.
+     */
+    @NotBlank
+    private String shopPasswordResetLinkTemplate;
 }

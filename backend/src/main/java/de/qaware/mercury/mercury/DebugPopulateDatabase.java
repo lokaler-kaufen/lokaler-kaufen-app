@@ -1,6 +1,5 @@
 package de.qaware.mercury.mercury;
 
-import de.qaware.mercury.mercury.business.location.GeoLocationLookup;
 import de.qaware.mercury.mercury.business.login.AdminLoginService;
 import de.qaware.mercury.mercury.business.shop.ContactType;
 import de.qaware.mercury.mercury.business.shop.DayConfig;
@@ -25,7 +24,6 @@ import java.util.Map;
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 class DebugPopulateDatabase implements ApplicationRunner {
     private final ShopService shopService;
-    private final GeoLocationLookup geoLocationLookup;
     private final AdminLoginService adminLoginService;
 
     @Override

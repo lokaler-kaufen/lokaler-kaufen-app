@@ -4,6 +4,7 @@ import de.qaware.mercury.mercury.business.email.EmailSender;
 import de.qaware.mercury.mercury.business.email.EmailService;
 import de.qaware.mercury.mercury.business.email.SendEmailException;
 import de.qaware.mercury.mercury.business.i18n.DateTimeI18nService;
+import de.qaware.mercury.mercury.business.login.PasswordResetToken;
 import de.qaware.mercury.mercury.business.login.ShopCreationToken;
 import de.qaware.mercury.mercury.business.login.TokenService;
 import de.qaware.mercury.mercury.business.shop.ContactType;
@@ -27,6 +28,7 @@ class EmailServiceImpl implements EmailService {
     private static final String SHOP_CREATION_SUBJECT = "Dein Laden auf lokaler.kaufen";
     private static final String CUSTOMER_RESERVATION_CONFIRMATION_SUBJECT = "Reservierungsbestätigung auf lokaler.kaufen";
     private static final String SHOP_NEW_RESERVATION_SUBJECT = "Es gibt eine neue Reservierung auf lokaler.kaufen";
+    private static final String SHOP_RESET_PASSWORD_SUBJECT = "Passwort auf lokaler.kaufen zurücksetzen";
     private final EmailSender emailSender;
     private final EmailConfigurationProperties config;
     private final TokenService tokenService;
@@ -72,6 +74,17 @@ class EmailServiceImpl implements EmailService {
             .replace("{{ contact }}", contact);
 
         emailSender.sendEmail(shop.getEmail(), SHOP_NEW_RESERVATION_SUBJECT, body);
+    }
+
+    @Override
+    public void sendShopPasswordResetEmail(String email, PasswordResetToken token) {
+        String resetLink = config.getShopPasswordResetLinkTemplate()
+            .replace("{{ token }}", token.getToken());
+
+        String body = loadTemplate("/email/shop-passwort-reset.txt")
+            .replace("{{ link }}", resetLink);
+
+        emailSender.sendEmail(email, SHOP_RESET_PASSWORD_SUBJECT, body);
     }
 
     private String loadTemplate(String location) {

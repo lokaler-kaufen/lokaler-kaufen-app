@@ -20,4 +20,6 @@ class TokenServiceConfigurationProperties {
     private String adminJwtSecret;
     @NotBlank
     private String shopCreationJwtSecret;
+    @NotBlank
+    private String passwordResetJwtSecret;
 }

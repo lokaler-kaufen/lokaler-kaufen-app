@@ -1,0 +1,11 @@
+Hallo,
+
+klicke auf diesen Link, um dein Passwort auf https://lokaler.kaufen neu zu vergeben:
+
+{{ link }}
+
+Falls du dich veranlasst hast, dein Passwort neu setzen, lösche einfach diese E-Mail.
+
+Viele Grüße,
+
+dein lokaler.kaufen Team

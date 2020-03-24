@@ -1,5 +1,6 @@
 package de.qaware.mercury.mercury.business.email;
 
+import de.qaware.mercury.mercury.business.login.PasswordResetToken;
 import de.qaware.mercury.mercury.business.shop.ContactType;
 import de.qaware.mercury.mercury.business.shop.Shop;
 
@@ -11,4 +12,6 @@ public interface EmailService {
     void sendCustomerReservationConfirmation(Shop shop, String email, String name, LocalDateTime slotStart, LocalDateTime slotEnd, ContactType contactType, String contact);
 
     void sendShopNewReservation(Shop shop, String name, LocalDateTime slotStart, LocalDateTime slotEnd, ContactType contactType, String contact);
+
+    void sendShopPasswordResetEmail(String email, PasswordResetToken token);
 }
