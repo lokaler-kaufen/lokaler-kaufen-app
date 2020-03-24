@@ -6,6 +6,10 @@
 echo -n $MY_SECRET | gcloud kms encrypt --plaintext-file=- --ciphertext-file=- --location=global --keyring=lokalerkaufen --key=CLOUD_BUILD_KEY | base64
 ```
 
+This command encrypts the value of the environment variable `$MY_SECRET` using the CryptoKey. The encrypted value is a base64-encoded string so you can easily include the value in your build request.
+
+More details: https://cloud.google.com/cloud-build/docs/securing-builds/use-encrypted-secrets-credentials
+
 ## How can I run Cloud Build locally for debugging?
 
 Install local builder
