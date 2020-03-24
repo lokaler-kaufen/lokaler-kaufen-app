@@ -4,6 +4,8 @@
     <h2>Login für Ladenbesitzer</h2>
   </header>
 
-  <login-form class="login-form"></login-form>
+  <login-form class="login-form" [apiPath]="'/api/shop/login'" [redirectPath]="'manage-shop'"></login-form>
+
+  <a style="margin-top: 20px; font-size: 80%;" class="link" (click)="passwordReset()">Passwort vergessen</a>
 
 </div>

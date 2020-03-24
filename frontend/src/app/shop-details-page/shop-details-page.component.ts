@@ -2,15 +2,15 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {
-    BookingDialogData,
-    BookingPopupComponent,
-    BookingPopupOutcome,
-    BookingPopupResult
+  BookingDialogData,
+  BookingPopupComponent,
+  BookingPopupOutcome,
+  BookingPopupResult
 } from '../booking-popup/booking-popup.component';
 import {CreateReservationDto, ShopDetailDto, SlotDto, SlotsDto} from '../data/client';
 import {
-    BookingSuccessData,
-    BookingSuccessPopupComponent
+  BookingSuccessData,
+  BookingSuccessPopupComponent
 } from '../booking-success-popup/booking-success-popup.component';
 import {HttpClient} from '@angular/common/http';
 import {NotificationsService} from 'angular2-notifications';
@@ -46,7 +46,7 @@ export class ShopDetailsPageComponent implements OnInit {
                     this.details = shopDetails;
                 },
                 error => {
-                    console.log('Error requesting shop details: ' + error.status + ', ' + error.error.message);
+                    console.log('Error requesting shop details: ' + error.status + ', ' + error.message);
                     this.notificationsService.error('Tut uns leid!', 'Es ist ein Fehler beim Laden der Details aufgetreten.');
                 });
         this.client.get<SlotsDto>('/api/reservation/' + this.shopId + '/slot')
@@ -54,7 +54,7 @@ export class ShopDetailsPageComponent implements OnInit {
                     this.slots = slots.slots;
                 },
                 error => {
-                    console.log('Error requesting slots: ' + error.status + ', ' + error.error.message);
+                    console.log('Error requesting slots: ' + error.status + ', ' + error.message);
                     this.notificationsService.error('Tut uns leid!', 'Es ist ein Fehler beim Laden der Slots aufgetreten.');
                 });
     }
@@ -96,7 +96,7 @@ export class ShopDetailsPageComponent implements OnInit {
                                     });
                             },
                             error => {
-                                console.log('Error booking time slot: ' + error.status + ', ' + error.error.message);
+                                console.log('Error booking time slot: ' + error.status + ', ' + error.message);
                                 this.notificationsService.error('Tut uns leid!', 'Es ist ein Fehler bei der Buchung aufgetreten.');
                             });
                 }

@@ -12,7 +12,7 @@
              type="number"
              name="location"
              placeholder="PLZ"
-             oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+             oninput="javascript: this.value=this.value.replace(/[^\d]/,''); if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
              required
              maxlength="5"
              minlength="5"

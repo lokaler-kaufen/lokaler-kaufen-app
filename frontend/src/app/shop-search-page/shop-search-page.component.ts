@@ -52,7 +52,7 @@ export class ShopSearchPageComponent implements OnInit {
         }
       },
       error => {
-        console.log('Error requesting shop overview: ' + error.status + ', ' + error.error.message);
+        console.log('Error requesting shop overview: ' + error.status + ', ' + error.message);
         this.notificationsService.error('Tut uns leid!', 'Ein Fehler beim Laden der Shops ist aufgetreten.');
       }
     );
@@ -83,7 +83,7 @@ export class ShopSearchPageComponent implements OnInit {
         }
       },
       error => {
-        console.log('Error requesting shop overview: ' + error.status + ', ' + error.error.message);
+        console.log('Error requesting shop overview: ' + error.status + ', ' + error.message);
         this.notificationsService.error('Tut uns leid!', 'Es ist ein Fehler bei der Suche aufgetreten.');
       }
     );
