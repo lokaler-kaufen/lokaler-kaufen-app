@@ -1,13 +1,22 @@
 package de.qaware.mercury.mercury.storage.location.impl;
 
 import de.qaware.mercury.mercury.business.location.GeoLocation;
-import de.qaware.mercury.mercury.business.location.GeoLocationSuggestion;
-import lombok.*;
+import de.qaware.mercury.mercury.business.location.LocationSuggestion;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.Table;
 
 @Entity
-@IdClass(GeoLocationId.class)
+@IdClass(GeoLocationId.class) // Get hibernate to use compound id
 @Getter
 // See https://vladmihalcea.com/the-best-way-to-implement-equals-hashcode-and-tostring-with-jpa-and-hibernate/
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -27,18 +36,6 @@ class GeoLocationEntity {
 
     @Setter
     @Column(nullable = false)
-    private String adminName1;
-
-    @Setter
-    @Column(nullable = false)
-    private String adminName2;
-
-    @Setter
-    @Column(nullable = false)
-    private String adminName3;
-
-    @Setter
-    @Column(nullable = false)
     private double latitude;
 
     @Setter
@@ -50,10 +47,10 @@ class GeoLocationEntity {
     private int accuracy;
 
     public GeoLocation toGeoLocation() {
-        return new GeoLocation(latitude, longitude);
+        return GeoLocation.of(latitude, longitude);
     }
 
-    public GeoLocationSuggestion toGeoLocationSuggestion() {
-        return new GeoLocationSuggestion(countryCode, zipCode, placeName, adminName1, adminName2, adminName3);
+    public LocationSuggestion toLocationSuggestion() {
+        return new LocationSuggestion(countryCode, zipCode, placeName);
     }
 }
