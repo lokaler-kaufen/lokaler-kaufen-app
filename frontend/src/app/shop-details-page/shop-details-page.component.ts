@@ -59,14 +59,8 @@ export class ShopDetailsPageComponent implements OnInit {
                 });
     }
 
-    public get shopHasNoDescription(): boolean {
-      return this.nullOrUndefined(this.details) ||
-        this.nullOrUndefined(this.details.details) ||
-        (this.details.details.trim().length === 0);
-    }
-
-  private nullOrUndefined(value) {
-    return !value || value === undefined;
+  get shopHasNoDescription(): boolean {
+    return !this.details || !this.details.details || (this.details.details.trim().length === 0);
   }
 
   showBookingPopup(id: string) {
