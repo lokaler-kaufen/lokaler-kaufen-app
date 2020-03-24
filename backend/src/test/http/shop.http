@@ -1,7 +1,9 @@
+### Get shop details
+
 GET {{ host }}/api/shop/0943214c-bd11-4048-a2f9-d37c782db11c
 Accept: application/json, */*
 
-###
+### Create Shop
 
 POST {{ host }}/api/shop?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmb29AYmFyLm9yZyIsImlzcyI6Im1lcmN1cnktc2hvcC1jcmVhdGlvbiJ9.WaUsDR89nzQtgqxXhfLZqazjf0PvywMzajQFZfKW9IQ
 Accept: application/json
