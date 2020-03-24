@@ -74,3 +74,6 @@ sonarqube {
     property "sonar.host.url", "https://sonarcloud.io"
   }
 }
+
+// have some fun ./gradlew kick ass
+task kick(dependsOn: clean) {}
