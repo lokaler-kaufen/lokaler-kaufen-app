@@ -10,6 +10,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
@@ -19,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 @EnableConfigurationProperties(EmailConfigurationProperties.class)
 @Slf4j
 @ConditionalOnProperty(name = "mercury.email.use-dummy", havingValue = "false")
-class EmailSenderImpl implements EmailSender, AutoCloseable {
+class EmailSenderImpl implements EmailSender {
     private final EmailConfigurationProperties config;
     private final MailSender mailSender;
     private ExecutorService executor;
@@ -38,6 +39,19 @@ class EmailSenderImpl implements EmailSender, AutoCloseable {
 
         log.info("Starting email sender executor");
         executor = Executors.newSingleThreadExecutor(threadFactory);
+    }
+
+    /**
+     * Is called when Spring shuts down. Shuts down the executor.
+     *
+     * @throws Exception if something went wrong
+     */
+    @PreDestroy
+    void close() throws Exception {
+        log.info("Shutting down email sender executor");
+        executor.shutdown();
+        executor.awaitTermination(10, TimeUnit.SECONDS);
+        executor.shutdownNow();
     }
 
     @Override
@@ -66,18 +80,5 @@ class EmailSenderImpl implements EmailSender, AutoCloseable {
         } catch (Exception e) {
             log.error("Failed to send email to '{}', subject '{}'", recipient, mail.getSubject(), e);
         }
-    }
-
-    /**
-     * Is called when Spring shuts down. Shuts down the executor.
-     *
-     * @throws Exception if something went wrong
-     */
-    @Override
-    public void close() throws Exception {
-        log.info("Shutting down email sender executor");
-        executor.shutdown();
-        executor.awaitTermination(10, TimeUnit.SECONDS);
-        executor.shutdownNow();
     }
 }
