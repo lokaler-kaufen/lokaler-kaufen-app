@@ -13,11 +13,11 @@ NC='\033[0m' # No Color	echo -e "INFO: Deploying to ${RED}PRODUCTION${NC}"
 if [[ "$1" = "-p" ]]
 then
 	RED='\033[0;31m'
-	echo -e "INFO: Deploying to ${RED}PRODUCTION${NC}."
+	echo -e "INFO: Deploying to ${RED}PRODUCTION${NC} (https://demo.lokaler.kaufen)."
 	PROD=true
 else
 	YELLOW='\033[1;33m'
-	echo -e "INFO: Deploying to ${YELLOW}TEST${NC}."
+	echo -e "INFO: Deploying to ${YELLOW}TEST${NC} (https://test.lokaler.kaufen)."
 	PROD=false
 fi
 
