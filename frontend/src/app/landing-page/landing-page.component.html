@@ -24,9 +24,8 @@
       </mat-autocomplete>
     </mat-form-field>
 
-    <button class="form-item" type="submit" [disabled]="!form.valid || this.suggestions.length < 1"
-            [routerLink]="['/shops']"
-            [queryParams]="{ location: this.form.controls.zipCode.value}"
+    <button class="form-item" type="submit" [disabled]="!form.valid"
+            (click)="start()"
             mat-raised-button
             color="primary">
       Los geht's!
