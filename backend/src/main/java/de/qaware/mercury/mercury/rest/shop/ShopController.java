@@ -11,12 +11,12 @@ import de.qaware.mercury.mercury.business.shop.ShopNotFoundException;
 import de.qaware.mercury.mercury.business.shop.ShopService;
 import de.qaware.mercury.mercury.business.shop.ShopUpdate;
 import de.qaware.mercury.mercury.rest.plumbing.authentication.AuthenticationHelper;
-import de.qaware.mercury.mercury.rest.shop.dto.CreateShopRequestDto;
-import de.qaware.mercury.mercury.rest.shop.dto.PasswordResetRequestDto;
-import de.qaware.mercury.mercury.rest.shop.dto.SendCreateLinkDto;
-import de.qaware.mercury.mercury.rest.shop.dto.ShopDetailDto;
-import de.qaware.mercury.mercury.rest.shop.dto.ShopListDto;
-import de.qaware.mercury.mercury.rest.shop.dto.UpdateShopRequestDto;
+import de.qaware.mercury.mercury.rest.shop.dto.request.CreateShopRequestDto;
+import de.qaware.mercury.mercury.rest.shop.dto.request.SendCreateLinkDto;
+import de.qaware.mercury.mercury.rest.shop.dto.request.SendPasswordResetLinkDto;
+import de.qaware.mercury.mercury.rest.shop.dto.request.UpdateShopRequestDto;
+import de.qaware.mercury.mercury.rest.shop.dto.response.ShopDetailDto;
+import de.qaware.mercury.mercury.rest.shop.dto.response.ShopListDto;
 import de.qaware.mercury.mercury.util.Maps;
 import de.qaware.mercury.mercury.util.validation.GuidValidation;
 import lombok.AccessLevel;
@@ -66,7 +66,7 @@ class ShopController {
 
 
     @PostMapping(path = "/send-password-reset-link", consumes = MediaType.APPLICATION_JSON_VALUE)
-    void sendPasswordResetLink(@Valid @RequestBody PasswordResetRequestDto request) {
+    void sendPasswordResetLink(@Valid @RequestBody SendPasswordResetLinkDto request) {
         shopLoginService.sendPasswordResetLink(request.getEmail());
     }
 
