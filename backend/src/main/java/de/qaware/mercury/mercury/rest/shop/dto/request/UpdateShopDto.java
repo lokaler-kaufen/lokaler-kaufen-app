@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Map;
 
 @Data
@@ -26,6 +27,7 @@ public class UpdateShopDto {
     private String street;
     @NotBlank
     // TODO: Validate pattern
+    @Size(min = 5, max = 5)
     private String zipCode;
     @NotBlank
     // TODO: Validate pattern
