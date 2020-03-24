@@ -5,6 +5,7 @@ import de.qaware.mercury.mercury.business.login.LoginException;
 import de.qaware.mercury.mercury.business.login.PasswordHasher;
 import de.qaware.mercury.mercury.business.login.PasswordResetToken;
 import de.qaware.mercury.mercury.business.login.ShopLogin;
+import de.qaware.mercury.mercury.business.login.ShopLoginNotFoundException;
 import de.qaware.mercury.mercury.business.login.ShopLoginService;
 import de.qaware.mercury.mercury.business.login.ShopToken;
 import de.qaware.mercury.mercury.business.login.TokenService;
@@ -92,5 +93,18 @@ class ShopLoginServiceImpl implements ShopLoginService {
         PasswordResetToken token = tokenService.createPasswordResetToken(email);
         log.info("Sending shop passwort reset email to '{}'", email);
         emailService.sendShopPasswordResetEmail(email, token);
+    }
+
+    @Override
+    @Transactional
+    public void resetPassword(String email, String newPassword) throws ShopLoginNotFoundException {
+        ShopLogin login = shopLoginRepository.findByEmail(email);
+        if (login == null) {
+            throw new ShopLoginNotFoundException(email);
+        }
+
+        log.info("Resetting password for shop login '{}'", email);
+        String newPasswordHash = passwordHasher.hash(newPassword);
+        shopLoginRepository.update(login.withPasswordHash(newPasswordHash));
     }
 }

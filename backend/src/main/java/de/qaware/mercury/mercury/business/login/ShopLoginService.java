@@ -10,4 +10,6 @@ public interface ShopLoginService {
     Shop verify(ShopToken token) throws LoginException;
 
     void sendPasswordResetLink(String email);
+
+    void resetPassword(String email, String newPassword) throws ShopLoginNotFoundException;
 }

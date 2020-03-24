@@ -35,4 +35,9 @@ class JpaShopLoginRepository implements ShopLoginRepository {
 
         return Null.map(entity, ShopLoginEntity::toShopLogin);
     }
+
+    @Override
+    public void update(ShopLogin shopLogin) {
+        shopLoginDataRepository.save(ShopLoginEntity.of(shopLogin.withUpdated(clock.nowZoned())));
+    }
 }

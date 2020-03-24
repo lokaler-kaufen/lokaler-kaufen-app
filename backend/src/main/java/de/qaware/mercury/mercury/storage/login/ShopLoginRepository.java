@@ -10,4 +10,6 @@ public interface ShopLoginRepository {
     ShopLogin findByEmail(String email);
 
     ShopLogin findById(ShopLogin.Id id);
+
+    void update(ShopLogin shopLogin);
 }

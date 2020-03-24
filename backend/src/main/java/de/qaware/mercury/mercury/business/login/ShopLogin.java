@@ -13,6 +13,7 @@ public class ShopLogin {
     Id id;
     Shop.Id shopId;
     String email;
+    @With
     String passwordHash;
     @With
     ZonedDateTime created;
