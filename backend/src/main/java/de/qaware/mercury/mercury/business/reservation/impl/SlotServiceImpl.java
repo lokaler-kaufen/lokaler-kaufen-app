@@ -17,6 +17,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -40,7 +41,7 @@ class SlotServiceImpl implements SlotService {
             current = current.plusDays(1);
         }
 
-        return result;
+        return result.stream().filter(s -> s.getStart().isAfter(clock.now())).collect(Collectors.toList());
     }
 
     private List<Slot> generateSlotsForDay(LocalDate date, SlotConfig slotConfig, List<Interval> existingReservations) {
@@ -58,10 +59,6 @@ class SlotServiceImpl implements SlotService {
             LocalTime slotEnd = currentStart.plusMinutes(slotConfig.getTimePerSlot());
             Interval slot = Interval.of(date.atTime(currentStart), date.atTime(slotEnd));
 
-            if (hasAlreadyStarted(slot)) {
-                continue;
-            }
-
             boolean available = checkAvailability(slot, existingReservations);
             slots.add(new Slot(Slot.Id.of(slot.getStart()), slot.getStart(), slot.getEnd(), available));
 
@@ -70,10 +67,6 @@ class SlotServiceImpl implements SlotService {
         }
 
         return slots;
-    }
-
-    private boolean hasAlreadyStarted(Interval slot) {
-        return slot.getStart().isBefore(clock.now());
     }
 
     private boolean checkAvailability(Interval slot, List<Interval> existingReservations) {
