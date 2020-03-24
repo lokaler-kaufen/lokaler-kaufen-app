@@ -79,7 +79,8 @@ export class ShopSearchPageComponent implements OnInit {
   }
 
   private doSearchRequest() {
-    this.client.get<ShopListDto>('/api/shop/search?location=' + this.location + '&query=' + this.searchBusiness).subscribe(
+    let urlEscapedSearchInput = encodeURIComponent(this.searchBusiness);
+    this.client.get<ShopListDto>('/api/shop/search?location=' + this.location + '&query=' + urlEscapedSearchInput).subscribe(
       response => {
         this.dataSource = new MatTableDataSource<ShopListEntryDto>();
         if (response.shops.length > 0) {
