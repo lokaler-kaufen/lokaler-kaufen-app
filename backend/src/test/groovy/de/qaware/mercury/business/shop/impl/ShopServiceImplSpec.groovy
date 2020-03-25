@@ -76,15 +76,57 @@ class ShopServiceImplSpec extends Specification {
         thrown ShopNotFoundException
     }
 
-    @PendingFeature
-    def "FindById"() {
-        // TODO Implement me
+    def "Find shop by ID"() {
+        given:
+        def id = Shop.Id.of(UUID.randomUUID())
+        def shop = new Shop.ShopBuilder().id(id).build()
+
+        when:
+        def found = shopService.findById(id)
+
+        then:
+        1 * shopRepository.findById(id) >> shop
+        found == shop
     }
 
-    @PendingFeature
-    def "FindByIdOrThrow"() {
-        // TODO Implement me
+    def "Can't find unknown shop by ID"() {
+        given:
+        def id = Shop.Id.of(UUID.randomUUID())
+
+        when:
+        def found = shopService.findById(id)
+
+        then:
+        1 * shopRepository.findById(id) >> null
+        found == null
     }
+
+    def "Find shop by ID (with Exception)"() {
+        given:
+        def id = Shop.Id.of(UUID.randomUUID())
+        def shop = new Shop.ShopBuilder().id(id).build()
+
+        when:
+        def found = shopService.findByIdOrThrow(id)
+
+        then:
+        1 * shopRepository.findById(id) >> shop
+        found == shop
+        noExceptionThrown()
+    }
+
+    def "Can't find unknown shop by ID (with Exception)"() {
+        given:
+        def id = Shop.Id.of(UUID.randomUUID())
+
+        when:
+        shopService.findByIdOrThrow(id)
+
+        then:
+        1 * shopRepository.findById(id) >> null
+        thrown ShopNotFoundException
+    }
+
 
     @PendingFeature
     def "Create"() {
