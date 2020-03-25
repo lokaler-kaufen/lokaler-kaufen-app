@@ -10,6 +10,7 @@ import de.qaware.mercury.mercury.business.shop.ShopService
 import de.qaware.mercury.mercury.business.time.Clock
 import de.qaware.mercury.mercury.business.uuid.UUIDFactory
 import de.qaware.mercury.mercury.storage.shop.ShopRepository
+import spock.lang.PendingFeature
 import spock.lang.Specification
 
 class ShopServiceImplSpec extends Specification {
@@ -75,27 +76,43 @@ class ShopServiceImplSpec extends Specification {
         thrown ShopNotFoundException
     }
 
+    @PendingFeature
     def "FindById"() {
+        // TODO Implement me
     }
 
+    @PendingFeature
     def "FindByIdOrThrow"() {
+        // TODO Implement me
     }
 
+    @PendingFeature
     def "Create"() {
+        // TODO Implement me
     }
 
+    @PendingFeature
     def "Update"() {
+        // TODO Implement me
     }
 
+    @PendingFeature
     def "ChangeEnabled"() {
+        // TODO Implement me
     }
 
+    @PendingFeature
     def "SendCreateLink"() {
+        // TODO Implement me
     }
 
+    @PendingFeature
     def "FindByName"() {
+        // TODO Implement me
     }
 
+    @PendingFeature
     def "Search"() {
+        // TODO Implement me
     }
 }
