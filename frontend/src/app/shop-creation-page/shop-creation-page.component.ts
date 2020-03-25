@@ -143,7 +143,7 @@ export class ShopCreationPageComponent implements OnInit {
     createShopRequestDto.addressSupplement = this.addressFormGroup.get('suffixCtrl').value;
     createShopRequestDto.details = this.descriptionFormGroup.get('descriptionCtrl').value;
     createShopRequestDto.website = this.descriptionFormGroup.get('urlCtrl').value;
-    const availableContactTypes = {};
+    const availableContactTypes: { [key: string]: string; } = {};
     this.contactTypes.forEach(contact => {
       const contactCtrl = contact.toLowerCase() + 'Ctrl';
       const value = this.contactFormGroup.get(contactCtrl).value;
