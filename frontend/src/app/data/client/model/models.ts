@@ -12,6 +12,7 @@ export * from './shopAdminDto';
 export * from './shopDetailDto';
 export * from './shopListDto';
 export * from './shopListEntryDto';
+export * from './shopOwnerDetailDto';
 export * from './shopsAdminDto';
 export * from './slotConfigDto';
 export * from './slotDto';
