@@ -22,6 +22,7 @@ import {SendCreateLinkDto} from '../model/sendCreateLinkDto';
 import {SendPasswordResetLinkDto} from '../model/sendPasswordResetLinkDto';
 import {ShopDetailDto} from '../model/shopDetailDto';
 import {ShopListDto} from '../model/shopListDto';
+import {ShopOwnerDetailDto} from '../model/shopOwnerDetailDto';
 import {UpdateShopDto} from '../model/updateShopDto';
 
 import {BASE_PATH} from '../variables';
@@ -121,17 +122,53 @@ export class ShopControllerService {
     /**
      * getDetails
      *
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getDetailsUsingGET(observe?: 'body', reportProgress?: boolean): Observable<ShopOwnerDetailDto>;
+    public getDetailsUsingGET(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ShopOwnerDetailDto>>;
+    public getDetailsUsingGET(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ShopOwnerDetailDto>>;
+    public getDetailsUsingGET(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<ShopOwnerDetailDto>('get',`${this.basePath}/api/shop/me`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * getDetails
+     *
      * @param id id
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getDetailsUsingGET(id: string, observe?: 'body', reportProgress?: boolean): Observable<ShopDetailDto>;
-    public getDetailsUsingGET(id: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ShopDetailDto>>;
-    public getDetailsUsingGET(id: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ShopDetailDto>>;
-    public getDetailsUsingGET(id: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getDetailsUsingGET1(id: string, observe?: 'body', reportProgress?: boolean): Observable<ShopDetailDto>;
+    public getDetailsUsingGET1(id: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ShopDetailDto>>;
+    public getDetailsUsingGET1(id: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ShopDetailDto>>;
+    public getDetailsUsingGET1(id: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling getDetailsUsingGET.');
+            throw new Error('Required parameter id was null or undefined when calling getDetailsUsingGET1.');
         }
 
         let headers = this.defaultHeaders;
