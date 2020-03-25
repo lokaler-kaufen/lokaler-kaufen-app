@@ -3,10 +3,11 @@
   <h1 id="title" class="mat-title">{{details.name}}</h1>
 
   <div id="description" class="mat-card" style="margin-bottom: 20px;">
+    <p *ngIf="shopHasNoDescription" class="mat-card-content text-no-values">Dieser Laden hat noch keine Beschreibung hinterlegt.</p>
     <p class="mat-card-content">{{details.details}}</p>
   </div>
 
-  <h3 *ngIf="slots.length == 0">Dieser Laden bietet heute leider keine Termine an. </h3>
+  <h3 *ngIf="slots.length == 0" class="text-no-values">Dieser Laden bietet heute leider keine Termine an. </h3>
   <div *ngIf="slots.length > 0" class="mat-card">
     <mat-table [dataSource]="slots" class="mat-table" id="calendar">
       <ng-container matColumnDef="from">
