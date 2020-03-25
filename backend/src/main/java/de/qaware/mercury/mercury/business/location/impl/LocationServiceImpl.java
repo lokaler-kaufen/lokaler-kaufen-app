@@ -19,9 +19,9 @@ import java.util.List;
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 public class LocationServiceImpl implements LocationService {
     // Munich
-    private static final GeoLocation DEFAULT_GEOLOCATION = GeoLocation.of(48.104346, 11.600851);
+    static final GeoLocation DEFAULT_GEOLOCATION = GeoLocation.of(48.104346, 11.600851);
     private static final int MINIMUM_SUGGESTION_LENGTH = 1;
-    private static final int MAXIMUM_SUGGESTION_COUNT = 5;
+    static final int MAXIMUM_SUGGESTION_COUNT = 5;
 
     private final LocationRepository locationRepository;
 
@@ -49,7 +49,7 @@ public class LocationServiceImpl implements LocationService {
 
         // Don't remove that new ArrayList() stuff, this way we ensure that addAll doesn't throw exceptions if the returned list is immutable!
         List<LocationSuggestion> suggestions = new ArrayList<>(locationRepository.suggest(zipCode + "%", MAXIMUM_SUGGESTION_COUNT));
-        if (suggestions.size() < MAXIMUM_SUGGESTION_COUNT){
+        if (suggestions.size() < MAXIMUM_SUGGESTION_COUNT) {
             // We need to get the max suggestion count again, cause we could get the same x elements as before and then end up with < 5 after deduplication
             suggestions.addAll(locationRepository.suggest("%" + zipCode + "%", MAXIMUM_SUGGESTION_COUNT));
         }

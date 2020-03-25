@@ -33,7 +33,7 @@ class JpaLocationRepositoryImpl implements LocationRepository {
 
     @Override
     public List<LocationSuggestion> suggest(String zipCode, int maxResults) {
-        List<GeoLocationEntity> hits = geoLocationDataRepository.findByZipCodeLike(zipCode, PageRequest.of(0,maxResults));
+        List<GeoLocationEntity> hits = geoLocationDataRepository.findByZipCodeLike(zipCode, PageRequest.of(0, maxResults));
         return Lists.map(hits, GeoLocationEntity::toLocationSuggestion);
     }
 }
