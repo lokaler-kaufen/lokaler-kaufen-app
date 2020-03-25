@@ -15,10 +15,12 @@ then
 	RED='\033[0;31m'
 	echo -e "INFO: Deploying to ${RED}PRODUCTION${NC} (https://demo.lokaler.kaufen)."
 	PROD=true
+	USER="$2"
 else
 	YELLOW='\033[1;33m'
 	echo -e "INFO: Deploying to ${YELLOW}TEST${NC} (https://test.lokaler.kaufen)."
 	PROD=false
+	USER="$1"
 fi
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
@@ -31,7 +33,6 @@ ARTIFACT="${BACKEND_DIR}/build/libs/mercury-0.0.1-SNAPSHOT.jar"
 
 DEPLOY_DIR_PROD="/opt/mercury/prod"
 DEPLOY_DIR_TEST="/opt/mercury/test"
-USER="$1"
 HOST="lokaler.kaufen"
 
 NPM="npm"
