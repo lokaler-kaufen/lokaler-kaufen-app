@@ -55,7 +55,7 @@ class ShopController {
     private final ShopLoginService shopLoginService;
 
     @GetMapping(path = "/{id}")
-    public ShopDetailDto getShopSettings(@PathVariable @Pattern(regexp = GuidValidation.REGEX) String id) throws ShopNotFoundException {
+    public ShopDetailDto getShopDetails(@PathVariable @Pattern(regexp = GuidValidation.REGEX) String id) throws ShopNotFoundException {
         Shop shop = shopService.findById(Shop.Id.parse(id));
         if (shop == null) {
             throw new ShopNotFoundException(Shop.Id.parse(id));
