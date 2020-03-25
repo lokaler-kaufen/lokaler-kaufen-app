@@ -1,12 +1,12 @@
-package de.qaware.mercury.mercury.business.login.impl
+package de.qaware.mercury.business.login.impl
 
-import de.qaware.mercury.mercury.business.email.EmailService
-import de.qaware.mercury.mercury.business.login.*
-import de.qaware.mercury.mercury.business.shop.Shop
-import de.qaware.mercury.mercury.business.time.Clock
-import de.qaware.mercury.mercury.business.uuid.UUIDFactory
-import de.qaware.mercury.mercury.storage.login.ShopLoginRepository
-import de.qaware.mercury.mercury.storage.shop.ShopRepository
+import de.qaware.mercury.business.email.EmailService
+import de.qaware.mercury.business.login.*
+import de.qaware.mercury.business.shop.Shop
+import de.qaware.mercury.business.time.Clock
+import de.qaware.mercury.business.uuid.UUIDFactory
+import de.qaware.mercury.storage.login.ShopLoginRepository
+import de.qaware.mercury.storage.shop.ShopRepository
 import org.spockframework.spring.SpringBean
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
