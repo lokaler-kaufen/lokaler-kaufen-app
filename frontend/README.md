@@ -3,8 +3,8 @@
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.0.5.
 
 ## Prerequisites
- * [NPM](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm#using-a-node-installer-to-install-node-js-and-npm) installed
- * [AngularCLI](https://angular.io/cli) installed
+ * [NPM v12](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm#using-a-node-installer-to-install-node-js-and-npm) installed
+ * [AngularCLI v9](https://angular.io/cli) installed (`npm install -g @angular/cli`)
 
 ## Development server
 

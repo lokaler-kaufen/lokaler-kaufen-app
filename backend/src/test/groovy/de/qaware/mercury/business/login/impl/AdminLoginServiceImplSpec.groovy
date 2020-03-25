@@ -1,0 +1,130 @@
+package de.qaware.mercury.business.login.impl
+
+import de.qaware.mercury.business.admin.Admin
+import de.qaware.mercury.business.login.*
+import de.qaware.mercury.business.time.Clock
+import de.qaware.mercury.business.uuid.UUIDFactory
+import de.qaware.mercury.storage.admin.AdminRepository
+import org.spockframework.spring.SpringBean
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.test.context.ContextConfiguration
+import spock.lang.Specification
+import spock.lang.Unroll
+
+import java.time.ZonedDateTime
+
+@ContextConfiguration(classes = AdminLoginServiceImpl)
+class AdminLoginServiceImplSpec extends Specification {
+
+    @Autowired
+    AdminLoginService loginService
+
+    @SpringBean
+    AdminRepository adminRepository = Mock()
+    @SpringBean
+    PasswordHasher passwordHasher = Mock()
+    @SpringBean
+    TokenService tokenService = Mock()
+    @SpringBean
+    UUIDFactory uuidFactory = Mock()
+    @SpringBean
+    Clock clock = Mock()
+
+    def "Create Login for Admin"() {
+        given:
+        def uuid = UUID.randomUUID()
+        def hasher = '4711'
+
+        when:
+        def admin = loginService.createLogin('test@lokaler.kaufen', 'supersecret')
+
+        then:
+        1 * uuidFactory.create() >> uuid
+        1 * passwordHasher.hash('supersecret') >> hasher
+        2 * clock.nowZoned() >> ZonedDateTime.now()
+        1 * adminRepository.insert(_)
+
+        with(admin) {
+            id.id == uuid
+            email == 'test@lokaler.kaufen'
+            passwordHash == hasher
+        }
+    }
+
+    def "Successful login for Admin"() {
+        given:
+        def id = Admin.Id.of(UUID.randomUUID())
+        def admin = new Admin(id, 'test@lokaler.kaufen', '4711', ZonedDateTime.now(), ZonedDateTime.now())
+        def token = AdminToken.of('token')
+
+        when:
+        def adminToken = loginService.login('test@lokaler.kaufen', 'supersecret')
+
+        then:
+        1 * adminRepository.findByEmail('test@lokaler.kaufen') >> admin
+        1 * passwordHasher.verify('supersecret', '4711') >> true
+        1 * tokenService.createAdminToken(id) >> token
+
+        adminToken == token
+    }
+
+    @Unroll
+    def "Unsuccessful login for Admin #admin"() {
+        setup:
+        passwordHasher.verify('supersecret', '4711') >> false
+
+        when:
+        loginService.login('test@lokaler.kaufen', 'supersecret')
+
+        then:
+        1 * adminRepository.findByEmail('test@lokaler.kaufen') >> admin
+        thrown LoginException
+
+        where:
+        admin << [null, new Admin(Admin.Id.of(UUID.randomUUID()), 'test@lokaler.kaufen', '4711', null, null)]
+    }
+
+    def "Successful AdminToken Verification"() {
+        given:
+        def id = Admin.Id.of(UUID.randomUUID())
+        def admin = new Admin(id, 'test@lokaler.kaufen', '4711', ZonedDateTime.now(), ZonedDateTime.now())
+        def token = AdminToken.of('token')
+
+        when:
+        def verified = loginService.verify(token)
+
+        then:
+        1 * tokenService.verifyAdminToken(token) >> id
+        1 * adminRepository.findById(id) >> admin
+        verified == admin
+    }
+
+    def "AdminToken Verification Error"() {
+        given:
+        def id = Admin.Id.of(UUID.randomUUID())
+        def token = AdminToken.of('token')
+
+        when:
+        loginService.verify(token)
+
+        then:
+        1 * tokenService.verifyAdminToken(token) >> id
+        1 * adminRepository.findById(id) >> null
+        thrown LoginException
+    }
+
+    @Unroll
+    def "Find Admin by Email #email"() {
+        when:
+        def found = loginService.findByEmail(email)
+
+        then:
+        1 * adminRepository.findByEmail(email) >> admin
+        found == admin
+
+        where:
+        email                     | admin
+        'notfound@lokaler.kaufen' | null
+        'test@lokaler.kaufen'     | new Admin(Admin.Id.of(UUID.randomUUID()), 'test@lokaler.kaufen', '4711', null, null)
+    }
+}
