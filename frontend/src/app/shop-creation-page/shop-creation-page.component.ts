@@ -2,11 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
 import {ActivatedRoute} from '@angular/router';
-import {ShopDetailDto, SlotConfigDto} from '../data/client';
+import {CreateShopDto, ShopDetailDto, SlotConfigDto} from '../data/client';
 import {MatDialog} from '@angular/material/dialog';
 import {ShopCreationSuccessPopupComponent} from '../shop-creation-success-popup/shop-creation-success-popup.component';
 import {NotificationsService} from 'angular2-notifications';
-import {CreateShopRequestDto} from '../data/client/model/createShopRequestDto';
 import ContactTypesEnum = ShopDetailDto.ContactTypesEnum;
 
 export class OpeningHours {
@@ -135,7 +134,7 @@ export class ShopCreationPageComponent implements OnInit {
 
   createShop() {
     console.log('Create shop');
-    const createShopRequestDto: CreateShopRequestDto = {};
+    const createShopRequestDto: CreateShopDto = {};
     createShopRequestDto.ownerName = this.nameFormGroup.get('nameCtrl').value;
     createShopRequestDto.name = this.nameFormGroup.get('businessNameCtrl').value;
     createShopRequestDto.street = this.addressFormGroup.get('streetCtrl').value;

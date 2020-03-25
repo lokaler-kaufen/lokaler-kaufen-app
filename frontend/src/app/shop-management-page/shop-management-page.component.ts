@@ -4,9 +4,8 @@ import {HttpClient} from "@angular/common/http";
 import {ActivatedRoute} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
 import {NotificationsService} from "angular2-notifications";
-import {CreateShopRequestDto} from "../data/client/model/createShopRequestDto";
-import {ShopDetailDto, SlotConfigDto} from "../data/client";
 import {BusinessHours, setRightSlot} from "../shop-creation-page/shop-creation-page.component";
+import {CreateShopDto, ShopDetailDto, SlotConfigDto} from "../data/client";
 import ContactTypesEnum = ShopDetailDto.ContactTypesEnum;
 
 @Component({
@@ -114,7 +113,7 @@ export class ShopManagementPageComponent implements OnInit {
 
   updateShop() {
     console.log('Update shop');
-    const createShopRequestDto: CreateShopRequestDto = {};
+    const createShopRequestDto: CreateShopDto = {};
     createShopRequestDto.ownerName = this.nameFormGroup.get('nameCtrl').value;
     createShopRequestDto.name = this.nameFormGroup.get('businessNameCtrl').value;
     createShopRequestDto.street = this.addressFormGroup.get('streetCtrl').value;
