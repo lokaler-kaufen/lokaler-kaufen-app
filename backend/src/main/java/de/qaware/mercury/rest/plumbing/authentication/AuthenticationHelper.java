@@ -1,11 +1,7 @@
 package de.qaware.mercury.rest.plumbing.authentication;
 
 import de.qaware.mercury.business.admin.Admin;
-import de.qaware.mercury.business.login.AdminLoginService;
-import de.qaware.mercury.business.login.AdminToken;
-import de.qaware.mercury.business.login.LoginException;
-import de.qaware.mercury.business.login.ShopLoginService;
-import de.qaware.mercury.business.login.ShopToken;
+import de.qaware.mercury.business.login.*;
 import de.qaware.mercury.business.shop.Shop;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

@@ -6,6 +6,9 @@ import java.util.Set;
 import java.util.function.Function;
 
 public final class Sets {
+    private Sets() {
+    }
+
     /**
      * Maps a collection of type 'input' to a set of type 'output' using a mapper function.
      *

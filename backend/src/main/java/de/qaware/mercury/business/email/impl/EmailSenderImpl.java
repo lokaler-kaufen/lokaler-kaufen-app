@@ -47,10 +47,14 @@ class EmailSenderImpl implements EmailSender {
      * @throws Exception if something went wrong
      */
     @PreDestroy
-    void close() throws Exception {
+    void close() {
         log.info("Shutting down email sender executor");
         executor.shutdown();
-        executor.awaitTermination(10, TimeUnit.SECONDS);
+        try {
+            executor.awaitTermination(10, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
         executor.shutdownNow();
     }
 

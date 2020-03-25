@@ -1,11 +1,7 @@
 package de.qaware.mercury.business.reservation.impl;
 
 import de.qaware.mercury.business.email.EmailService;
-import de.qaware.mercury.business.reservation.Interval;
-import de.qaware.mercury.business.reservation.Reservation;
-import de.qaware.mercury.business.reservation.ReservationService;
-import de.qaware.mercury.business.reservation.Slot;
-import de.qaware.mercury.business.reservation.SlotService;
+import de.qaware.mercury.business.reservation.*;
 import de.qaware.mercury.business.shop.ContactType;
 import de.qaware.mercury.business.shop.Shop;
 import de.qaware.mercury.business.time.Clock;
