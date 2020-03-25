@@ -24,6 +24,10 @@ public class DayDto {
     // TODO: Validate pattern
     private String end;
 
+    public static DayDto of(DayConfig dayConfig) {
+        return new DayDto(dayConfig.getStart().toString(), dayConfig.getEnd().toString());
+    }
+
     public DayConfig toSlot() {
         return new DayConfig(parse(start), parse(end));
     }
