@@ -5,7 +5,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {NotificationsService} from 'angular2-notifications';
 import {BusinessHours, setRightSlot} from '../shop-creation-page/shop-creation-page.component';
-import {CreateShopDto, DayDto, ShopDetailDto, SlotConfigDto, UpdateShopDto} from '../data/client';
+import {DayDto, ShopDetailDto, ShopOwnerDetailDto, SlotConfigDto, UpdateShopDto} from '../data/client';
 import ContactTypesEnum = ShopDetailDto.ContactTypesEnum;
 
 @Component({
@@ -24,7 +24,7 @@ export class ShopManagementPageComponent implements OnInit {
   contactTypes;
   businessHours = BusinessHours;
   days;
-  details: CreateShopDto = {};
+  details: ShopOwnerDetailDto = {};
 
   constructor(private client: HttpClient,
               private formBuilder: FormBuilder,
@@ -38,8 +38,8 @@ export class ShopManagementPageComponent implements OnInit {
 
   ngOnInit() {
     this.configureFormControls();
-    this.client.get<CreateShopDto>('/api/shop/me')
-      .subscribe((shopDetails: CreateShopDto) => {
+    this.client.get<ShopOwnerDetailDto>('/api/shop/me')
+      .subscribe((shopDetails: ShopOwnerDetailDto) => {
           this.details = shopDetails;
           this.setConfiguredShopDetails();
         },
@@ -168,7 +168,7 @@ export class ShopManagementPageComponent implements OnInit {
     slots.timePerSlot = this.openingFormGroup.get('defaultCtrl').value;
     updateShopDto.slots = slots;
     this.client.put('/api/shop', updateShopDto).subscribe(() => {
-        this.router.navigate(['shops/']);
+        this.router.navigate(['shops/' + this.details.id]);
       },
       error => {
         console.log('Error updating shop: ' + error.status + ', ' + error.message);
