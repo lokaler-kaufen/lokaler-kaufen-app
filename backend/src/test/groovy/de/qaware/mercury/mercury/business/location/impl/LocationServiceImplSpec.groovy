@@ -41,7 +41,7 @@ class LocationServiceImplSpec extends Specification {
 
     def "Empty suggestions for short ZIP code"() {
         when:
-        def suggestions = locationService.suggest('83')
+        def suggestions = locationService.suggest('')
 
         then:
         suggestions.isEmpty()
@@ -57,8 +57,8 @@ class LocationServiceImplSpec extends Specification {
         def suggestions = locationService.suggest('8302')
 
         then:
-        1 * repository.suggest('8302%') >> data
-        1 * repository.suggest('%8302%') >> data
+        1 * repository.suggest('8302%', LocationServiceImpl.MAXIMUM_SUGGESTION_COUNT) >> data
+        1 * repository.suggest('%8302%', LocationServiceImpl.MAXIMUM_SUGGESTION_COUNT) >> data
         suggestions.size() == 2
     }
 }

@@ -21,7 +21,7 @@ public class LocationServiceImpl implements LocationService {
     // Munich
     static final GeoLocation DEFAULT_GEOLOCATION = GeoLocation.of(48.104346, 11.600851);
     private static final int MINIMUM_SUGGESTION_LENGTH = 1;
-    private static final int MAXIMUM_SUGGESTION_COUNT = 5;
+    static final int MAXIMUM_SUGGESTION_COUNT = 5;
 
     private final LocationRepository locationRepository;
 
