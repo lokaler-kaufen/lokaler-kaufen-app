@@ -1,15 +1,15 @@
-package de.qaware.mercury.mercury.business.shop.impl
+package de.qaware.mercury.business.shop.impl
 
-import de.qaware.mercury.mercury.business.email.EmailService
-import de.qaware.mercury.mercury.business.location.GeoLocation
-import de.qaware.mercury.mercury.business.location.LocationService
-import de.qaware.mercury.mercury.business.login.ShopLoginService
-import de.qaware.mercury.mercury.business.shop.Shop
-import de.qaware.mercury.mercury.business.shop.ShopNotFoundException
-import de.qaware.mercury.mercury.business.shop.ShopService
-import de.qaware.mercury.mercury.business.time.Clock
-import de.qaware.mercury.mercury.business.uuid.UUIDFactory
-import de.qaware.mercury.mercury.storage.shop.ShopRepository
+import de.qaware.mercury.business.email.EmailService
+import de.qaware.mercury.business.location.GeoLocation
+import de.qaware.mercury.business.location.LocationService
+import de.qaware.mercury.business.login.ShopLoginService
+import de.qaware.mercury.business.shop.Shop
+import de.qaware.mercury.business.shop.ShopNotFoundException
+import de.qaware.mercury.business.shop.ShopService
+import de.qaware.mercury.business.time.Clock
+import de.qaware.mercury.business.uuid.UUIDFactory
+import de.qaware.mercury.storage.shop.ShopRepository
 import spock.lang.PendingFeature
 import spock.lang.Specification
 
