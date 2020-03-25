@@ -2,9 +2,9 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatSort} from '@angular/material/sort';
 import {ActivatedRoute, Router} from '@angular/router';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {ShopDetailDto, ShopListDto, ShopListEntryDto} from '../data/client';
-import {NotificationsService} from "angular2-notifications";
+import {NotificationsService} from 'angular2-notifications';
 import ContactTypesEnum = ShopDetailDto.ContactTypesEnum;
 
 @Component({
@@ -20,7 +20,10 @@ export class ShopSearchPageComponent implements OnInit {
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   displayedColumns: string[] = ['name', 'distance', 'supportedContactTypes'];
 
-  constructor(private route: ActivatedRoute, private router: Router, private client: HttpClient, private notificationsService: NotificationsService) {
+  constructor(private route: ActivatedRoute,
+              private router: Router,
+              private client: HttpClient,
+              private notificationsService: NotificationsService) {
 
     this.dataUpdate = this.dataUpdate.bind(this);
     this.handleParamsUpdate = this.handleParamsUpdate.bind(this);
@@ -36,12 +39,38 @@ export class ShopSearchPageComponent implements OnInit {
   }
 
   private handleParamsUpdate(params): void {
-    const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
     this.location = params.location;
     if (!this.location) {
       this.router.navigate(['']);
     }
-    this.client.get<ShopListDto>('/api/shop/nearby?location=' + params.location, {headers: headers}).subscribe(
+    this.findAllShopsNearby();
+  }
+
+  private dataUpdate(data: ShopListDto): void {
+    this.dataSource = new MatTableDataSource<ShopListEntryDto>(data.shops);
+  }
+
+  getEnumValue(contactType: any) {
+    let splitted = contactType.split('_');
+    splitted = splitted.map(split => {
+      return split.charAt(0) + split.slice(1).toLowerCase();
+    });
+    return splitted.join(' ');
+  }
+
+  performSearch() {
+    if (!this.searchBusiness || this.searchBusiness.trim().length === 0) {
+      this.findAllShopsNearby();
+    } else {
+      this.findShopsBySearchQuery(this.searchBusiness);
+    }
+  }
+
+  private findAllShopsNearby(): void {
+    const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
+    const params = new HttpParams().append('location',  this.location);
+
+    this.client.get<ShopListDto>('/api/shop/nearby', {headers, params}).subscribe(
       response => {
         if (response.shops.length > 0) {
           this.dataSource = new MatTableDataSource<ShopListEntryDto>(response.shops);
@@ -58,20 +87,10 @@ export class ShopSearchPageComponent implements OnInit {
     );
   }
 
-  private dataUpdate(data: ShopListDto): void {
-    this.dataSource = new MatTableDataSource<ShopListEntryDto>(data.shops);
-  }
+  private findShopsBySearchQuery(query: string): void {
+    const params = new HttpParams().append('location',  this.location).append('query', query);
 
-  getEnumValue(contactType: any) {
-    let splitted = contactType.split('_');
-    splitted = splitted.map(split => {
-      return split.charAt(0) + split.slice(1).toLowerCase();
-    });
-    return splitted.join(' ');
-  }
-
-  performSearch() {
-    this.client.get<ShopListDto>('/api/shop/search?location=' + this.location + '&query=' + this.searchBusiness).subscribe(
+    this.client.get<ShopListDto>('/api/shop/search',  {params}).subscribe(
       response => {
         this.dataSource = new MatTableDataSource<ShopListEntryDto>();
         if (response.shops.length > 0) {
