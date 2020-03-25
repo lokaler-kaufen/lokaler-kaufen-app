@@ -7,6 +7,7 @@ import de.qaware.mercury.mercury.util.Lists;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
@@ -31,8 +32,8 @@ class JpaLocationRepositoryImpl implements LocationRepository {
     }
 
     @Override
-    public List<LocationSuggestion> suggest(String zipCode) {
-        List<GeoLocationEntity> hits = geoLocationDataRepository.findByZipCodeLike(zipCode);
+    public List<LocationSuggestion> suggest(String zipCode, int maxResults) {
+        List<GeoLocationEntity> hits = geoLocationDataRepository.findByZipCodeLike(zipCode, PageRequest.of(0, maxResults));
         return Lists.map(hits, GeoLocationEntity::toLocationSuggestion);
     }
 }
