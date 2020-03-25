@@ -38,6 +38,7 @@ import {SimpleNotificationsModule} from "angular2-notifications";
 import {LoginFormComponent} from './login-form/login-form.component';
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {PasswordResetPopupComponent} from './password-reset-popup/password-reset-popup.component';
+import {PasswordResetPageComponent} from './password-reset-page/password-reset-page.component';
 
 @NgModule({
   declarations: [
@@ -60,7 +61,8 @@ import {PasswordResetPopupComponent} from './password-reset-popup/password-reset
     AdminOverviewPageComponent,
     AdminLoginPageComponent,
     LoginFormComponent,
-    PasswordResetPopupComponent
+    PasswordResetPopupComponent,
+    PasswordResetPageComponent
   ],
   imports: [
     ApiModule,

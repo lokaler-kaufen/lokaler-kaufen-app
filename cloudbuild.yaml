@@ -2,7 +2,7 @@ steps:
   # Build Spring Boot app
   - name: gradle:jdk11
     entrypoint: gradle
-    args: ["--no-daemon", "test", "assemble"]
+    args: ["--no-daemon", "build"]
     dir: backend
   # Analyze code quality
   - name: gradle:jdk11
