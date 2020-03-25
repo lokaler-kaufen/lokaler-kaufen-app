@@ -2,7 +2,7 @@
 
 ## Get an architectural overview
 
-Start with looking at the `de.qaware.mercury.mercury.rest.shop.ShopController` class.
+Start with looking at the `de.qaware.mercury.rest.shop.ShopController` class.
 
 ## Run it
 
@@ -20,7 +20,7 @@ docker run -e POSTGRES_PASSWORD=password -p 5432:5432 postgres:11
 
 ### With IntelliJ
 
-Start the `main()` method of the `de.qaware.mercury.mercury.MercuryApplication` class.
+Start the `main()` method of the `de.qaware.mercury.MercuryApplication` class.
 
 ## Developing
 

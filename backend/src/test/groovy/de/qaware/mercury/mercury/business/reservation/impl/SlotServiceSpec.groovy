@@ -1,4 +1,4 @@
-package de.qaware.mercury.mercury.business.reservation.impl
+package de.qaware.mercury.business.reservation.impl
 
 import de.qaware.mercury.mercury.business.reservation.SlotService
 import de.qaware.mercury.mercury.business.shop.DayConfig

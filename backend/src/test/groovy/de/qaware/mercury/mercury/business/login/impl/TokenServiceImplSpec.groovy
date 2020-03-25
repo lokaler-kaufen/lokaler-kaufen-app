@@ -1,4 +1,4 @@
-package de.qaware.mercury.mercury.business.login.impl
+package de.qaware.mercury.business.login.impl
 
 import de.qaware.mercury.mercury.business.admin.Admin
 import de.qaware.mercury.mercury.business.login.*

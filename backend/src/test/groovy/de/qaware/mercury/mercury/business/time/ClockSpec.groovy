@@ -1,4 +1,4 @@
-package de.qaware.mercury.mercury.business.time
+package de.qaware.mercury.business.time
 
 import de.qaware.mercury.mercury.business.time.impl.WallClock
 import org.springframework.beans.factory.annotation.Autowired

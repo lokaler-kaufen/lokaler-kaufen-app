@@ -1,4 +1,4 @@
-package de.qaware.mercury.mercury.plumbing
+package de.qaware.mercury.plumbing
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration

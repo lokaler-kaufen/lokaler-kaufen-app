@@ -1,4 +1,4 @@
-package de.qaware.mercury.mercury.business.admin
+package de.qaware.mercury.business.admin
 
 import de.qaware.mercury.mercury.business.uuid.UUIDFactory
 import spock.lang.Specification

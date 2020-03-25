@@ -1,4 +1,4 @@
-package de.qaware.mercury.mercury.business.i18n
+package de.qaware.mercury.business.i18n
 
 import de.qaware.mercury.mercury.business.i18n.impl.DateTimeI18nServiceImpl
 import org.springframework.beans.factory.annotation.Autowired

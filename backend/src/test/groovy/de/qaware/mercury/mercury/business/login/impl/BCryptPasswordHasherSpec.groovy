@@ -1,4 +1,4 @@
-package de.qaware.mercury.mercury.business.login.impl
+package de.qaware.mercury.business.login.impl
 
 import spock.lang.Specification
 import spock.lang.Unroll

@@ -1,4 +1,4 @@
-package de.qaware.mercury.mercury.business.location.impl
+package de.qaware.mercury.business.location.impl
 
 import de.qaware.mercury.mercury.business.location.GeoLocation
 import de.qaware.mercury.mercury.business.location.LocationService

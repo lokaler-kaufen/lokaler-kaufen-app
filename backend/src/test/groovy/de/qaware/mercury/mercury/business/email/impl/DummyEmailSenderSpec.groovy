@@ -1,4 +1,4 @@
-package de.qaware.mercury.mercury.business.email.impl
+package de.qaware.mercury.business.email.impl
 
 import spock.lang.Specification
 

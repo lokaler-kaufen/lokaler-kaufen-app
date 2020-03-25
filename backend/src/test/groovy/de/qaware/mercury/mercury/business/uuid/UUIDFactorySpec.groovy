@@ -1,4 +1,4 @@
-package de.qaware.mercury.mercury.business.uuid
+package de.qaware.mercury.business.uuid
 
 import de.qaware.mercury.mercury.business.uuid.impl.UUIDFactoryImpl
 import org.springframework.beans.factory.annotation.Autowired

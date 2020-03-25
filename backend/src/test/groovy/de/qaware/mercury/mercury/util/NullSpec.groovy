@@ -1,4 +1,4 @@
-package de.qaware.mercury.mercury.util
+package de.qaware.mercury.util
 
 import spock.lang.Specification
 import spock.lang.Unroll

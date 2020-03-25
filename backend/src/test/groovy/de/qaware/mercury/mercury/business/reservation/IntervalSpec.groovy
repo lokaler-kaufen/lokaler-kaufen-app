@@ -1,4 +1,4 @@
-package de.qaware.mercury.mercury.business.reservation
+package de.qaware.mercury.business.reservation
 
 import spock.lang.Specification
 import spock.lang.Unroll

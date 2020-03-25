@@ -1,4 +1,4 @@
-package de.qaware.mercury.mercury.business.email.impl
+package de.qaware.mercury.business.email.impl
 
 import de.qaware.mercury.mercury.business.email.EmailSender
 import de.qaware.mercury.mercury.business.i18n.DateTimeI18nService
