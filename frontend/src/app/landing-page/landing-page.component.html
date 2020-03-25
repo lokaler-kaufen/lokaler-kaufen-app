@@ -24,7 +24,7 @@
       </mat-autocomplete>
     </mat-form-field>
 
-    <button class="form-item" type="submit" [disabled]="!form.valid"
+    <button class="form-item" type="submit" [disabled]="startDisabled"
             (click)="start()"
             mat-raised-button
             color="primary">
