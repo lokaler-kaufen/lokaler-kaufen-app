@@ -21,6 +21,7 @@ import de.qaware.mercury.mercury.rest.shop.dto.request.SendPasswordResetLinkDto;
 import de.qaware.mercury.mercury.rest.shop.dto.request.UpdateShopDto;
 import de.qaware.mercury.mercury.rest.shop.dto.response.ShopDetailDto;
 import de.qaware.mercury.mercury.rest.shop.dto.response.ShopListDto;
+import de.qaware.mercury.mercury.rest.shop.dto.response.ShopOwnerDetailDto;
 import de.qaware.mercury.mercury.util.Maps;
 import de.qaware.mercury.mercury.util.validation.GuidValidation;
 import lombok.AccessLevel;
@@ -61,6 +62,13 @@ class ShopController {
         }
 
         return ShopDetailDto.of(shop);
+    }
+
+    @GetMapping(path = "/me")
+    public ShopOwnerDetailDto getDetails(HttpServletRequest request) throws LoginException {
+        Shop shop = authenticationHelper.authenticateShop(request);
+
+        return ShopOwnerDetailDto.of(shop);
     }
 
     @PostMapping(path = "/send-create-link", consumes = MediaType.APPLICATION_JSON_VALUE)
