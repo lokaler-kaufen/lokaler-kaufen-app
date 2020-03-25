@@ -4,14 +4,7 @@ import de.qaware.mercury.mercury.business.email.EmailService;
 import de.qaware.mercury.mercury.business.location.GeoLocation;
 import de.qaware.mercury.mercury.business.location.LocationService;
 import de.qaware.mercury.mercury.business.login.ShopLoginService;
-import de.qaware.mercury.mercury.business.login.TokenService;
-import de.qaware.mercury.mercury.business.shop.Shop;
-import de.qaware.mercury.mercury.business.shop.ShopAlreadyExistsException;
-import de.qaware.mercury.mercury.business.shop.ShopCreation;
-import de.qaware.mercury.mercury.business.shop.ShopNotFoundException;
-import de.qaware.mercury.mercury.business.shop.ShopService;
-import de.qaware.mercury.mercury.business.shop.ShopUpdate;
-import de.qaware.mercury.mercury.business.shop.ShopWithDistance;
+import de.qaware.mercury.mercury.business.shop.*;
 import de.qaware.mercury.mercury.business.time.Clock;
 import de.qaware.mercury.mercury.business.uuid.UUIDFactory;
 import de.qaware.mercury.mercury.storage.shop.ShopRepository;
@@ -38,7 +31,6 @@ class ShopServiceImpl implements ShopService {
     private final ShopLoginService shopLoginService;
     private final Clock clock;
     private final ShopServiceConfigurationProperties config;
-    private final TokenService tokenService;
 
     @Override
     @Transactional(readOnly = true)
