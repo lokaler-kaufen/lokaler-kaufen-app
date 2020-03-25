@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @Value
-@Builder(access = AccessLevel.PACKAGE)
+@Builder(access = AccessLevel.PUBLIC)
 @AllArgsConstructor
 public class Shop {
     Id id;
