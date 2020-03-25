@@ -59,7 +59,11 @@ export class ShopDetailsPageComponent implements OnInit {
                 });
     }
 
-    showBookingPopup(id: string) {
+  get shopHasNoDescription(): boolean {
+    return !this.details || !this.details.details || (this.details.details.trim().length === 0);
+  }
+
+  showBookingPopup(id: string) {
         const dialogConfig = new MatDialogConfig();
         dialogConfig.autoFocus = true;
         dialogConfig.width = '100%';
