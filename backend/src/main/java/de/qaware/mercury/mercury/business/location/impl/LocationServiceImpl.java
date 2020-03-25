@@ -19,7 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 public class LocationServiceImpl implements LocationService {
     // Munich
-    private static final GeoLocation DEFAULT_GEOLOCATION = GeoLocation.of(48.104346, 11.600851);
+    static final GeoLocation DEFAULT_GEOLOCATION = GeoLocation.of(48.104346, 11.600851);
     private static final int MINIMUM_SUGGESTION_LENGTH = 3;
 
     private final LocationRepository locationRepository;
