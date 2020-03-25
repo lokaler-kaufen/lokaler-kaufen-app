@@ -55,7 +55,7 @@ class ShopController {
     private final ShopLoginService shopLoginService;
 
     @GetMapping(path = "/{id}")
-    public ShopDetailDto getDetails(@PathVariable @Pattern(regexp = GuidValidation.REGEX) String id) throws ShopNotFoundException {
+    public ShopDetailDto getShopSettings(@PathVariable @Pattern(regexp = GuidValidation.REGEX) String id) throws ShopNotFoundException {
         Shop shop = shopService.findById(Shop.Id.parse(id));
         if (shop == null) {
             throw new ShopNotFoundException(Shop.Id.parse(id));
@@ -65,7 +65,7 @@ class ShopController {
     }
 
     @GetMapping(path = "/me")
-    public ShopOwnerDetailDto getDetails(HttpServletRequest request) throws LoginException {
+    public ShopOwnerDetailDto getShopSettings(HttpServletRequest request) throws LoginException {
         Shop shop = authenticationHelper.authenticateShop(request);
 
         return ShopOwnerDetailDto.of(shop);
