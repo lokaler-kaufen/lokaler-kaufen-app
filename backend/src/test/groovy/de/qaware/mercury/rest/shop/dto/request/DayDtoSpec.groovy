@@ -1,7 +1,7 @@
 package de.qaware.mercury.rest.shop.dto.request
 
-import de.qaware.mercury.mercury.business.shop.DayConfig
-import de.qaware.mercury.mercury.rest.shop.InvalidTimeException
+import de.qaware.mercury.business.shop.DayConfig
+import de.qaware.mercury.rest.shop.InvalidTimeException
 import spock.lang.Specification
 
 import java.time.LocalTime

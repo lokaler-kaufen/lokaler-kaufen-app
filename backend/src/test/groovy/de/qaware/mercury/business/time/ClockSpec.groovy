@@ -1,6 +1,6 @@
 package de.qaware.mercury.business.time
 
-import de.qaware.mercury.mercury.business.time.impl.WallClock
+import de.qaware.mercury.business.time.impl.WallClock
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification

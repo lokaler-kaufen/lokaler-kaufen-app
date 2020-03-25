@@ -1,12 +1,12 @@
 package de.qaware.mercury.business.email.impl
 
-import de.qaware.mercury.mercury.business.email.EmailSender
-import de.qaware.mercury.mercury.business.i18n.DateTimeI18nService
-import de.qaware.mercury.mercury.business.login.PasswordResetToken
-import de.qaware.mercury.mercury.business.login.ShopCreationToken
-import de.qaware.mercury.mercury.business.login.TokenService
-import de.qaware.mercury.mercury.business.shop.ContactType
-import de.qaware.mercury.mercury.business.shop.Shop
+import de.qaware.mercury.business.email.EmailSender
+import de.qaware.mercury.business.i18n.DateTimeI18nService
+import de.qaware.mercury.business.login.PasswordResetToken
+import de.qaware.mercury.business.login.ShopCreationToken
+import de.qaware.mercury.business.login.TokenService
+import de.qaware.mercury.business.shop.ContactType
+import de.qaware.mercury.business.shop.Shop
 import spock.lang.Specification
 
 import java.time.LocalDateTime

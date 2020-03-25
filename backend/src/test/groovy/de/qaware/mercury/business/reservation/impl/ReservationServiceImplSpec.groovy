@@ -1,15 +1,15 @@
 package de.qaware.mercury.business.reservation.impl
 
-import de.qaware.mercury.mercury.business.email.EmailService
-import de.qaware.mercury.mercury.business.reservation.ReservationService
-import de.qaware.mercury.mercury.business.reservation.Slot
-import de.qaware.mercury.mercury.business.reservation.SlotService
-import de.qaware.mercury.mercury.business.shop.ContactType
-import de.qaware.mercury.mercury.business.shop.Shop
-import de.qaware.mercury.mercury.business.shop.SlotConfig
-import de.qaware.mercury.mercury.business.time.Clock
-import de.qaware.mercury.mercury.business.uuid.UUIDFactory
-import de.qaware.mercury.mercury.storage.reservation.ReservationRepository
+import de.qaware.mercury.business.email.EmailService
+import de.qaware.mercury.business.reservation.ReservationService
+import de.qaware.mercury.business.reservation.Slot
+import de.qaware.mercury.business.reservation.SlotService
+import de.qaware.mercury.business.shop.ContactType
+import de.qaware.mercury.business.shop.Shop
+import de.qaware.mercury.business.shop.SlotConfig
+import de.qaware.mercury.business.time.Clock
+import de.qaware.mercury.business.uuid.UUIDFactory
+import de.qaware.mercury.storage.reservation.ReservationRepository
 import org.spockframework.spring.SpringBean
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration

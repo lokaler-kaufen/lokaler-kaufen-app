@@ -1,6 +1,6 @@
 package de.qaware.mercury.business.admin
 
-import de.qaware.mercury.mercury.business.uuid.UUIDFactory
+import de.qaware.business.uuid.UUIDFactory
 import spock.lang.Specification
 
 class AdminSpec extends Specification {

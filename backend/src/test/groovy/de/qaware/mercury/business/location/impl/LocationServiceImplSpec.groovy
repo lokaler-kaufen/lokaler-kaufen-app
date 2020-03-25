@@ -1,9 +1,9 @@
 package de.qaware.mercury.business.location.impl
 
-import de.qaware.mercury.mercury.business.location.GeoLocation
-import de.qaware.mercury.mercury.business.location.LocationService
-import de.qaware.mercury.mercury.business.location.LocationSuggestion
-import de.qaware.mercury.mercury.storage.location.LocationRepository
+import de.qaware.mercury.business.location.GeoLocation
+import de.qaware.mercury.business.location.LocationService
+import de.qaware.mercury.business.location.LocationSuggestion
+import de.qaware.mercury.storage.location.LocationRepository
 import org.spockframework.spring.SpringBean
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration

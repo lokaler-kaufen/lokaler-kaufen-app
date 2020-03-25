@@ -1,6 +1,6 @@
 package de.qaware.mercury.business.uuid
 
-import de.qaware.mercury.mercury.business.uuid.impl.UUIDFactoryImpl
+import de.qaware.mercury.business.uuid.impl.UUIDFactoryImpl
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification

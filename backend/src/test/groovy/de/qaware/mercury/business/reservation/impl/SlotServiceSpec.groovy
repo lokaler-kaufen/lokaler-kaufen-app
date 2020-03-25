@@ -1,9 +1,9 @@
 package de.qaware.mercury.business.reservation.impl
 
-import de.qaware.mercury.mercury.business.reservation.SlotService
-import de.qaware.mercury.mercury.business.shop.DayConfig
-import de.qaware.mercury.mercury.business.shop.SlotConfig
-import de.qaware.mercury.mercury.business.time.Clock
+import de.qaware.mercury.business.reservation.SlotService
+import de.qaware.mercury.business.shop.DayConfig
+import de.qaware.mercury.business.shop.SlotConfig
+import de.qaware.mercury.business.time.Clock
 import org.spockframework.spring.SpringBean
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
@@ -15,7 +15,7 @@ import java.time.LocalTime
 import java.time.temporal.ChronoField
 import java.time.temporal.TemporalAdjusters
 
-import static de.qaware.mercury.mercury.business.shop.SlotConfig.builder
+import static de.qaware.mercury.business.shop.SlotConfig.builder
 import static java.time.LocalDateTime.now
 
 @ContextConfiguration(classes = SlotServiceImpl)

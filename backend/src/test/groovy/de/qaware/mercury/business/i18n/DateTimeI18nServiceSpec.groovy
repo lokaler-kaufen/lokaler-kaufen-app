@@ -1,6 +1,6 @@
 package de.qaware.mercury.business.i18n
 
-import de.qaware.mercury.mercury.business.i18n.impl.DateTimeI18nServiceImpl
+import de.qaware.mercury.business.i18n.impl.DateTimeI18nServiceImpl
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification

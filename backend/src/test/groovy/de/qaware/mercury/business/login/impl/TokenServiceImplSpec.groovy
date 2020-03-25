@@ -1,8 +1,8 @@
 package de.qaware.mercury.business.login.impl
 
-import de.qaware.mercury.mercury.business.admin.Admin
-import de.qaware.mercury.mercury.business.login.*
-import de.qaware.mercury.mercury.business.shop.Shop
+import de.qaware.mercury.business.admin.Admin
+import de.qaware.mercury.business.login.*
+import de.qaware.mercury.business.shop.Shop
 import spock.lang.Specification
 
 class TokenServiceImplSpec extends Specification {
