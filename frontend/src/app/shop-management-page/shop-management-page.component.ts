@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {HttpClient} from "@angular/common/http";
-import {ActivatedRoute} from "@angular/router";
-import {MatDialog} from "@angular/material/dialog";
-import {NotificationsService} from "angular2-notifications";
-import {BusinessHours, setRightSlot} from "../shop-creation-page/shop-creation-page.component";
-import {CreateShopDto, ShopDetailDto, SlotConfigDto} from "../data/client";
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {HttpClient} from '@angular/common/http';
+import {ActivatedRoute, Router} from '@angular/router';
+import {MatDialog} from '@angular/material/dialog';
+import {NotificationsService} from 'angular2-notifications';
+import {BusinessHours, setRightSlot} from '../shop-creation-page/shop-creation-page.component';
+import {DayDto, ShopDetailDto, ShopOwnerDetailDto, SlotConfigDto, UpdateShopDto} from '../data/client';
 import ContactTypesEnum = ShopDetailDto.ContactTypesEnum;
 
 @Component({
@@ -24,38 +24,61 @@ export class ShopManagementPageComponent implements OnInit {
   contactTypes;
   businessHours = BusinessHours;
   days;
-  details: ShopDetailDto = {};
-  slots: SlotConfigDto = {};
-  token;
+  details: ShopOwnerDetailDto = {};
 
-  constructor(private client: HttpClient, private formBuilder: FormBuilder, private route: ActivatedRoute, private matDialog: MatDialog, private notificationsService: NotificationsService) {
+  constructor(private client: HttpClient,
+              private formBuilder: FormBuilder,
+              private route: ActivatedRoute,
+              private router: Router,
+              private matDialog: MatDialog,
+              private notificationsService: NotificationsService) {
     this.days = Array.from(this.businessHours.POSSIBLE_BUSINESS_HOURS.keys());
     this.contactTypes = Object.keys(ContactTypesEnum).map(key => ContactTypesEnum[key]);
   }
 
   ngOnInit() {
-    this.route.queryParams.subscribe(params => {
-      this.token = params.token;
-      this.client.get<ShopDetailDto>('/api/shop/me?token=' + this.token)
-        .subscribe((shopDetails: ShopDetailDto) => {
-            this.details = shopDetails;
-            this.client.get<SlotConfigDto>('/api/reservation/' + this.details.id + '/slot')
-              .subscribe((slots: SlotConfigDto) => {
-                  this.slots = slots;
-                },
-                error => {
-                  console.log('Error requesting slots: ' + error.status + ', ' + error.message);
-                  this.notificationsService.error('Tut uns leid!', 'Es ist ein Fehler beim Laden der Slots aufgetreten.');
-                });
-          },
-          error => {
-            console.log('Error requesting shop details: ' + error.status + ', ' + error.message);
-            this.notificationsService.error('Tut uns leid!', 'Es ist ein Fehler beim Laden der Details aufgetreten.');
-          });
-
-    });
     this.configureFormControls();
-    // TODO: Backend call for real shop details, set values of controls
+    this.client.get<ShopOwnerDetailDto>('/api/shop/me')
+      .subscribe((shopDetails: ShopOwnerDetailDto) => {
+          this.details = shopDetails;
+          this.setConfiguredShopDetails();
+        },
+        error => {
+          console.log('Error requesting shop details: ' + error.status + ', ' + error.message);
+          this.notificationsService.error('Tut uns leid!', 'Es ist ein Fehler beim Laden der Details aufgetreten.');
+        });
+  }
+
+  setConfiguredShopDetails() {
+    this.nameFormGroup.controls.nameCtrl.setValue(this.details.ownerName);
+    this.nameFormGroup.controls.businessNameCtrl.setValue(this.details.name);
+    this.addressFormGroup.controls.streetCtrl.setValue(this.details.street);
+    this.addressFormGroup.controls.zipCtrl.setValue(this.details.zipCode);
+    this.addressFormGroup.controls.cityCtrl.setValue(this.details.city);
+    this.addressFormGroup.controls.suffixCtrl.setValue(this.details.addressSupplement);
+    this.descriptionFormGroup.controls.descriptionCtrl.setValue(this.details.details);
+    this.descriptionFormGroup.controls.urlCtrl.setValue(this.details.website);
+    this.contactTypes.forEach(contact => {
+      const contactCtrl = contact.toLowerCase() + 'Ctrl';
+      console.log('Ctrl name: ' + contactCtrl + ', value: ' + this.details.contactTypes[contact]);
+      if (this.details.contactTypes[contact]) {
+        this.contactFormGroup.get(contactCtrl).setValue(this.details.contactTypes[contact]);
+      }
+    });
+    this.businessHours.POSSIBLE_BUSINESS_HOURS.forEach((opening, day) => {
+      const dayOpeningHours = this.getRightSlot(day, this.details.slots);
+      const fromCtrl = day + 'FromCtrl';
+      const toCtrl = day + 'ToCtrl';
+      // unavailable slots are null
+      if (dayOpeningHours) {
+        this.openingFormGroup.get(fromCtrl).setValue(dayOpeningHours.start);
+        this.openingFormGroup.get(toCtrl).setValue(dayOpeningHours.end);
+      } else {
+        opening.enabled = false;
+        this.openingFormGroup.get(fromCtrl).setValue('09:00');
+        this.openingFormGroup.get(toCtrl).setValue('16:00');
+      }
+    });
   }
 
   configureFormControls() {
@@ -113,24 +136,25 @@ export class ShopManagementPageComponent implements OnInit {
 
   updateShop() {
     console.log('Update shop');
-    const createShopRequestDto: CreateShopDto = {};
-    createShopRequestDto.ownerName = this.nameFormGroup.get('nameCtrl').value;
-    createShopRequestDto.name = this.nameFormGroup.get('businessNameCtrl').value;
-    createShopRequestDto.street = this.addressFormGroup.get('streetCtrl').value;
-    createShopRequestDto.zipCode = this.addressFormGroup.get('zipCtrl').value;
-    createShopRequestDto.city = this.addressFormGroup.get('cityCtrl').value;
-    createShopRequestDto.addressSupplement = this.addressFormGroup.get('suffixCtrl').value;
-    createShopRequestDto.details = this.descriptionFormGroup.get('descriptionCtrl').value;
-    createShopRequestDto.website = this.descriptionFormGroup.get('urlCtrl').value;
-    const availableContactTypes = {};
+    const updateShopDto: UpdateShopDto = {};
+    updateShopDto.ownerName = this.nameFormGroup.get('nameCtrl').value;
+    updateShopDto.name = this.nameFormGroup.get('businessNameCtrl').value;
+    updateShopDto.street = this.addressFormGroup.get('streetCtrl').value;
+    updateShopDto.zipCode = this.addressFormGroup.get('zipCtrl').value;
+    updateShopDto.city = this.addressFormGroup.get('cityCtrl').value;
+    updateShopDto.addressSupplement = this.addressFormGroup.get('suffixCtrl').value;
+    updateShopDto.details = this.descriptionFormGroup.get('descriptionCtrl').value;
+    updateShopDto.website = this.descriptionFormGroup.get('urlCtrl').value;
+    const availableContactTypes: { [key: string]: string; } = {};
     this.contactTypes.forEach(contact => {
       const contactCtrl = contact.toLowerCase() + 'Ctrl';
       const value = this.contactFormGroup.get(contactCtrl).value;
+      console.log('Contact type: ' + contact + ', value: ' + value);
       if (value) {
         availableContactTypes[contact] = value;
       }
     });
-    createShopRequestDto.contactTypes = availableContactTypes;
+    updateShopDto.contactTypes = availableContactTypes;
     let slots: SlotConfigDto = {};
     this.businessHours.POSSIBLE_BUSINESS_HOURS.forEach((opening, day) => {
       if (opening.enabled) {
@@ -142,8 +166,14 @@ export class ShopManagementPageComponent implements OnInit {
     });
     slots.timeBetweenSlots = this.openingFormGroup.get('pauseCtrl').value;
     slots.timePerSlot = this.openingFormGroup.get('defaultCtrl').value;
-    createShopRequestDto.slots = slots;
-
+    updateShopDto.slots = slots;
+    this.client.put('/api/shop', updateShopDto).subscribe(() => {
+        this.router.navigate(['shops/' + this.details.id]);
+      },
+      error => {
+        console.log('Error updating shop: ' + error.status + ', ' + error.message);
+        this.notificationsService.error('Tut uns leid!', 'Dein Laden konnte leider nicht aktualisiert werden.');
+      });
   }
 
   getEnumValue(contactType: any) {
@@ -153,4 +183,31 @@ export class ShopManagementPageComponent implements OnInit {
     });
     return splitted.join(' ');
   }
+
+  private getRightSlot(day: string, slots: SlotConfigDto): DayDto {
+    switch (day) {
+      case 'Montag':
+        return slots.monday;
+        break;
+      case 'Dienstag':
+        return slots.tuesday;
+        break;
+      case 'Mittwoch':
+        return slots.wednesday;
+        break;
+      case 'Donnerstag':
+        return slots.thursday;
+        break;
+      case 'Freitag':
+        return slots.friday;
+        break;
+      case 'Samstag':
+        return slots.saturday;
+        break;
+      case 'Sonntag':
+        return slots.sunday;
+        break;
+    }
+  }
+
 }

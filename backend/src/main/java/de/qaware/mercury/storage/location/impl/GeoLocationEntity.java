@@ -2,18 +2,9 @@ package de.qaware.mercury.storage.location.impl;
 
 import de.qaware.mercury.business.location.GeoLocation;
 import de.qaware.mercury.business.location.LocationSuggestion;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @IdClass(GeoLocationId.class) // Get hibernate to use compound id

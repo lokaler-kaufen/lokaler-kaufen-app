@@ -2,12 +2,7 @@ package de.qaware.mercury.storage.login.impl;
 
 import de.qaware.mercury.business.login.ShopLogin;
 import de.qaware.mercury.business.shop.Shop;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

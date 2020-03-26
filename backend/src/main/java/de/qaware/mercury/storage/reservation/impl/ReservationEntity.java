@@ -3,12 +3,7 @@ package de.qaware.mercury.storage.reservation.impl;
 import de.qaware.mercury.business.reservation.Reservation;
 import de.qaware.mercury.business.shop.ContactType;
 import de.qaware.mercury.business.shop.Shop;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
