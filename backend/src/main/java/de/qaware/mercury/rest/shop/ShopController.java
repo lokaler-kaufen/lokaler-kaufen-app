@@ -102,6 +102,7 @@ class ShopController {
         )));
     }
 
+
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ShopDetailDto updateShop(@Valid @RequestBody UpdateShopDto request, HttpServletRequest servletRequest) throws LoginException {
         Shop shop = authenticationHelper.authenticateShop(servletRequest);
