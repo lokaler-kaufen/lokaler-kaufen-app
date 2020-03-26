@@ -1,6 +1,7 @@
 package de.qaware.mercury.storage.shop.impl;
 
 import de.qaware.mercury.business.location.GeoLocation;
+import de.qaware.mercury.business.location.impl.DistanceUtil;
 import de.qaware.mercury.business.shop.Shop;
 import de.qaware.mercury.business.shop.ShopWithDistance;
 import de.qaware.mercury.business.time.Clock;
@@ -46,13 +47,13 @@ class JpaShopRepositoryImpl implements ShopRepository {
         log.debug("Finding shops nearby location {}", location);
 
         List<ShopWithDistanceProjection> shops = shopDataRepository.findNearby(location.getLatitude(), location.getLongitude());
-        return toShopWithDistance(shops);
+        return toShopWithDistance(shops, location);
     }
 
     @Override
     public List<ShopWithDistance> search(String query, GeoLocation location) {
         List<ShopWithDistanceProjection> shops = shopDataRepository.search("%" + query + "%", location.getLatitude(), location.getLongitude());
-        return toShopWithDistance(shops);
+        return toShopWithDistance(shops, location);
 
     }
 
@@ -72,7 +73,10 @@ class JpaShopRepositoryImpl implements ShopRepository {
         return Lists.map(shopDataRepository.findByName(name), ShopEntity::toShop);
     }
 
-    private List<ShopWithDistance> toShopWithDistance(List<ShopWithDistanceProjection> shops) {
-        return Lists.map(shops, s -> new ShopWithDistance(s.getShopEntity().toShop(), s.getDistance()));
+    private List<ShopWithDistance> toShopWithDistance(List<ShopWithDistanceProjection> shops, GeoLocation location) {
+        return Lists.map(shops, s -> new ShopWithDistance(
+            s.getShopEntity().toShop(),
+            DistanceUtil.distanceInKmBetween(GeoLocation.of(s.getShopEntity().getLatitude(), s.getShopEntity().getLongitude()), location)
+        ));
     }
 }

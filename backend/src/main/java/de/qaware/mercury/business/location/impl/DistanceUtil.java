@@ -9,7 +9,9 @@ import org.gavaghan.geodesy.GlobalCoordinates;
 /**
  * Helpers for distance calculation
  */
-public class DistanceUtil {
+public final class DistanceUtil {
+    private DistanceUtil() {
+    }
 
     /**
      * Calculates the distance based on the 2D geodetic curve between the two coordinates.
@@ -18,7 +20,7 @@ public class DistanceUtil {
      * @param p2 second geo coordinate
      * @return distance between the two coordinates in kilometers
      */
-    public static double distanceInKmBetween(GeoLocation p1, GeoLocation p2){
+    public static double distanceInKmBetween(GeoLocation p1, GeoLocation p2) {
         Ellipsoid reference = Ellipsoid.WGS84;
         GlobalCoordinates cord1 = new GlobalCoordinates(p1.getLatitude(), p1.getLongitude());
         GlobalCoordinates cord2 = new GlobalCoordinates(p2.getLatitude(), p2.getLongitude());
