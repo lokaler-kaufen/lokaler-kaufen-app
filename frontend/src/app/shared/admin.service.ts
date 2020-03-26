@@ -1,18 +1,21 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
+import {ShopAdminDto, ShopsAdminDto} from '../data/client';
 import {NotificationsService} from 'angular2-notifications';
 import {Observable} from 'rxjs';
-import {ShopsAdminDto} from '../data/client/model/shopsAdminDto';
-import {ShopAdminDto} from '../data/client/model/shopAdminDto';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdminService {
 
+  shopDetails: ShopsAdminDto;
 
   constructor(private client: HttpClient,
               private notificationsService: NotificationsService) {
+    this.client.get('/api/admin/shop').subscribe(response => {
+      this.shopDetails = response;
+    });
   }
 
   listAllShops(): Observable<ShopsAdminDto> {
@@ -20,7 +23,7 @@ export class AdminService {
   }
 
   getShopWithId(id: string): Observable<ShopAdminDto> {
-    return this.client.get<ShopAdminDto>('/api/admin/shop/' + encodeURIComponent(id));
+    return this.client.get<ShopAdminDto>('/api/admin/shop' + encodeURIComponent(id));
   }
 
   updateShop(updatedShop: ShopAdminDto) {
