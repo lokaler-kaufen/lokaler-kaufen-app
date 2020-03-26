@@ -18,6 +18,7 @@ public class Reservation {
     LocalDateTime end;
     String contact;
     String email;
+    String name;
     ContactType contactType;
     @With
     ZonedDateTime created;
@@ -38,7 +39,11 @@ public class Reservation {
         }
 
         public static Reservation.Id parse(String input) {
-            return Reservation.Id.of(UUID.fromString(input));
+            try {
+                return Reservation.Id.of(UUID.fromString(input));
+            } catch (IllegalArgumentException e) {
+                throw new InvalidReservationIdException(input, e);
+            }
         }
     }
 }

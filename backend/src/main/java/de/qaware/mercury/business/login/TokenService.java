@@ -25,5 +25,5 @@ public interface TokenService {
 
     ReservationCancellationToken createReservationCancellationToken(Reservation.Id reservationId, ReservationCancellationSide side);
 
-    ReservationCancellation verifyCancellationToken(ReservationCancellationToken token) throws LoginException;
+    ReservationCancellation verifyReservationCancellationToken(ReservationCancellationToken token) throws LoginException;
 }

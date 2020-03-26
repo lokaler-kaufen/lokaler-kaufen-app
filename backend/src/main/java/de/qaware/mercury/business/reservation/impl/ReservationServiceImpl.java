@@ -1,13 +1,20 @@
 package de.qaware.mercury.business.reservation.impl;
 
 import de.qaware.mercury.business.email.EmailService;
+import de.qaware.mercury.business.login.LoginException;
+import de.qaware.mercury.business.login.ReservationCancellationToken;
+import de.qaware.mercury.business.login.TokenService;
 import de.qaware.mercury.business.reservation.Interval;
 import de.qaware.mercury.business.reservation.Reservation;
+import de.qaware.mercury.business.reservation.ReservationCancellation;
+import de.qaware.mercury.business.reservation.ReservationNotFoundException;
 import de.qaware.mercury.business.reservation.ReservationService;
 import de.qaware.mercury.business.reservation.Slot;
 import de.qaware.mercury.business.reservation.SlotService;
 import de.qaware.mercury.business.shop.ContactType;
 import de.qaware.mercury.business.shop.Shop;
+import de.qaware.mercury.business.shop.ShopNotFoundException;
+import de.qaware.mercury.business.shop.ShopService;
 import de.qaware.mercury.business.time.Clock;
 import de.qaware.mercury.business.uuid.UUIDFactory;
 import de.qaware.mercury.storage.reservation.ReservationRepository;
@@ -31,6 +38,8 @@ class ReservationServiceImpl implements ReservationService {
     private final Clock clock;
     private final UUIDFactory uuidFactory;
     private final EmailService emailService;
+    private final TokenService tokenService;
+    private final ShopService shopService;
 
     @Override
     @Transactional(readOnly = true)
@@ -53,12 +62,44 @@ class ReservationServiceImpl implements ReservationService {
         LocalDateTime start = slotId.toLocalDateTime();
         LocalDateTime end = start.plusMinutes(shop.getSlotConfig().getTimePerSlot());
 
-        reservationRepository.insert(new Reservation(reservationId, shop.getId(), start, end, contact, email, contactType, clock.nowZoned(), clock.nowZoned()));
+        reservationRepository.insert(new Reservation(reservationId, shop.getId(), start, end, contact, email, name, contactType, clock.nowZoned(), clock.nowZoned()));
 
         log.info("Sending customer reservation confirmation to '{}'", email);
         emailService.sendCustomerReservationConfirmation(shop, email, name, start, end, contactType, contact, reservationId);
         log.info("Sending new shop reservation to '{}'", shop.getEmail());
         emailService.sendShopNewReservation(shop, name, start, end, contactType, contact, reservationId);
+    }
+
+    @Override
+    @Transactional
+    public void cancelReservation(ReservationCancellationToken token) throws ReservationNotFoundException, LoginException, ShopNotFoundException {
+        ReservationCancellation cancellation = tokenService.verifyReservationCancellationToken(token);
+
+        Reservation reservation = reservationRepository.findById(cancellation.getReservationId());
+        if (reservation == null) {
+            throw new ReservationNotFoundException(cancellation.getReservationId());
+        }
+        Shop shop = shopService.findByIdOrThrow(reservation.getShopId());
+        reservationRepository.deleteById(reservation.getId());
+
+        switch (cancellation.getSide()) {
+            case SHOP:
+                // Shop cancelled, send email to customer
+                log.info("Sending reservation cancellation to customer '{}'", reservation.getEmail());
+                emailService.sendReservationCancellationToCustomer(shop, reservation);
+                // Send cancellation confirmation to shop
+                emailService.sendReservationCancellationConfirmation(shop.getEmail(), reservation);
+                break;
+            case CUSTOMER:
+                // Customer cancelled, send email to shop
+                log.info("Sending reservation cancellation to shop '{}'", shop.getEmail());
+                emailService.sendReservationCancellationToShop(shop, reservation);
+                // Send cancellation confirmation to customer
+                emailService.sendReservationCancellationConfirmation(reservation.getEmail(), reservation);
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + cancellation.getSide());
+        }
     }
 
     private List<Interval> mapReservations(List<Reservation> reservations) {

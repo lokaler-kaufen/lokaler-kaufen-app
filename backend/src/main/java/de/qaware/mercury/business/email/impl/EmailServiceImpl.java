@@ -32,6 +32,8 @@ class EmailServiceImpl implements EmailService {
     private static final String CUSTOMER_RESERVATION_CONFIRMATION_SUBJECT = "Reservierungsbestätigung auf lokaler.kaufen";
     private static final String SHOP_NEW_RESERVATION_SUBJECT = "Es gibt eine neue Reservierung auf lokaler.kaufen";
     private static final String SHOP_RESET_PASSWORD_SUBJECT = "Passwort auf lokaler.kaufen zurücksetzen";
+    private static final String RESERVATION_CANCELLATION_SUBJECT = "Dein Termin auf lokaler.kaufen wurde leider abgesagt";
+    private static final String RESERVATION_CANCELLATION_CONFIRMATION_SUBJECT = "Absagebestätigung von lokaler.kaufen";
     private final EmailSender emailSender;
     private final EmailConfigurationProperties config;
     private final TokenService tokenService;
@@ -97,6 +99,37 @@ class EmailServiceImpl implements EmailService {
             .replace("{{ link }}", resetLink);
 
         emailSender.sendEmail(email, SHOP_RESET_PASSWORD_SUBJECT, body);
+    }
+
+    @Override
+    public void sendReservationCancellationToCustomer(Shop shop, Reservation reservation) {
+        String body = loadTemplate("/email/reservation-cancellation-to-customer.txt")
+            .replace("{{ shopName }}", shop.getName())
+            .replace("{{ customerName }}", reservation.getName())
+            .replace("{{ date }}", dateTimeI18nService.formatDate(reservation.getStart()))
+            .replace("{{ start }}", dateTimeI18nService.formatTime(reservation.getStart()));
+
+        emailSender.sendEmail(reservation.getEmail(), RESERVATION_CANCELLATION_SUBJECT, body);
+    }
+
+    @Override
+    public void sendReservationCancellationToShop(Shop shop, Reservation reservation) {
+        String body = loadTemplate("/email/reservation-cancellation-to-shop.txt")
+            .replace("{{ shopName }}", shop.getName())
+            .replace("{{ customerName }}", reservation.getName())
+            .replace("{{ date }}", dateTimeI18nService.formatDate(reservation.getStart()))
+            .replace("{{ start }}", dateTimeI18nService.formatTime(reservation.getStart()));
+
+        emailSender.sendEmail(shop.getEmail(), RESERVATION_CANCELLATION_SUBJECT, body);
+    }
+
+    @Override
+    public void sendReservationCancellationConfirmation(String email, Reservation reservation) {
+        String body = loadTemplate("/email/reservation-cancellation-confirmation.txt")
+            .replace("{{ date }}", dateTimeI18nService.formatDate(reservation.getStart()))
+            .replace("{{ start }}", dateTimeI18nService.formatTime(reservation.getStart()));
+
+        emailSender.sendEmail(email, RESERVATION_CANCELLATION_CONFIRMATION_SUBJECT, body);
     }
 
     private String loadTemplate(String location) {

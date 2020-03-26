@@ -3,7 +3,12 @@ package de.qaware.mercury.storage.reservation.impl;
 import de.qaware.mercury.business.reservation.Reservation;
 import de.qaware.mercury.business.shop.ContactType;
 import de.qaware.mercury.business.shop.Shop;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -48,6 +53,10 @@ class ReservationEntity {
 
     @Setter
     @Column(nullable = false)
+    private String name;
+
+    @Setter
+    @Column(nullable = false)
     private String contactType;
 
     @Column(nullable = false)
@@ -64,6 +73,7 @@ class ReservationEntity {
             reservation.getEnd(),
             reservation.getContact(),
             reservation.getEmail(),
+            reservation.getName(),
             reservation.getContactType().name(),
             reservation.getCreated(),
             reservation.getUpdated()
@@ -78,6 +88,7 @@ class ReservationEntity {
             endTime,
             contact,
             email,
+            name,
             ContactType.parse(contactType),
             created,
             updated

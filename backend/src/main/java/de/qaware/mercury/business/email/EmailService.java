@@ -15,4 +15,10 @@ public interface EmailService {
     void sendShopNewReservation(Shop shop, String name, LocalDateTime slotStart, LocalDateTime slotEnd, ContactType contactType, String contact, Reservation.Id reservationId);
 
     void sendShopPasswordResetEmail(String email, PasswordResetToken token);
+
+    void sendReservationCancellationToCustomer(Shop shop, Reservation reservation);
+
+    void sendReservationCancellationToShop(Shop shop, Reservation reservation);
+
+    void sendReservationCancellationConfirmation(String email, Reservation reservation);
 }

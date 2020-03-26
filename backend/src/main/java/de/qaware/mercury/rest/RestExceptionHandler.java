@@ -2,7 +2,9 @@ package de.qaware.mercury.rest;
 
 import de.qaware.mercury.business.login.LoginException;
 import de.qaware.mercury.business.login.ShopLoginNotFoundException;
+import de.qaware.mercury.business.reservation.InvalidReservationIdException;
 import de.qaware.mercury.business.reservation.InvalidSlotIdException;
+import de.qaware.mercury.business.reservation.ReservationNotFoundException;
 import de.qaware.mercury.business.shop.InvalidShopIdException;
 import de.qaware.mercury.business.shop.ShopAlreadyExistsException;
 import de.qaware.mercury.business.shop.ShopNotFoundException;
@@ -39,6 +41,13 @@ class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorDto);
     }
 
+    @ExceptionHandler(ReservationNotFoundException.class)
+    public ResponseEntity<ErrorDto> handleReservationNotFoundException(ReservationNotFoundException exception) {
+        ErrorDto errorDto = ErrorDto.of(uuidFactory, "RESERVATION_NOT_FOUND", exception.getMessage());
+        log.debug("Handled ReservationNotFoundException with exception id {}", errorDto.getId(), exception);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorDto);
+    }
+
     @ExceptionHandler(LoginException.class)
     public ResponseEntity<ErrorDto> handleLoginException(LoginException exception) {
         ErrorDto errorDto = ErrorDto.of(uuidFactory, "AUTHENTICATION_FAILED", exception.getMessage());
@@ -50,6 +59,13 @@ class RestExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<ErrorDto> handleInvalidShopIdException(InvalidShopIdException exception) {
         ErrorDto errorDto = ErrorDto.of(uuidFactory, "INVALID_SHOP_ID", exception.getMessage());
         log.debug("Handled InvalidShopIdException with exception id {}", errorDto.getId(), exception);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDto);
+    }
+
+    @ExceptionHandler(InvalidReservationIdException.class)
+    public ResponseEntity<ErrorDto> handleInvalidReservationIdException(InvalidReservationIdException exception) {
+        ErrorDto errorDto = ErrorDto.of(uuidFactory, "INVALID_RESERVATION_ID", exception.getMessage());
+        log.debug("Handled InvalidReservationIdException with exception id {}", errorDto.getId(), exception);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDto);
     }
 

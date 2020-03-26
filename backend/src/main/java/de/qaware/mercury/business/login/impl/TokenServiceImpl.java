@@ -200,7 +200,7 @@ class TokenServiceImpl implements TokenService {
     }
 
     @Override
-    public ReservationCancellation verifyCancellationToken(ReservationCancellationToken token) throws LoginException {
+    public ReservationCancellation verifyReservationCancellationToken(ReservationCancellationToken token) throws LoginException {
         try {
             Algorithm algorithm = getAlgorithm(config.getReservationCancellationJwtSecret());
             JWTVerifier verifier = JWT.require(algorithm)

@@ -1,0 +1,9 @@
+Hallo {{ customerName }},
+
+leider hat {{ shopName }} das Gespräch am {{ date }} um {{ start }} Uhr abgesagt, du wirst also keinen Anruf erhalten.
+
+Du kannst aber natürlich jederzeit einen neuen Termin vereinbaren!
+
+Viele Grüße,
+
+dein lokaler.kaufen Team
