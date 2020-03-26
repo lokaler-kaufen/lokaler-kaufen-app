@@ -1,17 +1,16 @@
 import {CollectionViewer, DataSource} from '@angular/cdk/collections';
 import {ShopAdminDto, ShopsAdminDto} from '../data/client';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {BehaviorSubject, Observable, of} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {NotificationsService} from 'angular2-notifications';
+import {catchError, finalize, map} from 'rxjs/operators';
 
 export class ShopListAdminDataSource implements DataSource<ShopAdminDto> {
 
   private shopsSubject = new BehaviorSubject<ShopAdminDto[]>([]);
   private loadingSubject  = new BehaviorSubject<boolean>(false);
-  private errorSubject = new BehaviorSubject<void>(null);
 
   public loading$ = this.loadingSubject.asObservable();
-  public error$ = this.errorSubject.asObservable();
 
   constructor(private httpClient: HttpClient, private notificationsService: NotificationsService) {
   }
@@ -29,18 +28,18 @@ export class ShopListAdminDataSource implements DataSource<ShopAdminDto> {
   loadShops() {
     this.loadingSubject.next(true);
 
-    // todo can we reactify this?!?!
-    // todo use pipe at least once!
-    this.httpClient.get<ShopsAdminDto>('/api/admin/shop').subscribe(
-      (shops: ShopsAdminDto) => {
-        this.shopsSubject.next(shops.shops);
-        this.loadingSubject.next(false);
-      }, (error: any) => {
+    this.httpClient.get<ShopsAdminDto>('/api/admin/shop').pipe(
+      map((result: ShopsAdminDto) => result.shops),
+      catchError((error) => {
         console.log('Got error on request to /api/admin/shop' + error);
         this.notificationsService.error('Tut uns leid!', 'Es ist ein Fehler beim Laden der Daten aufgetreten.');
-        this.loadingSubject.next(false);
-        this.errorSubject.next();
-      });
+        return of([]);
+      }),
+      finalize(() => this.loadingSubject.next(false))
+    ).subscribe((shops: ShopAdminDto[]) => {
+      this.shopsSubject.next(shops);
+    });
+
   }
 
 }
