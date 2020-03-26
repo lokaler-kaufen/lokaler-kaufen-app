@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: database
+  name: database
+spec:
+  ports:
+    - name: "5432"
+      port: 5432
+      targetPort: 5432
+  selector:
+    app: database
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: database-env
+data:
+  POSTGRES_PASSWORD: password
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: database
+  name: database
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: database
+  template:
+    metadata:
+      labels:
+        app: database
+    spec:
+      containers:
+        - name: database
+          image: postgres:11
+          imagePullPolicy: "IfNotPresent"
+          envFrom:
+            - configMapRef:
+                name: database-env
+          ports:
+            - containerPort: 5432
