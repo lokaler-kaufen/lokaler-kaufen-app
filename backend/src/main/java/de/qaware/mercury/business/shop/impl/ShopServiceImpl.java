@@ -113,15 +113,15 @@ class ShopServiceImpl implements ShopService {
     public Shop update(Shop shop, ShopUpdate update) {
         GeoLocation geoLocation = locationService.lookup(update.getZipCode());
 
-        Shop newShop = new Shop(
-            shop.getId(), update.getName(), update.getOwnerName(), shop.getName(), update.getStreet(), update.getZipCode(),
+        Shop updatedShop = new Shop(
+            shop.getId(), update.getName(), update.getOwnerName(), update.getName(), update.getStreet(), update.getZipCode(),
             update.getCity(), update.getAddressSupplement(), update.getContactTypes(),
-            shop.isEnabled(), shop.isApproved(), geoLocation, shop.getDetails(), shop.getWebsite(), shop.getSlotConfig(),
+            shop.isEnabled(), shop.isApproved(), geoLocation, update.getDetails(), update.getWebsite(), update.getSlotConfig(),
             shop.getCreated(), clock.nowZoned()
         );
 
-        shopRepository.update(newShop);
-        return newShop;
+        shopRepository.update(updatedShop);
+        return updatedShop;
     }
 
     @Override
