@@ -120,55 +120,19 @@ export class ShopControllerService {
     }
 
     /**
-     * getDetails
-     *
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public getDetailsUsingGET(observe?: 'body', reportProgress?: boolean): Observable<ShopOwnerDetailDto>;
-    public getDetailsUsingGET(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ShopOwnerDetailDto>>;
-    public getDetailsUsingGET(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ShopOwnerDetailDto>>;
-    public getDetailsUsingGET(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        let headers = this.defaultHeaders;
-
-        // to determine the Accept header
-        let httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected != undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-        return this.httpClient.request<ShopOwnerDetailDto>('get',`${this.basePath}/api/shop/me`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * getDetails
+     * getShopDetails
      *
      * @param id id
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getDetailsUsingGET1(id: string, observe?: 'body', reportProgress?: boolean): Observable<ShopDetailDto>;
-    public getDetailsUsingGET1(id: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ShopDetailDto>>;
-    public getDetailsUsingGET1(id: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ShopDetailDto>>;
-    public getDetailsUsingGET1(id: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getShopDetailsUsingGET(id: string, observe?: 'body', reportProgress?: boolean): Observable<ShopDetailDto>;
+    public getShopDetailsUsingGET(id: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ShopDetailDto>>;
+    public getShopDetailsUsingGET(id: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ShopDetailDto>>;
+    public getShopDetailsUsingGET(id: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling getDetailsUsingGET1.');
+            throw new Error('Required parameter id was null or undefined when calling getShopDetailsUsingGET.');
         }
 
         let headers = this.defaultHeaders;
@@ -197,24 +161,60 @@ export class ShopControllerService {
     }
 
     /**
-     * listNearby
+     * getShopSettings
      *
-     * @param location location
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public listNearbyUsingGET(location: string, observe?: 'body', reportProgress?: boolean): Observable<ShopListDto>;
-    public listNearbyUsingGET(location: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ShopListDto>>;
-    public listNearbyUsingGET(location: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ShopListDto>>;
-    public listNearbyUsingGET(location: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getShopSettingsUsingGET(observe?: 'body', reportProgress?: boolean): Observable<ShopOwnerDetailDto>;
+    public getShopSettingsUsingGET(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ShopOwnerDetailDto>>;
+    public getShopSettingsUsingGET(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ShopOwnerDetailDto>>;
+    public getShopSettingsUsingGET(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
-        if (location === null || location === undefined) {
-            throw new Error('Required parameter location was null or undefined when calling listNearbyUsingGET.');
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<ShopOwnerDetailDto>('get',`${this.basePath}/api/shop/me`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * listNearby
+     *
+     * @param zipCode zipCode
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public listNearbyUsingGET(zipCode: string, observe?: 'body', reportProgress?: boolean): Observable<ShopListDto>;
+    public listNearbyUsingGET(zipCode: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ShopListDto>>;
+    public listNearbyUsingGET(zipCode: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ShopListDto>>;
+    public listNearbyUsingGET(zipCode: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (zipCode === null || zipCode === undefined) {
+            throw new Error('Required parameter zipCode was null or undefined when calling listNearbyUsingGET.');
         }
 
         let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
-        if (location !== undefined && location !== null) {
-            queryParameters = queryParameters.set('location', <any>location);
+        if (zipCode !== undefined && zipCode !== null) {
+            queryParameters = queryParameters.set('zipCode', <any>zipCode);
         }
 
         let headers = this.defaultHeaders;
@@ -246,30 +246,30 @@ export class ShopControllerService {
     /**
      * listNearby
      *
-     * @param location location
      * @param query query
+     * @param zipCode zipCode
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public listNearbyUsingGET1(location: string, query: string, observe?: 'body', reportProgress?: boolean): Observable<ShopListDto>;
-    public listNearbyUsingGET1(location: string, query: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ShopListDto>>;
-    public listNearbyUsingGET1(location: string, query: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ShopListDto>>;
-    public listNearbyUsingGET1(location: string, query: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-
-        if (location === null || location === undefined) {
-            throw new Error('Required parameter location was null or undefined when calling listNearbyUsingGET1.');
-        }
+    public listNearbyUsingGET1(query: string, zipCode: string, observe?: 'body', reportProgress?: boolean): Observable<ShopListDto>;
+    public listNearbyUsingGET1(query: string, zipCode: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ShopListDto>>;
+    public listNearbyUsingGET1(query: string, zipCode: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ShopListDto>>;
+    public listNearbyUsingGET1(query: string, zipCode: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (query === null || query === undefined) {
             throw new Error('Required parameter query was null or undefined when calling listNearbyUsingGET1.');
         }
 
-        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
-        if (location !== undefined && location !== null) {
-            queryParameters = queryParameters.set('location', <any>location);
+        if (zipCode === null || zipCode === undefined) {
+            throw new Error('Required parameter zipCode was null or undefined when calling listNearbyUsingGET1.');
         }
+
+        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
         if (query !== undefined && query !== null) {
             queryParameters = queryParameters.set('query', <any>query);
+        }
+        if (zipCode !== undefined && zipCode !== null) {
+            queryParameters = queryParameters.set('zipCode', <any>zipCode);
         }
 
         let headers = this.defaultHeaders;

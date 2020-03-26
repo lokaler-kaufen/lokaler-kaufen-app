@@ -57,29 +57,29 @@ export class ShopAdminControllerService {
 
 
     /**
-     * changeEnabled
+     * changeApprove
      *
-     * @param enabled enabled
+     * @param approved approved
      * @param id id
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public changeEnabledUsingPUT(enabled: boolean, id: string, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public changeEnabledUsingPUT(enabled: boolean, id: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public changeEnabledUsingPUT(enabled: boolean, id: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public changeEnabledUsingPUT(enabled: boolean, id: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public changeApproveUsingPUT(approved: boolean, id: string, observe?: 'body', reportProgress?: boolean): Observable<any>;
+    public changeApproveUsingPUT(approved: boolean, id: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
+    public changeApproveUsingPUT(approved: boolean, id: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public changeApproveUsingPUT(approved: boolean, id: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
-        if (enabled === null || enabled === undefined) {
-            throw new Error('Required parameter enabled was null or undefined when calling changeEnabledUsingPUT.');
+        if (approved === null || approved === undefined) {
+            throw new Error('Required parameter approved was null or undefined when calling changeApproveUsingPUT.');
         }
 
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling changeEnabledUsingPUT.');
+            throw new Error('Required parameter id was null or undefined when calling changeApproveUsingPUT.');
         }
 
         let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
-        if (enabled !== undefined && enabled !== null) {
-            queryParameters = queryParameters.set('enabled', <any>enabled);
+        if (approved !== undefined && approved !== null) {
+            queryParameters = queryParameters.set('approved', <any>approved);
         }
 
         let headers = this.defaultHeaders;
@@ -96,7 +96,7 @@ export class ShopAdminControllerService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.request<any>('put',`${this.basePath}/api/admin/shop/${encodeURIComponent(String(id))}/enable`,
+        return this.httpClient.request<any>('put',`${this.basePath}/api/admin/shop/${encodeURIComponent(String(id))}/approve`,
             {
                 params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
