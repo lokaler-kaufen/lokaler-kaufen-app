@@ -4,14 +4,14 @@ import de.qaware.mercury.business.email.EmailService
 import de.qaware.mercury.business.location.GeoLocation
 import de.qaware.mercury.business.location.LocationService
 import de.qaware.mercury.business.login.ShopLoginService
-import de.qaware.mercury.business.shop.Shop
-import de.qaware.mercury.business.shop.ShopNotFoundException
-import de.qaware.mercury.business.shop.ShopService
+import de.qaware.mercury.business.shop.*
 import de.qaware.mercury.business.time.Clock
 import de.qaware.mercury.business.uuid.UUIDFactory
 import de.qaware.mercury.storage.shop.ShopRepository
 import spock.lang.PendingFeature
 import spock.lang.Specification
+
+import java.time.ZonedDateTime
 
 class ShopServiceImplSpec extends Specification {
 
@@ -128,9 +128,47 @@ class ShopServiceImplSpec extends Specification {
     }
 
 
-    @PendingFeature
-    def "Create"() {
-        // TODO Implement me
+    def "Create a new shop"() {
+        given:
+        def uuid = UUID.randomUUID()
+        def location = GeoLocation.of(0.0, 0.0)
+        def dateTime = ZonedDateTime.now()
+        def creation = new ShopCreation.ShopCreationBuilder()
+            .email('test@lokaler.kaufen')
+            .name('Test Shop')
+            .zipCode('83024')
+            .build()
+
+        when:
+        def shop = shopService.create(creation)
+
+        then:
+        1 * shopLoginService.hasLogin('test@lokaler.kaufen') >> false
+        1 * uuidFactory.create() >> uuid
+        1 * locationService.lookup('83024') >> location
+        2 * clock.nowZoned() >> dateTime
+
+        and:
+        with(shop) {
+            shop.id.id == uuid
+            shop.email == creation.email
+            shop.name == creation.name
+            shop.geoLocation == location
+            shop.updated == dateTime
+            shop.created == dateTime
+        }
+    }
+
+    def "Can't create an existing shop"() {
+        given:
+        def creation = new ShopCreation.ShopCreationBuilder().email('test@lokaler.kaufen').build()
+
+        when:
+        shopService.create(creation)
+
+        then:
+        1 * shopLoginService.hasLogin('test@lokaler.kaufen') >> true
+        thrown ShopAlreadyExistsException
     }
 
     @PendingFeature
@@ -148,13 +186,29 @@ class ShopServiceImplSpec extends Specification {
         // TODO Implement me
     }
 
-    @PendingFeature
-    def "FindByName"() {
-        // TODO Implement me
+    def "Find by name"() {
+        given:
+        def shop = new Shop.ShopBuilder().build()
+
+        when:
+        def found = shopService.findByName('Test Shop')
+
+        then:
+        1 * shopRepository.findByName('Test Shop') >> [shop]
+        found.size() == 1
+        found[0] == shop
     }
 
-    @PendingFeature
-    def "Search"() {
-        // TODO Implement me
+    def "Search by query and ZIP code"() {
+        given:
+        def location = GeoLocation.of(0.0, 0.0)
+
+        when:
+        def results = shopService.search('*', '83024')
+
+        then:
+        1 * locationService.lookup('83024') >> location
+        1 * shopRepository.search('*', location) >> [new ShopWithDistance(null, 0.0)]
+        results.size() == 1
     }
 }

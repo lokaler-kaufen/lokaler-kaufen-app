@@ -1,11 +1,15 @@
 package de.qaware.mercury.business.shop;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Value;
 import org.springframework.lang.Nullable;
 
 import java.util.Map;
 
 @Value
+@AllArgsConstructor
+@Builder
 public class ShopCreation {
     String email;
     String ownerName;
