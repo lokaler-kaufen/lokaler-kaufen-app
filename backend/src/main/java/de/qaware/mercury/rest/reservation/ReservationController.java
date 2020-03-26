@@ -11,7 +11,7 @@ import de.qaware.mercury.business.shop.ShopNotFoundException;
 import de.qaware.mercury.business.shop.ShopService;
 import de.qaware.mercury.rest.reservation.dto.request.CreateReservationDto;
 import de.qaware.mercury.rest.reservation.dto.response.SlotsDto;
-import de.qaware.mercury.util.validation.GuidValidation;
+import de.qaware.mercury.util.validation.Validation;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,7 +41,7 @@ public class ReservationController {
     private final ShopService shopService;
 
     @PostMapping(path = "/{shopId}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void createReservation(@PathVariable("shopId") @Pattern(regexp = GuidValidation.REGEX) String shopId, @Valid @RequestBody CreateReservationDto request) throws ShopNotFoundException {
+    public void createReservation(@PathVariable("shopId") @Pattern(regexp = Validation.SHOP_ID) String shopId, @Valid @RequestBody CreateReservationDto request) throws ShopNotFoundException {
         Shop shop = shopService.findByIdOrThrow(Shop.Id.parse(shopId));
         reservationService.createReservation(
             shop, Slot.Id.parse(request.getSlotId()), ContactType.parse(request.getContactType()),
@@ -55,7 +55,7 @@ public class ReservationController {
     }
 
     @GetMapping(path = "/{shopId}/slot")
-    public SlotsDto getSlotsForShop(@PathVariable("shopId") @Pattern(regexp = GuidValidation.REGEX) String shopId) throws ShopNotFoundException {
+    public SlotsDto getSlotsForShop(@PathVariable("shopId") @Pattern(regexp = Validation.SHOP_ID) String shopId) throws ShopNotFoundException {
         Shop shop = shopService.findByIdOrThrow(Shop.Id.parse(shopId));
         List<Slot> slots = reservationService.listSlots(shop);
 

@@ -12,7 +12,7 @@ import de.qaware.mercury.rest.shop.dto.request.UpdateShopDto;
 import de.qaware.mercury.rest.shop.dto.response.ShopAdminDto;
 import de.qaware.mercury.rest.shop.dto.response.ShopsAdminDto;
 import de.qaware.mercury.util.Maps;
-import de.qaware.mercury.util.validation.GuidValidation;
+import de.qaware.mercury.util.validation.Validation;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -48,7 +48,7 @@ class ShopAdminController {
     }
 
     @PutMapping(path = "/{id}/approve")
-    public void changeApprove(@PathVariable @Pattern(regexp = GuidValidation.REGEX) String id, @RequestParam boolean approved, HttpServletRequest request) throws ShopNotFoundException, LoginException {
+    public void changeApprove(@PathVariable @Pattern(regexp = Validation.SHOP_ID) String id, @RequestParam boolean approved, HttpServletRequest request) throws ShopNotFoundException, LoginException {
         authenticationHelper.authenticateAdmin(request);
         Shop.Id shopId = Shop.Id.parse(id);
 
@@ -56,7 +56,7 @@ class ShopAdminController {
     }
 
     @PutMapping(path = "/{id}")
-    public ShopAdminDto update(@PathVariable @Pattern(regexp = GuidValidation.REGEX) String id, @Valid @RequestBody UpdateShopDto request, HttpServletRequest servletRequest) throws ShopNotFoundException, LoginException {
+    public ShopAdminDto update(@PathVariable @Pattern(regexp = Validation.SHOP_ID) String id, @Valid @RequestBody UpdateShopDto request, HttpServletRequest servletRequest) throws ShopNotFoundException, LoginException {
         Admin admin = authenticationHelper.authenticateAdmin(servletRequest);
         Shop.Id shopId = Shop.Id.parse(id);
 
@@ -81,7 +81,7 @@ class ShopAdminController {
     }
 
     @DeleteMapping(path = "/{id}")
-    public void delete(@PathVariable @Pattern(regexp = GuidValidation.REGEX) String id, HttpServletRequest request) throws ShopNotFoundException, LoginException {
+    public void delete(@PathVariable @Pattern(regexp = Validation.SHOP_ID) String id, HttpServletRequest request) throws ShopNotFoundException, LoginException {
         Admin admin = authenticationHelper.authenticateAdmin(request);
         Shop.Id shopId = Shop.Id.parse(id);
 

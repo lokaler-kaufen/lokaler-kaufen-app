@@ -1,20 +1,42 @@
 package de.qaware.mercury.rest.shop;
 
-import de.qaware.mercury.business.login.*;
-import de.qaware.mercury.business.shop.*;
+import de.qaware.mercury.business.login.LoginException;
+import de.qaware.mercury.business.login.PasswordResetToken;
+import de.qaware.mercury.business.login.ShopCreationToken;
+import de.qaware.mercury.business.login.ShopLoginNotFoundException;
+import de.qaware.mercury.business.login.ShopLoginService;
+import de.qaware.mercury.business.login.TokenService;
+import de.qaware.mercury.business.shop.ContactType;
+import de.qaware.mercury.business.shop.Shop;
+import de.qaware.mercury.business.shop.ShopAlreadyExistsException;
+import de.qaware.mercury.business.shop.ShopCreation;
+import de.qaware.mercury.business.shop.ShopNotFoundException;
+import de.qaware.mercury.business.shop.ShopService;
+import de.qaware.mercury.business.shop.ShopUpdate;
 import de.qaware.mercury.rest.plumbing.authentication.AuthenticationHelper;
-import de.qaware.mercury.rest.shop.dto.request.*;
+import de.qaware.mercury.rest.shop.dto.request.CreateShopDto;
+import de.qaware.mercury.rest.shop.dto.request.ResetPasswordDto;
+import de.qaware.mercury.rest.shop.dto.request.SendCreateLinkDto;
+import de.qaware.mercury.rest.shop.dto.request.SendPasswordResetLinkDto;
+import de.qaware.mercury.rest.shop.dto.request.UpdateShopDto;
 import de.qaware.mercury.rest.shop.dto.response.ShopDetailDto;
 import de.qaware.mercury.rest.shop.dto.response.ShopListDto;
 import de.qaware.mercury.rest.shop.dto.response.ShopOwnerDetailDto;
 import de.qaware.mercury.util.Maps;
-import de.qaware.mercury.util.validation.GuidValidation;
+import de.qaware.mercury.util.validation.Validation;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -33,7 +55,7 @@ class ShopController {
     private final ShopLoginService shopLoginService;
 
     @GetMapping(path = "/{id}")
-    public ShopDetailDto getShopDetails(@PathVariable @Pattern(regexp = GuidValidation.REGEX) String id) throws ShopNotFoundException {
+    public ShopDetailDto getShopDetails(@PathVariable @Pattern(regexp = Validation.SHOP_ID) String id) throws ShopNotFoundException {
         Shop shop = shopService.findById(Shop.Id.parse(id));
         if (shop == null) {
             throw new ShopNotFoundException(Shop.Id.parse(id));
