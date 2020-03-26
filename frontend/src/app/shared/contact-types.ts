@@ -1,4 +1,4 @@
-import {ShopDetailDto} from "../data/client";
+import {ShopDetailDto} from '../data/client/model/shopDetailDto';
 import ContactTypesEnum = ShopDetailDto.ContactTypesEnum;
 
 enum ContactType {
@@ -15,5 +15,6 @@ export class ContactTypes {
     splitted = splitted.map(split => {
       return split.charAt(0) + split.slice(1).toLowerCase();
     });
-    return splitted.join(' ');  }
+    return splitted.join(' ');
+  }
 }

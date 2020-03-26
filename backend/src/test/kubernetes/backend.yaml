@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  labels:
+    app: mercury
+spec:
+  selector:
+    matchLabels:
+      app: mercury
+  template:
+    metadata:
+      labels:
+        app: mercury
+    spec:
+      containers:
+      - name: backend
+        image: backend-image
+        ports:
+        - containerPort: 8080

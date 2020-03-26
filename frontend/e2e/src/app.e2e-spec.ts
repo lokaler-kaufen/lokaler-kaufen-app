@@ -6,7 +6,7 @@ describe('workspace-project App', () => {
   // Doc: https://angular.io/guide/testing
   // Major takeaway at the bottom of the page: E2E tests suck. Still, we might want some :)
 
-  let page : AppPage;
+  let page: AppPage;
 
   beforeEach(() => {
     page = new AppPage();

@@ -1,10 +1,15 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {ShopAdminControllerService, ShopAdminDto, ShopListDto, ShopListEntryDto} from '../data/client';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatSort} from '@angular/material/sort';
 import {Router} from '@angular/router';
-import ContactTypesEnum = ShopAdminDto.ContactTypesEnum;
-import {throwError} from 'rxjs';
+import {ShopListDto} from '../data/client/model/shopListDto';
+import {ShopListEntryDto} from '../data/client/model/shopListEntryDto';
+import {ShopAdminDto} from '../data/client/model/shopAdminDto';
+
+async function requestShops(): Promise<ShopListDto> {
+  return fetch('/api/admin/shop')
+    .then(response => response.json());
+}
 
 @Component({
   selector: 'admin-overview',
@@ -15,7 +20,7 @@ export class AdminOverviewPageComponent implements OnInit {
   displayedColumns = ['id', 'name', 'ownerName', 'street', 'plz', 'city', 'enabled', 'email'];
   dataSource = new MatTableDataSource();
 
-  constructor(private adminControllerService: ShopAdminControllerService, private router: Router) {
+  constructor(private router: Router) {
     this.dataUpdate = this.dataUpdate.bind(this);
     this.dataSource.sort = this.sort;
   }
@@ -24,7 +29,7 @@ export class AdminOverviewPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.generateDummyData();
-    this.adminControllerService.listAllUsingGET().subscribe(this.dataUpdate);
+    requestShops().then(this.dataUpdate);
   }
 
   private dataUpdate(data: ShopListDto): void {
@@ -41,7 +46,7 @@ export class AdminOverviewPageComponent implements OnInit {
       return {
         addressSupplement: Math.random().toString(10),
         city: Math.random().toString(10),
-        contactTypes: Object.values(ContactTypesEnum).filter(e => Math.random() >= 0.5),
+        contactTypes: Object.values(ShopAdminDto.ContactTypesEnum).filter(() => Math.random() >= 0.5),
         details: Math.random().toString(10),
         email: Math.random().toString(10),
         enabled: Math.random() * 10 > 5,
@@ -62,4 +67,5 @@ export class AdminOverviewPageComponent implements OnInit {
     }
     this.dataUpdate({shops: shopList} as ShopListDto);
   }
+
 }

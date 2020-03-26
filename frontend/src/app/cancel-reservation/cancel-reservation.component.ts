@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
-import {HttpClient} from "@angular/common/http";
-import {NotificationsService} from "angular2-notifications";
+import {ActivatedRoute} from '@angular/router';
+import {HttpClient} from '@angular/common/http';
+import {NotificationsService} from 'angular2-notifications';
 
 @Component({
   selector: 'cancel-reservation',
