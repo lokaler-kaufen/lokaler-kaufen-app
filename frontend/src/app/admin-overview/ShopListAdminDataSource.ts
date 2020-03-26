@@ -1,19 +1,19 @@
 import {CollectionViewer, DataSource} from '@angular/cdk/collections';
-import {BehaviorSubject, Observable, of} from 'rxjs';
+import {ShopAdminDto, ShopsAdminDto} from '../data/client';
+import {BehaviorSubject, Observable} from 'rxjs';
+import {HttpClient} from '@angular/common/http';
 import {NotificationsService} from 'angular2-notifications';
-import {catchError, finalize, map} from 'rxjs/operators';
-import {AdminService} from '../shared/admin.service';
-import {ShopAdminDto} from '../data/client/model/shopAdminDto';
-import {ShopsAdminDto} from '../data/client/model/shopsAdminDto';
 
 export class ShopListAdminDataSource implements DataSource<ShopAdminDto> {
 
   private shopsSubject = new BehaviorSubject<ShopAdminDto[]>([]);
-  private loadingSubject = new BehaviorSubject<boolean>(false);
+  private loadingSubject  = new BehaviorSubject<boolean>(false);
+  private errorSubject = new BehaviorSubject<void>(null);
 
   public loading$ = this.loadingSubject.asObservable();
+  public error$ = this.errorSubject.asObservable();
 
-  constructor(private adminService: AdminService, private notificationsService: NotificationsService) {
+  constructor(private httpClient: HttpClient, private notificationsService: NotificationsService) {
   }
 
   connect(collectionViewer: CollectionViewer): Observable<ShopAdminDto[] | ReadonlyArray<ShopAdminDto>> {
@@ -29,18 +29,18 @@ export class ShopListAdminDataSource implements DataSource<ShopAdminDto> {
   loadShops() {
     this.loadingSubject.next(true);
 
-    this.adminService.listAllShops().pipe(
-      map((result: ShopsAdminDto) => result.shops),
-      catchError((error) => {
+    // todo can we reactify this?!?!
+    // todo use pipe at least once!
+    this.httpClient.get<ShopsAdminDto>('/api/admin/shop').subscribe(
+      (shops: ShopsAdminDto) => {
+        this.shopsSubject.next(shops.shops);
+        this.loadingSubject.next(false);
+      }, (error: any) => {
         console.log('Got error on request to /api/admin/shop' + error);
         this.notificationsService.error('Tut uns leid!', 'Es ist ein Fehler beim Laden der Daten aufgetreten.');
-        return of([]);
-      }),
-      finalize(() => this.loadingSubject.next(false))
-    ).subscribe((shops: ShopAdminDto[]) => {
-      this.shopsSubject.next(shops);
-    });
-
+        this.loadingSubject.next(false);
+        this.errorSubject.next();
+      });
   }
 
 }
