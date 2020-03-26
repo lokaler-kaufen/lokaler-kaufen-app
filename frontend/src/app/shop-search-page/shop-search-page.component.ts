@@ -3,8 +3,10 @@ import {MatTableDataSource} from '@angular/material/table';
 import {MatSort} from '@angular/material/sort';
 import {ActivatedRoute, Router} from '@angular/router';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {ShopDetailDto, ShopListDto, ShopListEntryDto} from '../data/client';
 import {NotificationsService} from 'angular2-notifications';
+import {ShopListDto} from '../data/client/model/shopListDto';
+import {ShopListEntryDto} from '../data/client/model/shopListEntryDto';
+import {ShopDetailDto} from '../data/client/model/shopDetailDto';
 import ContactTypesEnum = ShopDetailDto.ContactTypesEnum;
 
 @Component({
@@ -68,7 +70,7 @@ export class ShopSearchPageComponent implements OnInit {
 
   private findAllShopsNearby(): void {
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
-    const params = new HttpParams().append('zipCode',  this.location);
+    const params = new HttpParams().append('zipCode', this.location);
 
     this.client.get<ShopListDto>('/api/shop/nearby', {headers, params}).subscribe(
       response => {
@@ -88,9 +90,9 @@ export class ShopSearchPageComponent implements OnInit {
   }
 
   private findShopsBySearchQuery(query: string): void {
-    const params = new HttpParams().append('location',  this.location).append('query', query);
+    const params = new HttpParams().append('location', this.location).append('query', query);
 
-    this.client.get<ShopListDto>('/api/shop/search',  {params}).subscribe(
+    this.client.get<ShopListDto>('/api/shop/search', {params}).subscribe(
       response => {
         this.dataSource = new MatTableDataSource<ShopListEntryDto>();
         if (response.shops.length > 0) {

@@ -5,8 +5,12 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {NotificationsService} from 'angular2-notifications';
 import {BusinessHours, setRightSlot} from '../shop-creation-page/shop-creation-page.component';
-import {DayDto, ShopDetailDto, ShopOwnerDetailDto, SlotConfigDto, UpdateShopDto} from '../data/client';
+import {ShopOwnerDetailDto} from '../data/client/model/shopOwnerDetailDto';
+import {ShopDetailDto} from '../data/client/model/shopDetailDto';
 import ContactTypesEnum = ShopDetailDto.ContactTypesEnum;
+import {UpdateShopDto} from '../data/client/model/updateShopDto';
+import {SlotConfigDto} from '../data/client/model/slotConfigDto';
+import {DayDto} from '../data/client/model/dayDto';
 
 @Component({
   selector: 'shop-management-page',

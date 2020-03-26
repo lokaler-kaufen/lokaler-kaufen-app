@@ -1,10 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {LocationSuggestionDto, LocationSuggestionsDto} from '../data/client';
 import {debounceTime, map, switchMap} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {ZipCodeCacheService} from './zip-code-cache.service';
+import {LocationSuggestionDto} from '../data/client/model/locationSuggestionDto';
+import {LocationSuggestionsDto} from '../data/client/model/locationSuggestionsDto';
 
 @Component({
   selector: 'landing-page',
