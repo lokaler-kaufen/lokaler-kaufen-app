@@ -11,6 +11,8 @@ spring.jpa.hibernate.ddl-auto: validate
 spring.jpa.open-in-view: false
 
 mercury:
+  cookies:
+    secure: false
   tokens:
     shopJwtSecret: "u2WXgWEWhyop+qtpiH5jhQmDN+PVRbazKPNuseI0dmE=" # openssl rand -base64 32
     adminJwtSecret: "QXOm/a5//OFtmciYomnixCTDCzNUQFWNAiT3eGBOfhQ=" # openssl rand -base64 32

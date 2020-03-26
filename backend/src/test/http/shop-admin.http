@@ -50,3 +50,5 @@ Content-Type: application/json
 
 DELETE {{ host }}/api/admin/shop/879cafc3-9016-42e4-ae75-af8d3b8f44d8
 Accept: application/json, */*
+
+###
