@@ -10,6 +10,10 @@ import org.gavaghan.geodesy.GlobalCoordinates;
  * Helpers for distance calculation
  */
 public final class DistanceUtil {
+    private static final Ellipsoid ELLIPSOID = Ellipsoid.WGS84;
+    private static final GeodeticCalculator CALCULATOR = new GeodeticCalculator();
+    private static final double METERS_IN_1_KM = 1000.0;
+
     private DistanceUtil() {
     }
 
@@ -21,11 +25,10 @@ public final class DistanceUtil {
      * @return distance between the two coordinates in kilometers
      */
     public static double distanceInKmBetween(GeoLocation p1, GeoLocation p2) {
-        Ellipsoid reference = Ellipsoid.WGS84;
         GlobalCoordinates cord1 = new GlobalCoordinates(p1.getLatitude(), p1.getLongitude());
         GlobalCoordinates cord2 = new GlobalCoordinates(p2.getLatitude(), p2.getLongitude());
-        GeodeticCalculator geoCalculator = new GeodeticCalculator();
-        GeodeticCurve geoCurve = geoCalculator.calculateGeodeticCurve(reference, cord1, cord2);
-        return geoCurve.getEllipsoidalDistance() / 1000.0;
+
+        GeodeticCurve geoCurve = CALCULATOR.calculateGeodeticCurve(ELLIPSOID, cord1, cord2);
+        return geoCurve.getEllipsoidalDistance() / METERS_IN_1_KM;
     }
 }
