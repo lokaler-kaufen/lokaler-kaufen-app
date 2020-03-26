@@ -14,7 +14,6 @@ import spock.lang.Unroll
 import java.time.DayOfWeek
 import java.time.LocalDateTime
 import java.time.LocalTime
-import java.time.temporal.ChronoField
 import java.time.temporal.TemporalAdjusters
 
 import static de.qaware.mercury.business.shop.SlotConfig.builder
@@ -49,33 +48,27 @@ class SlotServiceSpec extends Specification {
         List<Slot> slots = slotService.generateSlots(start.toLocalDate(), end.toLocalDate(), config, reservations)
 
         then:
-        1 * clock.now() >> start
+        _ * clock.now() >> start
         slots.size() == count
 
         where:
-        usecase     | start        | end           | config                 | reservations || count
-        'Monday'    | monday(8)    | monday(18)    | mondayConfig(8, 18)    | []           || 10
+        usecase                 | start       | end         | config                    | reservations || count
+        'Monday'                | monday()    | monday()    | mondayConfig(10, 23)      | []           || 13
+        'Tuesday'               | tuesday()   | tuesday()   | tuesdayConfig(8, 18)      | []           || 10
+        'Wednesday'             | wednesday() | wednesday() | wednesdayConfig(8, 18)    | []           || 10
+        'Thursday'              | thursday()  | thursday()  | thursdayConfig(8, 18)     | []           || 10
+        'Friday'                | friday()    | friday()    | fridayConfig(8, 18)       | []           || 10
+        'Saturday'              | saturday()  | saturday()  | saturdayConfig(8, 18)     | []           || 10
+        'Sunday'                | sunday()    | sunday()    | sundayConfig(8, 18)       | []           || 10
+        'Monday til Wednesday'  | monday()    | wednesday() | mondayTilWednesday(8, 18) | []           || 30
+        'Saturday til Tuesday ' | saturday()  | tuesday()   | saturdayTilTuesday(8, 18) | []           || 30
+        'Monday'                | monday()    | monday()    | mondayConfig(10, 14)      | []           || 4
 
-        // TODO Check and fix these tests
-        // 'Monday Reserved'  | monday(8)    | monday(18)    | mondayConfig(8, 18)    | [of(monday(8), monday(18))] || 0
-        // 'Monday Too Early' | monday(8)    | monday(10)    | mondayConfig(10, 14)   | []                          || 0
-        // 'Monday Too Late'  | monday(16)   | monday(18)    | mondayConfig(10, 14)   | []                          || 0
-
-        'Tuesday'   | tuesday(8)   | tuesday(18)   | tuesdayConfig(8, 18)   | []           || 10
-        'Wednesday' | wednesday(8) | wednesday(18) | wednesdayConfig(8, 18) | []           || 10
-        'Thursday'  | thursday(8)  | thursday(18)  | thursdayConfig(8, 18)  | []           || 10
-        'Friday'    | friday(8)    | friday(18)    | fridayConfig(8, 18)    | []           || 10
-        'Saturday'  | saturday(8)  | saturday(18)  | saturdayConfig(8, 18)  | []           || 10
-        'Sunday'    | sunday(8)    | sunday(18)    | sundayConfig(8, 18)    | []           || 10
     }
 
-    LocalDateTime monday(int hourOfDay) {
+    LocalDateTime monday() {
         return now()
             .with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY))
-            .with(ChronoField.HOUR_OF_DAY, hourOfDay)
-            .with(ChronoField.SECOND_OF_DAY, 0)
-            .with(ChronoField.MILLI_OF_DAY, 0)
-            .with(ChronoField.MICRO_OF_DAY, 0)
     }
 
     SlotConfig mondayConfig(int startHour, int endHour) {
@@ -84,13 +77,9 @@ class SlotServiceSpec extends Specification {
             .build()
     }
 
-    LocalDateTime tuesday(int hourOfDay) {
+    LocalDateTime tuesday() {
         return now()
             .with(TemporalAdjusters.previousOrSame(DayOfWeek.TUESDAY))
-            .with(ChronoField.HOUR_OF_DAY, hourOfDay)
-            .with(ChronoField.SECOND_OF_DAY, 0)
-            .with(ChronoField.MILLI_OF_DAY, 0)
-            .with(ChronoField.MICRO_OF_DAY, 0)
     }
 
     SlotConfig tuesdayConfig(int startHour, int endHour) {
@@ -99,13 +88,9 @@ class SlotServiceSpec extends Specification {
             .build()
     }
 
-    LocalDateTime wednesday(int hourOfDay) {
+    LocalDateTime wednesday() {
         return now()
             .with(TemporalAdjusters.previousOrSame(DayOfWeek.WEDNESDAY))
-            .with(ChronoField.HOUR_OF_DAY, hourOfDay)
-            .with(ChronoField.SECOND_OF_DAY, 0)
-            .with(ChronoField.MILLI_OF_DAY, 0)
-            .with(ChronoField.MICRO_OF_DAY, 0)
     }
 
     SlotConfig wednesdayConfig(int startHour, int endHour) {
@@ -114,13 +99,9 @@ class SlotServiceSpec extends Specification {
             .build()
     }
 
-    LocalDateTime thursday(int hourOfDay) {
+    LocalDateTime thursday() {
         return now()
             .with(TemporalAdjusters.previousOrSame(DayOfWeek.THURSDAY))
-            .with(ChronoField.HOUR_OF_DAY, hourOfDay)
-            .with(ChronoField.SECOND_OF_DAY, 0)
-            .with(ChronoField.MILLI_OF_DAY, 0)
-            .with(ChronoField.MICRO_OF_DAY, 0)
     }
 
     SlotConfig thursdayConfig(int startHour, int endHour) {
@@ -129,13 +110,9 @@ class SlotServiceSpec extends Specification {
             .build()
     }
 
-    LocalDateTime friday(int hourOfDay) {
+    LocalDateTime friday() {
         return now()
             .with(TemporalAdjusters.previousOrSame(DayOfWeek.FRIDAY))
-            .with(ChronoField.HOUR_OF_DAY, hourOfDay)
-            .with(ChronoField.SECOND_OF_DAY, 0)
-            .with(ChronoField.MILLI_OF_DAY, 0)
-            .with(ChronoField.MICRO_OF_DAY, 0)
     }
 
     SlotConfig fridayConfig(int startHour, int endHour) {
@@ -144,13 +121,9 @@ class SlotServiceSpec extends Specification {
             .build()
     }
 
-    LocalDateTime saturday(int hourOfDay) {
+    LocalDateTime saturday() {
         return now()
             .with(TemporalAdjusters.previousOrSame(DayOfWeek.SATURDAY))
-            .with(ChronoField.HOUR_OF_DAY, hourOfDay)
-            .with(ChronoField.SECOND_OF_DAY, 0)
-            .with(ChronoField.MILLI_OF_DAY, 0)
-            .with(ChronoField.MICRO_OF_DAY, 0)
     }
 
     SlotConfig saturdayConfig(int startHour, int endHour) {
@@ -159,18 +132,30 @@ class SlotServiceSpec extends Specification {
             .build()
     }
 
-    LocalDateTime sunday(int hourOfDay) {
+    LocalDateTime sunday() {
         return now()
             .with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY))
-            .with(ChronoField.HOUR_OF_DAY, hourOfDay)
-            .with(ChronoField.SECOND_OF_DAY, 0)
-            .with(ChronoField.MILLI_OF_DAY, 0)
-            .with(ChronoField.MICRO_OF_DAY, 0)
     }
 
     SlotConfig sundayConfig(int startHour, int endHour) {
         return defaultSlot()
             .sunday(new DayConfig(LocalTime.of(startHour, 0), LocalTime.of(endHour, 0)))
+            .build()
+    }
+
+    SlotConfig mondayTilWednesday(int startHour, int endHour) {
+        return defaultSlot()
+            .monday(new DayConfig(LocalTime.of(startHour, 0), LocalTime.of(endHour, 0)))
+            .tuesday(new DayConfig(LocalTime.of(startHour, 0), LocalTime.of(endHour, 0)))
+            .wednesday(new DayConfig(LocalTime.of(startHour, 0), LocalTime.of(endHour, 0)))
+            .build()
+    }
+
+    SlotConfig saturdayTilTuesday(int startHour, int endHour) {
+        return defaultSlot()
+            .saturday(new DayConfig(LocalTime.of(startHour, 0), LocalTime.of(endHour, 0)))
+            .monday(new DayConfig(LocalTime.of(startHour, 0), LocalTime.of(endHour, 0)))
+            .tuesday(new DayConfig(LocalTime.of(startHour, 0), LocalTime.of(endHour, 0)))
             .build()
     }
 
