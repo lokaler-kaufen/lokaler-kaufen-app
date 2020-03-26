@@ -37,6 +37,7 @@ import { LoginFormComponent } from './login-form/login-form.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { PasswordResetPopupComponent } from './password-reset-popup/password-reset-popup.component';
 import { PasswordResetPageComponent } from './password-reset-page/password-reset-page.component';
+import { CancelReservationComponent } from './cancel-reservation/cancel-reservation.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { PasswordResetPageComponent } from './password-reset-page/password-reset
     AppFooterComponent,
     AppHeaderComponent,
     BookingPopupComponent,
+    CancelReservationComponent,
     ImprintPageComponent,
     LandingPageComponent,
     LoginFormComponent,
