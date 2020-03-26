@@ -39,6 +39,8 @@ import {LoginFormComponent} from './login-form/login-form.component';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {PasswordResetPopupComponent} from './password-reset-popup/password-reset-popup.component';
 import {PasswordResetPageComponent} from './password-reset-page/password-reset-page.component';
+import {AdminDetailsPageComponent} from './admin-details-page/admin-details-page.component';
+import {ShopDetailsComponent} from './shop-details/shop-details.component';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @NgModule({
@@ -63,7 +65,9 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     AdminLoginPageComponent,
     LoginFormComponent,
     PasswordResetPopupComponent,
-    PasswordResetPageComponent
+    PasswordResetPageComponent,
+    AdminDetailsPageComponent,
+    ShopDetailsComponent
   ],
     imports: [
         ApiModule,
