@@ -1,0 +1,7 @@
+Hallo {{ name }},
+
+es geht los, dein Laden ist jetzt freigeschaltet. Falls du noch Fragen hast, wirf am besten einen Blick auf https://lokaler.kaufen/support
+
+Viele Grüße
+
+Dein lokaler.kaufen Team
