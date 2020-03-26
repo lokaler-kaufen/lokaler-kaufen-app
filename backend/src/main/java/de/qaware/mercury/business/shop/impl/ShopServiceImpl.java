@@ -108,7 +108,7 @@ class ShopServiceImpl implements ShopService {
         );
 
         shopRepository.update(newShop);
-        return shop;
+        return newShop;
     }
 
     @Override
