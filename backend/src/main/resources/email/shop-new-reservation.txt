@@ -3,6 +3,10 @@ Hallo {{ ownerName }},
 {{ name }} möchte am {{ date }} zwischen {{ start }} Uhr und {{ end }} Uhr kontaktiert werden.
 Du erreichst {{ name }} mittels {{ contactType }} unter {{ contact }}.
 
+Um die Reservierung abzusagen, klicke einfach auf diesen Link:
+
+{{ cancelReservationLink }}
+
 Viele Grüße,
 
 dein lokaler.kaufen Team

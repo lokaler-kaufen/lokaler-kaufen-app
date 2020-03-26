@@ -62,7 +62,7 @@ class ReservationServiceImplSpec extends Specification {
         then:
         1 * uuidFactory.create() >> UUID.randomUUID()
         1 * reservationRepository.insert(_)
-        1 * emailService.sendCustomerReservationConfirmation(shop, 'test@lokaler.kaufen', 'Spock', _, _, ContactType.WHATSAPP, 'Contact')
-        1 * emailService.sendShopNewReservation(shop, 'Spock', _, _, ContactType.WHATSAPP, 'Contact')
+        1 * emailService.sendCustomerReservationConfirmation(shop, 'test@lokaler.kaufen', 'Spock', _, _, ContactType.WHATSAPP, 'Contact', _)
+        1 * emailService.sendShopNewReservation(shop, 'Spock', _, _, ContactType.WHATSAPP, 'Contact', _)
     }
 }

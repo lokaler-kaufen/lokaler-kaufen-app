@@ -31,6 +31,10 @@ public class LoginException extends BusinessException {
         return new LoginException(String.format("Verification failed for password reset with token '%s'", token.getToken()));
     }
 
+    public static LoginException forReservationCancellationToken(ReservationCancellationToken token) {
+        return new LoginException(String.format("Verification failed for reservation cancellation with token '%s'", token.getToken()));
+    }
+
     public static LoginException noCredentialsFound() {
         return new LoginException("No cookie or authorization header found");
     }

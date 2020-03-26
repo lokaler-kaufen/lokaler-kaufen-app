@@ -1,7 +1,11 @@
 package de.qaware.mercury.business.reservation.impl;
 
 import de.qaware.mercury.business.email.EmailService;
-import de.qaware.mercury.business.reservation.*;
+import de.qaware.mercury.business.reservation.Interval;
+import de.qaware.mercury.business.reservation.Reservation;
+import de.qaware.mercury.business.reservation.ReservationService;
+import de.qaware.mercury.business.reservation.Slot;
+import de.qaware.mercury.business.reservation.SlotService;
 import de.qaware.mercury.business.shop.ContactType;
 import de.qaware.mercury.business.shop.Shop;
 import de.qaware.mercury.business.time.Clock;
@@ -44,17 +48,17 @@ class ReservationServiceImpl implements ReservationService {
         // TODO: Validate that slot is available
         // TODO: Validate if this is a valid slot
 
-        Reservation.Id id = Reservation.Id.random(uuidFactory);
+        Reservation.Id reservationId = Reservation.Id.random(uuidFactory);
 
         LocalDateTime start = slotId.toLocalDateTime();
         LocalDateTime end = start.plusMinutes(shop.getSlotConfig().getTimePerSlot());
 
-        reservationRepository.insert(new Reservation(id, shop.getId(), start, end, contact, email, contactType, clock.nowZoned(), clock.nowZoned()));
+        reservationRepository.insert(new Reservation(reservationId, shop.getId(), start, end, contact, email, contactType, clock.nowZoned(), clock.nowZoned()));
 
         log.info("Sending customer reservation confirmation to '{}'", email);
-        emailService.sendCustomerReservationConfirmation(shop, email, name, start, end, contactType, contact);
+        emailService.sendCustomerReservationConfirmation(shop, email, name, start, end, contactType, contact, reservationId);
         log.info("Sending new shop reservation to '{}'", shop.getEmail());
-        emailService.sendShopNewReservation(shop, name, start, end, contactType, contact);
+        emailService.sendShopNewReservation(shop, name, start, end, contactType, contact, reservationId);
     }
 
     private List<Interval> mapReservations(List<Reservation> reservations) {

@@ -11,11 +11,13 @@ mercury:
     adminJwtSecret: "QXOm/a5//OFtmciYomnixCTDCzNUQFWNAiT3eGBOfhQ=" # openssl rand -base64 32
     shopCreationJwtSecret: "8aaM086u9cpaNp8fMKURLOdpTEJYPqFy/xrN3M5ynT4=" # openssl rand -base64 32
     passwordResetJwtSecret: "71GRYLeFT2QzI/nq+g4UMk1hQ7Q+X2SvCU3ge5Nkpd8=" # openssl rand -base64 32
+    reservationCancellationJwtSecret: "aOAUO26KvMsqgb+lRl2o1dQFziRMBnQI9mw5rMxabcE" # openssl rand -base64 32
   email:
     use-dummy: true # Set this to false to send real emails
     from: "Lokaler.kaufen <info@lokaler.kaufen>"
     creationLinkTemplate: "http://localhost:4200/#/create-shop?token={{ token }}"
     shopPasswordResetLinkTemplate: "http://localhost:4200/#/reset-shop-password?token={{ token }}"
+    reservationCancellationLinkTemplate: "http://localhost:4200/#/cancel-reservation?token={{ token }}"
   features:
     enableDebugDataCreation: true
     enableShopsOnCreation: true

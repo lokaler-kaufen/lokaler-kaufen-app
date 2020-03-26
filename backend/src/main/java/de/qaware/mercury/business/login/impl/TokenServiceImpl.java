@@ -7,7 +7,18 @@ import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import de.qaware.mercury.business.admin.Admin;
-import de.qaware.mercury.business.login.*;
+import de.qaware.mercury.business.login.AdminToken;
+import de.qaware.mercury.business.login.LoginException;
+import de.qaware.mercury.business.login.PasswordResetToken;
+import de.qaware.mercury.business.login.ReservationCancellationToken;
+import de.qaware.mercury.business.login.ShopCreationToken;
+import de.qaware.mercury.business.login.ShopLogin;
+import de.qaware.mercury.business.login.ShopToken;
+import de.qaware.mercury.business.login.TokenService;
+import de.qaware.mercury.business.login.TokenTechnicalException;
+import de.qaware.mercury.business.reservation.Reservation;
+import de.qaware.mercury.business.reservation.ReservationCancellation;
+import de.qaware.mercury.business.reservation.ReservationCancellationSide;
 import de.qaware.mercury.business.shop.InvalidShopIdException;
 import de.qaware.mercury.business.shop.Shop;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +33,7 @@ class TokenServiceImpl implements TokenService {
     private static final String ADMIN_ISSUER = "mercury-admin";
     private static final String SHOP_CREATION_ISSUER = "mercury-shop-creation";
     private static final String PASSWORD_RESET_ISSUER = "mercury-password-reset";
+    private static final String RESERVATION_CANCELLATION_ISSUER = "mercury-reservation-cancellation";
 
     private final TokenServiceConfigurationProperties config;
 
@@ -167,6 +179,43 @@ class TokenServiceImpl implements TokenService {
         } catch (JWTVerificationException e) {
             log.warn("Password reset token verification failed for token '{}'", token, e);
             throw LoginException.forPasswordResetToken(token);
+        }
+    }
+
+    @Override
+    public ReservationCancellationToken createReservationCancellationToken(Reservation.Id reservationId, ReservationCancellationSide side) {
+        try {
+            Algorithm algorithm = getAlgorithm(config.getReservationCancellationJwtSecret());
+            String token = JWT.create()
+                .withIssuer(RESERVATION_CANCELLATION_ISSUER)
+                .withSubject(reservationId.getId().toString())
+                .withClaim("side", side.getId())
+                .sign(algorithm);
+            // TODO MKA: Add expiry!
+
+            return ReservationCancellationToken.of(token);
+        } catch (JWTCreationException exception) {
+            throw new TokenTechnicalException(String.format("Failed to create reservation cancellation token for reservation '%s', side %s", reservationId, side), exception);
+        }
+    }
+
+    @Override
+    public ReservationCancellation verifyCancellationToken(ReservationCancellationToken token) throws LoginException {
+        try {
+            Algorithm algorithm = getAlgorithm(config.getReservationCancellationJwtSecret());
+            JWTVerifier verifier = JWT.require(algorithm)
+                .withIssuer(RESERVATION_CANCELLATION_ISSUER)
+                .build();
+            DecodedJWT jwt = verifier.verify(token.getToken());
+
+            Reservation.Id reservationId = Reservation.Id.parse(jwt.getSubject());
+            ReservationCancellationSide side = ReservationCancellationSide.parse(jwt.getClaim("side").asString());
+
+            log.debug("Verified token for reservation cancellation, reservation id '{}', side {}", reservationId, side);
+            return new ReservationCancellation(reservationId, side);
+        } catch (JWTVerificationException e) {
+            log.warn("Reservation cancellation token verification failed for token '{}'", token, e);
+            throw LoginException.forReservationCancellationToken(token);
         }
     }
 

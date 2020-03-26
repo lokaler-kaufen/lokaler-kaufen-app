@@ -36,5 +36,9 @@ public class Reservation {
         public String toString() {
             return id.toString();
         }
+
+        public static Reservation.Id parse(String input) {
+            return Reservation.Id.of(UUID.fromString(input));
+        }
     }
 }

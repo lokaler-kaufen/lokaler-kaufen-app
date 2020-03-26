@@ -22,4 +22,6 @@ class TokenServiceConfigurationProperties {
     private String shopCreationJwtSecret;
     @NotBlank
     private String passwordResetJwtSecret;
+    @NotBlank
+    private String reservationCancellationJwtSecret;
 }

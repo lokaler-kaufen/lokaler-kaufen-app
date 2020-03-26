@@ -3,8 +3,11 @@ package de.qaware.mercury.business.email.impl
 import de.qaware.mercury.business.email.EmailSender
 import de.qaware.mercury.business.i18n.DateTimeI18nService
 import de.qaware.mercury.business.login.PasswordResetToken
+import de.qaware.mercury.business.login.ReservationCancellationToken
 import de.qaware.mercury.business.login.ShopCreationToken
 import de.qaware.mercury.business.login.TokenService
+import de.qaware.mercury.business.reservation.Reservation
+import de.qaware.mercury.business.reservation.ReservationCancellationSide
 import de.qaware.mercury.business.shop.ContactType
 import de.qaware.mercury.business.shop.Shop
 import spock.lang.Specification
@@ -12,8 +15,7 @@ import spock.lang.Specification
 import java.time.LocalDateTime
 
 class EmailServiceImplSpec extends Specification {
-
-    public static final String EMAIL = 'test@lokaler.kaufen'
+    static final String EMAIL = 'test@lokaler.kaufen'
 
     EmailServiceImpl emailService
     EmailSender emailSender
@@ -42,15 +44,18 @@ class EmailServiceImplSpec extends Specification {
 
     def "Send customer reservation confirmation"() {
         given:
-        def shop = Shop.builder().name('BoozShop').ownerName('Spock').build()
-        def slot = LocalDateTime.now()
+        Shop shop = Shop.builder().name('BoozShop').ownerName('Spock').build()
+        LocalDateTime slot = LocalDateTime.now()
+        Reservation.Id reservationId = Reservation.Id.of(UUID.randomUUID())
 
         when:
-        emailService.sendCustomerReservationConfirmation(shop, 'test@shop.de', 'Test Shop', slot, slot, ContactType.WHATSAPP, 'Spock')
+        emailService.sendCustomerReservationConfirmation(shop, 'test@shop.de', 'Test Shop', slot, slot, ContactType.WHATSAPP, 'Spock', reservationId)
 
         then:
         1 * i18nService.formatDate(_) >> '24.12.12412'
         2 * i18nService.formatTime(_) >> '00:00:00'
+        1 * properties.getReservationCancellationLinkTemplate() >> '{{ token }}'
+        1 * tokenService.createReservationCancellationToken(reservationId, ReservationCancellationSide.CUSTOMER) >> new ReservationCancellationToken("test")
         noExceptionThrown()
     }
 
@@ -68,15 +73,18 @@ class EmailServiceImplSpec extends Specification {
 
     def "Send shop news reservation"() {
         given:
-        def shop = Shop.builder().ownerName('Spock').build()
-        def slot = LocalDateTime.now()
+        Shop shop = Shop.builder().ownerName('Spock').build()
+        LocalDateTime slot = LocalDateTime.now()
+        Reservation.Id reservationId = Reservation.Id.of(UUID.randomUUID())
 
         when:
-        emailService.sendShopNewReservation(shop, 'Test Shop', slot, slot, ContactType.WHATSAPP, 'Spock')
+        emailService.sendShopNewReservation(shop, 'Test Shop', slot, slot, ContactType.WHATSAPP, 'Spock', reservationId)
 
         then:
         1 * i18nService.formatDate(_) >> '24.12.12412'
         2 * i18nService.formatTime(_) >> '00:00:00'
+        1 * properties.getReservationCancellationLinkTemplate() >> '{{ token }}'
+        1 * tokenService.createReservationCancellationToken(reservationId, ReservationCancellationSide.SHOP) >> new ReservationCancellationToken("test")
         noExceptionThrown()
     }
 }

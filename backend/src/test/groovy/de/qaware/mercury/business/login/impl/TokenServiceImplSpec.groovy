@@ -1,7 +1,12 @@
 package de.qaware.mercury.business.login.impl
 
 import de.qaware.mercury.business.admin.Admin
-import de.qaware.mercury.business.login.*
+import de.qaware.mercury.business.login.AdminToken
+import de.qaware.mercury.business.login.PasswordResetToken
+import de.qaware.mercury.business.login.ShopCreationToken
+import de.qaware.mercury.business.login.ShopLogin
+import de.qaware.mercury.business.login.ShopToken
+import de.qaware.mercury.business.login.TokenService
 import de.qaware.mercury.business.shop.Shop
 import spock.lang.Specification
 
@@ -11,7 +16,7 @@ class TokenServiceImplSpec extends Specification {
     TokenServiceConfigurationProperties config
 
     def setup() {
-        config = new TokenServiceConfigurationProperties("shop-secret", "admin-secret", "shop-creation-secret", "password-reset-secret")
+        config = new TokenServiceConfigurationProperties("shop-secret", "admin-secret", "shop-creation-secret", "password-reset-secret", "reservation-cancellation-secret")
         tokenService = new TokenServiceImpl(config)
     }
 

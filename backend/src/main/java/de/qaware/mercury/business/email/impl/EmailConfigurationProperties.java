@@ -23,4 +23,10 @@ class EmailConfigurationProperties {
      */
     @NotBlank
     private String shopPasswordResetLinkTemplate;
+
+    /**
+     * {{ token }} will be replaced with the password reset link token.
+     */
+    @NotBlank
+    private String reservationCancellationLinkTemplate;
 }

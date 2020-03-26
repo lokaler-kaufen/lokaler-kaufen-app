@@ -5,8 +5,11 @@ import de.qaware.mercury.business.email.EmailService;
 import de.qaware.mercury.business.email.SendEmailException;
 import de.qaware.mercury.business.i18n.DateTimeI18nService;
 import de.qaware.mercury.business.login.PasswordResetToken;
+import de.qaware.mercury.business.login.ReservationCancellationToken;
 import de.qaware.mercury.business.login.ShopCreationToken;
 import de.qaware.mercury.business.login.TokenService;
+import de.qaware.mercury.business.reservation.Reservation;
+import de.qaware.mercury.business.reservation.ReservationCancellationSide;
 import de.qaware.mercury.business.shop.ContactType;
 import de.qaware.mercury.business.shop.Shop;
 import lombok.AccessLevel;
@@ -25,7 +28,7 @@ import java.time.LocalDateTime;
 @EnableConfigurationProperties(EmailConfigurationProperties.class)
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 class EmailServiceImpl implements EmailService {
-    private static final String SHOP_CREATION_SUBJECT = "Dein Laden auf lokaler.kaufen";
+    static final String SHOP_CREATION_SUBJECT = "Dein Laden auf lokaler.kaufen";
     private static final String CUSTOMER_RESERVATION_CONFIRMATION_SUBJECT = "Reservierungsbestätigung auf lokaler.kaufen";
     private static final String SHOP_NEW_RESERVATION_SUBJECT = "Es gibt eine neue Reservierung auf lokaler.kaufen";
     private static final String SHOP_RESET_PASSWORD_SUBJECT = "Passwort auf lokaler.kaufen zurücksetzen";
@@ -47,7 +50,11 @@ class EmailServiceImpl implements EmailService {
     }
 
     @Override
-    public void sendCustomerReservationConfirmation(Shop shop, String email, String name, LocalDateTime slotStart, LocalDateTime slotEnd, ContactType contactType, String contact) {
+    public void sendCustomerReservationConfirmation(Shop shop, String email, String name, LocalDateTime slotStart, LocalDateTime slotEnd, ContactType contactType, String contact, Reservation.Id reservationId) {
+        ReservationCancellationToken token = tokenService.createReservationCancellationToken(reservationId, ReservationCancellationSide.CUSTOMER);
+        String cancelReservationLink = config.getReservationCancellationLinkTemplate()
+            .replace("{{ token }}", token.getToken());
+
         String body = loadTemplate("/email/customer-reservation-confirmation.txt")
             .replace("{{ name }}", name)
             .replace("{{ shopName }}", shop.getName())
@@ -57,13 +64,17 @@ class EmailServiceImpl implements EmailService {
             .replace("{{ start }}", dateTimeI18nService.formatTime(slotStart))
             .replace("{{ end }}", dateTimeI18nService.formatTime(slotEnd))
             .replace("{{ contact }}", contact)
-            .replace("{{ cancelReservationLink }}", "TODO");
+            .replace("{{ cancelReservationLink }}", cancelReservationLink);
 
         emailSender.sendEmail(email, CUSTOMER_RESERVATION_CONFIRMATION_SUBJECT, body);
     }
 
     @Override
-    public void sendShopNewReservation(Shop shop, String name, LocalDateTime slotStart, LocalDateTime slotEnd, ContactType contactType, String contact) {
+    public void sendShopNewReservation(Shop shop, String name, LocalDateTime slotStart, LocalDateTime slotEnd, ContactType contactType, String contact, Reservation.Id reservationId) {
+        ReservationCancellationToken token = tokenService.createReservationCancellationToken(reservationId, ReservationCancellationSide.SHOP);
+        String cancelReservationLink = config.getReservationCancellationLinkTemplate()
+            .replace("{{ token }}", token.getToken());
+
         String body = loadTemplate("/email/shop-new-reservation.txt")
             .replace("{{ name }}", name)
             .replace("{{ ownerName }}", shop.getOwnerName())
@@ -71,7 +82,8 @@ class EmailServiceImpl implements EmailService {
             .replace("{{ date }}", dateTimeI18nService.formatDate(slotStart))
             .replace("{{ start }}", dateTimeI18nService.formatTime(slotStart))
             .replace("{{ end }}", dateTimeI18nService.formatTime(slotEnd))
-            .replace("{{ contact }}", contact);
+            .replace("{{ contact }}", contact)
+            .replace("{{ cancelReservationLink }}", cancelReservationLink);
 
         emailSender.sendEmail(shop.getEmail(), SHOP_NEW_RESERVATION_SUBJECT, body);
     }
