@@ -24,6 +24,7 @@ class TokenServiceImplSpec extends Specification {
 
     def "Create and Verify Admin Token"() {
         given:
+        clock.nowAsLegacyDate() >> new Date()
         Admin.Id id = Admin.Id.of(UUID.randomUUID())
         AdminToken token = tokenService.createAdminToken(id)
 
@@ -36,6 +37,7 @@ class TokenServiceImplSpec extends Specification {
 
     def "Create and Verify Shop Token"() {
         given:
+        clock.nowAsLegacyDate() >> new Date()
         ShopLogin.Id shopLoginId = ShopLogin.Id.of(UUID.randomUUID())
         Shop.Id shopId = Shop.Id.of(UUID.randomUUID())
         ShopToken token = tokenService.createShopToken(shopLoginId, shopId)
@@ -49,6 +51,7 @@ class TokenServiceImplSpec extends Specification {
 
     def "Create and Verify Shop Creation Token"() {
         given:
+        clock.nowAsLegacyDate() >> new Date()
         ShopCreationToken token = tokenService.createShopCreationToken("foo@bar.org")
 
         when:
@@ -60,6 +63,7 @@ class TokenServiceImplSpec extends Specification {
 
     def "Create and Verify Password Reset Token"() {
         given:
+        clock.nowAsLegacyDate() >> new Date()
         PasswordResetToken token = tokenService.createPasswordResetToken("foo@bar.org")
 
         when:
