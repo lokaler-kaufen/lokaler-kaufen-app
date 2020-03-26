@@ -3,6 +3,7 @@ import {ReplaySubject} from 'rxjs';
 import {ShopAdminDto, ShopOwnerDetailDto} from '../data/client';
 import {ActivatedRoute} from '@angular/router';
 import {AdminService} from '../shared/admin.service';
+import {NotificationsService} from 'angular2-notifications';
 
 @Component({
   selector: 'admin-details-page',
@@ -17,13 +18,21 @@ export class AdminDetailsPageComponent implements OnInit {
   shopOwnerDetails: ReplaySubject<ShopOwnerDetailDto> = new ReplaySubject<ShopOwnerDetailDto>();
 
   constructor(private adminService: AdminService,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private notificationsService: NotificationsService) {
   }
 
   ngOnInit() {
     this.shopId = this.route.snapshot.paramMap.get('id');
-    this.shopDetails = this.adminService.getShopWithId(this.shopId);
-    this.shopOwnerDetails.next(this.extractShopOwnerDetailDto(this.shopDetails));
+    this.adminService.getShopWithId(this.shopId)
+      .subscribe(response => {
+          this.shopDetails = response;
+          this.shopOwnerDetails.next(this.extractShopOwnerDetailDto(this.shopDetails));
+        },
+        error => {
+          console.log('Error requesting shop details: ' + error.status + ', ' + error.message);
+          this.notificationsService.error('Tut uns leid!', 'Es ist ein Fehler beim Laden der Details aufgetreten.');
+        });
   }
 
   updateShop($event: ShopOwnerDetailDto) {

@@ -1,9 +1,9 @@
 import {CollectionViewer, DataSource} from '@angular/cdk/collections';
 import {ShopAdminDto, ShopsAdminDto} from '../data/client';
 import {BehaviorSubject, Observable, of} from 'rxjs';
-import {HttpClient} from '@angular/common/http';
 import {NotificationsService} from 'angular2-notifications';
 import {catchError, finalize, map} from 'rxjs/operators';
+import {AdminService} from '../shared/admin.service';
 
 export class ShopListAdminDataSource implements DataSource<ShopAdminDto> {
 
@@ -12,7 +12,7 @@ export class ShopListAdminDataSource implements DataSource<ShopAdminDto> {
 
   public loading$ = this.loadingSubject.asObservable();
 
-  constructor(private httpClient: HttpClient, private notificationsService: NotificationsService) {
+  constructor(private adminService: AdminService, private notificationsService: NotificationsService) {
   }
 
   connect(collectionViewer: CollectionViewer): Observable<ShopAdminDto[] | ReadonlyArray<ShopAdminDto>> {
@@ -28,7 +28,7 @@ export class ShopListAdminDataSource implements DataSource<ShopAdminDto> {
   loadShops() {
     this.loadingSubject.next(true);
 
-    this.httpClient.get<ShopsAdminDto>('/api/admin/shop').pipe(
+    this.adminService.listAllShops().pipe(
       map((result: ShopsAdminDto) => result.shops),
       catchError((error) => {
         console.log('Got error on request to /api/admin/shop' + error);

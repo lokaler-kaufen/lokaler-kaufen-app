@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {ShopAdminDto, ShopsAdminDto} from '../data/client';
 import {NotificationsService} from 'angular2-notifications';
+import {Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -17,12 +18,12 @@ export class AdminService {
     });
   }
 
-  listAllShops() {
-    return this.shopDetails;
+  listAllShops(): Observable<ShopsAdminDto> {
+    return this.client.get('/api/admin/shop');
   }
 
-  getShopWithId(id: string) {
-    return this.shopDetails.shops.find(shop => shop.id === id);
+  getShopWithId(id: string): Observable<ShopAdminDto> {
+    return this.client.get<ShopAdminDto>('/api/admin/shop' + encodeURIComponent(id));
   }
 
   updateShop(updatedShop: ShopAdminDto) {
@@ -48,7 +49,7 @@ export class AdminService {
   }
 
   changeShopEnable(shopId: string, enabled: boolean) {
-    this.client.delete('/api/admin/shop/' + encodeURIComponent(shopId) + '/enable?enabled=' + enabled)
+    this.client.delete('/api/admin/shop/' + encodeURIComponent(shopId) + '/approve?approved=' + enabled)
       .subscribe(() => {
           this.notificationsService.success('Alles klar!', 'Das enabled flag wurde auf ' + enabled + ' gesetzt.');
         },

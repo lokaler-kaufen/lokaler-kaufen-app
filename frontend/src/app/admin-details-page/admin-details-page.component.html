@@ -1,7 +1,7 @@
-<div>
-  <shop-details (updateShopEvent)="updateShop($event)"
+<div *ngIf="shopDetails">
+  <shop-details *ngIf="shopOwnerDetails" (updateShopEvent)="updateShop($event)"
                 [detailsObservable]="shopOwnerDetails"></shop-details>
-  <div><h2>E-Mail: {{shopDetails.email}}</h2></div>
+  <div><h3>E-Mail: {{shopDetails.email}}</h3></div>
   <button style="width: 25%; margin-right: 10px;" mat-raised-button color="primary"
           (click)="changeShopEnable()">
     <div *ngIf="shopDetails.enabled">Deaktivieren</div>

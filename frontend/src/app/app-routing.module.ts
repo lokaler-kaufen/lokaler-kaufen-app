@@ -10,8 +10,9 @@ import {ImprintPageComponent} from './imprint-page/imprint-page.component';
 import {PrivacyPageComponent} from './privacy-page/privacy-page.component';
 import {AdminOverviewPageComponent} from './admin-overview/admin-overview-page.component';
 import {AdminLoginPageComponent} from './admin-login/admin-login-page.component';
-import {PasswordResetPageComponent} from "./password-reset-page/password-reset-page.component";
-import {CancelReservationComponent} from "./cancel-reservation/cancel-reservation.component";
+import {PasswordResetPageComponent} from './password-reset-page/password-reset-page.component';
+import {CancelReservationComponent} from './cancel-reservation/cancel-reservation.component';
+import {AdminDetailsPageComponent} from './admin-details-page/admin-details-page.component';
 
 const routes: Routes = [
   {path: '', component: LandingPageComponent},
@@ -24,6 +25,7 @@ const routes: Routes = [
   {path: 'privacy', component: PrivacyPageComponent},
   {path: 'admin/overview', component: AdminOverviewPageComponent},
   {path: 'admin', component: AdminLoginPageComponent},
+  {path: 'admin/:id', component: AdminDetailsPageComponent},
   {path: 'reset-shop-password', component: PasswordResetPageComponent},
   {path: 'cancel-reservation', component: CancelReservationComponent}
 ];
