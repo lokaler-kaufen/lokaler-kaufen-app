@@ -21,6 +21,9 @@ import de.qaware.mercury.business.reservation.ReservationCancellation;
 import de.qaware.mercury.business.reservation.ReservationCancellationSide;
 import de.qaware.mercury.business.shop.InvalidShopIdException;
 import de.qaware.mercury.business.shop.Shop;
+import de.qaware.mercury.business.time.Clock;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Service;
@@ -28,6 +31,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 @EnableConfigurationProperties(TokenServiceConfigurationProperties.class)
+@RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 class TokenServiceImpl implements TokenService {
     private static final String SHOP_ISSUER = "mercury-shop";
     private static final String ADMIN_ISSUER = "mercury-admin";
@@ -36,16 +40,15 @@ class TokenServiceImpl implements TokenService {
     private static final String RESERVATION_CANCELLATION_ISSUER = "mercury-reservation-cancellation";
 
     private final TokenServiceConfigurationProperties config;
-
-    TokenServiceImpl(TokenServiceConfigurationProperties config) {
-        this.config = config;
-    }
+    private final Clock clock;
 
     @Override
     public AdminToken createAdminToken(Admin.Id adminId) {
         try {
             Algorithm algorithm = getAlgorithm(config.getAdminJwtSecret());
             String token = JWT.create()
+                .withIssuedAt(clock.nowAsLegacyDate())
+                .withNotBefore(clock.nowAsLegacyDate())
                 .withIssuer(ADMIN_ISSUER)
                 .withSubject(adminId.toString())
                 .sign(algorithm);
@@ -80,6 +83,8 @@ class TokenServiceImpl implements TokenService {
         try {
             Algorithm algorithm = getAlgorithm(config.getShopJwtSecret());
             String token = JWT.create()
+                .withIssuedAt(clock.nowAsLegacyDate())
+                .withNotBefore(clock.nowAsLegacyDate())
                 .withIssuer(SHOP_ISSUER)
                 .withSubject(shopLoginId.toString())
                 .withClaim("shop", shopId.toString())
@@ -119,6 +124,8 @@ class TokenServiceImpl implements TokenService {
         try {
             Algorithm algorithm = getAlgorithm(config.getShopCreationJwtSecret());
             String token = JWT.create()
+                .withIssuedAt(clock.nowAsLegacyDate())
+                .withNotBefore(clock.nowAsLegacyDate())
                 .withIssuer(SHOP_CREATION_ISSUER)
                 .withSubject(email)
                 .sign(algorithm);
@@ -153,6 +160,8 @@ class TokenServiceImpl implements TokenService {
         try {
             Algorithm algorithm = getAlgorithm(config.getPasswordResetJwtSecret());
             String token = JWT.create()
+                .withIssuedAt(clock.nowAsLegacyDate())
+                .withNotBefore(clock.nowAsLegacyDate())
                 .withIssuer(PASSWORD_RESET_ISSUER)
                 .withSubject(email)
                 .sign(algorithm);
@@ -187,6 +196,8 @@ class TokenServiceImpl implements TokenService {
         try {
             Algorithm algorithm = getAlgorithm(config.getReservationCancellationJwtSecret());
             String token = JWT.create()
+                .withIssuedAt(clock.nowAsLegacyDate())
+                .withNotBefore(clock.nowAsLegacyDate())
                 .withIssuer(RESERVATION_CANCELLATION_ISSUER)
                 .withSubject(reservationId.getId().toString())
                 .withClaim("side", side.getId())

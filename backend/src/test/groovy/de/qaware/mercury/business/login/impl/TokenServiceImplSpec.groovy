@@ -8,16 +8,18 @@ import de.qaware.mercury.business.login.ShopLogin
 import de.qaware.mercury.business.login.ShopToken
 import de.qaware.mercury.business.login.TokenService
 import de.qaware.mercury.business.shop.Shop
+import de.qaware.mercury.business.time.Clock
 import spock.lang.Specification
 
 class TokenServiceImplSpec extends Specification {
 
     TokenService tokenService
     TokenServiceConfigurationProperties config
+    Clock clock = Mock()
 
     void setup() {
         config = new TokenServiceConfigurationProperties("shop-secret", "admin-secret", "shop-creation-secret", "password-reset-secret", "reservation-cancellation-secret")
-        tokenService = new TokenServiceImpl(config)
+        tokenService = new TokenServiceImpl(config, clock)
     }
 
     def "Create and Verify Admin Token"() {
