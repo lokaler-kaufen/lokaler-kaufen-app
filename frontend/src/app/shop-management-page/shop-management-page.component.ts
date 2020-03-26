@@ -2,8 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {NotificationsService} from 'angular2-notifications';
-import {ShopOwnerDetailDto, UpdateShopDto} from '../data/client';
+import {UpdateShopDto} from '../data/client/model/updateShopDto';
 import {ReplaySubject} from 'rxjs';
+import {ShopOwnerDetailDto} from '../data/client/model/shopOwnerDetailDto';
 
 @Component({
   selector: 'shop-management-page',
@@ -41,6 +42,5 @@ export class ShopManagementPageComponent implements OnInit {
         this.notificationsService.error('Tut uns leid!', 'Dein Laden konnte leider nicht aktualisiert werden.');
       });
   }
-
 
 }

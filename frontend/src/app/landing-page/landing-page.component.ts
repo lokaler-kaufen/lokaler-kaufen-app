@@ -1,10 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {LocationControllerService, LocationSuggestionDto, LocationSuggestionsDto} from '../data/client';
 import {debounceTime, map, switchMap} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {ZipCodeCacheService} from './zip-code-cache.service';
+import {LocationSuggestionDto} from '../data/client/model/locationSuggestionDto';
+import {LocationSuggestionsDto} from '../data/client/model/locationSuggestionsDto';
 
 @Component({
   selector: 'landing-page',
@@ -17,11 +18,12 @@ export class LandingPageComponent implements OnInit {
   suggestions: LocationSuggestionDto[] = [];
   form: FormGroup;
 
-  constructor(private formBuilder: FormBuilder,
-              private locationControllerService: LocationControllerService,
-              private client: HttpClient,
-              private router: Router,
-              private zipCodeCacheService: ZipCodeCacheService) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private client: HttpClient,
+    private router: Router,
+    private zipCodeCacheService: ZipCodeCacheService
+  ) {
   }
 
   ngOnInit(): void {
@@ -85,7 +87,7 @@ export class LandingPageComponent implements OnInit {
     // cache the zipCode for later
     this.zipCodeCacheService.setZipCode(locationFromInput);
 
-    this.router.navigate(['/shops'], { queryParams: {location: locationFromInput}});
+    this.router.navigate(['/shops'], {queryParams: {location: locationFromInput}});
   }
 
 }

@@ -1,6 +1,5 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
-
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -29,7 +28,6 @@ import {MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule} from '@angular/material/dia
 import {ErrorStateMatcher, ShowOnDirtyErrorStateMatcher} from '@angular/material/core';
 import {RegisterBusinessPopupComponent} from './register-business-popup/register-business-popup.component';
 import {MatStepperModule} from '@angular/material/stepper';
-import {ApiModule} from './data/client';
 import {AdminOverviewPageComponent} from './admin-overview/admin-overview-page.component';
 import {ShopCreationSuccessPopupComponent} from './shop-creation-success-popup/shop-creation-success-popup.component';
 import {AdminLoginPageComponent} from './admin-login/admin-login-page.component';
@@ -39,69 +37,58 @@ import {LoginFormComponent} from './login-form/login-form.component';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {PasswordResetPopupComponent} from './password-reset-popup/password-reset-popup.component';
 import {PasswordResetPageComponent} from './password-reset-page/password-reset-page.component';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {CancelReservationComponent} from './cancel-reservation/cancel-reservation.component';
 import {AdminDetailsPageComponent} from './admin-details-page/admin-details-page.component';
 import {ShopDetailsComponent} from './shop-details/shop-details.component';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
+    AdminDetailsPageComponent,
+    AdminLoginPageComponent,
     AdminOverviewPageComponent,
     AppComponent,
-    LandingPageComponent,
-    ShopSearchPageComponent,
-    ShopDetailsPageComponent,
-    ShopCreationPageComponent,
-    ShopManagementPageComponent,
-    LoginPageComponent,
-    PrivacyPageComponent,
-    ImprintPageComponent,
-    AppHeaderComponent,
     AppFooterComponent,
+    AppHeaderComponent,
     BookingPopupComponent,
-    RegisterBusinessPopupComponent,
-    AdminOverviewPageComponent,
-    ShopCreationSuccessPopupComponent,
-    AdminOverviewPageComponent,
-    AdminLoginPageComponent,
+    CancelReservationComponent,
+    ImprintPageComponent,
+    LandingPageComponent,
     LoginFormComponent,
-    PasswordResetPopupComponent,
+    LoginPageComponent,
     PasswordResetPageComponent,
-    AdminDetailsPageComponent,
-    ShopDetailsComponent
+    PasswordResetPopupComponent,
+    PrivacyPageComponent,
+    RegisterBusinessPopupComponent,
+    ShopCreationPageComponent,
+    ShopCreationSuccessPopupComponent,
+    ShopDetailsComponent,
+    ShopDetailsPageComponent,
+    ShopManagementPageComponent,
+    ShopSearchPageComponent
   ],
-    imports: [
-        ApiModule,
-        HttpClientModule,
-        BrowserModule,
-        AppRoutingModule,
-        BrowserAnimationsModule,
-        MatButtonModule,
-        MatCardModule,
-        MatButtonModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatDialogModule,
-        MatSelectModule,
-        FormsModule,
-        ReactiveFormsModule,
-        MatInputModule,
-        FormsModule,
-        MatTableModule,
-        HttpClientModule,
-        MatIconModule,
-        FormsModule,
-        MatInputModule,
-        MatSelectModule,
-        MatCardModule,
-        MatTableModule,
-        MatSortModule,
-        HttpClientModule,
-        MatStepperModule,
-        MatPasswordStrengthModule,
-        SimpleNotificationsModule.forRoot(),
-        MatAutocompleteModule,
-        MatProgressSpinnerModule,
-    ],
+  imports: [
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    BrowserModule,
+    FormsModule,
+    HttpClientModule,
+    MatAutocompleteModule,
+    MatButtonModule,
+    MatCardModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatPasswordStrengthModule,
+    MatProgressSpinnerModule,
+    MatSelectModule,
+    MatSortModule,
+    MatStepperModule,
+    MatTableModule,
+    ReactiveFormsModule,
+    SimpleNotificationsModule.forRoot()
+  ],
   providers: [
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}},
     {provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher}

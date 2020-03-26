@@ -2,7 +2,6 @@ import {async, ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/t
 
 import {LandingPageComponent} from './landing-page.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {LocationControllerService} from '../data/client';
 import {ZipCodeCacheService} from './zip-code-cache.service';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import {RouterTestingModule} from '@angular/router/testing';
@@ -15,11 +14,11 @@ describe('LandingPageComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LandingPageComponent ],
+      declarations: [LandingPageComponent],
       imports: [ReactiveFormsModule, FormsModule, HttpClientTestingModule, RouterTestingModule, MatAutocompleteModule],
-      providers: [ LocationControllerService, ZipCodeCacheService]
+      providers: [ZipCodeCacheService]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -62,7 +61,7 @@ describe('LandingPageComponent', () => {
     tick(300);
 
     const req = httpMock.expectOne('/api/location/suggestion?zipCode=83024');
-    req.flush( {suggestions: [{countryCode: 'DE', zipCode: '83024', placeName: 'Rosenheim'}]});
+    req.flush({suggestions: [{countryCode: 'DE', zipCode: '83024', placeName: 'Rosenheim'}]});
 
     expect(component.startDisabled).toBeFalse();
   }));

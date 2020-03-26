@@ -1,14 +1,15 @@
 import {CollectionViewer, DataSource} from '@angular/cdk/collections';
-import {ShopAdminDto, ShopsAdminDto} from '../data/client';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {NotificationsService} from 'angular2-notifications';
 import {catchError, finalize, map} from 'rxjs/operators';
 import {AdminService} from '../shared/admin.service';
+import {ShopAdminDto} from '../data/client/model/shopAdminDto';
+import {ShopsAdminDto} from '../data/client/model/shopsAdminDto';
 
 export class ShopListAdminDataSource implements DataSource<ShopAdminDto> {
 
   private shopsSubject = new BehaviorSubject<ShopAdminDto[]>([]);
-  private loadingSubject  = new BehaviorSubject<boolean>(false);
+  private loadingSubject = new BehaviorSubject<boolean>(false);
 
   public loading$ = this.loadingSubject.asObservable();
 

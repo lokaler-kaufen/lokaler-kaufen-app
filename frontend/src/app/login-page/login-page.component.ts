@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
-import {MatDialog} from "@angular/material/dialog";
-import {PasswordResetPopupComponent} from "../password-reset-popup/password-reset-popup.component";
-import {HttpClient} from "@angular/common/http";
-import {NotificationsService} from "angular2-notifications";
+import {MatDialog} from '@angular/material/dialog';
+import {PasswordResetPopupComponent} from '../password-reset-popup/password-reset-popup.component';
+import {HttpClient} from '@angular/common/http';
+import {NotificationsService} from 'angular2-notifications';
 
 @Component({
   selector: 'login-page',
