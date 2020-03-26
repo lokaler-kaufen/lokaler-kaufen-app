@@ -34,11 +34,12 @@ import {AdminOverviewPageComponent} from './admin-overview/admin-overview-page.c
 import {ShopCreationSuccessPopupComponent} from './shop-creation-success-popup/shop-creation-success-popup.component';
 import {AdminLoginPageComponent} from './admin-login/admin-login-page.component';
 import {MatPasswordStrengthModule} from '@angular-material-extensions/password-strength';
-import {SimpleNotificationsModule} from "angular2-notifications";
+import {SimpleNotificationsModule} from 'angular2-notifications';
 import {LoginFormComponent} from './login-form/login-form.component';
-import {MatAutocompleteModule} from "@angular/material/autocomplete";
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {PasswordResetPopupComponent} from './password-reset-popup/password-reset-popup.component';
 import {PasswordResetPageComponent} from './password-reset-page/password-reset-page.component';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -64,38 +65,39 @@ import {PasswordResetPageComponent} from './password-reset-page/password-reset-p
     PasswordResetPopupComponent,
     PasswordResetPageComponent
   ],
-  imports: [
-    ApiModule,
-    HttpClientModule,
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    MatButtonModule,
-    MatCardModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatDialogModule,
-    MatSelectModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    FormsModule,
-    MatTableModule,
-    HttpClientModule,
-    MatIconModule,
-    FormsModule,
-    MatInputModule,
-    MatSelectModule,
-    MatCardModule,
-    MatTableModule,
-    MatSortModule,
-    HttpClientModule,
-    MatStepperModule,
-    MatPasswordStrengthModule,
-    SimpleNotificationsModule.forRoot(),
-    MatAutocompleteModule,
-  ],
+    imports: [
+        ApiModule,
+        HttpClientModule,
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        MatButtonModule,
+        MatCardModule,
+        MatButtonModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatDialogModule,
+        MatSelectModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        FormsModule,
+        MatTableModule,
+        HttpClientModule,
+        MatIconModule,
+        FormsModule,
+        MatInputModule,
+        MatSelectModule,
+        MatCardModule,
+        MatTableModule,
+        MatSortModule,
+        HttpClientModule,
+        MatStepperModule,
+        MatPasswordStrengthModule,
+        SimpleNotificationsModule.forRoot(),
+        MatAutocompleteModule,
+        MatProgressSpinnerModule,
+    ],
   providers: [
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}},
     {provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher}
