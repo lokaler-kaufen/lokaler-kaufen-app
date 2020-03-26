@@ -103,6 +103,8 @@ class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        // Spring just returns 400 Bad Request in these cases without a useful body
+        // We format a nice looking error message so that the caller knows what is invalid
         StringBuilder errorMessage = new StringBuilder();
         for (FieldError error : ex.getBindingResult().getFieldErrors()) {
             errorMessage
