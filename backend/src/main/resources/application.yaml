@@ -15,9 +15,9 @@ mercury:
   email:
     use-dummy: true # Set this to false to send real emails
     from: "Lokaler.kaufen <info@lokaler.kaufen>"
-    creationLinkTemplate: "http://localhost:4200/#/create-shop?token={{ token }}"
-    shopPasswordResetLinkTemplate: "http://localhost:4200/#/reset-shop-password?token={{ token }}"
-    reservationCancellationLinkTemplate: "http://localhost:4200/#/cancel-reservation?token={{ token }}"
+    creationLinkTemplate: "${variables.domain}/#/create-shop?token={{ token }}"
+    shopPasswordResetLinkTemplate: "${variables.domain}/#/reset-shop-password?token={{ token }}"
+    reservationCancellationLinkTemplate: "${variables.domain}/#/cancel-reservation?token={{ token }}"
   features:
     enableDebugDataCreation: true
     enableShopsOnCreation: true
@@ -29,3 +29,6 @@ spring.mail:
   password: ""
   properties:
     mail.smtp.starttls.enable: true
+
+variables:
+  domain: "http://localhost:4200"
