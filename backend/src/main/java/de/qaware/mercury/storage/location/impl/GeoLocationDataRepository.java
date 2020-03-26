@@ -10,7 +10,7 @@ import java.util.List;
 interface GeoLocationDataRepository extends JpaRepository<GeoLocationEntity, String> {
 
     @Query("SELECT g FROM GeoLocationEntity g WHERE g.zipCode = :zipCode")
-    List<GeoLocationEntity> findByZipCode(@Param("zipCode") String zipCode);
+    List<GeoLocationEntity> findByZipCode(@Param("zipCode") String zipCode, Pageable pageable);
 
     @Query("SELECT g FROM GeoLocationEntity g WHERE g.zipCode LIKE :zipCode ORDER BY g.zipCode")
     List<GeoLocationEntity> findByZipCodeLike(@Param("zipCode") String zipCode, Pageable pageable);

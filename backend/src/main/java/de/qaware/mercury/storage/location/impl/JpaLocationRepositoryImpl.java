@@ -22,7 +22,7 @@ class JpaLocationRepositoryImpl implements LocationRepository {
     @Override
     @Nullable
     public GeoLocation fromZipCode(String zipCode) {
-        List<GeoLocationEntity> hits = geoLocationDataRepository.findByZipCode(zipCode);
+        List<GeoLocationEntity> hits = geoLocationDataRepository.findByZipCode(zipCode, PageRequest.of(0, 1));
         if (hits.isEmpty()) {
             return null;
         }
