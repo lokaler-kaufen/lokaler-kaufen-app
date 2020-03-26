@@ -41,6 +41,18 @@ Start the `main()` method of the `de.qaware.mercury.MercuryApplication` class.
 
 ## How To's
 
+### Add a column to existing database tables
+
+1. Add column with `DEFAULT` and a sane value for the existing columns
+1. Drop the `DEFAULT` on the column
+
+```
+ALTER TABLE shop
+    ADD COLUMN approved boolean NOT NULL DEFAULT true;
+ALTER TABLE shop 
+    ALTER COLUMN approved DROP DEFAULT;
+```
+
 ### Get rid of all data in the postgres
 
 Just kill the docker container (pressing Ctrl+C in that terminal), and start it again.
