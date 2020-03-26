@@ -7,12 +7,12 @@ class AdminSpec extends Specification {
 
     def "Check random Admin.Id"() {
         given:
-        def uuid = UUID.randomUUID()
-        def uuidFactory = Stub(UUIDFactory)
+        UUID uuid = UUID.randomUUID()
+        UUIDFactory uuidFactory = Stub(UUIDFactory)
         uuidFactory.create() >> uuid
 
         when:
-        def random = Admin.Id.random(uuidFactory)
+        Admin.Id random = Admin.Id.random(uuidFactory)
 
         then:
         random
@@ -23,10 +23,10 @@ class AdminSpec extends Specification {
 
     def "Check parse Admin.Id"() {
         given:
-        def uuid = UUID.randomUUID()
+        UUID uuid = UUID.randomUUID()
 
         when:
-        def parsed = Admin.Id.parse(uuid.toString())
+        Admin.Id parsed = Admin.Id.parse(uuid.toString())
 
         then:
         parsed

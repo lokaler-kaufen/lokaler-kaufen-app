@@ -1,7 +1,11 @@
 package de.qaware.mercury.business.login.impl
 
 import de.qaware.mercury.business.admin.Admin
-import de.qaware.mercury.business.login.*
+import de.qaware.mercury.business.login.AdminLoginService
+import de.qaware.mercury.business.login.AdminToken
+import de.qaware.mercury.business.login.LoginException
+import de.qaware.mercury.business.login.PasswordHasher
+import de.qaware.mercury.business.login.TokenService
 import de.qaware.mercury.business.time.Clock
 import de.qaware.mercury.business.uuid.UUIDFactory
 import de.qaware.mercury.storage.admin.AdminRepository
@@ -32,11 +36,11 @@ class AdminLoginServiceImplSpec extends Specification {
 
     def "Create Login for Admin"() {
         given:
-        def uuid = UUID.randomUUID()
-        def hasher = '4711'
+        UUID uuid = UUID.randomUUID()
+        String hasher = '4711'
 
         when:
-        def admin = loginService.createLogin('test@lokaler.kaufen', 'supersecret')
+        Admin admin = loginService.createLogin('test@lokaler.kaufen', 'supersecret')
 
         then:
         1 * uuidFactory.create() >> uuid
@@ -53,12 +57,12 @@ class AdminLoginServiceImplSpec extends Specification {
 
     def "Successful login for Admin"() {
         given:
-        def id = Admin.Id.of(UUID.randomUUID())
-        def admin = new Admin(id, 'test@lokaler.kaufen', '4711', ZonedDateTime.now(), ZonedDateTime.now())
-        def token = AdminToken.of('token')
+        Admin.Id id = Admin.Id.of(UUID.randomUUID())
+        Admin admin = new Admin(id, 'test@lokaler.kaufen', '4711', ZonedDateTime.now(), ZonedDateTime.now())
+        AdminToken token = AdminToken.of('token')
 
         when:
-        def adminToken = loginService.login('test@lokaler.kaufen', 'supersecret')
+        AdminToken adminToken = loginService.login('test@lokaler.kaufen', 'supersecret')
 
         then:
         1 * adminRepository.findByEmail('test@lokaler.kaufen') >> admin
@@ -86,12 +90,12 @@ class AdminLoginServiceImplSpec extends Specification {
 
     def "Successful AdminToken Verification"() {
         given:
-        def id = Admin.Id.of(UUID.randomUUID())
-        def admin = new Admin(id, 'test@lokaler.kaufen', '4711', ZonedDateTime.now(), ZonedDateTime.now())
-        def token = AdminToken.of('token')
+        Admin.Id id = Admin.Id.of(UUID.randomUUID())
+        Admin admin = new Admin(id, 'test@lokaler.kaufen', '4711', ZonedDateTime.now(), ZonedDateTime.now())
+        AdminToken token = AdminToken.of('token')
 
         when:
-        def verified = loginService.verify(token)
+        Admin verified = loginService.verify(token)
 
         then:
         1 * tokenService.verifyAdminToken(token) >> id
@@ -101,8 +105,8 @@ class AdminLoginServiceImplSpec extends Specification {
 
     def "AdminToken Verification Error"() {
         given:
-        def id = Admin.Id.of(UUID.randomUUID())
-        def token = AdminToken.of('token')
+        Admin.Id id = Admin.Id.of(UUID.randomUUID())
+        AdminToken token = AdminToken.of('token')
 
         when:
         loginService.verify(token)
@@ -116,7 +120,7 @@ class AdminLoginServiceImplSpec extends Specification {
     @Unroll
     def "Find Admin by Email #email"() {
         when:
-        def found = loginService.findByEmail(email)
+        Admin found = loginService.findByEmail(email)
 
         then:
         1 * adminRepository.findByEmail(email) >> admin

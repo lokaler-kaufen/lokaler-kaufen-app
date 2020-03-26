@@ -8,10 +8,10 @@ class BCryptPasswordHasherSpec extends Specification {
     @Unroll
     def "Check hash for #password"() {
         given:
-        def hasher = new BCryptPasswordHasher()
+        BCryptPasswordHasher hasher = new BCryptPasswordHasher()
 
         when:
-        def hash = hasher.hash(password)
+        String hash = hasher.hash(password)
 
         then:
         hasher.verify(password, hash)

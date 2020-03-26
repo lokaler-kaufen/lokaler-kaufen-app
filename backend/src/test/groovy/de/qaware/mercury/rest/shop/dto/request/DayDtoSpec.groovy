@@ -19,7 +19,7 @@ class DayDtoSpec extends Specification {
 
     def "Invalid Time for Slot"() {
         given:
-        def dto = new DayDto("foobar", "23:59")
+        DayDto dto = new DayDto("foobar", "23:59")
 
         when:
         dto.toSlot()

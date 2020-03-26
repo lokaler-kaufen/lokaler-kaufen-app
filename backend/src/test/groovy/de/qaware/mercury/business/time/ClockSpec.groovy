@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
 
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZonedDateTime
 
@@ -16,10 +17,10 @@ class ClockSpec extends Specification {
 
     def "Check Now Zoned"() {
         given:
-        def zonedNow = ZonedDateTime.now()
+        ZonedDateTime zonedNow = ZonedDateTime.now()
 
         when:
-        def zonedDateTime = clock.nowZoned()
+        ZonedDateTime zonedDateTime = clock.nowZoned()
 
         then:
         zonedDateTime
@@ -34,10 +35,10 @@ class ClockSpec extends Specification {
 
     def "Check Now"() {
         given:
-        def now = LocalDateTime.now()
+        LocalDateTime now = LocalDateTime.now()
 
         when:
-        def localDateTime = clock.now()
+        LocalDateTime localDateTime = clock.now()
 
         then:
         localDateTime
@@ -51,7 +52,7 @@ class ClockSpec extends Specification {
 
     def "Check Today"() {
         given:
-        def today = LocalDateTime.now().toLocalDate()
+        LocalDate today = LocalDateTime.now().toLocalDate()
 
         expect:
         clock.today() == today

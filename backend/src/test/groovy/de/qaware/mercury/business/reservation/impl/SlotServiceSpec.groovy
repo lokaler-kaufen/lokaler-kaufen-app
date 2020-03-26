@@ -1,5 +1,6 @@
 package de.qaware.mercury.business.reservation.impl
 
+import de.qaware.mercury.business.reservation.Slot
 import de.qaware.mercury.business.reservation.SlotService
 import de.qaware.mercury.business.shop.DayConfig
 import de.qaware.mercury.business.shop.SlotConfig
@@ -11,6 +12,7 @@ import spock.lang.Specification
 import spock.lang.Unroll
 
 import java.time.DayOfWeek
+import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.temporal.ChronoField
 import java.time.temporal.TemporalAdjusters
@@ -30,7 +32,7 @@ class SlotServiceSpec extends Specification {
     @Unroll
     def "Check Empty Slot Generation: #usecase"() {
         when:
-        def slots = slotService.generateSlots(start.toLocalDate(), end.toLocalDate(), config, [])
+        List<Slot> slots = slotService.generateSlots(start.toLocalDate(), end.toLocalDate(), config, [])
 
         then:
         slots.isEmpty()
@@ -44,7 +46,7 @@ class SlotServiceSpec extends Specification {
     @Unroll
     def "Check Slot Generation: #usecase"() {
         when:
-        def slots = slotService.generateSlots(start.toLocalDate(), end.toLocalDate(), config, reservations)
+        List<Slot> slots = slotService.generateSlots(start.toLocalDate(), end.toLocalDate(), config, reservations)
 
         then:
         1 * clock.now() >> start
@@ -67,7 +69,7 @@ class SlotServiceSpec extends Specification {
         'Sunday'    | sunday(8)    | sunday(18)    | sundayConfig(8, 18)    | []           || 10
     }
 
-    def monday(int hourOfDay) {
+    LocalDateTime monday(int hourOfDay) {
         return now()
             .with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY))
             .with(ChronoField.HOUR_OF_DAY, hourOfDay)
@@ -76,13 +78,13 @@ class SlotServiceSpec extends Specification {
             .with(ChronoField.MICRO_OF_DAY, 0)
     }
 
-    def mondayConfig(int startHour, int endHour) {
+    SlotConfig mondayConfig(int startHour, int endHour) {
         return defaultSlot()
             .monday(new DayConfig(LocalTime.of(startHour, 0), LocalTime.of(endHour, 0)))
             .build()
     }
 
-    def tuesday(int hourOfDay) {
+    LocalDateTime tuesday(int hourOfDay) {
         return now()
             .with(TemporalAdjusters.previousOrSame(DayOfWeek.TUESDAY))
             .with(ChronoField.HOUR_OF_DAY, hourOfDay)
@@ -91,13 +93,13 @@ class SlotServiceSpec extends Specification {
             .with(ChronoField.MICRO_OF_DAY, 0)
     }
 
-    def tuesdayConfig(int startHour, int endHour) {
+    SlotConfig tuesdayConfig(int startHour, int endHour) {
         return defaultSlot()
             .tuesday(new DayConfig(LocalTime.of(startHour, 0), LocalTime.of(endHour, 0)))
             .build()
     }
 
-    def wednesday(int hourOfDay) {
+    LocalDateTime wednesday(int hourOfDay) {
         return now()
             .with(TemporalAdjusters.previousOrSame(DayOfWeek.WEDNESDAY))
             .with(ChronoField.HOUR_OF_DAY, hourOfDay)
@@ -106,13 +108,13 @@ class SlotServiceSpec extends Specification {
             .with(ChronoField.MICRO_OF_DAY, 0)
     }
 
-    def wednesdayConfig(int startHour, int endHour) {
+    SlotConfig wednesdayConfig(int startHour, int endHour) {
         return defaultSlot()
             .wednesday(new DayConfig(LocalTime.of(startHour, 0), LocalTime.of(endHour, 0)))
             .build()
     }
 
-    def thursday(int hourOfDay) {
+    LocalDateTime thursday(int hourOfDay) {
         return now()
             .with(TemporalAdjusters.previousOrSame(DayOfWeek.THURSDAY))
             .with(ChronoField.HOUR_OF_DAY, hourOfDay)
@@ -121,13 +123,13 @@ class SlotServiceSpec extends Specification {
             .with(ChronoField.MICRO_OF_DAY, 0)
     }
 
-    def thursdayConfig(int startHour, int endHour) {
+    SlotConfig thursdayConfig(int startHour, int endHour) {
         return defaultSlot()
             .thursday(new DayConfig(LocalTime.of(startHour, 0), LocalTime.of(endHour, 0)))
             .build()
     }
 
-    def friday(int hourOfDay) {
+    LocalDateTime friday(int hourOfDay) {
         return now()
             .with(TemporalAdjusters.previousOrSame(DayOfWeek.FRIDAY))
             .with(ChronoField.HOUR_OF_DAY, hourOfDay)
@@ -136,13 +138,13 @@ class SlotServiceSpec extends Specification {
             .with(ChronoField.MICRO_OF_DAY, 0)
     }
 
-    def fridayConfig(int startHour, int endHour) {
+    SlotConfig fridayConfig(int startHour, int endHour) {
         return defaultSlot()
             .friday(new DayConfig(LocalTime.of(startHour, 0), LocalTime.of(endHour, 0)))
             .build()
     }
 
-    def saturday(int hourOfDay) {
+    LocalDateTime saturday(int hourOfDay) {
         return now()
             .with(TemporalAdjusters.previousOrSame(DayOfWeek.SATURDAY))
             .with(ChronoField.HOUR_OF_DAY, hourOfDay)
@@ -151,13 +153,13 @@ class SlotServiceSpec extends Specification {
             .with(ChronoField.MICRO_OF_DAY, 0)
     }
 
-    def saturdayConfig(int startHour, int endHour) {
+    SlotConfig saturdayConfig(int startHour, int endHour) {
         return defaultSlot()
             .saturday(new DayConfig(LocalTime.of(startHour, 0), LocalTime.of(endHour, 0)))
             .build()
     }
 
-    def sunday(int hourOfDay) {
+    LocalDateTime sunday(int hourOfDay) {
         return now()
             .with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY))
             .with(ChronoField.HOUR_OF_DAY, hourOfDay)
@@ -166,7 +168,7 @@ class SlotServiceSpec extends Specification {
             .with(ChronoField.MICRO_OF_DAY, 0)
     }
 
-    def sundayConfig(int startHour, int endHour) {
+    SlotConfig sundayConfig(int startHour, int endHour) {
         return defaultSlot()
             .sunday(new DayConfig(LocalTime.of(startHour, 0), LocalTime.of(endHour, 0)))
             .build()

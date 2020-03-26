@@ -38,7 +38,7 @@ class ShopControllerSpec extends Specification {
 
     HttpServletRequest httpServletRequest = Mock(HttpServletRequest)
 
-    def setup() {
+    void setup() {
         controller = new ShopController(shopService, tokenService, authenticationHelper, shopLoginService)
     }
 

@@ -20,7 +20,7 @@ class LocationServiceImplSpec extends Specification {
 
     def "Lookup Default Location by Zipcode"() {
         when:
-        def location = locationService.lookup('83024')
+        GeoLocation location = locationService.lookup('83024')
 
         then:
         1 * repository.fromZipCode('83024') >> null
@@ -29,10 +29,10 @@ class LocationServiceImplSpec extends Specification {
 
     def "Lookup Location by Zipcode"() {
         setup:
-        def expected = GeoLocation.of(48.104346, 11.600851)
+        GeoLocation expected = GeoLocation.of(48.104346, 11.600851)
 
         when:
-        def location = locationService.lookup('83024')
+        GeoLocation location = locationService.lookup('83024')
 
         then:
         1 * repository.fromZipCode('83024') >> expected
@@ -41,7 +41,7 @@ class LocationServiceImplSpec extends Specification {
 
     def "Empty suggestions for short ZIP code"() {
         when:
-        def suggestions = locationService.suggest('')
+        List<LocationSuggestion> suggestions = locationService.suggest('')
 
         then:
         suggestions.isEmpty()
@@ -49,12 +49,12 @@ class LocationServiceImplSpec extends Specification {
 
     def "Suggestions for ZIP code"() {
         setup:
-        def data = []
+        List<LocationSuggestion> data = []
         data << new LocationSuggestion('DE', '83024', 'Rosenheim')
         data << new LocationSuggestion('EN', 'X8302', 'London')
 
         when:
-        def suggestions = locationService.suggest('8302')
+        List<LocationSuggestion> suggestions = locationService.suggest('8302')
 
         then:
         1 * repository.suggest('8302%', LocationServiceImpl.MAXIMUM_SUGGESTION_COUNT) >> data

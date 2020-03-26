@@ -15,7 +15,7 @@ class TokenServiceImplSpec extends Specification {
     TokenService tokenService
     TokenServiceConfigurationProperties config
 
-    def setup() {
+    void setup() {
         config = new TokenServiceConfigurationProperties("shop-secret", "admin-secret", "shop-creation-secret", "password-reset-secret", "reservation-cancellation-secret")
         tokenService = new TokenServiceImpl(config)
     }

@@ -5,10 +5,10 @@ import spock.lang.Specification
 class SetsSpec extends Specification {
     def "Check mapping of List to Set"() {
         given:
-        def input = ['a', 'ab', 'abc', 'ab', 'a'] as List
+        List<String> input = ['a', 'ab', 'abc', 'ab', 'a'] as List
 
         when:
-        def lengths = Sets.map(input, { it.size() })
+        Set<Integer> lengths = Sets.map(input, { it.size() })
 
         then:
         lengths.size() == 3

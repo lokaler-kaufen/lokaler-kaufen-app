@@ -1,7 +1,14 @@
 package de.qaware.mercury.business.login.impl
 
 import de.qaware.mercury.business.email.EmailService
-import de.qaware.mercury.business.login.*
+import de.qaware.mercury.business.login.LoginException
+import de.qaware.mercury.business.login.PasswordHasher
+import de.qaware.mercury.business.login.PasswordResetToken
+import de.qaware.mercury.business.login.ShopLogin
+import de.qaware.mercury.business.login.ShopLoginNotFoundException
+import de.qaware.mercury.business.login.ShopLoginService
+import de.qaware.mercury.business.login.ShopToken
+import de.qaware.mercury.business.login.TokenService
 import de.qaware.mercury.business.shop.Shop
 import de.qaware.mercury.business.time.Clock
 import de.qaware.mercury.business.uuid.UUIDFactory
@@ -36,11 +43,11 @@ class ShopLoginServiceImplSpec extends Specification {
 
     def "Create new Login for shop"() {
         given:
-        def uuid = UUID.randomUUID()
-        def shop = new Shop.ShopBuilder().id(Shop.Id.of(uuid)).name('Test Shop').build()
+        UUID uuid = UUID.randomUUID()
+        Shop shop = new Shop.ShopBuilder().id(Shop.Id.of(uuid)).name('Test Shop').build()
 
         when:
-        def shopLogin = loginService.createLogin(shop, 'test@lokaler.kaufen', 'geheim')
+        ShopLogin shopLogin = loginService.createLogin(shop, 'test@lokaler.kaufen', 'geheim')
 
         then:
         1 * passwordHasher.hash('geheim') >> 'ahash'
@@ -59,13 +66,13 @@ class ShopLoginServiceImplSpec extends Specification {
 
     def "Check successful Login"() {
         given:
-        def shopToken = new ShopToken('token')
-        def shopId = Shop.Id.of(UUID.randomUUID())
-        def shopLoginId = ShopLogin.Id.of(UUID.randomUUID())
-        def shopLogin = new ShopLogin(shopLoginId, shopId, 'email', 'hash', null, null)
+        ShopToken shopToken = new ShopToken('token')
+        Shop.Id shopId = Shop.Id.of(UUID.randomUUID())
+        ShopLogin.Id shopLoginId = ShopLogin.Id.of(UUID.randomUUID())
+        ShopLogin shopLogin = new ShopLogin(shopLoginId, shopId, 'email', 'hash', null, null)
 
         when:
-        def verify = loginService.login('test@lokaler.kaufen', 'geheim')
+        ShopToken verify = loginService.login('test@lokaler.kaufen', 'geheim')
 
         then:
         1 * shopLoginRepository.findByEmail('test@lokaler.kaufen') >> shopLogin
@@ -76,8 +83,8 @@ class ShopLoginServiceImplSpec extends Specification {
 
     def "Verify invalid Shop Token"() {
         given:
-        def token = ShopToken.of('token')
-        def shopLoginId = ShopLogin.Id.of(UUID.randomUUID())
+        ShopToken token = ShopToken.of('token')
+        ShopLogin.Id shopLoginId = ShopLogin.Id.of(UUID.randomUUID())
 
         when:
         loginService.verify(token)
@@ -91,10 +98,10 @@ class ShopLoginServiceImplSpec extends Specification {
 
     def "Verify unknown Shop Token"() {
         given:
-        def token = ShopToken.of('token')
-        def shopLoginId = ShopLogin.Id.of(UUID.randomUUID())
-        def shopId = Shop.Id.of(UUID.randomUUID())
-        def shopLogin = new ShopLogin(shopLoginId, shopId, 'email', 'hash', null, null)
+        ShopToken token = ShopToken.of('token')
+        ShopLogin.Id shopLoginId = ShopLogin.Id.of(UUID.randomUUID())
+        Shop.Id shopId = Shop.Id.of(UUID.randomUUID())
+        ShopLogin shopLogin = new ShopLogin(shopLoginId, shopId, 'email', 'hash', null, null)
 
         when:
         loginService.verify(token)
@@ -109,14 +116,14 @@ class ShopLoginServiceImplSpec extends Specification {
 
     def "Verify valid Shop Token"() {
         given:
-        def token = ShopToken.of('token')
-        def shopId = Shop.Id.of(UUID.randomUUID())
-        def shop = new Shop.ShopBuilder().id(shopId).build()
-        def shopLoginId = ShopLogin.Id.of(UUID.randomUUID())
-        def shopLogin = new ShopLogin(shopLoginId, shopId, 'email', 'hash', null, null)
+        ShopToken token = ShopToken.of('token')
+        Shop.Id shopId = Shop.Id.of(UUID.randomUUID())
+        Shop shop = new Shop.ShopBuilder().id(shopId).build()
+        ShopLogin.Id shopLoginId = ShopLogin.Id.of(UUID.randomUUID())
+        ShopLogin shopLogin = new ShopLogin(shopLoginId, shopId, 'email', 'hash', null, null)
 
         when:
-        def verify = loginService.verify(token)
+        Shop verify = loginService.verify(token)
 
         then:
         1 * tokenService.verifyShopToken(token) >> shopLoginId
@@ -128,8 +135,8 @@ class ShopLoginServiceImplSpec extends Specification {
 
     def "Send password reset link for known email"() {
         given:
-        def shopLogin = new ShopLogin(null, null, null, null, null, null)
-        def token = PasswordResetToken.of('token')
+        ShopLogin shopLogin = new ShopLogin(null, null, null, null, null, null)
+        PasswordResetToken token = PasswordResetToken.of('token')
 
         when:
         loginService.sendPasswordResetLink('known@lokaler.kaufen')
@@ -153,7 +160,7 @@ class ShopLoginServiceImplSpec extends Specification {
 
     def "Reset Password for known Email"() {
         given:
-        def login = new ShopLogin(null, null, null, null, null, null)
+        ShopLogin login = new ShopLogin(null, null, null, null, null, null)
 
         when:
         loginService.resetPassword('known@lokaler.kaufen', 'secret')
@@ -178,7 +185,7 @@ class ShopLoginServiceImplSpec extends Specification {
     @Unroll
     def "Check login for #email"() {
         when:
-        def hasLogin = loginService.hasLogin(email)
+        boolean hasLogin = loginService.hasLogin(email)
 
         then:
         1 * shopLoginRepository.findByEmail(email) >> login

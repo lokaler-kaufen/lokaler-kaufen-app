@@ -5,10 +5,10 @@ import spock.lang.Specification
 class ListsSpec extends Specification {
     def "Check mapping of List to List"() {
         given:
-        def input = ['a', 'ab', 'abc', 'ab', 'a'] as List
+        List<String> input = ['a', 'ab', 'abc', 'ab', 'a'] as List
 
         when:
-        def output = Lists.map(input, { it.size() })
+        List<Integer> output = Lists.map(input, { it.size() })
 
         then:
         output.size() == 5

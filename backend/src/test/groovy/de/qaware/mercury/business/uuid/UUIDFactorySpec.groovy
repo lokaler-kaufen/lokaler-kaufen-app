@@ -13,8 +13,8 @@ class UUIDFactorySpec extends Specification {
 
     def "Create UUI with factory"() {
         given:
-        def uuid1 = uuidFactory.create()
-        def uuid2 = uuidFactory.create()
+        UUID uuid1 = uuidFactory.create()
+        UUID uuid2 = uuidFactory.create()
 
         expect:
         uuid1 != uuid2

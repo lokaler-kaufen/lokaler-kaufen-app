@@ -5,7 +5,7 @@ import spock.lang.Specification
 class DummyEmailSenderSpec extends Specification {
     def "Check Dummy Email sender"() {
         setup:
-        def sender = new DummyEmailSender()
+        DummyEmailSender sender = new DummyEmailSender()
 
         when:
         sender.sendEmail('test@lokaler.kaufen', 'Test Subject', 'Hello Spock')

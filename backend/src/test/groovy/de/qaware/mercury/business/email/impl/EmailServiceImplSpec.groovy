@@ -61,7 +61,7 @@ class EmailServiceImplSpec extends Specification {
 
     def "Send password reset email"() {
         given:
-        def token = PasswordResetToken.of(UUID.randomUUID().toString())
+        PasswordResetToken token = PasswordResetToken.of(UUID.randomUUID().toString())
 
         when:
         emailService.sendShopPasswordResetEmail('test@loakler.kaufen', token)
