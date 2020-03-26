@@ -2,6 +2,11 @@ spring.datasource:
   url: "jdbc:postgresql://localhost:5432/postgres"
   username: "postgres"
   password: "password"
+  hikari:
+    auto-commit: false
+    connection-timeout: 10000 # ms
+    maximum-pool-size: 10 # Before fiddling with this value, read this: https://github.com/brettwooldridge/HikariCP/wiki/About-Pool-Sizing
+
 spring.jpa.hibernate.ddl-auto: validate
 spring.jpa.open-in-view: false
 

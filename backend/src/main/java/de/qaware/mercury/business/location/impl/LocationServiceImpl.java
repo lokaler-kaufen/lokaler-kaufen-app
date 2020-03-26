@@ -37,6 +37,7 @@ public class LocationServiceImpl implements LocationService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<LocationSuggestion> suggest(String zipCode) {
         if (zipCode.length() < MINIMUM_SUGGESTION_LENGTH) {
             return List.of();
