@@ -35,6 +35,8 @@ class EmailServiceImpl implements EmailService {
     private static final String RESERVATION_CANCELLATION_SUBJECT = "Dein Termin auf lokaler.kaufen wurde leider abgesagt";
     private static final String RESERVATION_CANCELLATION_CONFIRMATION_SUBJECT = "Absagebestätigung von lokaler.kaufen";
     private static final String SHOP_CREATED_APPROVAL_NEEDED_SUBJECT = "Gleich kann's auf lokaler.kaufen losgehen!";
+    private static final String SHOP_APPROVED_SUBJECT = "Es kann auf lokaler.kaufen losgehen!";
+    private static final String SHOP_DISAPPROVED_SUBJECT = "Dein Laden auf lokaler.kaufen wurde deaktiviert";
 
     private final EmailSender emailSender;
     private final EmailConfigurationProperties config;
@@ -140,6 +142,22 @@ class EmailServiceImpl implements EmailService {
             .replace("{{ ownerName }}", shop.getOwnerName());
 
         emailSender.sendEmail(shop.getEmail(), SHOP_CREATED_APPROVAL_NEEDED_SUBJECT, body);
+    }
+
+    @Override
+    public void sendShopApproved(Shop shop) {
+        String body = loadTemplate("/email/shop-approved.txt")
+            .replace("{{ ownerName }}", shop.getOwnerName());
+
+        emailSender.sendEmail(shop.getEmail(), SHOP_APPROVED_SUBJECT, body);
+    }
+
+    @Override
+    public void sendShopApprovalRevoked(Shop shop) {
+        String body = loadTemplate("/email/shop-disapproved.txt")
+            .replace("{{ ownerName }}", shop.getOwnerName());
+
+        emailSender.sendEmail(shop.getEmail(), SHOP_DISAPPROVED_SUBJECT, body);
     }
 
     private String loadTemplate(String location) {

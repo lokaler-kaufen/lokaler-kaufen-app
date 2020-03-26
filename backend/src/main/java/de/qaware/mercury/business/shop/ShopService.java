@@ -11,7 +11,7 @@ public interface ShopService {
 
     Shop update(Shop shop, ShopUpdate update);
 
-    void changeApproved(Shop.Id id, boolean enabled) throws ShopNotFoundException;
+    void changeApproved(Shop.Id id, boolean approved) throws ShopNotFoundException;
 
     List<ShopWithDistance> findNearby(String zipCode);
 

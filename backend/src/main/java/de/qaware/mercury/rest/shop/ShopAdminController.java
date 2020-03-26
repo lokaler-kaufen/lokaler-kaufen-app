@@ -49,10 +49,9 @@ class ShopAdminController {
 
     @PutMapping(path = "/{id}/approve")
     public void changeApprove(@PathVariable @Pattern(regexp = GuidValidation.REGEX) String id, @RequestParam boolean approved, HttpServletRequest request) throws ShopNotFoundException, LoginException {
-        Admin admin = authenticationHelper.authenticateAdmin(request);
+        authenticationHelper.authenticateAdmin(request);
         Shop.Id shopId = Shop.Id.parse(id);
 
-        log.info("Admin '{}' changed approve flag from shop {} to {}", admin.getEmail(), shopId, approved);
         shopService.changeApproved(shopId, approved);
     }
 

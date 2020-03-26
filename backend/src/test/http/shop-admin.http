@@ -1,18 +1,34 @@
+# Before running requests, make sure to execute 'Login as admin' first. This will set the necessary cookies.
+
+### Login as admin
+POST {{ host }}/api/admin/login
+Content-Type: application/json
+
+{
+    "email": "admin-1@localhost",
+    "password": "admin-1"
+}
+
+### List all shops
+
 GET {{ host }}/api/admin/shop
 Accept: application/json, */*
 
-###
+### Approve shop
 
-PUT {{ host }}/api/admin/shop/7e0d77f7-bc2c-46cb-b16b-cfd20fe42919/enable?enabled=true
+PUT {{ host }}/api/admin/shop/75bd5eff-6a56-450a-9055-947cb5c4d7e0/approve?approved=true
 Accept: application/json, */*
-Cookie: mercury-admin=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjYzk3MjM1Mi05ODk2LTQzMmYtYjU0Mi0wMTk3ZDFlM2VkYTYiLCJpc3MiOiJtZXJjdXJ5LWFkbWluIn0.Jlpw_f6qVxOOgAVQ3OaqemD7MgzwoojgNsdLpR2kDvc
 
-###
+### Disapprove shop
+
+PUT {{ host }}/api/admin/shop/75bd5eff-6a56-450a-9055-947cb5c4d7e0/approve?approved=false
+Accept: application/json, */*
+
+### Update shop
 
 PUT {{ host }}/api/admin/shop/1c498404-a926-4af7-9082-0fc884f5621c
 Accept: application/json, */*
 Content-Type: application/json
-Cookie: mercury-admin=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxZTYwODc1ZS03OWZhLTRmMjgtYTk0Mi05YTBmNmNhZjliNGIiLCJpc3MiOiJtZXJjdXJ5LWFkbWluIn0.MQB0VnSQB01u7ml5oinLQCQin3A61BbHCwuVjkOOegk
 
 {
     "id": "1c498404-a926-4af7-9082-0fc884f5621c",
@@ -27,13 +43,10 @@ Cookie: mercury-admin=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxZTYwODc1Z
         "FACEBOOK_MESSENGER",
         "WHATSAPP",
         "VIBER"
-    ],
-    "enabled": true
+    ]
 }
 
-###
+### Delete shop
 
 DELETE {{ host }}/api/admin/shop/879cafc3-9016-42e4-ae75-af8d3b8f44d8
 Accept: application/json, */*
-
-###

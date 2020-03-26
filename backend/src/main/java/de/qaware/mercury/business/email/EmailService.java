@@ -23,4 +23,8 @@ public interface EmailService {
     void sendReservationCancellationConfirmation(String email, Reservation reservation);
 
     void sendShopCreatedApprovalNeeded(Shop shop);
+
+    void sendShopApproved(Shop shop);
+
+    void sendShopApprovalRevoked(Shop shop);
 }

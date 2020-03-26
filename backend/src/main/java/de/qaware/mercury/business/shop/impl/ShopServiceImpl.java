@@ -126,15 +126,28 @@ class ShopServiceImpl implements ShopService {
 
     @Override
     @Transactional
-    public void changeApproved(Shop.Id id, boolean enabled) throws ShopNotFoundException {
+    public void changeApproved(Shop.Id id, boolean approved) throws ShopNotFoundException {
         Shop shop = shopRepository.findById(id);
         if (shop == null) {
             throw new ShopNotFoundException(id);
         }
+        if (shop.isApproved() == approved) {
+            // Nothing to do, state in database is the same as the new state
+            return;
+        }
 
-        log.info("Approve shop '{}'", shop.getId());
-        Shop updatedShop = shop.withApproved(enabled);
+        Shop updatedShop = shop.withApproved(approved);
         shopRepository.update(updatedShop);
+
+        if (approved) {
+            // Shop has been approved
+            log.info("Shop '{}' has been approved", shop.getId());
+            emailService.sendShopApproved(shop);
+        } else {
+            // Shop was approved, has been disapproved
+            log.info("Shop '{}' has been disapproved", shop.getId());
+            emailService.sendShopApprovalRevoked(shop);
+        }
     }
 
     @Override
