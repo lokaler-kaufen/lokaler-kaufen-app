@@ -9,7 +9,7 @@ Start with looking at the `de.qaware.mercury.rest.shop.ShopController` class.
 First, start a local postgres database. Easiest way to do this is with docker:
 
 ```
-docker run -e POSTGRES_PASSWORD=password -p 5432:5432 postgres:11
+docker run --rm -e POSTGRES_PASSWORD=password -p 5432:5432 postgres:11
 ```
 
 ### With gradle
