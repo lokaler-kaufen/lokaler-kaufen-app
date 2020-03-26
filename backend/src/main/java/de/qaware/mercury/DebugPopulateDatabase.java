@@ -1,7 +1,14 @@
 package de.qaware.mercury;
 
 import de.qaware.mercury.business.login.AdminLoginService;
-import de.qaware.mercury.business.shop.*;
+import de.qaware.mercury.business.shop.ContactType;
+import de.qaware.mercury.business.shop.DayConfig;
+import de.qaware.mercury.business.shop.Shop;
+import de.qaware.mercury.business.shop.ShopAlreadyExistsException;
+import de.qaware.mercury.business.shop.ShopCreation;
+import de.qaware.mercury.business.shop.ShopNotFoundException;
+import de.qaware.mercury.business.shop.ShopService;
+import de.qaware.mercury.business.shop.SlotConfig;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -72,7 +79,7 @@ class DebugPopulateDatabase implements ApplicationRunner {
     private void createShop(ShopCreation creation) throws ShopNotFoundException, ShopAlreadyExistsException {
         if (shopService.findByName(creation.getName()).isEmpty()) {
             Shop shop = shopService.create(creation);
-            shopService.changeEnabled(shop.getId(), true);
+            shopService.changeApproved(shop.getId(), true);
             log.info("Created shop {}", shop);
         }
     }

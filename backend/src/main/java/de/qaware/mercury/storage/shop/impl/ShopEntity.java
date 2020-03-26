@@ -7,7 +7,12 @@ import de.qaware.mercury.business.shop.Shop;
 import de.qaware.mercury.business.shop.SlotConfig;
 import de.qaware.mercury.util.Null;
 import de.qaware.mercury.util.Sets;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.Type;
 import org.springframework.lang.Nullable;
 
@@ -71,6 +76,10 @@ public class ShopEntity {
     @Setter
     @Column(nullable = false)
     private boolean enabled;
+
+    @Setter
+    @Column(nullable = false)
+    private boolean approved;
 
     @Setter
     @Column(nullable = false)
@@ -164,6 +173,7 @@ public class ShopEntity {
             shop.getAddressSupplement(),
             Sets.map(shop.getContactTypes().keySet(), ContactType::name).toArray(new String[0]), // TODO MKA: Store contact types with contact info
             shop.isEnabled(),
+            shop.isApproved(),
             shop.getGeoLocation().getLatitude(),
             shop.getGeoLocation().getLongitude(),
             shop.getDetails(),
@@ -201,6 +211,7 @@ public class ShopEntity {
             addressSupplement,
             fakeMap(contactTypes), // TODO MKA: Load contact types with contact info
             enabled,
+            approved,
             GeoLocation.of(latitude, longitude),
             details,
             website,

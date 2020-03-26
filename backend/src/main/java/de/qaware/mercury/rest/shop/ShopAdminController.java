@@ -2,7 +2,11 @@ package de.qaware.mercury.rest.shop;
 
 import de.qaware.mercury.business.admin.Admin;
 import de.qaware.mercury.business.login.LoginException;
-import de.qaware.mercury.business.shop.*;
+import de.qaware.mercury.business.shop.ContactType;
+import de.qaware.mercury.business.shop.Shop;
+import de.qaware.mercury.business.shop.ShopNotFoundException;
+import de.qaware.mercury.business.shop.ShopService;
+import de.qaware.mercury.business.shop.ShopUpdate;
 import de.qaware.mercury.rest.plumbing.authentication.AuthenticationHelper;
 import de.qaware.mercury.rest.shop.dto.request.UpdateShopDto;
 import de.qaware.mercury.rest.shop.dto.response.ShopAdminDto;
@@ -14,7 +18,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -36,13 +47,13 @@ class ShopAdminController {
         return ShopsAdminDto.of(shopService.listAll());
     }
 
-    @PutMapping(path = "/{id}/enable")
-    public void changeEnabled(@PathVariable @Pattern(regexp = GuidValidation.REGEX) String id, @RequestParam boolean enabled, HttpServletRequest request) throws ShopNotFoundException, LoginException {
+    @PutMapping(path = "/{id}/approve")
+    public void changeApprove(@PathVariable @Pattern(regexp = GuidValidation.REGEX) String id, @RequestParam boolean approved, HttpServletRequest request) throws ShopNotFoundException, LoginException {
         Admin admin = authenticationHelper.authenticateAdmin(request);
         Shop.Id shopId = Shop.Id.parse(id);
 
-        log.info("Admin '{}' changed enabled flag from shop {} to {}", admin.getEmail(), shopId, enabled);
-        shopService.changeEnabled(shopId, enabled);
+        log.info("Admin '{}' changed approve flag from shop {} to {}", admin.getEmail(), shopId, approved);
+        shopService.changeApproved(shopId, approved);
     }
 
     @PutMapping(path = "/{id}")

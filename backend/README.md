@@ -37,6 +37,7 @@ Start the `main()` method of the `de.qaware.mercury.MercuryApplication` class.
 * Use `@Transactional` only in the business layer
 * Don't use `Instant.now()`, `LocalDateTime.now()` etc. These are not mockable in tests. Use the `Clock` interface instead.
 * Don't write the constructors of your Spring beans by hand, use `@RequiredArgsConstructor(access = AccessLevel.PACKAGE)`
+* When writing Spock tests, use `def` as little as possible (`def` breaks refactoring) 
 
 ## How To's
 

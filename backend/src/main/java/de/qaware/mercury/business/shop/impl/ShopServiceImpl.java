@@ -92,14 +92,14 @@ class ShopServiceImpl implements ShopService {
         Shop shop = new Shop(
             Shop.Id.of(id), creation.getName(), creation.getOwnerName(), creation.getEmail(), creation.getStreet(),
             creation.getZipCode(), creation.getCity(), creation.getAddressSupplement(), creation.getContactTypes(),
-            config.isEnableShopsOnCreation(), geoLocation, creation.getDetails(), creation.getWebsite(), creation.getSlotConfig(), clock.nowZoned(),
+            true, config.isApproveShopsOnCreation(), geoLocation, creation.getDetails(), creation.getWebsite(), creation.getSlotConfig(), clock.nowZoned(),
             clock.nowZoned()
         );
 
         shopRepository.insert(shop);
         shopLoginService.createLogin(shop, creation.getEmail(), creation.getPassword());
 
-        if (!shop.isEnabled()) {
+        if (!shop.isApproved()) {
             // If the shop needs approval, send an email to the shop
             log.info("Sending shop created, awaiting approval email to {}", shop.getEmail());
             emailService.sendShopCreatedApprovalNeeded(shop);
@@ -116,8 +116,8 @@ class ShopServiceImpl implements ShopService {
         Shop newShop = new Shop(
             shop.getId(), update.getName(), update.getOwnerName(), shop.getName(), update.getStreet(), update.getZipCode(),
             update.getCity(), update.getAddressSupplement(), update.getContactTypes(),
-            shop.isEnabled(), geoLocation, shop.getDetails(), shop.getWebsite(), shop.getSlotConfig(), shop.getCreated(),
-            clock.nowZoned()
+            shop.isEnabled(), shop.isApproved(), geoLocation, shop.getDetails(), shop.getWebsite(), shop.getSlotConfig(),
+            shop.getCreated(), clock.nowZoned()
         );
 
         shopRepository.update(newShop);
@@ -126,14 +126,15 @@ class ShopServiceImpl implements ShopService {
 
     @Override
     @Transactional
-    public void changeEnabled(Shop.Id id, boolean enabled) throws ShopNotFoundException {
+    public void changeApproved(Shop.Id id, boolean enabled) throws ShopNotFoundException {
         Shop shop = shopRepository.findById(id);
         if (shop == null) {
             throw new ShopNotFoundException(id);
         }
 
-        Shop newShop = shop.withEnabled(enabled);
-        shopRepository.update(newShop);
+        log.info("Approve shop '{}'", shop.getId());
+        Shop updatedShop = shop.withApproved(enabled);
+        shopRepository.update(updatedShop);
     }
 
     @Override

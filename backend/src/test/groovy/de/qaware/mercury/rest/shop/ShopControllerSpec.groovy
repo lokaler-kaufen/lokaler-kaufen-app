@@ -4,9 +4,18 @@ import de.qaware.mercury.business.location.GeoLocation
 import de.qaware.mercury.business.login.PasswordResetToken
 import de.qaware.mercury.business.login.ShopLoginService
 import de.qaware.mercury.business.login.TokenService
-import de.qaware.mercury.business.shop.*
+import de.qaware.mercury.business.shop.ContactType
+import de.qaware.mercury.business.shop.DayConfig
+import de.qaware.mercury.business.shop.Shop
+import de.qaware.mercury.business.shop.ShopNotFoundException
+import de.qaware.mercury.business.shop.ShopService
+import de.qaware.mercury.business.shop.SlotConfig
 import de.qaware.mercury.rest.plumbing.authentication.AuthenticationHelper
-import de.qaware.mercury.rest.shop.dto.request.*
+import de.qaware.mercury.rest.shop.dto.request.ResetPasswordDto
+import de.qaware.mercury.rest.shop.dto.request.SendCreateLinkDto
+import de.qaware.mercury.rest.shop.dto.request.SendPasswordResetLinkDto
+import de.qaware.mercury.rest.shop.dto.request.SlotConfigDto
+import de.qaware.mercury.rest.shop.dto.request.UpdateShopDto
 import de.qaware.mercury.rest.shop.dto.response.ShopDetailDto
 import de.qaware.mercury.rest.shop.dto.response.ShopOwnerDetailDto
 import de.qaware.mercury.util.Null
@@ -139,6 +148,7 @@ class ShopControllerSpec extends Specification {
             "City",
             "Address Supplement",
             new HashMap<ContactType, String>(),
+            true,
             true,
             GeoLocation.of(47, 12),
             "Details",

@@ -23,6 +23,7 @@ public class ShopAdminDto {
     String addressSupplement;
     Set<ContactType> contactTypes;
     boolean enabled;
+    boolean approved;
     String details;
     @Nullable
     String website;
@@ -39,6 +40,7 @@ public class ShopAdminDto {
             shop.getAddressSupplement(),
             shop.getContactTypes().keySet(),
             shop.isEnabled(),
+            shop.isApproved(),
             shop.getDetails(),
             shop.getWebsite()
         );

@@ -13,7 +13,7 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 class ShopServiceConfigurationProperties {
     /**
-     * Determines if a shop is enabled on creation (true) or if an admin has to approve id (false).
+     * Determines if a shop is approved on creation (true) or if an admin has to approve id (false).
      */
-    private boolean enableShopsOnCreation;
+    private boolean approveShopsOnCreation;
 }

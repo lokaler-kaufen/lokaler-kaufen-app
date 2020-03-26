@@ -4,7 +4,13 @@ import de.qaware.mercury.business.email.EmailService
 import de.qaware.mercury.business.location.GeoLocation
 import de.qaware.mercury.business.location.LocationService
 import de.qaware.mercury.business.login.ShopLoginService
-import de.qaware.mercury.business.shop.*
+import de.qaware.mercury.business.shop.Shop
+import de.qaware.mercury.business.shop.ShopAlreadyExistsException
+import de.qaware.mercury.business.shop.ShopCreation
+import de.qaware.mercury.business.shop.ShopNotFoundException
+import de.qaware.mercury.business.shop.ShopService
+import de.qaware.mercury.business.shop.ShopUpdate
+import de.qaware.mercury.business.shop.ShopWithDistance
 import de.qaware.mercury.business.time.Clock
 import de.qaware.mercury.business.uuid.UUIDFactory
 import de.qaware.mercury.storage.shop.ShopRepository
@@ -30,7 +36,7 @@ class ShopServiceImplSpec extends Specification {
 
     def "List all shops"() {
         when:
-        def all = shopService.listAll()
+        List<Shop> all = shopService.listAll()
 
         then:
         1 * shopRepository.listAll() >> [new Shop.ShopBuilder().build()]
@@ -39,10 +45,10 @@ class ShopServiceImplSpec extends Specification {
 
     def "Find nearby shops"() {
         setup:
-        def location = GeoLocation.of(0.0, 0.0)
+        GeoLocation location = GeoLocation.of(0.0, 0.0)
 
         when:
-        def nearby = shopService.findNearby('83024')
+        List<ShopWithDistance> nearby = shopService.findNearby('83024')
 
         then:
         1 * locationService.lookup('83024') >> location
@@ -52,7 +58,7 @@ class ShopServiceImplSpec extends Specification {
 
     def "Delete shop by ID"() {
         given:
-        def id = Shop.Id.of(UUID.randomUUID())
+        Shop.Id id = Shop.Id.of(UUID.randomUUID())
 
         when:
         shopService.delete(id)
@@ -65,7 +71,7 @@ class ShopServiceImplSpec extends Specification {
 
     def "Delete unknown shop by ID"() {
         given:
-        def id = Shop.Id.of(UUID.randomUUID())
+        Shop.Id id = Shop.Id.of(UUID.randomUUID())
 
         when:
         shopService.delete(id)
@@ -77,11 +83,11 @@ class ShopServiceImplSpec extends Specification {
 
     def "Find shop by ID"() {
         given:
-        def id = Shop.Id.of(UUID.randomUUID())
-        def shop = new Shop.ShopBuilder().id(id).build()
+        Shop.Id id = Shop.Id.of(UUID.randomUUID())
+        Shop shop = new Shop.ShopBuilder().id(id).build()
 
         when:
-        def found = shopService.findById(id)
+        Shop found = shopService.findById(id)
 
         then:
         1 * shopRepository.findById(id) >> shop
@@ -90,10 +96,10 @@ class ShopServiceImplSpec extends Specification {
 
     def "Can't find unknown shop by ID"() {
         given:
-        def id = Shop.Id.of(UUID.randomUUID())
+        Shop.Id id = Shop.Id.of(UUID.randomUUID())
 
         when:
-        def found = shopService.findById(id)
+        Shop found = shopService.findById(id)
 
         then:
         1 * shopRepository.findById(id) >> null
@@ -102,11 +108,11 @@ class ShopServiceImplSpec extends Specification {
 
     def "Find shop by ID (with Exception)"() {
         given:
-        def id = Shop.Id.of(UUID.randomUUID())
-        def shop = new Shop.ShopBuilder().id(id).build()
+        Shop.Id id = Shop.Id.of(UUID.randomUUID())
+        Shop shop = new Shop.ShopBuilder().id(id).build()
 
         when:
-        def found = shopService.findByIdOrThrow(id)
+        Shop found = shopService.findByIdOrThrow(id)
 
         then:
         1 * shopRepository.findById(id) >> shop
@@ -116,7 +122,7 @@ class ShopServiceImplSpec extends Specification {
 
     def "Can't find unknown shop by ID (with Exception)"() {
         given:
-        def id = Shop.Id.of(UUID.randomUUID())
+        Shop.Id id = Shop.Id.of(UUID.randomUUID())
 
         when:
         shopService.findByIdOrThrow(id)
@@ -129,17 +135,17 @@ class ShopServiceImplSpec extends Specification {
 
     def "Create a new shop"() {
         given:
-        def uuid = UUID.randomUUID()
-        def location = GeoLocation.of(0.0, 0.0)
-        def dateTime = ZonedDateTime.now()
-        def creation = new ShopCreation.ShopCreationBuilder()
+        UUID uuid = UUID.randomUUID()
+        GeoLocation location = GeoLocation.of(0.0, 0.0)
+        ZonedDateTime dateTime = ZonedDateTime.now()
+        ShopCreation creation = new ShopCreation.ShopCreationBuilder()
             .email('test@lokaler.kaufen')
             .name('Test Shop')
             .zipCode('83024')
             .build()
 
         when:
-        def shop = shopService.create(creation)
+        Shop shop = shopService.create(creation)
 
         then:
         1 * shopLoginService.hasLogin('test@lokaler.kaufen') >> false
@@ -160,7 +166,7 @@ class ShopServiceImplSpec extends Specification {
 
     def "Can't create an existing shop"() {
         given:
-        def creation = new ShopCreation.ShopCreationBuilder().email('test@lokaler.kaufen').build()
+        ShopCreation creation = new ShopCreation.ShopCreationBuilder().email('test@lokaler.kaufen').build()
 
         when:
         shopService.create(creation)
@@ -172,12 +178,12 @@ class ShopServiceImplSpec extends Specification {
 
     def "Update shop"() {
         given:
-        def update = new ShopUpdate.ShopUpdateBuilder().zipCode('83022').build()
-        def shopId = Shop.Id.of(UUID.randomUUID())
-        def shop = new Shop.ShopBuilder().id(shopId).zipCode('83024').build()
+        ShopUpdate update = new ShopUpdate.ShopUpdateBuilder().zipCode('83022').build()
+        Shop.Id shopId = Shop.Id.of(UUID.randomUUID())
+        Shop shop = new Shop.ShopBuilder().id(shopId).zipCode('83024').build()
 
         when:
-        def updated = shopService.update(shop, update)
+        Shop updated = shopService.update(shop, update)
 
         then:
         1 * shopRepository.update(_)
@@ -191,27 +197,27 @@ class ShopServiceImplSpec extends Specification {
 
     def "Can't change unknown shop"() {
         given:
-        def shopId = Shop.Id.of(UUID.randomUUID())
+        Shop.Id shopId = Shop.Id.of(UUID.randomUUID())
 
         when:
-        shopService.changeEnabled(shopId, true)
+        shopService.changeApproved(shopId, true)
 
         then:
         1 * shopRepository.findById(shopId) >> null
         thrown ShopNotFoundException
     }
 
-    def "Change shop to Enabled"() {
+    def "Approve shop"() {
         given:
-        def shopId = Shop.Id.of(UUID.randomUUID())
-        def shop = new Shop.ShopBuilder().id(shopId).enabled(false).build()
+        Shop.Id shopId = Shop.Id.of(UUID.randomUUID())
+        Shop shop = new Shop.ShopBuilder().id(shopId).approved(false).build()
 
         when:
-        shopService.changeEnabled(shopId, true)
+        shopService.changeApproved(shopId, true)
 
         then:
         1 * shopRepository.findById(shopId) >> shop
-        1 * shopRepository.update({ Shop s -> s.enabled })
+        1 * shopRepository.update({ Shop s -> s.approved })
     }
 
     def "Send create link to email"() {
@@ -225,10 +231,10 @@ class ShopServiceImplSpec extends Specification {
 
     def "Find by name"() {
         given:
-        def shop = new Shop.ShopBuilder().build()
+        Shop shop = new Shop.ShopBuilder().build()
 
         when:
-        def found = shopService.findByName('Test Shop')
+        List<Shop> found = shopService.findByName('Test Shop')
 
         then:
         1 * shopRepository.findByName('Test Shop') >> [shop]
@@ -238,10 +244,10 @@ class ShopServiceImplSpec extends Specification {
 
     def "Search by query and ZIP code"() {
         given:
-        def location = GeoLocation.of(0.0, 0.0)
+        GeoLocation location = GeoLocation.of(0.0, 0.0)
 
         when:
-        def results = shopService.search('*', '83024')
+        List<ShopWithDistance> results = shopService.search('*', '83024')
 
         then:
         1 * locationService.lookup('83024') >> location

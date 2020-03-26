@@ -25,7 +25,7 @@ mercury:
     reservationCancellationLinkTemplate: "${variables.domain}/#/cancel-reservation?token={{ token }}"
   features:
     enableDebugDataCreation: true
-    enableShopsOnCreation: true
+    approveShopsOnCreation: true
 
 spring.mail:
   host: "smtp.gmail.com"

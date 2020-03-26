@@ -1,7 +1,10 @@
 package de.qaware.mercury.business.shop;
 
 import de.qaware.mercury.business.location.GeoLocation;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Value;
+import lombok.With;
 import org.springframework.lang.Nullable;
 
 import java.time.ZonedDateTime;
@@ -9,7 +12,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @Value
-@Builder(access = AccessLevel.PUBLIC)
+@Builder
 @AllArgsConstructor
 public class Shop {
     Id id;
@@ -21,8 +24,9 @@ public class Shop {
     String city;
     String addressSupplement;
     Map<ContactType, String> contactTypes;
-    @With
     boolean enabled;
+    @With
+    boolean approved;
     GeoLocation geoLocation;
     String details;
     @Nullable
