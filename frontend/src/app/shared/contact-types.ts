@@ -1,4 +1,4 @@
-import {ShopDetailDto} from "../data/client";
+import {ShopDetailDto} from '../data/client';
 import ContactTypesEnum = ShopDetailDto.ContactTypesEnum;
 
 enum ContactType {

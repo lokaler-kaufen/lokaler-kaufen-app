@@ -1,10 +1,14 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {ShopAdminControllerService, ShopAdminDto, ShopListDto, ShopListEntryDto} from '../data/client';
+import {ShopAdminDto, ShopListDto, ShopListEntryDto} from '../data/client';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatSort} from '@angular/material/sort';
 import {Router} from '@angular/router';
 import ContactTypesEnum = ShopAdminDto.ContactTypesEnum;
-import {throwError} from 'rxjs';
+
+async function requestShops(): Promise<ShopListDto> {
+  return fetch('/api/admin/shop')
+    .then(response => response.json());
+}
 
 @Component({
   selector: 'admin-overview',
@@ -15,7 +19,7 @@ export class AdminOverviewPageComponent implements OnInit {
   displayedColumns = ['id', 'name', 'ownerName', 'street', 'plz', 'city', 'enabled', 'email'];
   dataSource = new MatTableDataSource();
 
-  constructor(private adminControllerService: ShopAdminControllerService, private router: Router) {
+  constructor(private router: Router) {
     this.dataUpdate = this.dataUpdate.bind(this);
     this.dataSource.sort = this.sort;
   }
@@ -24,7 +28,7 @@ export class AdminOverviewPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.generateDummyData();
-    this.adminControllerService.listAllUsingGET().subscribe(this.dataUpdate);
+    requestShops().then(this.dataUpdate);
   }
 
   private dataUpdate(data: ShopListDto): void {
@@ -62,4 +66,5 @@ export class AdminOverviewPageComponent implements OnInit {
     }
     this.dataUpdate({shops: shopList} as ShopListDto);
   }
+
 }

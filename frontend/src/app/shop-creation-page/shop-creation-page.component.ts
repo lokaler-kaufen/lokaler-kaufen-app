@@ -49,13 +49,18 @@ export class ShopCreationPageComponent implements OnInit {
 
   token: string;
   contactTypes;
-  hidePassword = true;
 
   businessHours = BusinessHours;
 
   days;
 
-  constructor(private client: HttpClient, private formBuilder: FormBuilder, private route: ActivatedRoute, private matDialog: MatDialog, private notificationsService: NotificationsService) {
+  constructor(
+    private client: HttpClient,
+    private formBuilder: FormBuilder,
+    private route: ActivatedRoute,
+    private matDialog: MatDialog,
+    private notificationsService: NotificationsService
+  ) {
     this.days = Array.from(this.businessHours.POSSIBLE_BUSINESS_HOURS.keys());
     this.contactTypes = Object.keys(ContactTypesEnum).map(key => ContactTypesEnum[key]);
   }
@@ -108,10 +113,12 @@ export class ShopCreationPageComponent implements OnInit {
   // Validation password equals confirmed password
   checkMatchingPasswords(passwordKey: string, passwordConfirmationKey: string) {
     return (group: FormGroup) => {
-      const passwordInput = group.controls[passwordKey],
-        passwordConfirmationInput = group.controls[passwordConfirmationKey];
+      const passwordInput = group.controls[passwordKey];
+      const passwordConfirmationInput = group.controls[passwordConfirmationKey];
+
       if (passwordInput.value !== passwordConfirmationInput.value) {
         return passwordConfirmationInput.setErrors({notEquivalent: true});
+
       } else {
         return passwordConfirmationInput.setErrors(null);
       }

@@ -5,6 +5,6 @@ export interface PageObject {
    *
    * Returns a promise that should be resolved when the navigation was successful.
    */
-  get (url : string) : Promise<unknown>;
+  get(url: string): Promise<unknown>;
 
 }

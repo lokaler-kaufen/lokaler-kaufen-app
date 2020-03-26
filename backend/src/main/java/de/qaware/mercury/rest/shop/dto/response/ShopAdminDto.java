@@ -2,6 +2,8 @@ package de.qaware.mercury.rest.shop.dto.response;
 
 import de.qaware.mercury.business.shop.ContactType;
 import de.qaware.mercury.business.shop.Shop;
+import de.qaware.mercury.rest.shop.dto.request.SlotConfigDto;
+import de.qaware.mercury.util.Null;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,6 +29,7 @@ public class ShopAdminDto {
     String details;
     @Nullable
     String website;
+    SlotConfigDto slots;
 
     public static ShopAdminDto of(Shop shop) {
         return new ShopAdminDto(
@@ -42,7 +45,8 @@ public class ShopAdminDto {
             shop.isEnabled(),
             shop.isApproved(),
             shop.getDetails(),
-            shop.getWebsite()
+            shop.getWebsite(),
+            Null.map(shop.getSlotConfig(), SlotConfigDto::of)
         );
     }
 }

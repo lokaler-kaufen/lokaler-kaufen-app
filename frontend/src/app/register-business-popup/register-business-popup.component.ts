@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
-import {MatDialogRef} from "@angular/material/dialog";
-import {HttpClient} from "@angular/common/http";
-import {NotificationsService} from "angular2-notifications";
+import {MatDialogRef} from '@angular/material/dialog';
+import {HttpClient} from '@angular/common/http';
+import {NotificationsService} from 'angular2-notifications';
 
 @Component({
   selector: 'register-business-popup',
@@ -29,7 +29,11 @@ export class RegisterBusinessPopupComponent {
       error => {
         console.log('Error sending creation link: ' + error.status + ', ' + error.message);
         if (error.status === '409') {
-          this.notificationsService.error('Moment mal...', 'Du hast dich bereits registriert. Du kannst dich unter Login für Ladenbesitzer anmelden.');
+          this.notificationsService.error(
+            'Moment mal...',
+            'Du hast dich bereits registriert. Du kannst dich unter Login für Ladenbesitzer anmelden.'
+          );
+
         } else {
           this.notificationsService.error('Tut uns leid!', 'Ein Fehler beim Senden deines Links ist aufgetreten.');
         }

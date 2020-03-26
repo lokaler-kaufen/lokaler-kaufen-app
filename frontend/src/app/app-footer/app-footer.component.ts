@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {MatDialog} from "@angular/material/dialog";
-import {RegisterBusinessPopupComponent} from "../register-business-popup/register-business-popup.component";
+import {MatDialog} from '@angular/material/dialog';
+import {RegisterBusinessPopupComponent} from '../register-business-popup/register-business-popup.component';
 
 @Component({
   selector: 'app-footer',
