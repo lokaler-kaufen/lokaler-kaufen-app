@@ -1,11 +1,16 @@
 package de.qaware.mercury.business.shop;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Value;
 import org.springframework.lang.Nullable;
 
 import java.util.Map;
 
 @Value
+@Builder(access = AccessLevel.PUBLIC)
+@AllArgsConstructor
 public class ShopUpdate {
     String name;
     String ownerName;

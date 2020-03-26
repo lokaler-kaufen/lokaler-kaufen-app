@@ -8,7 +8,6 @@ import de.qaware.mercury.business.shop.*
 import de.qaware.mercury.business.time.Clock
 import de.qaware.mercury.business.uuid.UUIDFactory
 import de.qaware.mercury.storage.shop.ShopRepository
-import spock.lang.PendingFeature
 import spock.lang.Specification
 
 import java.time.ZonedDateTime
@@ -171,19 +170,57 @@ class ShopServiceImplSpec extends Specification {
         thrown ShopAlreadyExistsException
     }
 
-    @PendingFeature
-    def "Update"() {
-        // TODO Implement me
+    def "Update shop"() {
+        given:
+        def update = new ShopUpdate.ShopUpdateBuilder().zipCode('83022').build()
+        def shopId = Shop.Id.of(UUID.randomUUID())
+        def shop = new Shop.ShopBuilder().id(shopId).zipCode('83024').build()
+
+        when:
+        def updated = shopService.update(shop, update)
+
+        then:
+        1 * shopRepository.update(_)
+
+        and:
+        with(updated) {
+            id == shopId
+            zipCode == update.zipCode
+        }
     }
 
-    @PendingFeature
-    def "ChangeEnabled"() {
-        // TODO Implement me
+    def "Can't change unknown shop"() {
+        given:
+        def shopId = Shop.Id.of(UUID.randomUUID())
+
+        when:
+        shopService.changeEnabled(shopId, true)
+
+        then:
+        1 * shopRepository.findById(shopId) >> null
+        thrown ShopNotFoundException
     }
 
-    @PendingFeature
-    def "SendCreateLink"() {
-        // TODO Implement me
+    def "Change shop to Enabled"() {
+        given:
+        def shopId = Shop.Id.of(UUID.randomUUID())
+        def shop = new Shop.ShopBuilder().id(shopId).enabled(false).build()
+
+        when:
+        shopService.changeEnabled(shopId, true)
+
+        then:
+        1 * shopRepository.findById(shopId) >> shop
+        1 * shopRepository.update({ Shop s -> s.enabled })
+    }
+
+    def "Send create link to email"() {
+        when:
+        shopService.sendCreateLink('test@lokaler.kaufen')
+
+        then:
+        1 * emailService.sendShopCreationLink('test@lokaler.kaufen')
+        0 * _
     }
 
     def "Find by name"() {
