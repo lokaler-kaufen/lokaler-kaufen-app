@@ -33,8 +33,6 @@ dependencies {
     runtimeOnly 'org.postgresql:postgresql'
     annotationProcessor 'org.projectlombok:lombok'
 
-    implementation 'com.google.code.findbugs:jsr305:3.0.2'
-
     // Hibernate types
     compile 'com.vladmihalcea:hibernate-types-52:2.9.6'
 
