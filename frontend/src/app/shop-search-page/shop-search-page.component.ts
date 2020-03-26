@@ -68,7 +68,7 @@ export class ShopSearchPageComponent implements OnInit {
 
   private findAllShopsNearby(): void {
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
-    const params = new HttpParams().append('location',  this.location);
+    const params = new HttpParams().append('zipCode',  this.location);
 
     this.client.get<ShopListDto>('/api/shop/nearby', {headers, params}).subscribe(
       response => {
