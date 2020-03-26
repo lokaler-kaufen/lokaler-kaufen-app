@@ -4,19 +4,11 @@ import de.qaware.mercury.business.location.GeoLocation
 import de.qaware.mercury.business.login.PasswordResetToken
 import de.qaware.mercury.business.login.ShopLoginService
 import de.qaware.mercury.business.login.TokenService
-import de.qaware.mercury.business.shop.ContactType
-import de.qaware.mercury.business.shop.DayConfig
-import de.qaware.mercury.business.shop.Shop
-import de.qaware.mercury.business.shop.ShopNotFoundException
-import de.qaware.mercury.business.shop.ShopService
-import de.qaware.mercury.business.shop.SlotConfig
+import de.qaware.mercury.business.shop.*
 import de.qaware.mercury.rest.plumbing.authentication.AuthenticationHelper
-import de.qaware.mercury.rest.shop.dto.request.ResetPasswordDto
-import de.qaware.mercury.rest.shop.dto.request.SendCreateLinkDto
-import de.qaware.mercury.rest.shop.dto.request.SendPasswordResetLinkDto
-import de.qaware.mercury.rest.shop.dto.request.SlotConfigDto
-import de.qaware.mercury.rest.shop.dto.request.UpdateShopDto
+import de.qaware.mercury.rest.shop.dto.request.*
 import de.qaware.mercury.rest.shop.dto.response.ShopDetailDto
+import de.qaware.mercury.rest.shop.dto.response.ShopListDto
 import de.qaware.mercury.rest.shop.dto.response.ShopOwnerDetailDto
 import de.qaware.mercury.util.Null
 import spock.lang.Specification
@@ -121,6 +113,22 @@ class ShopControllerSpec extends Specification {
         1 * shopLoginService.resetPassword(email, newPassword)
     }
 
+    def "Shop gets created"() {
+        setup:
+        UUID id = UUID.randomUUID()
+        Shop shop = createShopObject(id)
+        CreateShopDto dto = new CreateShopDto("name", "ownername", "street", "zipCode", "city", "addressSupplement", "details", "www.example.com", "password", new HashMap<String, String>(), Null.map(createSlotConfig(), { slotConfig -> SlotConfigDto.of(slotConfig) }))
+        String token = "test-token"
+
+        when:
+        ShopDetailDto result = controller.createShop(dto, token)
+
+        then:
+        result == ShopDetailDto.of(shop)
+        result.id == id.toString()
+        1 * shopService.create(_) >> shop
+    }
+
     def "Shop gets updated"() {
         setup:
         UUID id = UUID.randomUUID()
@@ -135,6 +143,35 @@ class ShopControllerSpec extends Specification {
         result.id == id.toString()
         1 * authenticationHelper.authenticateShop(httpServletRequest)
         1 * shopService.update(_, _) >> shop
+    }
+
+    def "Gets nearby shops by location string"() {
+        setup:
+        String testLocation = "location string"
+        List<ShopWithDistance> shopWithDistanceList = [new ShopWithDistance(createShopObject(UUID.randomUUID()), 12.1)]
+        ShopListDto shopListDto = ShopListDto.of(shopWithDistanceList)
+
+        when:
+        ShopListDto result = controller.listNearby(testLocation)
+
+        then:
+        result == shopListDto
+        1 * shopService.findNearby(testLocation) >> shopWithDistanceList
+    }
+
+    def "Gets nearby shops by query and location"() {
+        setup:
+        String testLocation = "location string"
+        String testQuery = "query string"
+        List<ShopWithDistance> shopWithDistanceList = [new ShopWithDistance(createShopObject(UUID.randomUUID()), 12.1)]
+        ShopListDto shopListDto = ShopListDto.of(shopWithDistanceList)
+
+        when:
+        ShopListDto result = controller.listNearby(testQuery, testLocation)
+
+        then:
+        result == shopListDto
+        1 * shopService.search(testQuery, testLocation) >> shopWithDistanceList
     }
 
     private static Shop createShopObject(UUID id) {
