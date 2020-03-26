@@ -6,11 +6,10 @@ import de.qaware.mercury.business.login.ShopLoginService
 import de.qaware.mercury.business.login.TokenService
 import de.qaware.mercury.business.shop.*
 import de.qaware.mercury.rest.plumbing.authentication.AuthenticationHelper
-import de.qaware.mercury.rest.shop.dto.request.ResetPasswordDto
-import de.qaware.mercury.rest.shop.dto.request.SendCreateLinkDto
-import de.qaware.mercury.rest.shop.dto.request.SendPasswordResetLinkDto
+import de.qaware.mercury.rest.shop.dto.request.*
 import de.qaware.mercury.rest.shop.dto.response.ShopDetailDto
 import de.qaware.mercury.rest.shop.dto.response.ShopOwnerDetailDto
+import de.qaware.mercury.util.Null
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -111,6 +110,22 @@ class ShopControllerSpec extends Specification {
         then:
         1 * tokenService.verifyPasswordResetToken(_) >> email
         1 * shopLoginService.resetPassword(email, newPassword)
+    }
+
+    def "Shop gets updated"() {
+        setup:
+        UUID id = UUID.randomUUID()
+        Shop shop = createShopObject(id)
+        UpdateShopDto dto = new UpdateShopDto("name", "ownername", "street", "zipCode", "city", "addressSupplement", "details", "www.example.com", new HashMap<String, String>(), Null.map(createSlotConfig(), { slotConfig -> SlotConfigDto.of(slotConfig) }))
+
+        when:
+        ShopDetailDto result = controller.updateShop(dto, httpServletRequest)
+
+        then:
+        result == ShopDetailDto.of(shop)
+        result.id == id.toString()
+        1 * authenticationHelper.authenticateShop(httpServletRequest)
+        1 * shopService.update(_, _) >> shop
     }
 
     private static Shop createShopObject(UUID id) {
