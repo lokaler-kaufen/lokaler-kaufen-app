@@ -26,7 +26,7 @@ export class AdminDetailsPageComponent implements OnInit {
     this.shopOwnerDetails.next(this.extractShopOwnerDetailDto(this.shopDetails));
   }
 
-  updateShop($event: ShopAdminDto) {
+  updateShop($event: ShopOwnerDetailDto) {
     this.injectUpdatedShopOwnerDetails($event);
     this.adminService.updateShop(this.shopDetails);
   }
