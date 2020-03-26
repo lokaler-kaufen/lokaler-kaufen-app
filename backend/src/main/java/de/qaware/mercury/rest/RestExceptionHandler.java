@@ -106,7 +106,7 @@ class RestExceptionHandler extends ResponseEntityExceptionHandler {
         StringBuilder errorMessage = new StringBuilder();
         for (FieldError error : ex.getBindingResult().getFieldErrors()) {
             errorMessage
-                .append("'").append(error.getField()).append("': ")
+                .append(error.getField()).append(": ")
                 .append(error.getDefaultMessage())
                 .append("\n");
         }
