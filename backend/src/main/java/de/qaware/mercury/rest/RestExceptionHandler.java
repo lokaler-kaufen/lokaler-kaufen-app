@@ -13,10 +13,14 @@ import de.qaware.mercury.rest.shop.InvalidTimeException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.validation.ConstraintViolationException;
@@ -95,5 +99,20 @@ class RestExceptionHandler extends ResponseEntityExceptionHandler {
         ErrorDto errorDto = ErrorDto.of(uuidFactory, "SHOP_ALREADY_EXISTS", exception.getMessage());
         log.debug("Handled ShopAlreadyExistsException with exception id {}", errorDto.getId(), exception);
         return ResponseEntity.status(HttpStatus.CONFLICT).body(errorDto);
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        StringBuilder errorMessage = new StringBuilder();
+        for (FieldError error : ex.getBindingResult().getFieldErrors()) {
+            errorMessage
+                .append("'").append(error.getField()).append("': ")
+                .append(error.getDefaultMessage())
+                .append("\n");
+        }
+
+        ErrorDto errorDto = ErrorDto.of(uuidFactory, "REQUEST_VALIDATION_FAILED", errorMessage.toString());
+        log.debug("Handled MethodArgumentNotValidException with exception id {}", errorDto.getId(), ex);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDto);
     }
 }
