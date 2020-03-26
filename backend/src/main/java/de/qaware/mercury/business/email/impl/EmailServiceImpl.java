@@ -34,6 +34,8 @@ class EmailServiceImpl implements EmailService {
     private static final String SHOP_RESET_PASSWORD_SUBJECT = "Passwort auf lokaler.kaufen zurücksetzen";
     private static final String RESERVATION_CANCELLATION_SUBJECT = "Dein Termin auf lokaler.kaufen wurde leider abgesagt";
     private static final String RESERVATION_CANCELLATION_CONFIRMATION_SUBJECT = "Absagebestätigung von lokaler.kaufen";
+    private static final String SHOP_CREATED_APPROVAL_NEEDED_SUBJECT = "Gleich kann's auf lokaler.kaufen losgehen!";
+
     private final EmailSender emailSender;
     private final EmailConfigurationProperties config;
     private final TokenService tokenService;
@@ -130,6 +132,14 @@ class EmailServiceImpl implements EmailService {
             .replace("{{ start }}", dateTimeI18nService.formatTime(reservation.getStart()));
 
         emailSender.sendEmail(email, RESERVATION_CANCELLATION_CONFIRMATION_SUBJECT, body);
+    }
+
+    @Override
+    public void sendShopCreatedApprovalNeeded(Shop shop) {
+        String body = loadTemplate("/email/shop-created-approval-needed.txt")
+            .replace("{{ ownerName }}", shop.getOwnerName());
+
+        emailSender.sendEmail(shop.getEmail(), SHOP_CREATED_APPROVAL_NEEDED_SUBJECT, body);
     }
 
     private String loadTemplate(String location) {

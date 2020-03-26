@@ -1,4 +1,4 @@
-Hallo {{ name }},
+Hallo {{ ownerName }},
 
 ein Administrator hat deinen Laden auf lokaler.kaufen deaktiviert. Um Genaueres zu erfahren, wende dich bitte unter Angabe deines Ladens an support@lokaler.kaufen.
 
