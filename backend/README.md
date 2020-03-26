@@ -43,7 +43,7 @@ Start the `main()` method of the `de.qaware.mercury.MercuryApplication` class.
 
 ### Add a column to existing database tables
 
-1. Add column with `DEFAULT` and a sane value for the existing columns
+1. Add column with `DEFAULT` and a sane value for the existing rows
 1. Drop the `DEFAULT` on the column
 
 ```
