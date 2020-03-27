@@ -69,17 +69,17 @@ export class ShopDetailsPageComponent implements OnInit {
   showBookingPopup(id: string) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
-    dialogConfig.width = '100%';
+    dialogConfig.width = '450px';
     dialogConfig.data = {
       supportedContactTypes: this.details.contactTypes
     } as BookingDialogData;
     this.matDialog.open(BookingPopupComponent, dialogConfig)
       .afterClosed()
       .subscribe((data: BookingPopupResult) => {
-        if (data.outcome === BookingPopupOutcome.BOOK) {
+        if (data && data.outcome === BookingPopupOutcome.BOOK) {
           const successConfig = new MatDialogConfig();
           successConfig.autoFocus = true;
-          successConfig.width = '100%';
+          successConfig.width = '450px';
           successConfig.data = {
             owner: this.details.name,
             contactNumber: data.phoneNumber,

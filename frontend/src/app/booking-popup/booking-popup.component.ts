@@ -26,27 +26,27 @@ export enum BookingPopupOutcome {
 })
 export class BookingPopupComponent implements OnInit {
   contactTypes = ContactTypes;
-  formControl = new FormGroup({
-    option: new FormControl('', [Validators.required]),
-    phoneNumber: new FormControl('', [Validators.required]),
-    name: new FormControl('', [Validators.required]),
-    email: new FormControl('', [
-      Validators.required,
-      Validators.email]
-    )
-  });
+  bookingGroup: FormGroup;
 
   constructor(public dialogRef: MatDialogRef<BookingPopupComponent>,
               @Inject(MAT_DIALOG_DATA) public data: BookingDialogData) {
   }
 
   ngOnInit(): void {
-
+    this.bookingGroup = new FormGroup({
+      option: new FormControl('', [Validators.required]),
+      phoneNumber: new FormControl('', [Validators.required]),
+      name: new FormControl('', [Validators.required]),
+      email: new FormControl('', [
+        Validators.required,
+        Validators.email]
+      )
+    });
+    this.bookingGroup.controls.option.setValue('Whatsapp');
   }
 
   onSubmit(): void {
-    const formValue: any = this.formControl.value;
-
+    const formValue: any = this.bookingGroup.value;
     const popupResult: BookingPopupResult = {
       outcome: BookingPopupOutcome.BOOK,
       phoneNumber: formValue.phoneNumber,
@@ -54,7 +54,6 @@ export class BookingPopupComponent implements OnInit {
       email: formValue.email,
       option: formValue.option
     };
-
     this.dialogRef.close(popupResult);
   }
 

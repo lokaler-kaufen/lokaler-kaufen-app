@@ -1,52 +1,52 @@
-<h1 mat-dialog-title>Buchen</h1>
-<div mat-dialog-content>
-  <form [formGroup]="formControl" (ngSubmit)="onSubmit()">
-    <mat-form-field class="booking-popup-form-label">
-      <mat-label>Wie können wir dich kontaktieren?</mat-label>
-      <mat-select formControlName="option">
-        <mat-option *ngFor="let option of data.supportedContactTypes" [value]="contactTypes.getDisplayName(option)">
-          <mat-icon svgIcon="{{option}}"></mat-icon>
-          {{contactTypes.getDisplayName(option)}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+<div>
+  <h1 mat-dialog-title>Buchen</h1>
+  <div mat-dialog-content>
+    <form [formGroup]="bookingGroup" (ngSubmit)="onSubmit()">
+      <div class="booking-popup-form-label">
+        <mat-form-field style="width: 38%; padding-right: 2%">
+          <mat-label>Kontaktmöglichkeit</mat-label>
+          <mat-select required formControlName="option"
+                      [value]="contactTypes.getDisplayName(data.supportedContactTypes[0])">
+            <mat-option *ngFor="let option of data.supportedContactTypes" [value]="contactTypes.getDisplayName(option)">
+              <mat-icon svgIcon="{{option}}"></mat-icon>
+              {{contactTypes.getDisplayName(option)}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field style="width: 60%">
+          <mat-label>Deine Kontaktdaten</mat-label>
+          <input required matInput formControlName="phoneNumber">
+        </mat-form-field>
+      </div>
 
-    <p>
-      <mat-form-field class="booking-popup-form-label">
-        <mat-label>Deine Kontaktdaten</mat-label>
-        <input matInput formControlName="phoneNumber">
-      </mat-form-field>
-    </p>
+      <div>
+        <mat-form-field class="booking-popup-form-label">
+          <mat-label>Dein Name</mat-label>
+          <input required matInput formControlName="name">
+        </mat-form-field>
+      </div>
 
-    <p>
-      <mat-form-field class="booking-popup-form-label">
-        <mat-label>Dein Name</mat-label>
-        <input matInput formControlName="name">
-      </mat-form-field>
-    </p>
+      <div>
+        <mat-form-field class="booking-popup-form-label">
+          <mat-label>Deine E-Mail Adresse</mat-label>
+          <input required matInput formControlName="email" pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$">
+          <mat-error *ngIf="bookingGroup.hasError('email') && !bookingGroup.hasError('required')">
+            Bitte gib eine valide E-Mail Adresse ein!
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </form>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button
+            (click)="onNoClick()">Abbrechen
+    </button>
 
-    <p>
-      <mat-form-field class="booking-popup-form-label">
-        <mat-label>Deine E-Mail Adresse</mat-label>
-        <input matInput formControlName="email" pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$">
-        <mat-error *ngIf="formControl.hasError('email') && !formControl.hasError('required')">
-          Bitte gib eine valide E-Mail Adresse ein!
-        </mat-error>
-      </mat-form-field>
-    </p>
-
-    <div mat-dialog-actions>
-      <button mat-button
-              (click)="onNoClick()">Abbrechen
-      </button>
-
-      <button mat-button
-              disabled="{{!formControl.valid}}"
-              type="submit"
-              color="primary">Buchen!
-      </button>
-    </div>
-
-  </form>
+    <button mat-button
+            disabled="{{!bookingGroup.valid}}"
+            type="submit"
+            (click)="onSubmit()"
+            color="primary">Buchen!
+    </button>
+  </div>
 </div>
-
