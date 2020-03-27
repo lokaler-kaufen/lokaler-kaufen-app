@@ -2,17 +2,25 @@
   display: grid;
 }
 
+.back-button {
+  font-size: 12px;
+}
+
 .book-button {
   width: 100%;
 }
 
-.left {
-  text-align: left;
+.booking-table {
+  margin-left: 1%;
+  margin-right: 1%;
+  width: 98%;
 }
-.right {
-  text-align: right;
+
+.description-text {
+  margin-left: 1%;
+  margin-top: 3em;
 }
-.left, .right {
-  display: inline-block;
-  width: 50%;
+
+.shop-titel {
+  margin-bottom: 1em;
 }
