@@ -24,7 +24,7 @@ export class AdminService {
   }
 
   getShopWithId(id: string): Observable<ShopAdminDto> {
-    return this.client.get<ShopAdminDto>('/api/admin/shop' + encodeURIComponent(id));
+    return this.client.get<ShopAdminDto>('/api/admin/shop/' + encodeURIComponent(id));
   }
 
   updateShop(updatedShop: ShopAdminDto) {
