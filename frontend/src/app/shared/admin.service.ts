@@ -1,8 +1,9 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {ShopAdminDto, ShopsAdminDto} from '../data/client';
 import {NotificationsService} from 'angular2-notifications';
 import {Observable} from 'rxjs';
+import {ShopsAdminDto} from '../data/client/model/shopsAdminDto';
+import {ShopAdminDto} from '../data/client/model/shopAdminDto';
 
 @Injectable({
   providedIn: 'root'

@@ -1,9 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {ReplaySubject} from 'rxjs';
-import {ShopAdminDto, ShopOwnerDetailDto} from '../data/client';
 import {ActivatedRoute} from '@angular/router';
 import {AdminService} from '../shared/admin.service';
 import {NotificationsService} from 'angular2-notifications';
+import {ShopAdminDto} from '../data/client/model/shopAdminDto';
+import {ShopOwnerDetailDto} from '../data/client/model/shopOwnerDetailDto';
 
 @Component({
   selector: 'admin-details-page',

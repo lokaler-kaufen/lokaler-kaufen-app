@@ -1,13 +1,16 @@
 import {Component, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {BusinessHours, setRightSlot} from '../shop-creation-page/shop-creation-page.component';
-import {DayDto, ShopAdminDto, ShopOwnerDetailDto, SlotConfigDto, UpdateShopDto} from '../data/client';
 import {HttpClient} from '@angular/common/http';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {NotificationsService} from 'angular2-notifications';
 import {Observable, ReplaySubject} from 'rxjs';
-import ContactTypesEnum = ShopAdminDto.ContactTypesEnum;
+import {ShopOwnerDetailDto} from '../data/client/model/shopOwnerDetailDto';
+import {UpdateShopDto} from '../data/client/model/updateShopDto';
+import {ShopAdminDto} from '../data/client/model/shopAdminDto';
+import {SlotConfigDto} from '../data/client/model/slotConfigDto';
+import {DayDto} from '../data/client/model/dayDto';
 
 @Component({
   selector: 'shop-details',
@@ -40,7 +43,7 @@ export class ShopDetailsComponent implements OnInit {
               private matDialog: MatDialog,
               private notificationsService: NotificationsService) {
     this.days = Array.from(this.businessHours.POSSIBLE_BUSINESS_HOURS.keys());
-    this.contactTypes = Object.keys(ContactTypesEnum).map(key => ContactTypesEnum[key]);
+    this.contactTypes = Object.keys(ShopAdminDto.ContactTypesEnum).map(key => ShopAdminDto.ContactTypesEnum[key]);
   }
 
   ngOnInit() {
@@ -189,25 +192,25 @@ export class ShopDetailsComponent implements OnInit {
     switch (day) {
       case 'Montag':
         return slots.monday;
-        break;
+
       case 'Dienstag':
         return slots.tuesday;
-        break;
+
       case 'Mittwoch':
         return slots.wednesday;
-        break;
+
       case 'Donnerstag':
         return slots.thursday;
-        break;
+
       case 'Freitag':
         return slots.friday;
-        break;
+
       case 'Samstag':
         return slots.saturday;
-        break;
+
       case 'Sonntag':
         return slots.sunday;
-        break;
+
     }
   }
 
