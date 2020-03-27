@@ -4,6 +4,7 @@ We are happy if you are willing to help! To ensure an efficient workflow, please
 
 1. Open an [issue](https://github.com/qaware/wir-vs-virus/issues) describing your planned contribution, and
   please mention @vlow, @phxql and @dashuber
+    1. You can write in German or English, whatever you prefer!
 1. In the meantime, until you receive some feedback, please read the coding guidelines for
     1. the [frontend](frontend/README.md)
     1. the [backend](https://github.com/qaware/wir-vs-virus/blob/master/backend/README.md#conventions)
