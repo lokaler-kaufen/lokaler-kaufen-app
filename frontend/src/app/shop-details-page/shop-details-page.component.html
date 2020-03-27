@@ -1,9 +1,18 @@
 <div *ngIf="details" class="app-content">
+  <div>
+    <div class="left"><h1 id="title" class="mat-title">{{details.name}}</h1></div>
 
-  <h1 id="title" class="mat-title">{{details.name}}</h1>
+    <div class="right">
+      <button mat-raised-button color="primary" [routerLink]="'/shops'"
+              [queryParams]="{'location' : getCachedZipCode()}">Zurück zur
+        Übersicht
+      </button>
+    </div>
+  </div>
 
   <div id="description" class="mat-card" style="margin-bottom: 20px;">
-    <p *ngIf="shopHasNoDescription" class="mat-card-content text-no-values">Dieser Laden hat noch keine Beschreibung hinterlegt.</p>
+    <p *ngIf="shopHasNoDescription" class="mat-card-content text-no-values">Dieser Laden hat noch keine Beschreibung
+      hinterlegt.</p>
     <p class="mat-card-content">{{details.details}}</p>
   </div>
 
