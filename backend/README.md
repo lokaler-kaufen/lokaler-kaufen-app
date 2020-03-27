@@ -15,7 +15,7 @@ docker run --rm -e POSTGRES_PASSWORD=password -p 5432:5432 postgres:11
 ### With gradle
 
 ```shell script
-./gradlew bootRun
+./gradlew bootRun --args='--spring.profiles.active=dev'
 ```
 
 ### With IntelliJ
