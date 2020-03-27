@@ -55,7 +55,8 @@ class SlotServiceImpl implements SlotService {
         LocalTime currentStart = dayConfig.getStart();
         LocalDateTime now = clock.now();
         // while slot end <= end of opening hours && end of day
-        while (currentStart.plusMinutes(slotConfig.getTimePerSlot()).isBefore(dayConfig.getEnd()) && isBeforeMidnight(currentStart, slotConfig.getTimePerSlot())) {
+        while (isBeforeOrEqual(currentStart.plusMinutes(slotConfig.getTimePerSlot()), dayConfig.getEnd()) &&
+            isBeforeMidnight(currentStart, slotConfig.getTimePerSlot())) {
             // start + length of slot
             LocalTime slotEnd = currentStart.plusMinutes(slotConfig.getTimePerSlot());
             Interval slot = Interval.of(date.atTime(currentStart), date.atTime(slotEnd));
@@ -74,6 +75,17 @@ class SlotServiceImpl implements SlotService {
         }
 
         return slots;
+    }
+
+    /**
+     * Compares time to otherTime and decides if otherTime is before or equal time.
+     * This is necessary since isBefore excludes the equal case, unlike isAfter
+     *
+     * @param time      the reference time
+     * @param otherTime the time to compare to the reference time
+     */
+    private boolean isBeforeOrEqual(LocalTime time, LocalTime otherTime) {
+        return !time.isAfter(otherTime);
     }
 
     /***
