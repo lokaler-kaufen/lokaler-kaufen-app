@@ -1,4 +1,4 @@
-docker_build('backend-image', './backend/', only=['./backend/build/libs')
+docker_build('backend-image', './backend/', only=['./build/libs/'])
 
 docker_build('frontend-image', './frontend/', build_args={'node_env': 'development'},
     live_update=[
