@@ -10,13 +10,9 @@ import {ShopAdminDto} from '../data/client/model/shopAdminDto';
 })
 export class AdminService {
 
-  shopDetails: ShopsAdminDto;
 
   constructor(private client: HttpClient,
               private notificationsService: NotificationsService) {
-    this.client.get('/api/admin/shop').subscribe(response => {
-      this.shopDetails = response;
-    });
   }
 
   listAllShops(): Observable<ShopsAdminDto> {
