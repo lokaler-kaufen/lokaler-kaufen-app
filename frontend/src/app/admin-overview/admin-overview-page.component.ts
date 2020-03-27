@@ -1,9 +1,10 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {ShopAdminDto, ShopListDto, ShopListEntryDto} from '../data/client';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatSort} from '@angular/material/sort';
 import {Router} from '@angular/router';
-import ContactTypesEnum = ShopAdminDto.ContactTypesEnum;
+import {ShopListDto} from '../data/client/model/shopListDto';
+import {ShopListEntryDto} from '../data/client/model/shopListEntryDto';
+import {ShopAdminDto} from '../data/client/model/shopAdminDto';
 
 async function requestShops(): Promise<ShopListDto> {
   return fetch('/api/admin/shop')
@@ -45,7 +46,7 @@ export class AdminOverviewPageComponent implements OnInit {
       return {
         addressSupplement: Math.random().toString(10),
         city: Math.random().toString(10),
-        contactTypes: Object.values(ContactTypesEnum).filter(e => Math.random() >= 0.5),
+        contactTypes: Object.values(ShopAdminDto.ContactTypesEnum).filter(() => Math.random() >= 0.5),
         details: Math.random().toString(10),
         email: Math.random().toString(10),
         enabled: Math.random() * 10 > 5,

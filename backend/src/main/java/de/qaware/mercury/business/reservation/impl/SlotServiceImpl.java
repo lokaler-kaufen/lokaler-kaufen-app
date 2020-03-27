@@ -54,8 +54,9 @@ class SlotServiceImpl implements SlotService {
 
         LocalTime currentStart = dayConfig.getStart();
         LocalDateTime now = clock.now();
-        // while slot end <= end of day
-        while (!currentStart.plusMinutes(slotConfig.getTimePerSlot()).isAfter(dayConfig.getEnd())) {
+        // while slot end <= end of opening hours && end of day
+        while (isBeforeOrEqual(currentStart.plusMinutes(slotConfig.getTimePerSlot()), dayConfig.getEnd()) &&
+            isBeforeMidnight(currentStart, slotConfig.getTimePerSlot())) {
             // start + length of slot
             LocalTime slotEnd = currentStart.plusMinutes(slotConfig.getTimePerSlot());
             Interval slot = Interval.of(date.atTime(currentStart), date.atTime(slotEnd));
@@ -66,10 +67,35 @@ class SlotServiceImpl implements SlotService {
             }
 
             // Next start = end of slot + pause
+            // but don't exceed 00:00 or we will loop endlessly
+            if (!isBeforeMidnight(slotEnd, slotConfig.getTimeBetweenSlots())) {
+                break;
+            }
             currentStart = slotEnd.plusMinutes(slotConfig.getTimeBetweenSlots());
         }
 
         return slots;
+    }
+
+    /**
+     * Compares time to otherTime and decides if otherTime is before or equal time.
+     * This is necessary since isBefore excludes the equal case, unlike isAfter
+     *
+     * @param time      the reference time
+     * @param otherTime the time to compare to the reference time
+     */
+    private boolean isBeforeOrEqual(LocalTime time, LocalTime otherTime) {
+        return !time.isAfter(otherTime);
+    }
+
+    /***
+     * Checks whether a given number of minutes will exceed 00:00 if added to a given time.
+     * @param time the time
+     * @param plusMinutes the number of minutes to add to time
+     * @return true, if time + plusMinutes is after midnight
+     */
+    private boolean isBeforeMidnight(LocalTime time, int plusMinutes) {
+        return time.getHour() * 60 + time.getMinute() + plusMinutes < 24 * 60;
     }
 
     private boolean checkAvailability(Interval slot, List<Interval> existingReservations) {
