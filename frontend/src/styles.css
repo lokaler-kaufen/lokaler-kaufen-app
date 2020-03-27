@@ -4,7 +4,7 @@ html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .mat-header-cell {
-  background: rgba(141, 141, 141, 0.6);
+  background: rgba(141, 141, 141, 0.4);
 }
 
 a,
