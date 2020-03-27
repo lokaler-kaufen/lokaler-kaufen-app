@@ -67,7 +67,7 @@ class SlotServiceImpl implements SlotService {
 
             // Next start = end of slot + pause
             // but don't exceed 00:00 or we will loop endlessly
-            if (!isBeforeMidnight(currentStart, slotConfig.getTimeBetweenSlots())){
+            if (!isBeforeMidnight(currentStart, slotConfig.getTimeBetweenSlots())) {
                 break;
             }
             currentStart = slotEnd.plusMinutes(slotConfig.getTimeBetweenSlots());
@@ -82,8 +82,8 @@ class SlotServiceImpl implements SlotService {
      * @param plusMinutes the number of minutes to add to time
      * @return true, if time + plusMinutes is after midnight
      */
-    private boolean isBeforeMidnight(LocalTime time, int plusMinutes){
-        return time.getHour()*60+time.getMinute() + plusMinutes < 24*60;
+    private boolean isBeforeMidnight(LocalTime time, int plusMinutes) {
+        return time.getHour() * 60 + time.getMinute() + plusMinutes < 24 * 60;
     }
 
     private boolean checkAvailability(Interval slot, List<Interval> existingReservations) {
