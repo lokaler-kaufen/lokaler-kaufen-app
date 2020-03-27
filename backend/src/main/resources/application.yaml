@@ -1,7 +1,4 @@
 spring.datasource:
-  url: "jdbc:postgresql://localhost:5432/postgres"
-  username: "postgres"
-  password: "password"
   hikari:
     auto-commit: false
     connection-timeout: 10000 # ms
@@ -12,7 +9,7 @@ spring.jpa.open-in-view: false
 
 mercury:
   cookies:
-    secure: false
+    secure: true
   tokens:
     shopJwtSecret: "u2WXgWEWhyop+qtpiH5jhQmDN+PVRbazKPNuseI0dmE=" # openssl rand -base64 32
     adminJwtSecret: "QXOm/a5//OFtmciYomnixCTDCzNUQFWNAiT3eGBOfhQ=" # openssl rand -base64 32
@@ -26,8 +23,8 @@ mercury:
     shopPasswordResetLinkTemplate: "${variables.domain}/#/reset-shop-password?token={{ token }}"
     reservationCancellationLinkTemplate: "${variables.domain}/#/cancel-reservation?token={{ token }}"
   features:
-    enableDebugDataCreation: true
-    approveShopsOnCreation: true
+    enableDebugDataCreation: false
+    approveShopsOnCreation: false
 
 spring.mail:
   host: "smtp.gmail.com"
