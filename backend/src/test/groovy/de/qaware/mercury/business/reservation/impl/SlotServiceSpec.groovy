@@ -48,21 +48,26 @@ class SlotServiceSpec extends Specification {
         List<Slot> slots = slotService.generateSlots(start.toLocalDate(), end.toLocalDate(), config, reservations)
 
         then:
-        _ * clock.now() >> start
+        // Set the clock to 00:00 of the starting day to always get the same number of slots
+        _ * clock.now() >> start.withHour(0)
+            .withMinute(0)
+            .withSecond(0);
         slots.size() == count
 
         where:
-        usecase                 | start       | end         | config                    | reservations || count
-        'Monday'                | monday()    | monday()    | mondayConfig(10, 23)      | []           || 13
-        'Tuesday'               | tuesday()   | tuesday()   | tuesdayConfig(8, 18)      | []           || 10
-        'Wednesday'             | wednesday() | wednesday() | wednesdayConfig(8, 18)    | []           || 10
-        'Thursday'              | thursday()  | thursday()  | thursdayConfig(8, 18)     | []           || 10
-        'Friday'                | friday()    | friday()    | fridayConfig(8, 18)       | []           || 10
-        'Saturday'              | saturday()  | saturday()  | saturdayConfig(8, 18)     | []           || 10
-        'Sunday'                | sunday()    | sunday()    | sundayConfig(8, 18)       | []           || 10
-        'Monday til Wednesday'  | monday()    | wednesday() | mondayTilWednesday(8, 18) | []           || 30
-        'Saturday til Tuesday ' | saturday()  | tuesday()   | saturdayTilTuesday(8, 18) | []           || 30
-        'Monday'                | monday()    | monday()    | mondayConfig(10, 14)      | []           || 4
+        usecase                   | start       | end         | config                    | reservations || count
+        'Monday'                  | monday()    | monday()    | mondayConfig(10, 23)      | []           || 13
+        'Tuesday'                 | tuesday()   | tuesday()   | tuesdayConfig(8, 18)      | []           || 10
+        'Wednesday'               | wednesday() | wednesday() | wednesdayConfig(8, 18)    | []           || 10
+        'Thursday'                | thursday()  | thursday()  | thursdayConfig(8, 18)     | []           || 10
+        'Friday'                  | friday()    | friday()    | fridayConfig(8, 18)       | []           || 10
+        'Saturday'                | saturday()  | saturday()  | saturdayConfig(8, 18)     | []           || 10
+        'Sunday'                  | sunday()    | sunday()    | sundayConfig(8, 18)       | []           || 10
+        'Monday til Wednesday'    | monday()    | wednesday() | mondayTilWednesday(8, 18) | []           || 30
+        'Saturday til Tuesday '   | saturday()  | tuesday()   | saturdayTilTuesday(8, 18) | []           || 30
+        // This is a special one. We don't want to get slots which have already started. Since we set the clock to
+        // 00:00, the first available slot should not be part of the returned slot list.
+        'Monday (after midnight)' | monday()    | monday()    | mondayConfig(0, 4)        | []           || 3
 
     }
 
