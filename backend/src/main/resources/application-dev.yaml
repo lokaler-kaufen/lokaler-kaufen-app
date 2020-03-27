@@ -1,1 +1,17 @@
 spring.jpa.show-sql: true
+spring.datasource:
+  url: "jdbc:postgresql://localhost:5432/postgres"
+  username: "postgres"
+  password: "password"
+
+mercury:
+  cookies:
+    secure: false
+  email:
+    use-dummy: true # Set this to false to send real emails
+  features:
+    enableDebugDataCreation: true
+    approveShopsOnCreation: true
+
+variables:
+  domain: "http://localhost:4200"
