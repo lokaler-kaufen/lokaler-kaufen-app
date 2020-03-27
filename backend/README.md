@@ -4,6 +4,8 @@
 
 ### With Docker Compose
 
+(assuming you've already built the backend JAR with `cd backend && ./gradlew kick ass && cd ..`)
+
 ```shell script
 docker-compose up
 ```
