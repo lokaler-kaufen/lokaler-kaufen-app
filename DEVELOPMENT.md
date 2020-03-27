@@ -24,7 +24,7 @@ To develop and run the backend, you can simply spin up a Postgres instance using
 
 ```
 $ docker run --rm -d -e POSTGRES_PASSWORD=password -p 5432:5432 postgres:11
-$ ./gradlew bootRun
+$ ./gradlew bootRun --args='--spring.profiles.active=dev'
 ```
 
 Alternatively, you can use Docker Compose to fire up the database and
