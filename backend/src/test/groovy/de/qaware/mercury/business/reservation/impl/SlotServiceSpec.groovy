@@ -55,20 +55,30 @@ class SlotServiceSpec extends Specification {
         slots.size() == count
 
         where:
-        usecase                   | start       | end         | config                      | reservations || count
-        'Monday'                  | monday()    | monday()    | mondayConfig(10, 23)        | []           || 13
-        'Tuesday'                 | tuesday()   | tuesday()   | tuesdayConfig(8, 18)        | []           || 10
-        'Wednesday'               | wednesday() | wednesday() | wednesdayConfig(8, 18)      | []           || 10
-        'Thursday'                | thursday()  | thursday()  | thursdayConfig(8, 18)       | []           || 10
-        'Friday'                  | friday()    | friday()    | fridayConfig(8, 18)         | []           || 10
-        'Saturday'                | saturday()  | saturday()  | saturdayConfig(8, 18)       | []           || 10
-        'Sunday'                  | sunday()    | sunday()    | sundayConfig(8, 18)         | []           || 10
-        'Monday til Wednesday'    | monday()    | wednesday() | mondayTilWednesday(8, 18)   | []           || 30
-        'Saturday til Tuesday '   | saturday()  | tuesday()   | saturdayTilTuesday(8, 18)   | []           || 30
+        usecase                   | start       | end         | config                            | reservations || count
+        'Monday'                  | monday()    | monday()    | mondayConfig(10, 23)              | []           || 13
+        'Tuesday'                 | tuesday()   | tuesday()   | tuesdayConfig(8, 18)              | []           || 10
+        'Wednesday'               | wednesday() | wednesday() | wednesdayConfig(8, 18)            | []           || 10
+        'Thursday'                | thursday()  | thursday()  | thursdayConfig(8, 18)             | []           || 10
+        'Friday'                  | friday()    | friday()    | fridayConfig(8, 18)               | []           || 10
+        'Saturday'                | saturday()  | saturday()  | saturdayConfig(8, 18)             | []           || 10
+        'Sunday'                  | sunday()    | sunday()    | sundayConfig(8, 18)               | []           || 10
+        'Monday til Wednesday'    | monday()    | wednesday() | mondayTilWednesday(8, 18)         | []           || 30
+        'Saturday til Tuesday '   | saturday()  | tuesday()   | saturdayTilTuesday(8, 18)         | []           || 30
+        'Monday (no pause)'       | monday()    | monday()    | mondayConfigNoPauses(8, 18)       | []           || 20
+
         // This is a special one. We don't want to get slots which have already started. Since we set the clock to
         // 00:00, the first available slot should not be part of the returned slot list.
-        'Monday (after midnight)' | monday()    | monday()    | mondayConfig(0, 4)          | []           || 3
-        'Monday (no pause)'       | monday()    | monday()    | mondayConfigNoPauses(8, 18) | []           || 20
+        'Monday (after midnight)' | monday()    | monday()    | mondayConfig(0, 4)                | []           || 3
+
+        // Another special one. Having an end time close to midnight (23:30) and a pause. This combination is a nice
+        // edge case, to see if we are handling the end-of-day correctly.
+        'Monday (til midnight)'   | monday()    | monday()    | mondayLate()                      | []           || 43
+
+        // This is a special one. We don't want to get slots which have already started. Since we set the clock to
+        // 00:00, the first available slot should not be part of the returned slot list.
+        'Monday (after midnight)' | monday()    | monday()    | mondayPauseEndExactlyOnMidnight() | []           || 3
+
 
     }
 
@@ -80,6 +90,22 @@ class SlotServiceSpec extends Specification {
     SlotConfig mondayConfig(int startHour, int endHour) {
         return defaultSlot()
             .monday(new DayConfig(LocalTime.of(startHour, 0), LocalTime.of(endHour, 0)))
+            .build()
+    }
+
+    SlotConfig mondayLate() {
+        return builder()
+            .timePerSlot(15)
+            .timeBetweenSlots(5)
+            .monday(new DayConfig(LocalTime.of(9, 00), LocalTime.of(23, 30)))
+            .build()
+    }
+
+    SlotConfig mondayPauseEndExactlyOnMidnight() {
+        return builder()
+            .timePerSlot(15)
+            .timeBetweenSlots(5)
+            .monday(new DayConfig(LocalTime.of(23, 00), LocalTime.of(23, 55)))
             .build()
     }
 

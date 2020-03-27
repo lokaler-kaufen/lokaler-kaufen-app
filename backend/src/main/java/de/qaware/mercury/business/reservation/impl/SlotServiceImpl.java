@@ -68,7 +68,7 @@ class SlotServiceImpl implements SlotService {
 
             // Next start = end of slot + pause
             // but don't exceed 00:00 or we will loop endlessly
-            if (!isBeforeMidnight(currentStart, slotConfig.getTimeBetweenSlots())) {
+            if (!isBeforeMidnight(slotEnd, slotConfig.getTimeBetweenSlots())) {
                 break;
             }
             currentStart = slotEnd.plusMinutes(slotConfig.getTimeBetweenSlots());
