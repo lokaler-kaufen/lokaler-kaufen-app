@@ -5,7 +5,7 @@
 ### With Docker Compose
 
 ```shell script
-docker-compose -up
+docker-compose up
 ```
 
 ### With gradle
