@@ -20,7 +20,8 @@ docker run --rm -e POSTGRES_PASSWORD=password -p 5432:5432 postgres:11
 
 ### With IntelliJ
 
-Start the `main()` method of the `de.qaware.mercury.MercuryApplication` class.
+Start the `main()` method of the `de.qaware.mercury.MercuryApplication` class. Make sure you pass `--spring.profiles.active=dev`
+to the application to start in `dev` profile.
 
 ## Developing
 
