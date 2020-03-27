@@ -17,6 +17,7 @@ import {ShopDetailDto} from '../data/client/model/shopDetailDto';
 import {SlotDto} from '../data/client/model/slotDto';
 import {SlotsDto} from '../data/client/model/slotsDto';
 import {CreateReservationDto} from '../data/client/model/createReservationDto';
+import {ZipCodeCacheService} from '../landing-page/zip-code-cache.service';
 
 @Component({
   selector: 'shop-details-page',
@@ -32,7 +33,8 @@ export class ShopDetailsPageComponent implements OnInit {
   constructor(private client: HttpClient,
               private activatedRoute: ActivatedRoute,
               private matDialog: MatDialog,
-              private notificationsService: NotificationsService) {
+              private notificationsService: NotificationsService,
+              private zipCodeCacheService: ZipCodeCacheService) {
   }
 
   ngOnInit(): void {
@@ -85,7 +87,7 @@ export class ShopDetailsPageComponent implements OnInit {
             contactNumber: data.phoneNumber,
             contactType: data.option,
             start: this.slots.find(s => s.id === id).start,
-            end: this.slots.find(s => s.id === id).end,
+            end: this.slots.find(s => s.id === id).end
           } as BookingSuccessData;
           const reservationDto: CreateReservationDto = {
             contact: data.phoneNumber,
@@ -120,6 +122,10 @@ export class ShopDetailsPageComponent implements OnInit {
       result = startingUrl + url;
     }
     return result;
+  }
+
+  getCachedZipCode() {
+    return this.zipCodeCacheService.getZipCode();
   }
 
 }
