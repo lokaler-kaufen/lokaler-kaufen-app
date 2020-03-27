@@ -6,6 +6,6 @@ ENV PORT=8080
 
 ENV SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/postgres
 
-ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom", "-Dserver.port=${PORT}","-jar","/app.jar"]
+ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom", "-Dserver.port=${PORT}","-jar","/app.jar", "--spring.profiles.active=dev"]
 
 COPY ${JAR_FILE} app.jar
