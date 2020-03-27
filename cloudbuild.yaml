@@ -12,7 +12,7 @@ steps:
     secretEnv: ["SONAR_TOKEN"]
   # Build Docker image
   - name: gcr.io/cloud-builders/docker
-    args: ["build", "-t", "gcr.io/$PROJECT_ID/lokaler.kaufen", "--build-arg=JAR_FILE=backend/build/libs/mercury-0.0.1-SNAPSHOT.jar", "."]
+    args: ["build", "-t", "gcr.io/$PROJECT_ID/lokaler.kaufen", "--build-arg=JAR_FILE=build/libs/mercury-0.0.1-SNAPSHOT.jar", "./backend/"]
   # Deploy container image to Cloud Run
   - name: 'gcr.io/cloud-builders/gcloud'
     args: ['beta', 'run', 'deploy', 'lokaler-kaufen-srv', '--image', 'gcr.io/$PROJECT_ID/lokaler.kaufen', '--region', 'europe-west4', '--platform', 'managed', '--allow-unauthenticated']
