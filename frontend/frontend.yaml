@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  labels:
+    app: mercury
+    tier: frontend
+spec:
+  selector:
+    matchLabels:
+      app: mercury
+      tier: frontend
+  template:
+    metadata:
+      labels:
+        app: mercury
+        tier: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: frontend-image
+        ports:
+        - containerPort: 4200
+        - containerPort: 3000
