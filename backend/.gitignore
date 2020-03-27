@@ -30,3 +30,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Developer specific configurations ###
+application-dev-mka.yaml
