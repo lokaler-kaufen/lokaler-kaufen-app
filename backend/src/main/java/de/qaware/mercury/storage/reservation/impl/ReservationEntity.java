@@ -74,7 +74,7 @@ class ReservationEntity {
             reservation.getContact(),
             reservation.getEmail(),
             reservation.getName(),
-            reservation.getContactType().name(),
+            reservation.getContactType().getId(),
             reservation.getCreated(),
             reservation.getUpdated()
         );
