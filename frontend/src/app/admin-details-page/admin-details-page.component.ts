@@ -46,7 +46,8 @@ export class AdminDetailsPageComponent implements OnInit {
   }
 
   changeShopApproval() {
-    this.adminService.changeShopApproval(this.shopId, !this.shopDetails.enabled);
+    this.adminService.changeShopApproval(this.shopId, !this.shopDetails.approved);
+    this.shopDetails.approved = !this.shopDetails.approved;
   }
 
   extractShopOwnerDetailDto(shopAdminDto: ShopAdminDto): ShopOwnerDetailDto {

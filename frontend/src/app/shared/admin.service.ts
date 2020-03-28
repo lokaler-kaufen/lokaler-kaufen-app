@@ -47,9 +47,9 @@ export class AdminService {
   }
 
   changeShopApproval(shopId: string, enabled: boolean) {
-    this.client.delete('/api/admin/shop/' + encodeURIComponent(shopId) + '/approve?approved=' + enabled)
+    this.client.put('/api/admin/shop/' + encodeURIComponent(shopId) + '/approve?approved=' + enabled, {})
       .subscribe(() => {
-          this.notificationsService.success('Alles klar!', 'Das enabled flag wurde auf ' + enabled + ' gesetzt.');
+          this.notificationsService.success('Alles klar!', 'Das approved flag wurde auf ' + enabled + ' gesetzt.');
         },
         error => {
           console.log('Error updating shop: ' + error.status + ', ' + error.message);
