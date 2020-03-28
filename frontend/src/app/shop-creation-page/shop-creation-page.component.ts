@@ -79,7 +79,7 @@ export class ShopCreationPageComponent implements OnInit {
       streetCtrl: ['', Validators.required],
       zipCtrl: ['', [Validators.required, Validators.pattern(new RegExp(/^\d{5}$/))]],
       cityCtrl: ['', Validators.required],
-      suffixCtrl: '',
+      suffixCtrl: ''
     });
     this.descriptionFormGroup = this.formBuilder.group({
       descriptionCtrl: ['', Validators.required],
@@ -183,8 +183,12 @@ export class ShopCreationPageComponent implements OnInit {
           .subscribe();
       },
       error => {
-        console.log('Error creating new shop: ' + error.status + ', ' + error.message);
-        this.notificationsService.error('Tut uns leid!', 'Dein Laden konnte nicht angelegt werden.');
+        console.log('Error creating new shop: ' + error.status + ', ' + error.message + ', ' + error.error.code);
+        if (error.status === 400 && error.error.code === 'LOCATION_NOT_FOUND') {
+          this.notificationsService.error('Ungültige PLZ', 'Diese Postleitzahl kennen wir leider nicht, hast du dich vertippt?');
+        } else {
+          this.notificationsService.error('Tut uns leid!', 'Dein Laden konnte nicht angelegt werden.');
+        }
       });
   }
 
@@ -203,43 +207,43 @@ export function setRightSlot(dayString: string, from: string, to: string, slots:
     case 'Montag':
       slots.monday = {
         start: from,
-        end: to,
+        end: to
       };
       break;
     case 'Dienstag':
       slots.tuesday = {
         start: from,
-        end: to,
+        end: to
       };
       break;
     case 'Mittwoch':
       slots.wednesday = {
         start: from,
-        end: to,
+        end: to
       };
       break;
     case 'Donnerstag':
       slots.thursday = {
         start: from,
-        end: to,
+        end: to
       };
       break;
     case 'Freitag':
       slots.friday = {
         start: from,
-        end: to,
+        end: to
       };
       break;
     case 'Samstag':
       slots.saturday = {
         start: from,
-        end: to,
+        end: to
       };
       break;
     case 'Sonntag':
       slots.sunday = {
         start: from,
-        end: to,
+        end: to
       };
       break;
   }

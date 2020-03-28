@@ -7,10 +7,10 @@ import {NotificationsService} from 'angular2-notifications';
 import {BusinessHours, setRightSlot} from '../shop-creation-page/shop-creation-page.component';
 import {ShopOwnerDetailDto} from '../data/client/model/shopOwnerDetailDto';
 import {ShopDetailDto} from '../data/client/model/shopDetailDto';
-import ContactTypesEnum = ShopDetailDto.ContactTypesEnum;
 import {UpdateShopDto} from '../data/client/model/updateShopDto';
 import {SlotConfigDto} from '../data/client/model/slotConfigDto';
 import {DayDto} from '../data/client/model/dayDto';
+import ContactTypesEnum = ShopDetailDto.ContactTypesEnum;
 
 @Component({
   selector: 'shop-management-page',
@@ -94,7 +94,7 @@ export class ShopManagementPageComponent implements OnInit {
       streetCtrl: ['', Validators.required],
       zipCtrl: ['', [Validators.required, Validators.pattern(new RegExp(/^\d{5}$/))]],
       cityCtrl: ['', Validators.required],
-      suffixCtrl: '',
+      suffixCtrl: ''
     });
     this.descriptionFormGroup = this.formBuilder.group({
       descriptionCtrl: ['', Validators.required],
@@ -175,8 +175,12 @@ export class ShopManagementPageComponent implements OnInit {
         this.router.navigate(['shops/' + this.details.id]);
       },
       error => {
-        console.log('Error updating shop: ' + error.status + ', ' + error.message);
-        this.notificationsService.error('Tut uns leid!', 'Dein Laden konnte leider nicht aktualisiert werden.');
+        console.log('Error updating shop: ' + error.status + ', ' + error.message + ', ' + error.error.code);
+        if (error.status === 400 && error.error.code === 'LOCATION_NOT_FOUND') {
+          this.notificationsService.error('Ungültige PLZ', 'Diese Postleitzahl kennen wir leider nicht, hast du dich vertippt?');
+        } else {
+          this.notificationsService.error('Tut uns leid!', 'Dein Laden konnte leider nicht aktualisiert werden.');
+        }
       });
   }
 
