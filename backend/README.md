@@ -86,6 +86,18 @@ public class LoginDto {
 
 Open http://localhost:8080/swagger-ui.html or take a look at the [src/test/http](src/test/http) folder.
 
+### I get a strange error on startup
+
+```
+Caused by: java.lang.IllegalArgumentException: URL must start with 'jdbc'
+```
+
+Solution:
+
+If you are developing on the application, start the application in `dev` profile, see above.
+
+If that happens on your server, you have to configure a database, see [the settings documentation](settings.md).
+
 # Credits
 
 For geolocation lookups we are using data from [GeoNames](https://download.geonames.org/export/zip/)
