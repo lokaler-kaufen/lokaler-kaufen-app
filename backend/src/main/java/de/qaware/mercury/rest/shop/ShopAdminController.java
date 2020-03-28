@@ -41,6 +41,26 @@ class ShopAdminController {
     private final ShopService shopService;
     private final AuthenticationHelper authenticationHelper;
 
+    /**
+     * Retrieves settings for a shop.
+     *
+     * @param id             the id of the shop.
+     * @param servletRequest an instance of {@link HttpServletRequest}.
+     * @return an instance of {@link ShopAdminDto}.
+     * @throws ShopNotFoundException if the shop cannot be found in the database.
+     * @throws LoginException        if the caller is not authenticated as admin.
+     */
+    @GetMapping
+    public ShopAdminDto getShopSettings(@PathVariable @Pattern(regexp = Validation.SHOP_ID) String id, HttpServletRequest servletRequest) throws ShopNotFoundException, LoginException {
+        authenticationHelper.authenticateAdmin(servletRequest);
+        Shop shop = shopService.findById(Shop.Id.parse(id));
+        if (shop == null) {
+            throw new ShopNotFoundException(Shop.Id.parse(id));
+        }
+
+        return ShopAdminDto.of(shop);
+    }
+
     @GetMapping
     public ShopsAdminDto listAll(HttpServletRequest request) throws LoginException {
         authenticationHelper.authenticateAdmin(request);
