@@ -2,6 +2,7 @@ package de.qaware.mercury.rest.shop.dto.response;
 
 import de.qaware.mercury.business.shop.ContactType;
 import de.qaware.mercury.business.shop.Shop;
+import de.qaware.mercury.util.Sets;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,7 +22,7 @@ public class ShopDetailDto {
     String zipCode;
     String city;
     String addressSupplement;
-    Set<ContactType> contactTypes;
+    Set<String> contactTypes;
     String details;
     @Nullable
     String website;
@@ -36,7 +37,7 @@ public class ShopDetailDto {
             shop.getZipCode(),
             shop.getCity(),
             shop.getAddressSupplement(),
-            shop.getContactTypes().keySet(),
+            Sets.map(shop.getContacts().keySet(), ContactType::toString),
             shop.getDetails(),
             shop.getWebsite()
         );

@@ -9,6 +9,11 @@ Content-Type: application/json
     "password": "admin-1"
 }
 
+### Get single shop
+
+GET {{ host }}/api/admin/shop/c7ebc3eb-7334-4a46-8aa1-eb5779cf4b1e
+Accept: application/json, */*
+
 ### List all shops
 
 GET {{ host }}/api/admin/shop

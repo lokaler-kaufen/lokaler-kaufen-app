@@ -23,7 +23,7 @@ public class Shop {
     String zipCode;
     String city;
     String addressSupplement;
-    Map<ContactType, String> contactTypes;
+    Map<ContactType, String> contacts;
     boolean enabled;
     @With
     boolean approved;
