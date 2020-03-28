@@ -1,0 +1,16 @@
+.contact-types {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.contact-type {
+  opacity: .15;
+  margin: 5px 15px 5px 0;
+  display: flex;
+  align-items: center;
+}
+
+.contact-type.available {
+  opacity: 1;
+  color: #673ab7;
+}

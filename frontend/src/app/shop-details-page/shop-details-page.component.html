@@ -18,7 +18,8 @@
     </mat-card-header>
 
     <mat-card-content class="mat-card-content booking-table">
-      <h3 *ngIf="slots.length == 0" class="text-no-values booking-table">Dieser Laden bietet heute leider keine Termine an. </h3>
+      <h3 *ngIf="slots.length == 0" class="text-no-values booking-table">Dieser Laden bietet heute leider keine Termine
+        an. </h3>
       <div *ngIf="slots.length > 0" class="booking-table">
         <mat-table [dataSource]="slots" id="calendar">
           <ng-container matColumnDef="from">
@@ -52,13 +53,18 @@
           <mat-row *matRowDef="let row; columns: ['from', 'to', 'available']"></mat-row>
         </mat-table>
       </div>
-      <div id="contact" class="description-text">
-        <div>{{details.name}}</div>
-        <div>{{details.street}} {{details.addressSupplement}}</div>
-        <div>{{details.zipCode}}</div>
-        <div>{{details.city}}</div>
-        <div><a href="{{returnValidLink(details.website)}}">{{details.website}}</a></div>
-        <div><a href="mailto:{{details.email}}">{{details.email}}</a></div>
+      <div class="shop-details">
+        <div id="contact" class="description-text">
+          <div>{{details.name}}</div>
+          <div>{{details.street}} {{details.addressSupplement}}</div>
+          <div>{{details.zipCode}}</div>
+          <div>{{details.city}}</div>
+          <div><a href="{{returnValidLink(details.website)}}">{{details.website}}</a></div>
+          <div><a href="mailto:{{details.email}}">{{details.email}}</a></div>
+        </div>
+        <div class="contact-types">
+          <contact-types [availableContactTypes]="details.contactTypes"></contact-types>
+        </div>
       </div>
     </mat-card-content>
   </mat-card>

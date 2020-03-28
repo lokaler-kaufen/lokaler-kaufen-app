@@ -1,4 +1,4 @@
-#calendar{
+#calendar {
   display: grid;
 }
 
@@ -18,10 +18,21 @@
 
 .description-text {
   margin-left: 1%;
-  margin-top: 3em;
 }
 
 .shop-titel {
   margin-top: 1em;
   margin-bottom: 1.5em;
+}
+
+.contact-types {
+  flex: 0 0 50%;
+  width: 50%;
+}
+
+.shop-details {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3em;
+  align-items: flex-start;
 }

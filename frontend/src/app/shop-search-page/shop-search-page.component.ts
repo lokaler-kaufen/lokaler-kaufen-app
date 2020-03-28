@@ -7,7 +7,6 @@ import {NotificationsService} from 'angular2-notifications';
 import {ShopListDto} from '../data/client/model/shopListDto';
 import {ShopListEntryDto} from '../data/client/model/shopListEntryDto';
 import {ShopDetailDto} from '../data/client/model/shopDetailDto';
-import ContactTypesEnum = ShopDetailDto.ContactTypesEnum;
 
 @Component({
   selector: 'shop-search-page',
@@ -15,8 +14,6 @@ import ContactTypesEnum = ShopDetailDto.ContactTypesEnum;
   styleUrls: ['./shop-search-page.component.css']
 })
 export class ShopSearchPageComponent implements OnInit {
-
-  contactTypes = Object.keys(ContactTypesEnum).map(key => ContactTypesEnum[key]);
   searchBusiness: string;
   location: string;
   dataSource = new MatTableDataSource();
@@ -49,13 +46,6 @@ export class ShopSearchPageComponent implements OnInit {
 
   showDetailPage(row: any) {
     this.router.navigate(['/shops/' + row.id]);
-  }
-
-  getEnumValue(contactType: any) {
-    return contactType
-      .split('_')
-      .map(c => `${c.charAt(0)}${c.slice(1).toLowerCase()}`)
-      .join(' ');
   }
 
   performSearch() {

@@ -41,6 +41,7 @@ import {CancelReservationComponent} from './cancel-reservation/cancel-reservatio
 import {AdminDetailsPageComponent} from './admin-details-page/admin-details-page.component';
 import {ShopDetailsConfigComponent} from './shop-details-config/shop-details-config.component';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {ContactTypesComponent} from './contact-types/contact-types.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     ShopDetailsPageComponent,
     ShopManagementPageComponent,
     ShopSearchPageComponent,
-    ShopDetailsConfigComponent
+    ShopDetailsConfigComponent,
+    ContactTypesComponent
   ],
   imports: [
     AppRoutingModule,

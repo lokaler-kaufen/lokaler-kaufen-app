@@ -18,6 +18,7 @@ import {SlotDto} from '../data/client/model/slotDto';
 import {SlotsDto} from '../data/client/model/slotsDto';
 import {CreateReservationDto} from '../data/client/model/createReservationDto';
 import {ZipCodeCacheService} from '../landing-page/zip-code-cache.service';
+import {ShopAdminDto} from '../data/client/model/shopAdminDto';
 
 @Component({
   selector: 'shop-details-page',
@@ -25,6 +26,7 @@ import {ZipCodeCacheService} from '../landing-page/zip-code-cache.service';
   styleUrls: ['./shop-details-page.component.css']
 })
 export class ShopDetailsPageComponent implements OnInit {
+
   shopId: string;
   details: ShopDetailDto;
 
@@ -113,6 +115,9 @@ export class ShopDetailsPageComponent implements OnInit {
   }
 
   returnValidLink(url: string) {
+    if (!url) {
+      return '';
+    }
     let result;
     const startingUrl = 'http://';
     const httpsStartingUrl = 'https://';

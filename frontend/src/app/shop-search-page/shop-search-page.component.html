@@ -46,14 +46,7 @@
       </mat-header-cell>
 
       <mat-cell *matCellDef="let element">
-        <div class="contact-types">
-          <span class="contact-type"
-                *ngFor="let contactType of contactTypes"
-                [ngClass]="{'available': element.supportedContactTypes.includes(contactType)}">
-            <mat-icon svgIcon="{{contactType}}"></mat-icon>
-            <span>{{ getEnumValue(contactType) }}</span>
-          </span>
-        </div>
+        <contact-types [availableContactTypes]="element.supportedContactTypes"></contact-types>
       </mat-cell>
     </ng-container>
 
