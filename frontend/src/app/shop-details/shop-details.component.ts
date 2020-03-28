@@ -9,6 +9,11 @@ import {NotificationsService} from 'angular2-notifications';
 import {Observable, ReplaySubject} from 'rxjs';
 import ContactTypesEnum = ShopAdminDto.ContactTypesEnum;
 
+export interface UpdateShopData {
+  updateShopDto: UpdateShopDto;
+  id: string;
+}
+
 @Component({
   selector: 'shop-details',
   templateUrl: './shop-details.component.html',
@@ -20,7 +25,7 @@ export class ShopDetailsComponent implements OnInit {
   detailsObservable: Observable<ShopOwnerDetailDto>;
 
   @Output()
-  updateShopEvent: ReplaySubject<UpdateShopDto> = new ReplaySubject<UpdateShopDto>();
+  updateShopEvent: ReplaySubject<UpdateShopData> = new ReplaySubject<UpdateShopData>();
 
   nameFormGroup: FormGroup;
   addressFormGroup: FormGroup;
@@ -80,6 +85,7 @@ export class ShopDetailsComponent implements OnInit {
       if (dayOpeningHours) {
         this.openingFormGroup.get(fromCtrl).setValue(dayOpeningHours.start);
         this.openingFormGroup.get(toCtrl).setValue(dayOpeningHours.end);
+        opening.enabled = true;
       } else {
         opening.enabled = false;
         this.openingFormGroup.get(fromCtrl).setValue('09:00');
@@ -97,7 +103,7 @@ export class ShopDetailsComponent implements OnInit {
       streetCtrl: ['', Validators.required],
       zipCtrl: ['', [Validators.required, Validators.pattern(new RegExp(/^\d{5}$/))]],
       cityCtrl: ['', Validators.required],
-      suffixCtrl: '',
+      suffixCtrl: ''
     });
     this.descriptionFormGroup = this.formBuilder.group({
       descriptionCtrl: ['', Validators.required],
@@ -174,7 +180,10 @@ export class ShopDetailsComponent implements OnInit {
     slots.timeBetweenSlots = this.openingFormGroup.get('pauseCtrl').value;
     slots.timePerSlot = this.openingFormGroup.get('defaultCtrl').value;
     updateShopDto.slots = slots;
-    this.updateShopEvent.next(updateShopDto);
+    this.updateShopEvent.next({
+      updateShopDto,
+      id: this.details.id
+    });
   }
 
   getEnumValue(contactType: any) {

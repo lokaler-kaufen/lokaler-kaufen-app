@@ -1,21 +1,19 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {ShopAdminDto, ShopsAdminDto} from '../data/client';
 import {NotificationsService} from 'angular2-notifications';
 import {Observable} from 'rxjs';
+import {ShopsAdminDto} from '../data/client/model/shopsAdminDto';
+import {ShopAdminDto} from '../data/client/model/shopAdminDto';
+import {UpdateShopData} from '../shop-details/shop-details.component';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdminService {
 
-  shopDetails: ShopsAdminDto;
 
   constructor(private client: HttpClient,
               private notificationsService: NotificationsService) {
-    this.client.get('/api/admin/shop').subscribe(response => {
-      this.shopDetails = response;
-    });
   }
 
   listAllShops(): Observable<ShopsAdminDto> {
@@ -23,11 +21,11 @@ export class AdminService {
   }
 
   getShopWithId(id: string): Observable<ShopAdminDto> {
-    return this.client.get<ShopAdminDto>('/api/admin/shop' + encodeURIComponent(id));
+    return this.client.get<ShopAdminDto>('/api/admin/shop/' + encodeURIComponent(id));
   }
 
-  updateShop(updatedShop: ShopAdminDto) {
-    this.client.put('/api/admin/shop/' + encodeURIComponent(updatedShop.id), updatedShop)
+  updateShop(updatedShop: UpdateShopData) {
+    this.client.put('/api/admin/shop/' + encodeURIComponent(updatedShop.id), updatedShop.updateShopDto)
       .subscribe(() => {
           this.notificationsService.success('Alles klar!', 'Der Laden wurde aktualisiert.');
         },
@@ -48,7 +46,7 @@ export class AdminService {
         });
   }
 
-  changeShopEnable(shopId: string, enabled: boolean) {
+  changeShopApproval(shopId: string, enabled: boolean) {
     this.client.delete('/api/admin/shop/' + encodeURIComponent(shopId) + '/approve?approved=' + enabled)
       .subscribe(() => {
           this.notificationsService.success('Alles klar!', 'Das enabled flag wurde auf ' + enabled + ' gesetzt.');

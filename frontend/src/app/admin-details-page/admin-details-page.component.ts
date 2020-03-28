@@ -1,9 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {ReplaySubject} from 'rxjs';
-import {ShopAdminDto, ShopOwnerDetailDto} from '../data/client';
 import {ActivatedRoute} from '@angular/router';
 import {AdminService} from '../shared/admin.service';
 import {NotificationsService} from 'angular2-notifications';
+import {ShopAdminDto} from '../data/client/model/shopAdminDto';
+import {ShopOwnerDetailDto} from '../data/client/model/shopOwnerDetailDto';
+import {UpdateShopData} from '../shop-details/shop-details.component';
 
 @Component({
   selector: 'admin-details-page',
@@ -35,17 +37,16 @@ export class AdminDetailsPageComponent implements OnInit {
         });
   }
 
-  updateShop($event: ShopOwnerDetailDto) {
-    this.injectUpdatedShopOwnerDetails($event);
-    this.adminService.updateShop(this.shopDetails);
+  updateShop($event: UpdateShopData) {
+    this.adminService.updateShop($event);
   }
 
   deleteShop() {
     this.adminService.deleteShop(this.shopId);
   }
 
-  changeShopEnable() {
-    this.adminService.changeShopEnable(this.shopId, !this.shopDetails.enabled);
+  changeShopApproval() {
+    this.adminService.changeShopApproval(this.shopId, !this.shopDetails.enabled);
   }
 
   extractShopOwnerDetailDto(shopAdminDto: ShopAdminDto): ShopOwnerDetailDto {
@@ -61,19 +62,6 @@ export class AdminDetailsPageComponent implements OnInit {
       website: shopAdminDto.website,
       zipCode: shopAdminDto.zipCode
     };
-  }
-
-  injectUpdatedShopOwnerDetails(shopOwnerDetails: ShopOwnerDetailDto) {
-    this.shopDetails.addressSupplement = shopOwnerDetails.addressSupplement;
-    this.shopDetails.city = shopOwnerDetails.city;
-    this.shopDetails.contactTypes = shopOwnerDetails.contactTypes;
-    this.shopDetails.details = shopOwnerDetails.details;
-    this.shopDetails.name = shopOwnerDetails.name;
-    this.shopDetails.ownerName = shopOwnerDetails.ownerName;
-    this.shopDetails.slots = shopOwnerDetails.slots;
-    this.shopDetails.street = shopOwnerDetails.street;
-    this.shopDetails.website = shopOwnerDetails.website;
-    this.shopDetails.zipCode = shopOwnerDetails.zipCode;
   }
 
 }

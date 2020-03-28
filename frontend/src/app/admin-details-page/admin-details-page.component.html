@@ -3,7 +3,7 @@
                 [detailsObservable]="shopOwnerDetails"></shop-details>
   <div><h3>E-Mail: {{shopDetails.email}}</h3></div>
   <button style="width: 25%; margin-right: 10px;" mat-raised-button color="primary"
-          (click)="changeShopEnable()">
+          (click)="changeShopApproval()">
     <div *ngIf="shopDetails.enabled">Deaktivieren</div>
     <div *ngIf="!shopDetails.enabled">Aktivieren</div>
   </button>
