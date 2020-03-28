@@ -109,4 +109,5 @@ export class ShopSearchPageComponent implements OnInit {
       }
     );
   }
+
 }

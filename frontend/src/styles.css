@@ -7,6 +7,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   background: rgba(141, 141, 141, 0.4);
 }
 
+.mat-cell {
+  padding: 2px;
+}
+
 a,
 a:link,
 a:visited {
@@ -22,4 +26,12 @@ a:active {
 
 .text-no-values {
   color: darkgray;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.highlightable:hover {
+  background: lightskyblue;
 }

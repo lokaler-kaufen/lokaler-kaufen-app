@@ -1,50 +1,55 @@
 
 <div style="width: 100%">
   <h2>Shop Overview</h2>
-  <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z1" style="width: 100%;">
+  <mat-table [dataSource]="dataSource" class="mat-elevation-z1" style="width: 100%;">
     <ng-container matColumnDef="id">
-      <mat-header-cell *matHeaderCellDef="let header" mat-sort-header> ID</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef="let header">ID</mat-header-cell>
       <mat-cell *matCellDef="let element">{{element.id}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="name">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Name</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
       <mat-cell *matCellDef="let element">{{element.name}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="ownerName">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Inhaber</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef>Inhaber</mat-header-cell>
       <mat-cell *matCellDef="let element">{{element.ownerName}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="street">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Straße</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef>Straße</mat-header-cell>
       <mat-cell *matCellDef="let element">{{element.street}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="plz">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> PLZ</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef>PLZ</mat-header-cell>
       <mat-cell *matCellDef="let element">{{element.zipCode}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="city">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Stadt</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef>Stadt</mat-header-cell>
       <mat-cell *matCellDef="let element">{{element.city}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="enabled">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Status</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
       <mat-cell *matCellDef="let element">{{element.enabled ? 'Aktiv' : 'Inaktiv'}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="email">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> E-Mail</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef>E-Mail</mat-header-cell>
       <mat-cell *matCellDef="let element">{{element.email}}</mat-cell>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row id="business-row" *matRowDef="let row; columns: displayedColumns;"
+    <mat-row id="business-row" *matRowDef="let row; columns: displayedColumns;" class="clickable highlightable"
         (click)="showDetailPage(row)">
     </mat-row>
   </mat-table>
+
+  <div *ngIf="dataSource.loading$ | async">
+    <mat-spinner>
+    </mat-spinner>
+  </div>
 </div>

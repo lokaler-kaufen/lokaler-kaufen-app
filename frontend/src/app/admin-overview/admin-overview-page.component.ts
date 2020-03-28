@@ -1,15 +1,8 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {MatTableDataSource} from '@angular/material/table';
-import {MatSort} from '@angular/material/sort';
+import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {ShopListDto} from '../data/client/model/shopListDto';
-import {ShopListEntryDto} from '../data/client/model/shopListEntryDto';
-import {ShopAdminDto} from '../data/client/model/shopAdminDto';
-
-async function requestShops(): Promise<ShopListDto> {
-  return fetch('/api/admin/shop')
-    .then(response => response.json());
-}
+import {ShopListAdminDataSource} from './ShopListAdminDataSource';
+import {NotificationsService} from 'angular2-notifications';
+import {AdminService} from '../shared/admin.service';
 
 @Component({
   selector: 'admin-overview',
@@ -17,55 +10,20 @@ async function requestShops(): Promise<ShopListDto> {
   styleUrls: ['./admin-overview-page.component.css']
 })
 export class AdminOverviewPageComponent implements OnInit {
-  displayedColumns = ['id', 'name', 'ownerName', 'street', 'plz', 'city', 'enabled', 'email'];
-  dataSource = new MatTableDataSource();
+  public displayedColumns = ['name', 'ownerName', 'street', 'plz', 'city', 'email', 'enabled'];
+  public dataSource: ShopListAdminDataSource;
 
-  constructor(private router: Router) {
-    this.dataUpdate = this.dataUpdate.bind(this);
-    this.dataSource.sort = this.sort;
+  constructor(private adminService: AdminService,
+              private notificationsService: NotificationsService,
+              private router: Router) {
+    this.dataSource = new ShopListAdminDataSource(adminService, notificationsService);
   }
-
-  @ViewChild(MatSort, {static: true}) sort: MatSort;
 
   ngOnInit(): void {
-    this.generateDummyData();
-    requestShops().then(this.dataUpdate);
-  }
-
-  private dataUpdate(data: ShopListDto): void {
-    this.dataSource = new MatTableDataSource<ShopListEntryDto>(data.shops);
-    this.dataSource.sort = this.sort;
+    this.dataSource.loadShops();
   }
 
   showDetailPage(row: any) {
-    this.router.navigate(['/admin/' + row.id]);
+    this.router.navigate(['/admin/', row.id]);
   }
-
-  private generateDummyData() {
-    function data() {
-      return {
-        addressSupplement: Math.random().toString(10),
-        city: Math.random().toString(10),
-        contactTypes: Object.values(ShopAdminDto.ContactTypesEnum).filter(() => Math.random() >= 0.5),
-        details: Math.random().toString(10),
-        email: Math.random().toString(10),
-        enabled: Math.random() * 10 > 5,
-        id: Math.random().toString(10).slice(3),
-        name: Math.random().toString(10),
-        ownerName: Math.random().toString(10),
-        street: Math.random().toString(10),
-        website: Math.random().toString(10),
-        zipCode: Math.random().toString(10)
-      } as ShopAdminDto;
-    }
-
-    const shopList: Array<ShopAdminDto> = [];
-    const n: number = Number.parseInt((Math.random() * 10).toString(), 10) + 1;
-    for (let i = 0; i < n; i++) {
-      const tempShop = data();
-      shopList.push(tempShop);
-    }
-    this.dataUpdate({shops: shopList} as ShopListDto);
-  }
-
 }
