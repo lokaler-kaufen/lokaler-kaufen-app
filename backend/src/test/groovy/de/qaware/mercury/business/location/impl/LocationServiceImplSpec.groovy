@@ -18,13 +18,13 @@ class LocationServiceImplSpec extends Specification {
     @SpringBean
     LocationRepository repository = Mock()
 
-    def "Lookup Default Location by Zipcode"() {
+    def "Lookup Location by unknown Zipcode"() {
         when:
-        GeoLocation location = locationService.lookup('83024')
+        locationService.lookup('83024')
 
         then:
         1 * repository.fromZipCode('83024') >> null
-        location == LocationServiceImpl.DEFAULT_GEOLOCATION
+        LocationNotFoundException exception = thrown()
     }
 
     def "Lookup Location by Zipcode"() {

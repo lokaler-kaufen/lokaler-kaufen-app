@@ -1,6 +1,7 @@
 package de.qaware.mercury.rest.shop;
 
 import de.qaware.mercury.business.admin.Admin;
+import de.qaware.mercury.business.location.impl.LocationNotFoundException;
 import de.qaware.mercury.business.login.LoginException;
 import de.qaware.mercury.business.shop.ContactType;
 import de.qaware.mercury.business.shop.Shop;
@@ -56,7 +57,7 @@ class ShopAdminController {
     }
 
     @PutMapping(path = "/{id}")
-    public ShopAdminDto update(@PathVariable @Pattern(regexp = Validation.SHOP_ID) String id, @Valid @RequestBody UpdateShopDto request, HttpServletRequest servletRequest) throws ShopNotFoundException, LoginException {
+    public ShopAdminDto update(@PathVariable @Pattern(regexp = Validation.SHOP_ID) String id, @Valid @RequestBody UpdateShopDto request, HttpServletRequest servletRequest) throws ShopNotFoundException, LoginException, LocationNotFoundException {
         Admin admin = authenticationHelper.authenticateAdmin(servletRequest);
         Shop.Id shopId = Shop.Id.parse(id);
 

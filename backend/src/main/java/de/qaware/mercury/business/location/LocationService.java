@@ -1,9 +1,11 @@
 package de.qaware.mercury.business.location;
 
+import de.qaware.mercury.business.location.impl.LocationNotFoundException;
+
 import java.util.List;
 
 public interface LocationService {
-    GeoLocation lookup(String zipCode);
+    GeoLocation lookup(String zipCode) throws LocationNotFoundException;
 
     /**
      * Search for all locations containing the given zip code.

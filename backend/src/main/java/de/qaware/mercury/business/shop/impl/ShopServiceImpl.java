@@ -3,6 +3,7 @@ package de.qaware.mercury.business.shop.impl;
 import de.qaware.mercury.business.email.EmailService;
 import de.qaware.mercury.business.location.GeoLocation;
 import de.qaware.mercury.business.location.LocationService;
+import de.qaware.mercury.business.location.impl.LocationNotFoundException;
 import de.qaware.mercury.business.login.ShopLoginService;
 import de.qaware.mercury.business.shop.Shop;
 import de.qaware.mercury.business.shop.ShopAlreadyExistsException;
@@ -46,7 +47,7 @@ class ShopServiceImpl implements ShopService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<ShopWithDistance> findNearby(String zipCode) {
+    public List<ShopWithDistance> findNearby(String zipCode) throws LocationNotFoundException {
         GeoLocation location = locationService.lookup(zipCode);
         return shopRepository.findNearby(location);
     }
@@ -81,7 +82,7 @@ class ShopServiceImpl implements ShopService {
 
     @Override
     @Transactional
-    public Shop create(ShopCreation creation) throws ShopAlreadyExistsException {
+    public Shop create(ShopCreation creation) throws ShopAlreadyExistsException, LocationNotFoundException {
         if (shopLoginService.hasLogin(creation.getEmail())) {
             throw new ShopAlreadyExistsException(creation.getEmail());
         }
@@ -110,7 +111,7 @@ class ShopServiceImpl implements ShopService {
 
     @Override
     @Transactional
-    public Shop update(Shop shop, ShopUpdate update) {
+    public Shop update(Shop shop, ShopUpdate update) throws LocationNotFoundException {
         GeoLocation geoLocation = locationService.lookup(update.getZipCode());
 
         Shop updatedShop = new Shop(
@@ -166,7 +167,7 @@ class ShopServiceImpl implements ShopService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<ShopWithDistance> search(String query, String zipCode) {
+    public List<ShopWithDistance> search(String query, String zipCode) throws LocationNotFoundException {
         GeoLocation location = locationService.lookup(zipCode);
         return shopRepository.search(query, location);
     }
