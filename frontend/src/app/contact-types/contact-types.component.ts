@@ -1,6 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {ShopAdminDto} from '../data/client/model/shopAdminDto';
-import ContactTypesEnum = ShopAdminDto.ContactTypesEnum;
+import {ContactTypesEnum} from './available-contact-types';
 
 @Component({
   selector: 'contact-types',
@@ -12,15 +11,9 @@ export class ContactTypesComponent {
   @Input()
   availableContactTypes: string[];
 
-  contactTypes = Object.keys(ContactTypesEnum).map(key => ContactTypesEnum[key]);
+  contactTypes = ContactTypesEnum;
 
   constructor() {
   }
 
-  getEnumValue(contactType: any) {
-    return contactType
-      .split('_')
-      .map(c => `${c.charAt(0)}${c.slice(1).toLowerCase()}`)
-      .join(' ');
-  }
 }

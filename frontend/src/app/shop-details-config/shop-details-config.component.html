@@ -76,11 +76,11 @@
     <form [formGroup]="contactFormGroup">
       <ng-template matStepLabel>Welche Kontaktmöglichkeiten möchtest du anbieten?</ng-template>
       <p>Fülle einfach alle Möglichkeiten, die du hast, aus. </p>
-      <div *ngFor="let contactType of contactTypes">
+      <div *ngFor="let contactType of contactTypes.availableContactTypes">
         <p>
           <mat-icon svgIcon="{{contactType}}"
                     style="margin-right: 5px; vertical-align: bottom"></mat-icon>
-          {{getEnumValue(contactType)}}
+          {{contactTypes.getDisplayName(contactType)}}
         </p>
         <mat-form-field>
           <mat-label>Dein Kontakt</mat-label>
@@ -136,13 +136,5 @@
         <button mat-button matStepperNext>Weiter</button>
       </div>
     </form>
-  </mat-step>
-  <mat-step>
-    <ng-template matStepLabel>Geschafft!</ng-template>
-    <p>Wir können deinen Laden jetzt aktualisieren. </p>
-    <div>
-      <button mat-button matStepperPrevious>Zurück</button>
-      <button mat-button (click)="updateShop()">Aktualisieren</button>
-    </div>
   </mat-step>
 </mat-vertical-stepper>

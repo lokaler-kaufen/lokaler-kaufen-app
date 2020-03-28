@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {ContactTypes} from '../shared/contact-types';
+import {ContactTypesEnum} from '../contact-types/available-contact-types';
 
 export interface BookingDialogData {
   supportedContactTypes: string[];
@@ -25,7 +25,7 @@ export enum BookingPopupOutcome {
   styleUrls: ['./booking-popup.component.css']
 })
 export class BookingPopupComponent implements OnInit {
-  contactTypes = ContactTypes;
+  contactTypes = ContactTypesEnum;
   bookingGroup: FormGroup;
 
   constructor(public dialogRef: MatDialogRef<BookingPopupComponent>,
@@ -42,7 +42,7 @@ export class BookingPopupComponent implements OnInit {
         Validators.email]
       )
     });
-    this.bookingGroup.controls.option.setValue('Whatsapp');
+    this.bookingGroup.controls.option.setValue(this.contactTypes.getDisplayName(this.data.supportedContactTypes[0]));
   }
 
   onSubmit(): void {

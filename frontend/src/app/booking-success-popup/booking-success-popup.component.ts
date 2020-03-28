@@ -1,6 +1,6 @@
-import {Component, Inject, Input, OnInit} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {ContactTypes} from '../shared/contact-types';
+import {ContactTypesEnum} from '../contact-types/available-contact-types';
 
 export class BookingSuccessData {
   owner: string;
@@ -16,7 +16,8 @@ export class BookingSuccessData {
   styleUrls: ['./booking-success-popup.component.css']
 })
 export class BookingSuccessPopupComponent implements OnInit {
-  contactTypes = ContactTypes;
+  contactTypes = ContactTypesEnum;
+
   constructor(public dialogRef: MatDialogRef<BookingSuccessPopupComponent>,
               @Inject(MAT_DIALOG_DATA) public data: BookingSuccessData) {
   }

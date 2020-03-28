@@ -1,8 +1,8 @@
 <div class="contact-types">
-          <span *ngFor="let contactType of contactTypes"
+          <span *ngFor="let contactType of contactTypes.availableContactTypes"
                 class="contact-type"
                 [ngClass]="{'available': availableContactTypes.includes(contactType)}">
             <mat-icon svgIcon="{{contactType}}" style="margin-right: 5px; vertical-align: bottom"></mat-icon>
-            <span>{{ getEnumValue(contactType) }}</span>
+            <span>{{ contactTypes.getDisplayName(contactType) }}</span>
           </span>
 </div>

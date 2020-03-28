@@ -4,12 +4,8 @@ import {BusinessHours, setRightSlot} from '../shop-creation-page/shop-creation-p
 import {MatDialog} from '@angular/material/dialog';
 import {NotificationsService} from 'angular2-notifications';
 import {Observable, ReplaySubject} from 'rxjs';
-import {UpdateShopDto} from '../data/client/model/updateShopDto';
-import {ShopOwnerDetailDto} from '../data/client/model/shopOwnerDetailDto';
-import {ShopDetailDto} from '../data/client/model/shopDetailDto';
-import {SlotConfigDto} from '../data/client/model/slotConfigDto';
-import {DayDto} from '../data/client/model/dayDto';
-import ContactTypesEnum = ShopDetailDto.ContactTypesEnum;
+import {DayDto, ShopOwnerDetailDto, SlotConfigDto, UpdateShopDto} from '../data/client';
+import {ContactTypesEnum} from '../contact-types/available-contact-types';
 
 export interface UpdateShopData {
   updateShopDto: UpdateShopDto;
@@ -26,6 +22,9 @@ export class ShopDetailsConfigComponent implements OnInit {
   @Input()
   detailsObservable: Observable<ShopOwnerDetailDto>;
 
+  @Input()
+  sendUpdatedShopDetails: Observable<boolean>;
+
   @Output()
   updateShopEvent: ReplaySubject<UpdateShopData> = new ReplaySubject<UpdateShopData>();
 
@@ -35,7 +34,7 @@ export class ShopDetailsConfigComponent implements OnInit {
   contactFormGroup = new FormGroup({});
   openingFormGroup = new FormGroup({});
 
-  contactTypes;
+  contactTypes = ContactTypesEnum;
   businessHours = BusinessHours;
   days;
   details: ShopOwnerDetailDto = {};
@@ -44,7 +43,6 @@ export class ShopDetailsConfigComponent implements OnInit {
               private matDialog: MatDialog,
               private notificationsService: NotificationsService) {
     this.days = Array.from(this.businessHours.POSSIBLE_BUSINESS_HOURS.keys());
-    this.contactTypes = Object.keys(ContactTypesEnum).map(key => ContactTypesEnum[key]);
   }
 
   ngOnInit() {
@@ -58,6 +56,11 @@ export class ShopDetailsConfigComponent implements OnInit {
           console.log('Error requesting shop details: ' + error.status + ', ' + error.message);
           this.notificationsService.error('Tut uns leid!', 'Es ist ein Fehler beim Laden der Details aufgetreten.');
         });
+    this.sendUpdatedShopDetails.subscribe((sendUpdatedShopDetails: boolean) => {
+      if (sendUpdatedShopDetails) {
+        this.updateShop();
+      }
+    });
   }
 
   setConfiguredShopDetails() {
@@ -69,11 +72,10 @@ export class ShopDetailsConfigComponent implements OnInit {
     this.addressFormGroup.controls.suffixCtrl.setValue(this.details.addressSupplement);
     this.descriptionFormGroup.controls.descriptionCtrl.setValue(this.details.details);
     this.descriptionFormGroup.controls.urlCtrl.setValue(this.details.website);
-    this.contactTypes.forEach(contact => {
+    this.contactTypes.availableContactTypes.forEach(contact => {
       const contactCtrl = contact.toLowerCase() + 'Ctrl';
-      console.log('Ctrl name: ' + contactCtrl + ', value: ' + this.details.contactTypes[contact]);
-      if (this.details.contactTypes[contact]) {
-        this.contactFormGroup.get(contactCtrl).setValue(this.details.contactTypes[contact]);
+      if (this.details.contacts[contact]) {
+        this.contactFormGroup.get(contactCtrl).setValue(this.details.contacts[contact]);
       }
     });
     this.businessHours.POSSIBLE_BUSINESS_HOURS.forEach((opening, day) => {
@@ -112,7 +114,7 @@ export class ShopDetailsConfigComponent implements OnInit {
       descriptionCtrl: ['', Validators.required],
       urlCtrl: ['', [Validators.pattern('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]]
     });
-    this.contactTypes.forEach(type => {
+    this.contactTypes.availableContactTypes.forEach(type => {
       const ctrl = type.toLowerCase() + 'Ctrl';
       this.contactFormGroup.addControl(ctrl, new FormControl(''));
     });
@@ -162,7 +164,7 @@ export class ShopDetailsConfigComponent implements OnInit {
     updateShopDto.details = this.descriptionFormGroup.get('descriptionCtrl').value;
     updateShopDto.website = this.descriptionFormGroup.get('urlCtrl').value;
     const availableContactTypes: { [key: string]: string; } = {};
-    this.contactTypes.forEach(contact => {
+    this.contactTypes.availableContactTypes.forEach(contact => {
       const contactCtrl = contact.toLowerCase() + 'Ctrl';
       const value = this.contactFormGroup.get(contactCtrl).value;
       console.log('Contact type: ' + contact + ', value: ' + value);
@@ -170,7 +172,7 @@ export class ShopDetailsConfigComponent implements OnInit {
         availableContactTypes[contact] = value;
       }
     });
-    updateShopDto.contactTypes = availableContactTypes;
+    updateShopDto.contacts = availableContactTypes;
     let slots: SlotConfigDto = {};
     this.businessHours.POSSIBLE_BUSINESS_HOURS.forEach((opening, day) => {
       if (opening.enabled) {
@@ -187,14 +189,6 @@ export class ShopDetailsConfigComponent implements OnInit {
       updateShopDto,
       id: this.details.id
     });
-  }
-
-  getEnumValue(contactType: any) {
-    let splitted = contactType.split('_');
-    splitted = splitted.map(split => {
-      return split.charAt(0) + split.slice(1).toLowerCase();
-    });
-    return splitted.join(' ');
   }
 
   private getRightSlot(day: string, slots: SlotConfigDto): DayDto {

@@ -5,10 +5,8 @@ import {ActivatedRoute} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {ShopCreationSuccessPopupComponent} from '../shop-creation-success-popup/shop-creation-success-popup.component';
 import {NotificationsService} from 'angular2-notifications';
-import {ShopDetailDto} from '../data/client/model/shopDetailDto';
-import {CreateShopDto} from '../data/client/model/createShopDto';
-import {SlotConfigDto} from '../data/client/model/slotConfigDto';
-import ContactTypesEnum = ShopDetailDto.ContactTypesEnum;
+import {CreateShopDto, SlotConfigDto} from '../data/client';
+import {ContactTypesEnum} from '../contact-types/available-contact-types';
 
 export class OpeningHours {
   constructor(enabled: boolean = true, from: string = '09:00', to: string = '16:00') {
@@ -50,7 +48,7 @@ export class ShopCreationPageComponent implements OnInit {
   passwordRegex: RegExp = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.{14,})');
 
   token: string;
-  contactTypes;
+  contactTypes = ContactTypesEnum;
 
   businessHours = BusinessHours;
 
@@ -64,7 +62,6 @@ export class ShopCreationPageComponent implements OnInit {
     private notificationsService: NotificationsService
   ) {
     this.days = Array.from(this.businessHours.POSSIBLE_BUSINESS_HOURS.keys());
-    this.contactTypes = Object.keys(ContactTypesEnum).map(key => ContactTypesEnum[key]);
   }
 
   ngOnInit() {
@@ -85,7 +82,7 @@ export class ShopCreationPageComponent implements OnInit {
       descriptionCtrl: ['', Validators.required],
       urlCtrl: ['', [Validators.pattern('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]]
     });
-    this.contactTypes.forEach(type => {
+    this.contactTypes.availableContactTypes.forEach(type => {
       const ctrl = type.toLowerCase() + 'Ctrl';
       this.contactFormGroup.addControl(ctrl, new FormControl(''));
     });
@@ -153,14 +150,14 @@ export class ShopCreationPageComponent implements OnInit {
     createShopRequestDto.details = this.descriptionFormGroup.get('descriptionCtrl').value;
     createShopRequestDto.website = this.descriptionFormGroup.get('urlCtrl').value;
     const availableContactTypes: { [key: string]: string; } = {};
-    this.contactTypes.forEach(contact => {
+    this.contactTypes.availableContactTypes.forEach(contact => {
       const contactCtrl = contact.toLowerCase() + 'Ctrl';
       const value = this.contactFormGroup.get(contactCtrl).value;
       if (value) {
         availableContactTypes[contact] = value;
       }
     });
-    createShopRequestDto.contactTypes = availableContactTypes;
+    createShopRequestDto.contacts = availableContactTypes;
     let slots: SlotConfigDto = {};
     this.businessHours.POSSIBLE_BUSINESS_HOURS.forEach((opening, day) => {
       if (opening.enabled) {
@@ -196,14 +193,6 @@ export class ShopCreationPageComponent implements OnInit {
           this.notificationsService.error('Tut uns leid!', 'Dein Laden konnte nicht angelegt werden.');
         }
       });
-  }
-
-  getEnumValue(contactType: any) {
-    let splitted = contactType.split('_');
-    splitted = splitted.map(split => {
-      return split.charAt(0) + split.slice(1).toLowerCase();
-    });
-    return splitted.join(' ');
   }
 
 }
