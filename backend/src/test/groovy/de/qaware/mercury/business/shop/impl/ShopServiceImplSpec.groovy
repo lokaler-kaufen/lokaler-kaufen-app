@@ -225,8 +225,8 @@ class ShopServiceImplSpec extends Specification {
         shopService.sendCreateLink('test@lokaler.kaufen')
 
         then:
-        1 * emailService.sendShopCreationLink('test@lokaler.kaufen')
-        0 * _
+        shopLoginService.hasLogin('test@lokaler.kaufen') >> false
+        emailService.sendShopCreationLink('test@lokaler.kaufen')
     }
 
     def "Find by name"() {
