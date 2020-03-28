@@ -29,7 +29,8 @@
       <div>
         <mat-form-field class="booking-popup-form-label">
           <mat-label>Deine E-Mail Adresse</mat-label>
-          <input required matInput formControlName="email" pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$">
+          <input (keyup.enter)="onSubmit()" required matInput formControlName="email"
+                 pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$">
           <mat-error *ngIf="bookingGroup.hasError('email') && !bookingGroup.hasError('required')">
             Bitte gib eine valide E-Mail Adresse ein!
           </mat-error>

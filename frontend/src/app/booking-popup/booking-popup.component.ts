@@ -46,6 +46,9 @@ export class BookingPopupComponent implements OnInit {
   }
 
   onSubmit(): void {
+    if (!this.bookingGroup.valid) {
+      return;
+    }
     const formValue: any = this.bookingGroup.value;
     const popupResult: BookingPopupResult = {
       outcome: BookingPopupOutcome.BOOK,
