@@ -1,8 +1,6 @@
 import {Component, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {BusinessHours, setRightSlot} from '../shop-creation-page/shop-creation-page.component';
-import {HttpClient} from '@angular/common/http';
-import {ActivatedRoute, Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {NotificationsService} from 'angular2-notifications';
 import {Observable, ReplaySubject} from 'rxjs';
@@ -42,10 +40,7 @@ export class ShopDetailsComponent implements OnInit {
   days;
   details: ShopOwnerDetailDto = {};
 
-  constructor(private client: HttpClient,
-              private formBuilder: FormBuilder,
-              private route: ActivatedRoute,
-              private router: Router,
+  constructor(private formBuilder: FormBuilder,
               private matDialog: MatDialog,
               private notificationsService: NotificationsService) {
     this.days = Array.from(this.businessHours.POSSIBLE_BUSINESS_HOURS.keys());
@@ -89,11 +84,15 @@ export class ShopDetailsComponent implements OnInit {
       if (dayOpeningHours) {
         this.openingFormGroup.get(fromCtrl).setValue(dayOpeningHours.start);
         this.openingFormGroup.get(toCtrl).setValue(dayOpeningHours.end);
+        this.openingFormGroup.get(fromCtrl).enable();
+        this.openingFormGroup.get(toCtrl).enable();
         opening.enabled = true;
       } else {
         opening.enabled = false;
         this.openingFormGroup.get(fromCtrl).setValue('09:00');
         this.openingFormGroup.get(toCtrl).setValue('16:00');
+        this.openingFormGroup.get(fromCtrl).disable();
+        this.openingFormGroup.get(toCtrl).disable();
       }
     });
   }
