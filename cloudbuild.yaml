@@ -1,22 +1,31 @@
 steps:
-  # Build Spring Boot app
+  # Build backend
   - name: gradle:jdk11
+    id: "build-backend"
     entrypoint: gradle
     args: ["--no-daemon", "build"]
     dir: backend
-  # Analyze code quality
+    waitFor: ["-"]
+  # Analyze backend code quality
   - name: gradle:jdk11
     entrypoint: gradle
     args: ["--no-daemon", "clean", "test", "sonarqube"]
     dir: backend
     secretEnv: ["SONAR_TOKEN"]
+    waitFor: ["build-backend"]
   # Build Docker image (frontend & backend)
   - name: gcr.io/cloud-builders/docker
+    id: "build-image"
     args: ["build", "-t", "gcr.io/$PROJECT_ID/lokaler.kaufen", "."]
+    waitFor: ["-"]
   # Deploy container image to Cloud Run
   - name: 'gcr.io/cloud-builders/gcloud'
     args: ['beta', 'run', 'deploy', 'lokaler-kaufen-srv', '--image', 'gcr.io/$PROJECT_ID/lokaler.kaufen', '--region', 'europe-west4', '--platform', 'managed', '--allow-unauthenticated']
+    waitFor: ["build-image"]
 images: ["gcr.io/$PROJECT_ID/lokaler.kaufen"]
+
+# Increase timeout to 15 minutes 
+timeout: 900s
 
 secrets:
   - kmsKeyName: projects/theta-mile-271809/locations/global/keyRings/lokalerkaufen/cryptoKeys/CLOUD_BUILD_KEY
