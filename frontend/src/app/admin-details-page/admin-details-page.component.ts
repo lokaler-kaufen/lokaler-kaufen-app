@@ -52,6 +52,7 @@ export class AdminDetailsPageComponent implements OnInit {
 
   extractShopOwnerDetailDto(shopAdminDto: ShopAdminDto): ShopOwnerDetailDto {
     return {
+      id: shopAdminDto.id,
       addressSupplement: shopAdminDto.addressSupplement,
       city: shopAdminDto.city,
       contactTypes: shopAdminDto.contactTypes,
