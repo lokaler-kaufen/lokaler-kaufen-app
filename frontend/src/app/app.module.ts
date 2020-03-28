@@ -39,7 +39,7 @@ import {PasswordResetPopupComponent} from './password-reset-popup/password-reset
 import {PasswordResetPageComponent} from './password-reset-page/password-reset-page.component';
 import {CancelReservationComponent} from './cancel-reservation/cancel-reservation.component';
 import {AdminDetailsPageComponent} from './admin-details-page/admin-details-page.component';
-import {ShopDetailsComponent} from './shop-details/shop-details.component';
+import {ShopDetailsConfigComponent} from './shop-details-config/shop-details-config.component';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @NgModule({
@@ -65,7 +65,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     ShopDetailsPageComponent,
     ShopManagementPageComponent,
     ShopSearchPageComponent,
-    ShopDetailsComponent
+    ShopDetailsConfigComponent
   ],
   imports: [
     AppRoutingModule,

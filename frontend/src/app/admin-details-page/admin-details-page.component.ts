@@ -5,7 +5,7 @@ import {AdminService} from '../shared/admin.service';
 import {NotificationsService} from 'angular2-notifications';
 import {ShopAdminDto} from '../data/client/model/shopAdminDto';
 import {ShopOwnerDetailDto} from '../data/client/model/shopOwnerDetailDto';
-import {UpdateShopData} from '../shop-details/shop-details.component';
+import {UpdateShopData} from '../shop-details-config/shop-details-config.component';
 
 @Component({
   selector: 'admin-details-page',
@@ -46,11 +46,13 @@ export class AdminDetailsPageComponent implements OnInit {
   }
 
   changeShopApproval() {
-    this.adminService.changeShopApproval(this.shopId, !this.shopDetails.enabled);
+    this.adminService.changeShopApproval(this.shopId, !this.shopDetails.approved);
+    this.shopDetails.approved = !this.shopDetails.approved;
   }
 
   extractShopOwnerDetailDto(shopAdminDto: ShopAdminDto): ShopOwnerDetailDto {
     return {
+      id: shopAdminDto.id,
       addressSupplement: shopAdminDto.addressSupplement,
       city: shopAdminDto.city,
       contactTypes: shopAdminDto.contactTypes,

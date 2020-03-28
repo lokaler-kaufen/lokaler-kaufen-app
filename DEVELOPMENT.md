@@ -5,7 +5,7 @@
 Before you begin development, make sure you local environment is setup properly. For the development of the backend and frontend you will need
 the following software components installed:
 
- * [NPM v12](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm#using-a-node-installer-to-install-node-js-and-npm) installed
+ * [Node.js](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm#using-a-node-installer-to-install-node-js-and-npm) installed (ideally 12.16.1 along with a somewhat up-to-date version of npm)
  * [AngularCLI v9](https://angular.io/cli) installed (`npm install -g @angular/cli`)
  * [Java 11](https://adoptopenjdk.net) installed, or use tools like `SdkMan` or `Jabba`
  * [Docker](https://www.docker.com/products/docker-desktop) if you want to build Docker images (optional)

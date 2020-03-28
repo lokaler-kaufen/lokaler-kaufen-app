@@ -1,7 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
 .mat-header-cell {
   background: rgba(141, 141, 141, 0.4);
@@ -33,5 +39,5 @@ a:active {
 }
 
 .highlightable:hover {
-  background: lightskyblue;
+  background: rgba(209, 196, 233, 1);
 }

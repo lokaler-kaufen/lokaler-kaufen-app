@@ -4,7 +4,7 @@ import {NotificationsService} from 'angular2-notifications';
 import {Observable} from 'rxjs';
 import {ShopsAdminDto} from '../data/client/model/shopsAdminDto';
 import {ShopAdminDto} from '../data/client/model/shopAdminDto';
-import {UpdateShopData} from '../shop-details/shop-details.component';
+import {UpdateShopData} from '../shop-details-config/shop-details-config.component';
 
 @Injectable({
   providedIn: 'root'
@@ -47,9 +47,9 @@ export class AdminService {
   }
 
   changeShopApproval(shopId: string, enabled: boolean) {
-    this.client.delete('/api/admin/shop/' + encodeURIComponent(shopId) + '/approve?approved=' + enabled)
+    this.client.put('/api/admin/shop/' + encodeURIComponent(shopId) + '/approve?approved=' + enabled, {})
       .subscribe(() => {
-          this.notificationsService.success('Alles klar!', 'Das enabled flag wurde auf ' + enabled + ' gesetzt.');
+          this.notificationsService.success('Alles klar!', 'Das approved flag wurde auf ' + enabled + ' gesetzt.');
         },
         error => {
           console.log('Error updating shop: ' + error.status + ', ' + error.message);

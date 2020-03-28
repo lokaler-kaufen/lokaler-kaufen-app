@@ -1,4 +1,5 @@
 spring.datasource:
+  url: "invalid-jdbc-url" # Invalid url is on purpose so that spring breaks when no database is configured
   hikari:
     auto-commit: false
     connection-timeout: 10000 # ms

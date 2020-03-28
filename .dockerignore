@@ -1,3 +1,8 @@
-.git
+.git/
+.idea/
 backend/.gradle/
+backend/build/
+backend/out/
+doc/
 frontend/node_modules/
+fontend/dist/

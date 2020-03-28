@@ -42,7 +42,7 @@ CREATE TABLE admin
 CREATE TABLE shop_login
 (
     id            uuid primary key,
-    shop_id       uuid    not null references shop (id),
+    shop_id       uuid    not null references shop (id) on delete cascade,
     email         varchar not null unique,
     password_hash varchar not null
 );
@@ -50,7 +50,7 @@ CREATE TABLE shop_login
 CREATE TABLE reservation
 (
     id           uuid primary key,
-    shop_id      uuid    not null references shop (id),
+    shop_id      uuid    not null references shop (id) on delete cascade,
     start_time   timestamp without time zone not null,
     end_time     timestamp without time zone not null,
     contact      varchar not null,
