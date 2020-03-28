@@ -28,7 +28,7 @@ public interface ShopService {
      *
      * @param email email address
      */
-    void sendCreateLink(String email);
+    void sendCreateLink(String email) throws ShopAlreadyExistsException;
 
     List<Shop> findByName(String name);
 

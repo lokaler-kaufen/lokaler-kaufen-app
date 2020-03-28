@@ -95,7 +95,7 @@ class ShopController {
      * @param request the create link request.
      */
     @PostMapping(path = "/send-create-link", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void sendCreateLink(@Valid @RequestBody SendCreateLinkDto request) {
+    public void sendCreateLink(@Valid @RequestBody SendCreateLinkDto request) throws ShopAlreadyExistsException {
         shopService.sendCreateLink(request.getEmail());
     }
 
