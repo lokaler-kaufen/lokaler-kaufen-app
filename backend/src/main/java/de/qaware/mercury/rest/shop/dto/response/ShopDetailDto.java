@@ -37,7 +37,7 @@ public class ShopDetailDto {
             shop.getZipCode(),
             shop.getCity(),
             shop.getAddressSupplement(),
-            Sets.map(shop.getContacts().keySet(), ContactType::toString),
+            Sets.map(shop.getContacts().keySet(), ContactType::getId),
             shop.getDetails(),
             shop.getWebsite()
         );

@@ -42,7 +42,7 @@ public class ShopAdminDto {
             shop.getZipCode(),
             shop.getCity(),
             shop.getAddressSupplement(),
-            Maps.mapKeys(shop.getContacts(), ContactType::toString),
+            Maps.mapKeys(shop.getContacts(), ContactType::getId),
             shop.isEnabled(),
             shop.isApproved(),
             shop.getDetails(),
