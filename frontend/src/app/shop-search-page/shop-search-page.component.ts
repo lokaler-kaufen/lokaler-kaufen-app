@@ -15,10 +15,12 @@ import ContactTypesEnum = ShopDetailDto.ContactTypesEnum;
   styleUrls: ['./shop-search-page.component.css']
 })
 export class ShopSearchPageComponent implements OnInit {
+
   contactTypes = Object.keys(ContactTypesEnum).map(key => ContactTypesEnum[key]);
   searchBusiness: string;
   location: string;
   dataSource = new MatTableDataSource();
+
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   displayedColumns: string[] = ['name', 'distance', 'supportedContactTypes'];
 
@@ -26,7 +28,6 @@ export class ShopSearchPageComponent implements OnInit {
               private router: Router,
               private client: HttpClient,
               private notificationsService: NotificationsService) {
-
     this.dataUpdate = this.dataUpdate.bind(this);
     this.handleParamsUpdate = this.handleParamsUpdate.bind(this);
   }
