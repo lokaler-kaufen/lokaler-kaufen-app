@@ -142,7 +142,7 @@ class ShopController {
         return ShopDetailDto.of(shopService.create(new ShopCreation(
             email, request.getOwnerName(), request.getName(), request.getStreet(), request.getZipCode(), request.getCity(),
             request.getAddressSupplement(), request.getDetails(), request.getWebsite(), request.getPassword(),
-            Maps.mapKeys(request.getContactTypes(), ContactType::parse), request.getSlots().toSlots()
+            Maps.mapKeys(request.getContacts(), ContactType::parse), request.getSlots().toSlots()
         )));
     }
 
@@ -161,7 +161,7 @@ class ShopController {
         return ShopDetailDto.of(shopService.update(shop, new ShopUpdate(
             request.getName(), request.getOwnerName(), request.getStreet(), request.getZipCode(), request.getCity(),
             request.getAddressSupplement(), request.getDetails(), request.getWebsite(),
-            Maps.mapKeys(request.getContactTypes(), ContactType::parse), request.getSlots().toSlots()
+            Maps.mapKeys(request.getContacts(), ContactType::parse), request.getSlots().toSlots()
         )));
     }
 

@@ -22,6 +22,6 @@ public class ShopUpdate {
     @Nullable
     String website;
     // Maps from WHATSAPP -> Telephone number, for example
-    Map<ContactType, String> contactTypes;
+    Map<ContactType, String> contacts;
     SlotConfig slotConfig;
 }

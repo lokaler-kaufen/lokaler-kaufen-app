@@ -23,6 +23,6 @@ public class ShopCreation {
     String website;
     String password;
     // Maps from WHATSAPP -> Telephone number, for example
-    Map<ContactType, String> contactTypes;
+    Map<ContactType, String> contacts;
     SlotConfig slotConfig;
 }

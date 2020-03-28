@@ -45,7 +45,7 @@ public class CreateShopDto {
     private String password;
     // Maps from WHATSAPP -> Telephone number, for example
     @NotEmpty
-    private Map<String, String> contactTypes;
+    private Map<String, String> contacts;
     @Valid
     private SlotConfigDto slots;
 }

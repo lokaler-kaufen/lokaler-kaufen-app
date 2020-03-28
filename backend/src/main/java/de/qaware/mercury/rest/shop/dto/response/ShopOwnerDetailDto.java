@@ -24,7 +24,7 @@ public class ShopOwnerDetailDto {
     private String addressSupplement;
     private String details;
     private String website;
-    private Map<String, String> contactTypes;
+    private Map<String, String> contacts;
     private SlotConfigDto slots;
 
     public static ShopOwnerDetailDto of(Shop shop) {

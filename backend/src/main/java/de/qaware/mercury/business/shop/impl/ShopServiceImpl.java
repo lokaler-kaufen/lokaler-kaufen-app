@@ -92,7 +92,7 @@ class ShopServiceImpl implements ShopService {
         GeoLocation geoLocation = locationService.lookup(creation.getZipCode());
         Shop shop = new Shop(
             Shop.Id.of(id), creation.getName(), creation.getOwnerName(), creation.getEmail(), creation.getStreet(),
-            creation.getZipCode(), creation.getCity(), creation.getAddressSupplement(), creation.getContactTypes(),
+            creation.getZipCode(), creation.getCity(), creation.getAddressSupplement(), creation.getContacts(),
             true, config.isApproveShopsOnCreation(), geoLocation, creation.getDetails(), creation.getWebsite(), creation.getSlotConfig(), clock.nowZoned(),
             clock.nowZoned()
         );
@@ -116,7 +116,7 @@ class ShopServiceImpl implements ShopService {
 
         Shop updatedShop = new Shop(
             shop.getId(), update.getName(), update.getOwnerName(), shop.getEmail(), update.getStreet(), update.getZipCode(),
-            update.getCity(), update.getAddressSupplement(), update.getContactTypes(),
+            update.getCity(), update.getAddressSupplement(), update.getContacts(),
             shop.isEnabled(), shop.isApproved(), geoLocation, update.getDetails(), update.getWebsite(), update.getSlotConfig(),
             shop.getCreated(), clock.nowZoned()
         );
