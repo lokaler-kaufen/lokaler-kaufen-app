@@ -18,8 +18,6 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 public class LocationServiceImpl implements LocationService {
-    // Munich
-    static final GeoLocation DEFAULT_GEOLOCATION = GeoLocation.of(48.104346, 11.600851);
     private static final int MINIMUM_SUGGESTION_LENGTH = 1;
     static final int MAXIMUM_SUGGESTION_COUNT = 5;
 
@@ -27,10 +25,10 @@ public class LocationServiceImpl implements LocationService {
 
     @Override
     @Transactional(readOnly = true)
-    public GeoLocation lookup(String zipCode) {
+    public GeoLocation lookup(String zipCode) throws LocationNotFoundException {
         GeoLocation geoLocation = locationRepository.fromZipCode(zipCode);
         if (geoLocation == null) {
-            return DEFAULT_GEOLOCATION;
+            throw new LocationNotFoundException(zipCode);
         }
 
         return geoLocation;

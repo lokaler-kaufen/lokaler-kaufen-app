@@ -1,5 +1,6 @@
 package de.qaware.mercury.rest.shop;
 
+import de.qaware.mercury.business.location.impl.LocationNotFoundException;
 import de.qaware.mercury.business.login.LoginException;
 import de.qaware.mercury.business.login.PasswordResetToken;
 import de.qaware.mercury.business.login.ShopCreationToken;
@@ -133,7 +134,7 @@ class ShopController {
      * @throws ShopAlreadyExistsException if a shop with the given E-Mail already exists.
      */
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ShopDetailDto createShop(@Valid @RequestBody CreateShopDto request, @RequestParam @NotBlank String token) throws LoginException, ShopAlreadyExistsException {
+    public ShopDetailDto createShop(@Valid @RequestBody CreateShopDto request, @RequestParam @NotBlank String token) throws LoginException, ShopAlreadyExistsException, LocationNotFoundException {
         // The token is taken from the link which the user got with email
         // It contains the email address, and is used to verify that the user really has access to this email address
         String email = tokenService.verifyShopCreationToken(ShopCreationToken.of(token));
@@ -154,7 +155,7 @@ class ShopController {
      * @throws LoginException if the caller is not authenticated to modify this shop.
      */
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ShopDetailDto updateShop(@Valid @RequestBody UpdateShopDto request, HttpServletRequest servletRequest) throws LoginException {
+    public ShopDetailDto updateShop(@Valid @RequestBody UpdateShopDto request, HttpServletRequest servletRequest) throws LoginException, LocationNotFoundException {
         Shop shop = authenticationHelper.authenticateShop(servletRequest);
 
         return ShopDetailDto.of(shopService.update(shop, new ShopUpdate(
@@ -171,7 +172,7 @@ class ShopController {
      * @return a list of shops as {@link ShopListDto}.
      */
     @GetMapping("nearby")
-    public ShopListDto listNearby(@RequestParam @NotBlank String zipCode) {
+    public ShopListDto listNearby(@RequestParam @NotBlank String zipCode) throws LocationNotFoundException {
         return ShopListDto.of(shopService.findNearby(zipCode));
     }
 
@@ -183,7 +184,7 @@ class ShopController {
      * @return a list of shops as {@link ShopListDto}.
      */
     @GetMapping("search")
-    public ShopListDto listNearby(@RequestParam @NotBlank String query, @NotBlank @RequestParam String zipCode) {
+    public ShopListDto listNearby(@RequestParam @NotBlank String query, @NotBlank @RequestParam String zipCode) throws LocationNotFoundException {
         return ShopListDto.of(shopService.search(query, zipCode));
     }
 }

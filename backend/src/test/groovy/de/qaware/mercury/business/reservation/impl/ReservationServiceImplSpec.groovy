@@ -54,7 +54,7 @@ class ReservationServiceImplSpec extends Specification {
         1 * clock.today() >> today
         1 * reservationRepository.findReservationsForShop(id, today.atTime(0, 0), today.atTime(23, 59)) >> []
         1 * slotService.generateSlots(today, today, shop.getSlotConfig(), []) >> []
-        slots.size() == 0
+        slots.isEmpty()
     }
 
     def "Create Reservation for Shop"() {
