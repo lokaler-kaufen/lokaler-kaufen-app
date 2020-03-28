@@ -90,7 +90,7 @@ export class ShopSearchPageComponent implements OnInit {
   }
 
   private findShopsBySearchQuery(query: string): void {
-    const params = new HttpParams().append('location', this.location).append('query', query);
+    const params = new HttpParams().append('zipCode', this.location).append('query', query);
 
     this.client.get<ShopListDto>('/api/shop/search', {params}).subscribe(
       response => {
