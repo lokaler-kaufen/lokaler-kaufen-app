@@ -5,6 +5,7 @@ import de.qaware.mercury.business.shop.ContactType;
 import de.qaware.mercury.business.shop.DayConfig;
 import de.qaware.mercury.business.shop.Shop;
 import de.qaware.mercury.business.shop.SlotConfig;
+import de.qaware.mercury.util.Maps;
 import de.qaware.mercury.util.Null;
 import de.qaware.mercury.util.Sets;
 import lombok.AllArgsConstructor;
@@ -16,9 +17,13 @@ import lombok.ToString;
 import org.hibernate.annotations.Type;
 import org.springframework.lang.Nullable;
 
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapKeyColumn;
 import javax.persistence.Table;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
@@ -72,6 +77,12 @@ public class ShopEntity {
     @Type(type = "com.vladmihalcea.hibernate.type.array.StringArrayType")
     @Column(nullable = false)
     private String[] contactTypes;
+
+    @ElementCollection
+    @CollectionTable(name = "shop_contact", joinColumns = {@JoinColumn(name = "shop_id", referencedColumnName = "id")})
+    @MapKeyColumn(name = "contact_type")
+    @Column(name = "data")
+    private Map<String, String> contactTypes2;
 
     @Setter
     @Column(nullable = false)
@@ -172,6 +183,7 @@ public class ShopEntity {
             shop.getCity(),
             shop.getAddressSupplement(),
             Sets.map(shop.getContactTypes().keySet(), ContactType::getId).toArray(new String[0]), // TODO MKA: Store contact types with contact info
+            Maps.mapKeys(shop.getContactTypes(), ContactType::getId),
             shop.isEnabled(),
             shop.isApproved(),
             shop.getGeoLocation().getLatitude(),
@@ -209,7 +221,7 @@ public class ShopEntity {
             zipCode,
             city,
             addressSupplement,
-            fakeMap(contactTypes), // TODO MKA: Load contact types with contact info
+            Maps.mapKeys(contactTypes2, ContactType::parse),
             enabled,
             approved,
             GeoLocation.of(latitude, longitude),

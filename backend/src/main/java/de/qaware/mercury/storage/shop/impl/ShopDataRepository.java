@@ -10,6 +10,9 @@ import java.util.UUID;
 public interface ShopDataRepository extends JpaRepository<ShopEntity, UUID> {
     List<ShopEntity> findByName(String name);
 
+    @Query("SELECT s FROM ShopEntity s JOIN FETCH s.contactTypes2")
+    List<ShopEntity> findAllWithContactTypes();
+
     @Query(
         "SELECT s as shopEntity, " +
             "sqrt(" +

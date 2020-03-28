@@ -19,7 +19,9 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -29,6 +31,7 @@ import java.util.Map;
 class DebugPopulateDatabase implements ApplicationRunner {
     private final ShopService shopService;
     private final AdminLoginService adminLoginService;
+    private final EntityManager entityManager;
 
     @Override
     @Transactional
@@ -65,6 +68,7 @@ class DebugPopulateDatabase implements ApplicationRunner {
                 .sunday(new DayConfig(LocalTime.of(8, 0), LocalTime.of(17, 0)))
                 .build()
         ));
+
         createShop(new ShopCreation(
             "flo@localhost", "Flo", "Flo's Kaffeeladen", "Aschauer Str. 32", "81549", "München", "", "", null,
             "flo", Map.of(ContactType.GOOGLE_DUO, "@vlow"),
@@ -75,6 +79,12 @@ class DebugPopulateDatabase implements ApplicationRunner {
             "vroni", Map.of(ContactType.GOOGLE_DUO, "vroni@localhost", ContactType.SIGNAL, "@vroni"),
             SlotConfig.builder().timePerSlot(60).timeBetweenSlots(15).build()
         ));
+
+        entityManager.flush();
+        entityManager.clear();
+        log.info("Selecting shops");
+        List<Shop> shops = shopService.listAll();
+        System.out.println(shops);
     }
 
     private void createShop(ShopCreation creation) throws ShopNotFoundException, ShopAlreadyExistsException, LocationNotFoundException {
@@ -82,6 +92,9 @@ class DebugPopulateDatabase implements ApplicationRunner {
             Shop shop = shopService.create(creation);
             shopService.changeApproved(shop.getId(), true);
             log.info("Created shop {}", shop);
+
+            entityManager.flush();
+            entityManager.clear();
         }
     }
 }

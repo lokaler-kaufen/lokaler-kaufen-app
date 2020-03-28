@@ -25,7 +25,7 @@ class JpaShopRepositoryImpl implements ShopRepository {
 
     @Override
     public List<Shop> listAll() {
-        return Lists.map(shopDataRepository.findAll(), ShopEntity::toShop);
+        return Lists.map(shopDataRepository.findAllWithContactTypes(), ShopEntity::toShop);
     }
 
     @Override
