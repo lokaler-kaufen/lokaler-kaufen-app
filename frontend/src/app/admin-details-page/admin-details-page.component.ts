@@ -3,9 +3,8 @@ import {ReplaySubject} from 'rxjs';
 import {ActivatedRoute} from '@angular/router';
 import {AdminService} from '../shared/admin.service';
 import {NotificationsService} from 'angular2-notifications';
-import {ShopAdminDto} from '../data/client/model/shopAdminDto';
-import {ShopOwnerDetailDto} from '../data/client/model/shopOwnerDetailDto';
 import {UpdateShopData} from '../shop-details-config/shop-details-config.component';
+import {ShopAdminDto, ShopOwnerDetailDto} from '../data/client';
 
 @Component({
   selector: 'admin-details-page',
@@ -18,6 +17,8 @@ export class AdminDetailsPageComponent implements OnInit {
   shopId: string;
 
   shopOwnerDetails: ReplaySubject<ShopOwnerDetailDto> = new ReplaySubject<ShopOwnerDetailDto>();
+
+  getUpdatedDetails: ReplaySubject<boolean> = new ReplaySubject<boolean>();
 
   constructor(private adminService: AdminService,
               private route: ActivatedRoute,

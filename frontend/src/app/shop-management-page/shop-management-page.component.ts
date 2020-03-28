@@ -14,6 +14,9 @@ import {UpdateShopData} from '../shop-details-config/shop-details-config.compone
 export class ShopManagementPageComponent implements OnInit {
 
   shopDetails: ReplaySubject<ShopOwnerDetailDto> = new ReplaySubject<ShopOwnerDetailDto>();
+
+  getUpdatedDetails: ReplaySubject<boolean> = new ReplaySubject<boolean>();
+
   shopId: string;
 
   constructor(private client: HttpClient,
