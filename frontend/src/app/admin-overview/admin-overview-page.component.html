@@ -22,7 +22,7 @@
       <mat-cell *matCellDef="let element">{{element.street}}</mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="plz">
+    <ng-container matColumnDef="zipCode">
       <mat-header-cell *matHeaderCellDef>PLZ</mat-header-cell>
       <mat-cell *matCellDef="let element">{{element.zipCode}}</mat-cell>
     </ng-container>
@@ -32,9 +32,9 @@
       <mat-cell *matCellDef="let element">{{element.city}}</mat-cell>
     </ng-container>
 
-    <ng-container matColumnDef="enabled">
+    <ng-container matColumnDef="approved">
       <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
-      <mat-cell *matCellDef="let element">{{element.enabled ? 'Aktiv' : 'Inaktiv'}}</mat-cell>
+      <mat-cell *matCellDef="let element">{{element.approved ? 'Bestätigt' : 'Nicht bestätigt'}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="email">

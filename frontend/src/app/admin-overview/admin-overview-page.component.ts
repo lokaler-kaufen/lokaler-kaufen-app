@@ -10,7 +10,7 @@ import {AdminService} from '../shared/admin.service';
   styleUrls: ['./admin-overview-page.component.css']
 })
 export class AdminOverviewPageComponent implements OnInit {
-  public displayedColumns = ['name', 'ownerName', 'street', 'plz', 'city', 'email', 'enabled'];
+  public displayedColumns = ['name', 'ownerName', 'street', 'zipCode', 'city', 'email', 'approved'];
   public dataSource: ShopListAdminDataSource;
 
   constructor(private adminService: AdminService,

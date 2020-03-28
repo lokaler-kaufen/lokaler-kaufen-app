@@ -4,8 +4,8 @@
   <div><h3>E-Mail: {{shopDetails.email}}</h3></div>
   <button style="width: 25%; margin-right: 10px;" mat-raised-button color="primary"
           (click)="changeShopApproval()">
-    <div *ngIf="shopDetails.approved">Deaktivieren</div>
-    <div *ngIf="!shopDetails.approved">Aktivieren</div>
+    <div *ngIf="shopDetails.approved">Shop bestätigen</div>
+    <div *ngIf="!shopDetails.approved">Bestätigung zurückziehen</div>
   </button>
   <button style="width: 25%" mat-raised-button color="primary"
           (click)="deleteShop()">Löschen
