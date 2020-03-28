@@ -11,13 +11,9 @@ mercury:
   cookies:
     secure: true
   tokens:
-    shopJwtSecret: "u2WXgWEWhyop+qtpiH5jhQmDN+PVRbazKPNuseI0dmE=" # openssl rand -base64 32
-    adminJwtSecret: "QXOm/a5//OFtmciYomnixCTDCzNUQFWNAiT3eGBOfhQ=" # openssl rand -base64 32
-    shopCreationJwtSecret: "8aaM086u9cpaNp8fMKURLOdpTEJYPqFy/xrN3M5ynT4=" # openssl rand -base64 32
-    passwordResetJwtSecret: "71GRYLeFT2QzI/nq+g4UMk1hQ7Q+X2SvCU3ge5Nkpd8=" # openssl rand -base64 32
-    reservationCancellationJwtSecret: "aOAUO26KvMsqgb+lRl2o1dQFziRMBnQI9mw5rMxabcE" # openssl rand -base64 32
+    masterKey: "fZZP2re13vX7Q6xEWJDlAyYdzwtmZTmSEvjafucWlYg=" # Must be Base64, generated with openssl rand -base64 32
   email:
-    use-dummy: true # Set this to false to send real emails
+    useDummy: true # Set this to false to send real emails
     from: "Lokaler.kaufen <info@lokaler.kaufen>"
     creationLinkTemplate: "${variables.domain}/#/create-shop?token={{ token }}"
     shopPasswordResetLinkTemplate: "${variables.domain}/#/reset-shop-password?token={{ token }}"

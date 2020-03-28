@@ -13,15 +13,7 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 @AllArgsConstructor
 @Validated
-class TokenServiceConfigurationProperties {
+class KeyProviderConfigurationProperties {
     @NotBlank
-    private String shopJwtSecret;
-    @NotBlank
-    private String adminJwtSecret;
-    @NotBlank
-    private String shopCreationJwtSecret;
-    @NotBlank
-    private String passwordResetJwtSecret;
-    @NotBlank
-    private String reservationCancellationJwtSecret;
+    private String masterKey;
 }
