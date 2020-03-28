@@ -1,6 +1,7 @@
 package de.qaware.mercury;
 
 import de.qaware.mercury.business.login.AdminLoginService;
+import de.qaware.mercury.business.shop.ContactCreation;
 import de.qaware.mercury.business.shop.ContactType;
 import de.qaware.mercury.business.shop.DayConfig;
 import de.qaware.mercury.business.shop.Shop;
@@ -19,7 +20,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalTime;
-import java.util.Map;
+import java.util.List;
 
 @Component
 @Slf4j
@@ -53,7 +54,10 @@ class DebugPopulateDatabase implements ApplicationRunner {
         createShop(new ShopCreation(
             "moe@localhost", "Moe", "Moe's Whiskey", "Lothstr. 64", "85579", "Neubiberg", "", "Bester Whiskey in ganz Neubiberg!",
             "https://www.moes-whiskey.com/", "moe",
-            Map.of(ContactType.WHATSAPP, "0151/123456789", ContactType.FACETIME, "moe@localhost"),
+            List.of(
+                new ContactCreation(ContactType.WHATSAPP, "0151/123456789"),
+                new ContactCreation(ContactType.FACETIME, "moe@localhost")
+            ),
             SlotConfig.builder().timePerSlot(15).timeBetweenSlots(5)
                 .monday(new DayConfig(LocalTime.of(8, 0), LocalTime.of(17, 0)))
                 .tuesday(new DayConfig(LocalTime.of(8, 0), LocalTime.of(17, 0)))
@@ -66,12 +70,19 @@ class DebugPopulateDatabase implements ApplicationRunner {
         ));
         createShop(new ShopCreation(
             "flo@localhost", "Flo", "Flo's Kaffeeladen", "Aschauer Str. 32", "81549", "München", "", "", null,
-            "flo", Map.of(ContactType.GOOGLE_DUO, "@vlow"),
+            "flo",
+            List.of(
+                new ContactCreation(ContactType.GOOGLE_DUO, "@vlow")
+            ),
             SlotConfig.builder().timePerSlot(30).timeBetweenSlots(10).build()
         ));
         createShop(new ShopCreation(
             "vroni@localhost", "Vroni", "Vroni's Kleiderladen", "Rheinstraße 4C", "55116", "Mainz", "", "", null,
-            "vroni", Map.of(ContactType.GOOGLE_DUO, "vroni@localhost", ContactType.SIGNAL, "@vroni"),
+            "vroni",
+            List.of(
+                new ContactCreation(ContactType.GOOGLE_DUO, "vroni@localhost"),
+                new ContactCreation(ContactType.SIGNAL, "@vroni")
+            ),
             SlotConfig.builder().timePerSlot(60).timeBetweenSlots(15).build()
         ));
     }

@@ -1,5 +1,6 @@
 package de.qaware.mercury.rest.shop.dto.response;
 
+import de.qaware.mercury.business.shop.Contact;
 import de.qaware.mercury.business.shop.ContactType;
 import de.qaware.mercury.business.shop.ShopWithDistance;
 import de.qaware.mercury.util.Lists;
@@ -22,14 +23,14 @@ public class ShopListDto {
         String id;
         String name;
         double distance;
-        Set<String> supportedContactTypes;
+        Set<ContactType> supportedContactTypes;
 
         public static ShopListEntryDto of(ShopWithDistance shopListEntry) {
             return new ShopListEntryDto(
                 shopListEntry.getShop().getId().getId().toString(),
                 shopListEntry.getShop().getName(),
                 shopListEntry.getDistance(),
-                Sets.map(shopListEntry.getShop().getContactTypes().keySet(), ContactType::name)
+                Sets.map(shopListEntry.getShop().getContacts(), Contact::getContactType)
             );
         }
     }

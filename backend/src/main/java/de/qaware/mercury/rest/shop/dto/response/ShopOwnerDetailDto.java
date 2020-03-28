@@ -1,5 +1,6 @@
 package de.qaware.mercury.rest.shop.dto.response;
 
+import de.qaware.mercury.business.shop.Contact;
 import de.qaware.mercury.business.shop.ContactType;
 import de.qaware.mercury.business.shop.Shop;
 import de.qaware.mercury.rest.shop.dto.request.SlotConfigDto;
@@ -24,7 +25,7 @@ public class ShopOwnerDetailDto {
     private String addressSupplement;
     private String details;
     private String website;
-    private Map<String, String> contactTypes;
+    private Map<ContactType, String> contactTypes;
     private SlotConfigDto slots;
 
     public static ShopOwnerDetailDto of(Shop shop) {
@@ -38,7 +39,7 @@ public class ShopOwnerDetailDto {
             shop.getAddressSupplement(),
             shop.getDetails(),
             shop.getWebsite(),
-            Maps.mapKeys(shop.getContactTypes(), ContactType::toString),
+            Maps.mapList(shop.getContacts(), Contact::getContactType, Contact::getData),
             Null.map(shop.getSlotConfig(), SlotConfigDto::of)
         );
     }

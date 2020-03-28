@@ -5,24 +5,27 @@ import de.qaware.mercury.business.shop.ContactType;
 import de.qaware.mercury.business.shop.DayConfig;
 import de.qaware.mercury.business.shop.Shop;
 import de.qaware.mercury.business.shop.SlotConfig;
+import de.qaware.mercury.util.Lists;
 import de.qaware.mercury.util.Null;
-import de.qaware.mercury.util.Sets;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.annotations.Type;
 import org.springframework.lang.Nullable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.util.EnumMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.Supplier;
@@ -69,11 +72,6 @@ public class ShopEntity {
     private String addressSupplement;
 
     @Setter
-    @Type(type = "com.vladmihalcea.hibernate.type.array.StringArrayType")
-    @Column(nullable = false)
-    private String[] contactTypes;
-
-    @Setter
     @Column(nullable = false)
     private boolean enabled;
 
@@ -97,6 +95,10 @@ public class ShopEntity {
     @Column(nullable = true)
     @Nullable
     private String website;
+
+    @JoinColumn(name = "post_id")
+    @OneToMany(mappedBy = "contact", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ContactEntity> contacts;
 
     @Setter
     @Column(nullable = false)
@@ -171,13 +173,13 @@ public class ShopEntity {
             shop.getZipCode(),
             shop.getCity(),
             shop.getAddressSupplement(),
-            Sets.map(shop.getContactTypes().keySet(), ContactType::name).toArray(new String[0]), // TODO MKA: Store contact types with contact info
             shop.isEnabled(),
             shop.isApproved(),
             shop.getGeoLocation().getLatitude(),
             shop.getGeoLocation().getLongitude(),
             shop.getDetails(),
             shop.getWebsite(),
+            Lists.map(shop.getContacts(), ContactEntity::of),
             shop.getSlotConfig().getTimePerSlot(),
             shop.getSlotConfig().getTimeBetweenSlots(),
             Null.map(shop.getSlotConfig().getMonday(), DayConfig::getStart),
@@ -209,7 +211,7 @@ public class ShopEntity {
             zipCode,
             city,
             addressSupplement,
-            fakeMap(contactTypes), // TODO MKA: Load contact types with contact info
+            Lists.map(contacts, ContactEntity::toContact),
             enabled,
             approved,
             GeoLocation.of(latitude, longitude),

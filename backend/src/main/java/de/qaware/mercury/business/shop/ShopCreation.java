@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Value;
 import org.springframework.lang.Nullable;
 
-import java.util.Map;
+import java.util.List;
 
 @Value
 @AllArgsConstructor
@@ -23,6 +23,6 @@ public class ShopCreation {
     String website;
     String password;
     // Maps from WHATSAPP -> Telephone number, for example
-    Map<ContactType, String> contactTypes;
+    List<ContactCreation> contacts;
     SlotConfig slotConfig;
 }

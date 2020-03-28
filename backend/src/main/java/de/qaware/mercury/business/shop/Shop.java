@@ -8,7 +8,7 @@ import lombok.With;
 import org.springframework.lang.Nullable;
 
 import java.time.ZonedDateTime;
-import java.util.Map;
+import java.util.List;
 import java.util.UUID;
 
 @Value
@@ -23,7 +23,7 @@ public class Shop {
     String zipCode;
     String city;
     String addressSupplement;
-    Map<ContactType, String> contactTypes;
+    List<Contact> contacts;
     boolean enabled;
     @With
     boolean approved;

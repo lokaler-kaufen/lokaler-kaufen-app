@@ -1,3 +1,10 @@
+CREATE TABLE admin
+(
+    id            uuid primary key,
+    email         varchar not null unique,
+    password_hash varchar not null
+);
+
 CREATE TABLE shop
 (
     id                 uuid primary key,
@@ -8,7 +15,7 @@ CREATE TABLE shop
     zip_code           varchar          not null,
     city               varchar          not null,
     address_supplement varchar          not null,
-    contact_types      varchar[] not null,
+    contact_types      varchar[]        not null,
     enabled            boolean          not null,
     latitude           double precision not null,
     longitude          double precision not null,
@@ -32,13 +39,6 @@ CREATE TABLE shop
     sunday_end         varchar
 );
 
-CREATE TABLE admin
-(
-    id            uuid primary key,
-    email         varchar not null unique,
-    password_hash varchar not null
-);
-
 CREATE TABLE shop_login
 (
     id            uuid primary key,
@@ -50,12 +50,12 @@ CREATE TABLE shop_login
 CREATE TABLE reservation
 (
     id           uuid primary key,
-    shop_id      uuid    not null references shop (id),
+    shop_id      uuid                        not null references shop (id),
     start_time   timestamp without time zone not null,
     end_time     timestamp without time zone not null,
-    contact      varchar not null,
-    email        varchar not null,
-    contact_type varchar not null
+    contact      varchar                     not null,
+    email        varchar                     not null,
+    contact_type varchar                     not null
 );
 
 -- schema derived from https://www.geonames.org/

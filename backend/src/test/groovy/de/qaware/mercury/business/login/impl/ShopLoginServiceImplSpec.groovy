@@ -1,14 +1,8 @@
 package de.qaware.mercury.business.login.impl
 
 import de.qaware.mercury.business.email.EmailService
-import de.qaware.mercury.business.login.LoginException
-import de.qaware.mercury.business.login.PasswordHasher
-import de.qaware.mercury.business.login.PasswordResetToken
-import de.qaware.mercury.business.login.ShopLogin
-import de.qaware.mercury.business.login.ShopLoginNotFoundException
-import de.qaware.mercury.business.login.ShopLoginService
-import de.qaware.mercury.business.login.ShopToken
-import de.qaware.mercury.business.login.TokenService
+import de.qaware.mercury.business.login.*
+import de.qaware.mercury.business.shop.Contact
 import de.qaware.mercury.business.shop.Shop
 import de.qaware.mercury.business.time.Clock
 import de.qaware.mercury.business.uuid.UUIDFactory
@@ -121,6 +115,7 @@ class ShopLoginServiceImplSpec extends Specification {
         Shop shop = new Shop.ShopBuilder().id(shopId).build()
         ShopLogin.Id shopLoginId = ShopLogin.Id.of(UUID.randomUUID())
         ShopLogin shopLogin = new ShopLogin(shopLoginId, shopId, 'email', 'hash', null, null)
+        List<Contact> contacts = new ArrayList<>()
 
         when:
         Shop verify = loginService.verify(token)

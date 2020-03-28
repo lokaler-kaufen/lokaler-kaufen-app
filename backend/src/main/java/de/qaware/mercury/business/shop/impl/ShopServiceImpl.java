@@ -22,6 +22,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -90,9 +91,21 @@ class ShopServiceImpl implements ShopService {
 
         GeoLocation geoLocation = locationService.lookup(creation.getZipCode());
         Shop shop = new Shop(
-            Shop.Id.of(id), creation.getName(), creation.getOwnerName(), creation.getEmail(), creation.getStreet(),
-            creation.getZipCode(), creation.getCity(), creation.getAddressSupplement(), creation.getContactTypes(),
-            true, config.isApproveShopsOnCreation(), geoLocation, creation.getDetails(), creation.getWebsite(), creation.getSlotConfig(), clock.nowZoned(),
+            Shop.Id.of(id),
+            creation.getName(),
+            creation.getOwnerName(),
+            creation.getEmail(),
+            creation.getStreet(),
+            creation.getZipCode(),
+            creation.getCity(),
+            creation.getAddressSupplement(),
+            new ArrayList<>(), // TODO Add proper mapping
+            true,
+            config.isApproveShopsOnCreation(),
+            geoLocation,
+            creation.getDetails(),
+            creation.getWebsite(),
+            creation.getSlotConfig(), clock.nowZoned(),
             clock.nowZoned()
         );
 
@@ -114,10 +127,23 @@ class ShopServiceImpl implements ShopService {
         GeoLocation geoLocation = locationService.lookup(update.getZipCode());
 
         Shop updatedShop = new Shop(
-            shop.getId(), update.getName(), update.getOwnerName(), update.getName(), update.getStreet(), update.getZipCode(),
-            update.getCity(), update.getAddressSupplement(), update.getContactTypes(),
-            shop.isEnabled(), shop.isApproved(), geoLocation, update.getDetails(), update.getWebsite(), update.getSlotConfig(),
-            shop.getCreated(), clock.nowZoned()
+            shop.getId(),
+            update.getName(),
+            update.getOwnerName(),
+            update.getName(),
+            update.getStreet(),
+            update.getZipCode(),
+            update.getCity(),
+            update.getAddressSupplement(),
+            update.getContacts(),
+            shop.isEnabled(),
+            shop.isApproved(),
+            geoLocation,
+            update.getDetails(),
+            update.getWebsite(),
+            update.getSlotConfig(),
+            shop.getCreated(),
+            clock.nowZoned()
         );
 
         shopRepository.update(updatedShop);

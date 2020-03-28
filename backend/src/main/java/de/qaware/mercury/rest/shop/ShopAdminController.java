@@ -2,16 +2,16 @@ package de.qaware.mercury.rest.shop;
 
 import de.qaware.mercury.business.admin.Admin;
 import de.qaware.mercury.business.login.LoginException;
-import de.qaware.mercury.business.shop.ContactType;
 import de.qaware.mercury.business.shop.Shop;
 import de.qaware.mercury.business.shop.ShopNotFoundException;
 import de.qaware.mercury.business.shop.ShopService;
 import de.qaware.mercury.business.shop.ShopUpdate;
 import de.qaware.mercury.rest.plumbing.authentication.AuthenticationHelper;
+import de.qaware.mercury.rest.shop.dto.both.ContactDto;
 import de.qaware.mercury.rest.shop.dto.request.UpdateShopDto;
 import de.qaware.mercury.rest.shop.dto.response.ShopAdminDto;
 import de.qaware.mercury.rest.shop.dto.response.ShopsAdminDto;
-import de.qaware.mercury.util.Maps;
+import de.qaware.mercury.util.Lists;
 import de.qaware.mercury.util.validation.Validation;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +39,26 @@ import javax.validation.constraints.Pattern;
 class ShopAdminController {
     private final ShopService shopService;
     private final AuthenticationHelper authenticationHelper;
+
+    /**
+     * Retrieves settings for a shop.
+     *
+     * @param id             the id of the shop.
+     * @param servletRequest an instance of {@link HttpServletRequest}.
+     * @return an instance of {@link ShopAdminDto}.
+     * @throws ShopNotFoundException if the shop cannot be found in the database.
+     * @throws LoginException        if the caller is not authenticated as admin.
+     */
+    @GetMapping
+    public ShopAdminDto getShopSettings(@PathVariable @Pattern(regexp = Validation.SHOP_ID) String id, HttpServletRequest servletRequest) throws ShopNotFoundException, LoginException {
+        authenticationHelper.authenticateAdmin(servletRequest);
+        Shop shop = shopService.findById(Shop.Id.parse(id));
+        if (shop == null) {
+            throw new ShopNotFoundException(Shop.Id.parse(id));
+        }
+
+        return ShopAdminDto.of(shop);
+    }
 
     @GetMapping
     public ShopsAdminDto listAll(HttpServletRequest request) throws LoginException {
@@ -75,7 +95,7 @@ class ShopAdminController {
             request.getAddressSupplement(),
             request.getDetails(),
             request.getWebsite(),
-            Maps.mapKeys(request.getContactTypes(), ContactType::parse),
+            Lists.map(request.getContacts(), ContactDto::toContact),
             request.getSlots().toSlots()
         )));
     }

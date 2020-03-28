@@ -6,7 +6,6 @@ import de.qaware.mercury.business.login.ShopCreationToken;
 import de.qaware.mercury.business.login.ShopLoginNotFoundException;
 import de.qaware.mercury.business.login.ShopLoginService;
 import de.qaware.mercury.business.login.TokenService;
-import de.qaware.mercury.business.shop.ContactType;
 import de.qaware.mercury.business.shop.Shop;
 import de.qaware.mercury.business.shop.ShopAlreadyExistsException;
 import de.qaware.mercury.business.shop.ShopCreation;
@@ -14,6 +13,8 @@ import de.qaware.mercury.business.shop.ShopNotFoundException;
 import de.qaware.mercury.business.shop.ShopService;
 import de.qaware.mercury.business.shop.ShopUpdate;
 import de.qaware.mercury.rest.plumbing.authentication.AuthenticationHelper;
+import de.qaware.mercury.rest.shop.dto.both.ContactDto;
+import de.qaware.mercury.rest.shop.dto.request.CreateContactDto;
 import de.qaware.mercury.rest.shop.dto.request.CreateShopDto;
 import de.qaware.mercury.rest.shop.dto.request.ResetPasswordDto;
 import de.qaware.mercury.rest.shop.dto.request.SendCreateLinkDto;
@@ -22,7 +23,7 @@ import de.qaware.mercury.rest.shop.dto.request.UpdateShopDto;
 import de.qaware.mercury.rest.shop.dto.response.ShopDetailDto;
 import de.qaware.mercury.rest.shop.dto.response.ShopListDto;
 import de.qaware.mercury.rest.shop.dto.response.ShopOwnerDetailDto;
-import de.qaware.mercury.util.Maps;
+import de.qaware.mercury.util.Lists;
 import de.qaware.mercury.util.validation.Validation;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -138,11 +139,21 @@ class ShopController {
         // It contains the email address, and is used to verify that the user really has access to this email address
         String email = tokenService.verifyShopCreationToken(ShopCreationToken.of(token));
 
-        return ShopDetailDto.of(shopService.create(new ShopCreation(
-            email, request.getOwnerName(), request.getName(), request.getStreet(), request.getZipCode(), request.getCity(),
-            request.getAddressSupplement(), request.getDetails(), request.getWebsite(), request.getPassword(),
-            Maps.mapKeys(request.getContactTypes(), ContactType::parse), request.getSlots().toSlots()
-        )));
+        return ShopDetailDto.of(
+            shopService.create(new ShopCreation(
+                email,
+                request.getOwnerName(),
+                request.getName(),
+                request.getStreet(),
+                request.getZipCode(),
+                request.getCity(),
+                request.getAddressSupplement(),
+                request.getDetails(),
+                request.getWebsite(),
+                request.getPassword(),
+                Lists.map(request.getContacts(), CreateContactDto::toContactCreation),
+                request.getSlots().toSlots()
+            )));
     }
 
     /**
@@ -158,9 +169,16 @@ class ShopController {
         Shop shop = authenticationHelper.authenticateShop(servletRequest);
 
         return ShopDetailDto.of(shopService.update(shop, new ShopUpdate(
-            request.getName(), request.getOwnerName(), request.getStreet(), request.getZipCode(), request.getCity(),
-            request.getAddressSupplement(), request.getDetails(), request.getWebsite(),
-            Maps.mapKeys(request.getContactTypes(), ContactType::parse), request.getSlots().toSlots()
+            request.getName(),
+            request.getOwnerName(),
+            request.getStreet(),
+            request.getZipCode(),
+            request.getCity(),
+            request.getAddressSupplement(),
+            request.getDetails(),
+            request.getWebsite(),
+            Lists.map(request.getContacts(), ContactDto::toContact),
+            request.getSlots().toSlots()
         )));
     }
 

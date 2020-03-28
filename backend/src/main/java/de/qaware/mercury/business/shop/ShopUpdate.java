@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Value;
 import org.springframework.lang.Nullable;
 
-import java.util.Map;
+import java.util.List;
 
 @Value
 @Builder(access = AccessLevel.PUBLIC)
@@ -22,6 +22,6 @@ public class ShopUpdate {
     @Nullable
     String website;
     // Maps from WHATSAPP -> Telephone number, for example
-    Map<ContactType, String> contactTypes;
+    List<Contact> contacts;
     SlotConfig slotConfig;
 }

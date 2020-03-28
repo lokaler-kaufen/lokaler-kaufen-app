@@ -1,15 +1,17 @@
 package de.qaware.mercury.rest.shop.dto.response;
 
+import de.qaware.mercury.business.shop.Contact;
 import de.qaware.mercury.business.shop.ContactType;
 import de.qaware.mercury.business.shop.Shop;
 import de.qaware.mercury.rest.shop.dto.request.SlotConfigDto;
+import de.qaware.mercury.util.Maps;
 import de.qaware.mercury.util.Null;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
 
-import java.util.Set;
+import java.util.Map;
 
 @Data
 @NoArgsConstructor
@@ -23,7 +25,7 @@ public class ShopAdminDto {
     String zipCode;
     String city;
     String addressSupplement;
-    Set<ContactType> contactTypes;
+    Map<ContactType, String> contactTypes;
     boolean enabled;
     boolean approved;
     String details;
@@ -41,7 +43,7 @@ public class ShopAdminDto {
             shop.getZipCode(),
             shop.getCity(),
             shop.getAddressSupplement(),
-            shop.getContactTypes().keySet(),
+            Maps.mapList(shop.getContacts(), Contact::getContactType, Contact::getData),
             shop.isEnabled(),
             shop.isApproved(),
             shop.getDetails(),
