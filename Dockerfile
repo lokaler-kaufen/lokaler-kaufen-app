@@ -33,7 +33,7 @@ RUN gradle build
 ##############################
 # STAGE 3: App package build #
 ##############################
-FROM openjdk:11.0.6-jre-slim
+FROM openjdk:11-jre-slim
 
 COPY --from=backend-build /workspace/backend/build/libs/mercury-0.0.1-SNAPSHOT.jar app.jar
 
