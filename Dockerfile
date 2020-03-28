@@ -37,4 +37,4 @@ FROM openjdk:11-jre-slim
 
 COPY --from=backend-build /workspace/backend/build/libs/mercury-0.0.1-SNAPSHOT.jar app.jar
 
-ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom", "-Dserver.port=${PORT}","-jar","/app.jar"]
+ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom", "-XX:+ExitOnOutOfMemoryError", "-Dserver.port=${PORT}","-jar","/app.jar"]
