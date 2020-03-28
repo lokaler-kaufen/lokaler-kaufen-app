@@ -1,17 +1,21 @@
 #############################
 # STAGE 1: Frontend build   #
 #############################
-FROM node:12.16.1-alpine3.11 AS frontend-build
+FROM node:12.16.1-stretch AS frontend-build
 
-COPY . /workspace
+# First: Copy only npm stuff so that we don't download the whole internet on every build
+COPY frontend/package.json /workspace/frontend/package.json
+COPY frontend/package-lock.json /workspace/frontend/package-lock.json
 WORKDIR /workspace/frontend
 
-# Install tools & libs
-RUN npm install
+# Install dependencies / dev dependencies
+RUN npm ci
+
+# Copy the remaining stuff
+COPY . /workspace
 
 # Build app
-RUN npm run build
-
+RUN npm run build-prod
 
 #############################
 # STAGE 2: Backend  build   #
