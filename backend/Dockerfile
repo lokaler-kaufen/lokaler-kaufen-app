@@ -21,4 +21,4 @@ ENV PORT=8080
 
 ENV SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/postgres
 
-ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom", "-Dserver.port=${PORT}","-jar","/app.jar", "--spring.profiles.active=dev"]
+ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom", "-XX:+ExitOnOutOfMemoryError", "-Dserver.port=${PORT}","-jar","/app.jar", "--spring.profiles.active=dev"]
