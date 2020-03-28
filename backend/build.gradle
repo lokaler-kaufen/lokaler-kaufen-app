@@ -1,5 +1,5 @@
 plugins {
-    id 'org.springframework.boot' version '2.2.5.RELEASE'
+    id 'org.springframework.boot' version '2.2.6.RELEASE'
     id 'io.spring.dependency-management' version '1.0.9.RELEASE'
     id 'java'
     id 'groovy'
@@ -34,7 +34,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
 
     // Hibernate types
-    compile 'com.vladmihalcea:hibernate-types-52:2.9.6'
+    implementation 'com.vladmihalcea:hibernate-types-52:2.9.6'
 
     // Fixes the 'warning: unknown enum constant When.MAYBE' warnings
     compileOnly 'com.google.code.findbugs:jsr305:3.0.2'
@@ -57,13 +57,13 @@ dependencies {
     }
 
     // mandatory dependencies for using Spock
-    testCompile "org.codehaus.groovy:groovy-all:2.5.8"
-    testCompile platform("org.spockframework:spock-bom:2.0-M1-groovy-2.5")
-    testCompile "org.spockframework:spock-core"
-    testCompile "org.spockframework:spock-spring"
+    testImplementation "org.codehaus.groovy:groovy-all:2.5.8"
+    testImplementation platform("org.spockframework:spock-bom:2.0-M1-groovy-2.5")
+    testImplementation "org.spockframework:spock-core"
+    testImplementation "org.spockframework:spock-spring"
 
-    testRuntime "net.bytebuddy:byte-buddy:1.9.3"
-    testRuntime "org.objenesis:objenesis:2.6"
+    testRuntimeOnly "net.bytebuddy:byte-buddy:1.9.3"
+    testRuntimeOnly "org.objenesis:objenesis:2.6"
 }
 
 test {

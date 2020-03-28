@@ -17,6 +17,7 @@ import {ShopDetailDto} from '../data/client/model/shopDetailDto';
 import {SlotDto} from '../data/client/model/slotDto';
 import {SlotsDto} from '../data/client/model/slotsDto';
 import {CreateReservationDto} from '../data/client/model/createReservationDto';
+import {ZipCodeCacheService} from '../landing-page/zip-code-cache.service';
 
 @Component({
   selector: 'shop-details-page',
@@ -32,7 +33,8 @@ export class ShopDetailsPageComponent implements OnInit {
   constructor(private client: HttpClient,
               private activatedRoute: ActivatedRoute,
               private matDialog: MatDialog,
-              private notificationsService: NotificationsService) {
+              private notificationsService: NotificationsService,
+              private zipCodeCacheService: ZipCodeCacheService) {
   }
 
   ngOnInit(): void {
@@ -69,23 +71,23 @@ export class ShopDetailsPageComponent implements OnInit {
   showBookingPopup(id: string) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
-    dialogConfig.width = '100%';
+    dialogConfig.width = '450px';
     dialogConfig.data = {
       supportedContactTypes: this.details.contactTypes
     } as BookingDialogData;
     this.matDialog.open(BookingPopupComponent, dialogConfig)
       .afterClosed()
       .subscribe((data: BookingPopupResult) => {
-        if (data.outcome === BookingPopupOutcome.BOOK) {
+        if (data && data.outcome === BookingPopupOutcome.BOOK) {
           const successConfig = new MatDialogConfig();
           successConfig.autoFocus = true;
-          successConfig.width = '100%';
+          successConfig.width = '450px';
           successConfig.data = {
             owner: this.details.name,
             contactNumber: data.phoneNumber,
             contactType: data.option,
             start: this.slots.find(s => s.id === id).start,
-            end: this.slots.find(s => s.id === id).end,
+            end: this.slots.find(s => s.id === id).end
           } as BookingSuccessData;
           const reservationDto: CreateReservationDto = {
             contact: data.phoneNumber,
@@ -120,6 +122,10 @@ export class ShopDetailsPageComponent implements OnInit {
       result = startingUrl + url;
     }
     return result;
+  }
+
+  getCachedZipCode() {
+    return this.zipCodeCacheService.getZipCode();
   }
 
 }

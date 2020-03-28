@@ -36,13 +36,14 @@ DEPLOY_DIR_TEST="/opt/mercury/test"
 HOST="lokaler.kaufen"
 
 NPM="npm"
+ANGULAR="ng"
 GRADLE="./gradlew"
 
 (
     printf "Building Angular project ..."
     cd "${FRONTEND_DIR}"
     "${NPM}" install
-    "${NPM}" run build
+    "${ANGULAR}" --prod build
     echo "  done."
 
 )

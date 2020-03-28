@@ -171,7 +171,7 @@ public class ShopEntity {
             shop.getZipCode(),
             shop.getCity(),
             shop.getAddressSupplement(),
-            Sets.map(shop.getContactTypes().keySet(), ContactType::name).toArray(new String[0]), // TODO MKA: Store contact types with contact info
+            Sets.map(shop.getContactTypes().keySet(), ContactType::getId).toArray(new String[0]), // TODO MKA: Store contact types with contact info
             shop.isEnabled(),
             shop.isApproved(),
             shop.getGeoLocation().getLatitude(),

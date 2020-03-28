@@ -19,7 +19,7 @@
              matInput/>
       <mat-autocomplete #auto="matAutocomplete">
         <mat-option *ngFor="let suggestion of suggestions" [value]="suggestion.zipCode">
-          {{suggestion.zipCode}} {{suggestion.placeName}} - {{suggestion.countryCode}}
+          {{suggestion.zipCode}} {{suggestion.placeName}}
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>

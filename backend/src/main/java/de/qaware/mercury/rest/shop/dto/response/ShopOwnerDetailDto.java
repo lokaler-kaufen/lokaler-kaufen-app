@@ -38,7 +38,7 @@ public class ShopOwnerDetailDto {
             shop.getAddressSupplement(),
             shop.getDetails(),
             shop.getWebsite(),
-            Maps.mapKeys(shop.getContactTypes(), ContactType::toString),
+            Maps.mapKeys(shop.getContactTypes(), ContactType::getId),
             Null.map(shop.getSlotConfig(), SlotConfigDto::of)
         );
     }

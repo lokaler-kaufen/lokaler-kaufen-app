@@ -3,7 +3,7 @@ version: "3.7"
 services:
   backend:
     build:
-      context: ./backend
+      context: .
       dockerfile: Dockerfile
     environment: 
       SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/postgres
@@ -16,4 +16,3 @@ services:
       POSTGRES_PASSWORD: password
     ports:
       - "5432:5432"
-      

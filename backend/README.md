@@ -1,28 +1,41 @@
 # Mercury backend
 
-## Get an architectural overview
-
-Start with looking at the `de.qaware.mercury.rest.shop.ShopController` class.
-
 ## Run it
 
-First, start a local postgres database. Easiest way to do this is with docker:
+### With Docker Compose
 
-```
-docker run --rm -e POSTGRES_PASSWORD=password -p 5432:5432 postgres:11
+(assuming you've already built the backend JAR with `./gradlew kick ass`)
+
+```shell script
+docker-compose up
 ```
 
 ### With gradle
 
+First, start a local postgres database. Easiest way to do this is with docker:
+
 ```shell script
-./gradlew bootRun
+docker run --rm -e POSTGRES_PASSWORD=password -p 5432:5432 postgres:11
+```
+
+Then run the application with Gradle:
+
+```shell script
+./gradlew bootRun --args='--spring.profiles.active=dev'
 ```
 
 ### With IntelliJ
 
-Start the `main()` method of the `de.qaware.mercury.MercuryApplication` class.
+You also need a running PostgreSQL database, see paragraph above.
+
+Then start the `main()` method of the `de.qaware.mercury.MercuryApplication` class. Make sure you pass `--spring.profiles.active=dev`
+to the application to start in `dev` profile.
 
 ## Developing
+
+### Get an architectural overview
+
+Start with looking at the `de.qaware.mercury.rest.shop.ShopController` class.
 
 ### Conventions
 
@@ -69,22 +82,11 @@ public class LoginDto {
 }
 ```
 
-### Login as Admin
+### See the API
 
-```
-curlie :8080/api/admin/login email=admin-1@localhost password=admin-1
-```
-
-The access token is set as a cookie.
-
-### Login as Shop
-
-```
-curlie :8080/api/shop/login email=moe@localhost password=moe
-```
-
-The access token is set as a cookie.
+Open http://localhost:8080/swagger-ui.html or take a look at the [src/test/http](src/test/http) folder.
 
 # Credits
+
 For geolocation lookups we are using data from [GeoNames](https://download.geonames.org/export/zip/)
 which is free to use under the [Creative Commons Attribution 3.0 License](https://creativecommons.org/licenses/by/3.0/).

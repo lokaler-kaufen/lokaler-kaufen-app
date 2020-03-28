@@ -2,6 +2,26 @@
   display: grid;
 }
 
+.back-button {
+  font-size: 12px;
+}
+
 .book-button {
   width: 100%;
+}
+
+.booking-table {
+  margin-left: 1%;
+  margin-right: 1%;
+  width: 98%;
+}
+
+.description-text {
+  margin-left: 1%;
+  margin-top: 3em;
+}
+
+.shop-titel {
+  margin-top: 1em;
+  margin-bottom: 1.5em;
 }

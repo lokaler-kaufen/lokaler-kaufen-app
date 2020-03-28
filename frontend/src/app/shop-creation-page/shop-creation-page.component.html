@@ -28,9 +28,9 @@
       </mat-form-field>
       <mat-form-field>
         <mat-label>PLZ</mat-label>
-        <input matInput formControlName="zipCtrl" placeholder="12345" type="number"
-               oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-               maxlength="5"
+        <input matInput formControlName="zipCtrl" placeholder="12345" type="text"
+               oninput="javascript: this.value=this.value.replace(new RegExp(/[^\d]/g), ''); if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+               maxlength="5" minlength="5"
                required>
       </mat-form-field>
       <mat-form-field>
