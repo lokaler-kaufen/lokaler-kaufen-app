@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
 import {NotificationsService} from 'angular2-notifications';
 
@@ -13,6 +13,7 @@ export class CancelReservationComponent implements OnInit {
   token: string;
 
   constructor(private route: ActivatedRoute,
+              private router: Router,
               private client: HttpClient,
               private notificationsService: NotificationsService) {
   }
@@ -27,6 +28,7 @@ export class CancelReservationComponent implements OnInit {
     this.client.delete('/api/reservation?token=' + encodeURIComponent(this.token))
       .subscribe(() => {
           this.notificationsService.success('Alles klar!', 'Wir haben deine Buchung storniert. Der Händler wird von uns informiert.');
+          this.router.navigate(['/']);
         },
         error => {
           console.log('Error cancelling reservation: ' + error.status + ', ' + error.message);
