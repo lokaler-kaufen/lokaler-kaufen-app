@@ -16,7 +16,7 @@ RUN npm run build
 #############################
 # STAGE 2: Backend  build   #
 #############################
-FROM openjdk:11.0.6-jdk AS backend-build
+FROM gradle:jdk11 AS backend-build
 
 # prepare workspace
 COPY . /workspace
@@ -24,7 +24,7 @@ COPY --from=frontend-build /workspace/frontend/dist/mercury-ui/. /workspace/back
 WORKDIR /workspace/backend
 
 # run backend build
-RUN ./gradlew build
+RUN gradle build
 
 ##############################
 # STAGE 3: App package build #
