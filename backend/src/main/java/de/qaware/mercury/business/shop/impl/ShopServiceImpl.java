@@ -5,8 +5,10 @@ import de.qaware.mercury.business.location.GeoLocation;
 import de.qaware.mercury.business.location.LocationService;
 import de.qaware.mercury.business.location.impl.LocationNotFoundException;
 import de.qaware.mercury.business.login.ShopLoginService;
+import de.qaware.mercury.business.shop.ContactType;
 import de.qaware.mercury.business.shop.Shop;
 import de.qaware.mercury.business.shop.ShopAlreadyExistsException;
+import de.qaware.mercury.business.shop.ShopContact;
 import de.qaware.mercury.business.shop.ShopCreation;
 import de.qaware.mercury.business.shop.ShopNotFoundException;
 import de.qaware.mercury.business.shop.ShopService;
@@ -23,7 +25,10 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -89,10 +94,12 @@ class ShopServiceImpl implements ShopService {
 
         UUID id = uuidFactory.create();
 
+        Set<ShopContact> contacts = contactsMapToSet(creation.getContactTypes());
+
         GeoLocation geoLocation = locationService.lookup(creation.getZipCode());
         Shop shop = new Shop(
             Shop.Id.of(id), creation.getName(), creation.getOwnerName(), creation.getEmail(), creation.getStreet(),
-            creation.getZipCode(), creation.getCity(), creation.getAddressSupplement(), creation.getContactTypes(),
+            creation.getZipCode(), creation.getCity(), creation.getAddressSupplement(), contacts,
             true, config.isApproveShopsOnCreation(), geoLocation, creation.getDetails(), creation.getWebsite(), creation.getSlotConfig(), clock.nowZoned(),
             clock.nowZoned()
         );
@@ -114,15 +121,25 @@ class ShopServiceImpl implements ShopService {
     public Shop update(Shop shop, ShopUpdate update) throws LocationNotFoundException {
         GeoLocation geoLocation = locationService.lookup(update.getZipCode());
 
+        Set<ShopContact> contacts = contactsMapToSet(update.getContactTypes());
+
         Shop updatedShop = new Shop(
             shop.getId(), update.getName(), update.getOwnerName(), shop.getEmail(), update.getStreet(), update.getZipCode(),
-            update.getCity(), update.getAddressSupplement(), update.getContactTypes(),
+            update.getCity(), update.getAddressSupplement(), contacts,
             shop.isEnabled(), shop.isApproved(), geoLocation, update.getDetails(), update.getWebsite(), update.getSlotConfig(),
             shop.getCreated(), clock.nowZoned()
         );
 
         shopRepository.update(updatedShop);
         return updatedShop;
+    }
+
+    private Set<ShopContact> contactsMapToSet(Map<ContactType, String> contactTypes) {
+        Set<ShopContact> contacts = new HashSet<>(contactTypes.size());
+        for (Map.Entry<ContactType, String> entry : contactTypes.entrySet()) {
+            contacts.add(new ShopContact(ShopContact.Id.random(uuidFactory), entry.getKey(), entry.getValue()));
+        }
+        return contacts;
     }
 
     @Override

@@ -5,7 +5,6 @@ import de.qaware.mercury.business.shop.ContactType;
 import de.qaware.mercury.business.shop.DayConfig;
 import de.qaware.mercury.business.shop.Shop;
 import de.qaware.mercury.business.shop.SlotConfig;
-import de.qaware.mercury.util.Null;
 import de.qaware.mercury.util.Sets;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -13,17 +12,19 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.annotations.Type;
 import org.springframework.lang.Nullable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.function.Supplier;
 
@@ -69,9 +70,8 @@ public class ShopEntity {
     private String addressSupplement;
 
     @Setter
-    @Type(type = "com.vladmihalcea.hibernate.type.array.StringArrayType")
-    @Column(nullable = false)
-    private String[] contactTypes;
+    @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ShopContactEntity> contacts;
 
     @Setter
     @Column(nullable = false)
@@ -162,41 +162,56 @@ public class ShopEntity {
     private ZonedDateTime updated;
 
     public static ShopEntity of(Shop shop) {
-        return new ShopEntity(
-            shop.getId().getId(),
-            shop.getName(),
-            shop.getOwnerName(),
-            shop.getEmail(),
-            shop.getStreet(),
-            shop.getZipCode(),
-            shop.getCity(),
-            shop.getAddressSupplement(),
-            Sets.map(shop.getContactTypes().keySet(), ContactType::getId).toArray(new String[0]), // TODO MKA: Store contact types with contact info
-            shop.isEnabled(),
-            shop.isApproved(),
-            shop.getGeoLocation().getLatitude(),
-            shop.getGeoLocation().getLongitude(),
-            shop.getDetails(),
-            shop.getWebsite(),
-            shop.getSlotConfig().getTimePerSlot(),
-            shop.getSlotConfig().getTimeBetweenSlots(),
-            Null.map(shop.getSlotConfig().getMonday(), DayConfig::getStart),
-            Null.map(shop.getSlotConfig().getMonday(), DayConfig::getEnd),
-            Null.map(shop.getSlotConfig().getTuesday(), DayConfig::getStart),
-            Null.map(shop.getSlotConfig().getTuesday(), DayConfig::getEnd),
-            Null.map(shop.getSlotConfig().getWednesday(), DayConfig::getStart),
-            Null.map(shop.getSlotConfig().getWednesday(), DayConfig::getEnd),
-            Null.map(shop.getSlotConfig().getThursday(), DayConfig::getStart),
-            Null.map(shop.getSlotConfig().getThursday(), DayConfig::getEnd),
-            Null.map(shop.getSlotConfig().getFriday(), DayConfig::getStart),
-            Null.map(shop.getSlotConfig().getFriday(), DayConfig::getEnd),
-            Null.map(shop.getSlotConfig().getSaturday(), DayConfig::getStart),
-            Null.map(shop.getSlotConfig().getSaturday(), DayConfig::getEnd),
-            Null.map(shop.getSlotConfig().getSunday(), DayConfig::getStart),
-            Null.map(shop.getSlotConfig().getSunday(), DayConfig::getEnd),
-            shop.getCreated(),
-            shop.getUpdated()
-        );
+        ShopEntity entity = new ShopEntity();
+        entity.id = shop.getId().getId();
+        entity.setName(shop.getName());
+        entity.setOwnerName(shop.getOwnerName());
+        entity.setEmail(shop.getEmail());
+        entity.setStreet(shop.getStreet());
+        entity.setZipCode(shop.getZipCode());
+        entity.setCity(shop.getCity());
+        entity.setAddressSupplement(shop.getAddressSupplement());
+        entity.setEnabled(shop.isEnabled());
+        entity.setApproved(shop.isApproved());
+        entity.setLatitude(shop.getGeoLocation().getLatitude());
+        entity.setLongitude(shop.getGeoLocation().getLongitude());
+        entity.setDetails(shop.getDetails());
+        entity.setWebsite(shop.getWebsite());
+        entity.setTimePerSlot(shop.getSlotConfig().getTimePerSlot());
+        entity.setTimeBetweenSlots(shop.getSlotConfig().getTimeBetweenSlots());
+        if (shop.getSlotConfig().getMonday() != null) {
+            entity.setMondayStart(shop.getSlotConfig().getMonday().getStart());
+            entity.setMondayStart(shop.getSlotConfig().getMonday().getEnd());
+        }
+        if (shop.getSlotConfig().getTuesday() != null) {
+            entity.setTuesdayStart(shop.getSlotConfig().getTuesday().getStart());
+            entity.setTuesdayStart(shop.getSlotConfig().getTuesday().getEnd());
+        }
+        if (shop.getSlotConfig().getWednesday() != null) {
+            entity.setWednesdayStart(shop.getSlotConfig().getWednesday().getStart());
+            entity.setWednesdayStart(shop.getSlotConfig().getWednesday().getEnd());
+        }
+        if (shop.getSlotConfig().getThursday() != null) {
+            entity.setThursdayStart(shop.getSlotConfig().getThursday().getStart());
+            entity.setThursdayStart(shop.getSlotConfig().getThursday().getEnd());
+        }
+        if (shop.getSlotConfig().getFriday() != null) {
+            entity.setFridayStart(shop.getSlotConfig().getFriday().getStart());
+            entity.setFridayStart(shop.getSlotConfig().getFriday().getEnd());
+        }
+        if (shop.getSlotConfig().getSaturday() != null) {
+            entity.setSaturdayStart(shop.getSlotConfig().getSaturday().getStart());
+            entity.setSaturdayStart(shop.getSlotConfig().getSaturday().getEnd());
+        }
+        if (shop.getSlotConfig().getSunday() != null) {
+            entity.setSundayStart(shop.getSlotConfig().getSunday().getStart());
+            entity.setSundayStart(shop.getSlotConfig().getSunday().getEnd());
+        }
+        entity.created = shop.getCreated();
+        entity.updated = shop.getUpdated();
+
+        entity.setContacts(Sets.map(shop.getContacts(), c -> ShopContactEntity.of(c, entity)));
+        return entity;
     }
 
     public Shop toShop() {
@@ -209,7 +224,7 @@ public class ShopEntity {
             zipCode,
             city,
             addressSupplement,
-            fakeMap(contactTypes), // TODO MKA: Load contact types with contact info
+            Sets.map(contacts, ShopContactEntity::toShopContact),
             enabled,
             approved,
             GeoLocation.of(latitude, longitude),

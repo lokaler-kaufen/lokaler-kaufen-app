@@ -96,6 +96,8 @@ class ShopController {
      */
     @PostMapping(path = "/send-create-link", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void sendCreateLink(@Valid @RequestBody SendCreateLinkDto request) {
+        // TODO MKA: Check for duplicate email address
+
         shopService.sendCreateLink(request.getEmail());
     }
 

@@ -1,14 +1,14 @@
 package de.qaware.mercury.rest.shop.dto.response;
 
-import de.qaware.mercury.business.shop.ContactType;
 import de.qaware.mercury.business.shop.Shop;
+import de.qaware.mercury.business.shop.ShopContact;
 import de.qaware.mercury.rest.shop.dto.request.SlotConfigDto;
-import de.qaware.mercury.util.Maps;
 import de.qaware.mercury.util.Null;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Data
@@ -28,6 +28,11 @@ public class ShopOwnerDetailDto {
     private SlotConfigDto slots;
 
     public static ShopOwnerDetailDto of(Shop shop) {
+        Map<String, String> contactTypes = new HashMap<>(shop.getContacts().size());
+        for (ShopContact contact : shop.getContacts()) {
+            contactTypes.put(contact.getContactType().getId(), contact.getData());
+        }
+
         return new ShopOwnerDetailDto(
             shop.getId().getId().toString(),
             shop.getName(),
@@ -38,7 +43,7 @@ public class ShopOwnerDetailDto {
             shop.getAddressSupplement(),
             shop.getDetails(),
             shop.getWebsite(),
-            Maps.mapKeys(shop.getContactTypes(), ContactType::getId),
+            contactTypes,
             Null.map(shop.getSlotConfig(), SlotConfigDto::of)
         );
     }

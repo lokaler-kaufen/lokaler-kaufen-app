@@ -8,7 +8,6 @@ CREATE TABLE shop
     zip_code           varchar          not null,
     city               varchar          not null,
     address_supplement varchar          not null,
-    contact_types      varchar[] not null,
     enabled            boolean          not null,
     latitude           double precision not null,
     longitude          double precision not null,

@@ -9,6 +9,7 @@ import de.qaware.mercury.business.shop.ShopAlreadyExistsException;
 import de.qaware.mercury.business.shop.ShopCreation;
 import de.qaware.mercury.business.shop.ShopNotFoundException;
 import de.qaware.mercury.business.shop.ShopService;
+import de.qaware.mercury.business.shop.ShopUpdate;
 import de.qaware.mercury.business.shop.SlotConfig;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalTime;
+import java.util.HashMap;
 import java.util.Map;
 
 @Component
@@ -65,16 +67,16 @@ class DebugPopulateDatabase implements ApplicationRunner {
                 .sunday(new DayConfig(LocalTime.of(8, 0), LocalTime.of(17, 0)))
                 .build()
         ));
-        createShop(new ShopCreation(
-            "flo@localhost", "Flo", "Flo's Kaffeeladen", "Aschauer Str. 32", "81549", "München", "", "", null,
-            "flo", Map.of(ContactType.GOOGLE_DUO, "@vlow"),
-            SlotConfig.builder().timePerSlot(30).timeBetweenSlots(10).build()
-        ));
-        createShop(new ShopCreation(
-            "vroni@localhost", "Vroni", "Vroni's Kleiderladen", "Rheinstraße 4C", "55116", "Mainz", "", "", null,
-            "vroni", Map.of(ContactType.GOOGLE_DUO, "vroni@localhost", ContactType.SIGNAL, "@vroni"),
-            SlotConfig.builder().timePerSlot(60).timeBetweenSlots(15).build()
-        ));
+//        createShop(new ShopCreation(
+//            "flo@localhost", "Flo", "Flo's Kaffeeladen", "Aschauer Str. 32", "81549", "München", "", "", null,
+//            "flo", Map.of(ContactType.GOOGLE_DUO, "@vlow"),
+//            SlotConfig.builder().timePerSlot(30).timeBetweenSlots(10).build()
+//        ));
+//        createShop(new ShopCreation(
+//            "vroni@localhost", "Vroni", "Vroni's Kleiderladen", "Rheinstraße 4C", "55116", "Mainz", "", "", null,
+//            "vroni", Map.of(ContactType.GOOGLE_DUO, "vroni@localhost", ContactType.SIGNAL, "@vroni"),
+//            SlotConfig.builder().timePerSlot(60).timeBetweenSlots(15).build()
+//        ));
     }
 
     private void createShop(ShopCreation creation) throws ShopNotFoundException, ShopAlreadyExistsException, LocationNotFoundException {
@@ -82,6 +84,14 @@ class DebugPopulateDatabase implements ApplicationRunner {
             Shop shop = shopService.create(creation);
             shopService.changeApproved(shop.getId(), true);
             log.info("Created shop {}", shop);
+
+            Map<ContactType, String> newContacts = new HashMap<>();
+            newContacts.put(ContactType.FACETIME, "foobar");
+
+            shopService.update(shop, new ShopUpdate(
+                shop.getName(), shop.getOwnerName(), shop.getStreet(), shop.getZipCode(), shop.getCity(), shop.getAddressSupplement(),
+                shop.getDetails(), shop.getWebsite(), newContacts, shop.getSlotConfig()
+            ));
         }
     }
 }

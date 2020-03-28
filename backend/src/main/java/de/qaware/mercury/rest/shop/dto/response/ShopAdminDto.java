@@ -2,8 +2,10 @@ package de.qaware.mercury.rest.shop.dto.response;
 
 import de.qaware.mercury.business.shop.ContactType;
 import de.qaware.mercury.business.shop.Shop;
+import de.qaware.mercury.business.shop.ShopContact;
 import de.qaware.mercury.rest.shop.dto.request.SlotConfigDto;
 import de.qaware.mercury.util.Null;
+import de.qaware.mercury.util.Sets;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -41,7 +43,7 @@ public class ShopAdminDto {
             shop.getZipCode(),
             shop.getCity(),
             shop.getAddressSupplement(),
-            shop.getContactTypes().keySet(),
+            Sets.map(shop.getContacts(), ShopContact::getContactType),
             shop.isEnabled(),
             shop.isApproved(),
             shop.getDetails(),

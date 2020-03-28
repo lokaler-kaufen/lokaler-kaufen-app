@@ -1,6 +1,7 @@
 package de.qaware.mercury.util;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Function;
 
 public final class Maps {
@@ -17,11 +18,21 @@ public final class Maps {
      * @param <V>    value type
      * @return transformed map
      */
-    public static <I, O, V> java.util.Map<O, V> mapKeys(java.util.Map<I, V> input, Function<I, O> mapper) {
-        java.util.Map<O, V> result = new HashMap<>(input.size());
+    public static <I, O, V> Map<O, V> mapKeys(Map<I, V> input, Function<I, O> mapper) {
+        Map<O, V> result = new HashMap<>(input.size());
 
-        for (java.util.Map.Entry<I, V> entry : input.entrySet()) {
+        for (Map.Entry<I, V> entry : input.entrySet()) {
             result.put(mapper.apply(entry.getKey()), entry.getValue());
+        }
+
+        return result;
+    }
+
+    public static <I, O, V, W> Map<O, W> map(Map<I, V> input, Function<I, O> keyMapper, Function<V, W> valueMapper) {
+        Map<O, W> result = new HashMap<>(input.size());
+
+        for (Map.Entry<I, V> entry : input.entrySet()) {
+            result.put(keyMapper.apply(entry.getKey()), valueMapper.apply(entry.getValue()));
         }
 
         return result;
