@@ -152,7 +152,8 @@
                  [type]="toggleVisbility.type"
                  required
                  formControlName="passwordCtrl"
-                 placeholder="Password">
+                 placeholder="Password"
+                 tabindex="1">
           <mat-hint align="end" aria-live="polite">
             {{passwordWithValidation.value.length}} / 25
           </mat-hint>
@@ -167,7 +168,8 @@
                  [type]="toggleVisbility.type"
                  required
                  formControlName="confirmPasswordCtrl"
-                 placeholder="Password wiederholen">
+                 placeholder="Password wiederholen"
+                 tabindex="2">
           <mat-error *ngIf="passwordComponentWithValidation.passwordFormControl.hasError('required')">
             Password is required
           </mat-error>
