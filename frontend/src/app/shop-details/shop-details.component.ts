@@ -1,13 +1,17 @@
 import {Component, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {BusinessHours, setRightSlot} from '../shop-creation-page/shop-creation-page.component';
-import {DayDto, ShopAdminDto, ShopOwnerDetailDto, SlotConfigDto, UpdateShopDto} from '../data/client';
 import {HttpClient} from '@angular/common/http';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {NotificationsService} from 'angular2-notifications';
 import {Observable, ReplaySubject} from 'rxjs';
-import ContactTypesEnum = ShopAdminDto.ContactTypesEnum;
+import {UpdateShopDto} from '../data/client/model/updateShopDto';
+import {ShopOwnerDetailDto} from '../data/client/model/shopOwnerDetailDto';
+import {ShopDetailDto} from '../data/client/model/shopDetailDto';
+import {SlotConfigDto} from '../data/client/model/slotConfigDto';
+import {DayDto} from '../data/client/model/dayDto';
+import ContactTypesEnum = ShopDetailDto.ContactTypesEnum;
 
 export interface UpdateShopData {
   updateShopDto: UpdateShopDto;
