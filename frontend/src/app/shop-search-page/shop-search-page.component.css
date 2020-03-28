@@ -24,3 +24,8 @@ tr:not(.example-expanded-row):hover {
   opacity: 1;
   color: #673ab7;
 }
+
+.contact-type mat-icon {
+  margin-right: 5px;
+  vertical-align: bottom;
+}

@@ -1,37 +1,56 @@
-<div style="width: 100%;">
+<div>
   <mat-form-field style="width: 100%;">
     <mat-label>Suche</mat-label>
-    <input matInput placeholder="Dein Lieblingsgeschäft..." [(ngModel)]="searchBusiness"
-           (keyup.enter)="performSearch()">
+    <input
+      matInput
+      placeholder="Dein Lieblingsgeschäft..."
+      [(ngModel)]="searchBusiness"
+      (keyup.enter)="performSearch()"
+    />
     <a (click)="performSearch()" matSuffix>
       <mat-icon>search</mat-icon>
     </a>
   </mat-form-field>
 </div>
-<div style="width: 100%; margin-top: 25px;">
-  <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z1" style="width: 100%;">
+
+<div>
+
+  <mat-table [dataSource]="dataSource" matSort [matSortDisableClear]="true" class="mat-elevation-z1">
 
     <!-- Name Column -->
     <ng-container matColumnDef="name">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Name</mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header>
+        Name
+      </mat-header-cell>
+
+      <mat-cell *matCellDef="let element">
+        {{ element.name }}
+      </mat-cell>
     </ng-container>
 
     <!-- Distance Column -->
     <ng-container matColumnDef="distance">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Distanz</mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.distance.toFixed(0)}} km</mat-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header>
+        Distanz
+      </mat-header-cell>
+
+      <mat-cell *matCellDef="let element">
+        {{element.distance.toFixed(0)}} km
+      </mat-cell>
     </ng-container>
 
     <!-- Supported Contact Types Column -->
     <ng-container matColumnDef="supportedContactTypes">
-      <mat-header-cell *matHeaderCellDef> Kontaktmöglichkeiten</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef>
+        Kontaktmöglichkeiten
+      </mat-header-cell>
+
       <mat-cell *matCellDef="let element">
         <div class="contact-types">
-          <span *ngFor="let contactType of contactTypes"
-                class="contact-type"
+          <span class="contact-type"
+                *ngFor="let contactType of contactTypes"
                 [ngClass]="{'available': element.supportedContactTypes.includes(contactType)}">
-            <mat-icon svgIcon="{{contactType}}" style="margin-right: 5px; vertical-align: bottom"></mat-icon>
+            <mat-icon svgIcon="{{contactType}}"></mat-icon>
             <span>{{ getEnumValue(contactType) }}</span>
           </span>
         </div>
@@ -39,9 +58,15 @@
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row id="business-row" *matRowDef="let row; columns: displayedColumns;" class="clickable highlightable"
-             (click)="showDetailPage(row)">
-    </mat-row>
+
+    <mat-row
+      id="business-row"
+      *matRowDef="let row; columns: displayedColumns;"
+      class="clickable highlightable"
+      (click)="showDetailPage(row)"
+    ></mat-row>
+
   </mat-table>
+
 </div>
 
