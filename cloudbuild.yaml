@@ -27,6 +27,10 @@ images: ["gcr.io/$PROJECT_ID/lokaler.kaufen"]
 # Increase timeout to 15 minutes 
 timeout: 900s
 
+# Use vm with more CPU power
+options:
+  machineType: "N1_HIGHCPU_8"
+
 secrets:
   - kmsKeyName: projects/theta-mile-271809/locations/global/keyRings/lokalerkaufen/cryptoKeys/CLOUD_BUILD_KEY
     secretEnv:
