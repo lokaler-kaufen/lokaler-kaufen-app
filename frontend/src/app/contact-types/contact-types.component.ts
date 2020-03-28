@@ -18,10 +18,9 @@ export class ContactTypesComponent {
   }
 
   getEnumValue(contactType: any) {
-    let splitted = contactType.split('_');
-    splitted = splitted.map(split => {
-      return split.charAt(0) + split.slice(1).toLowerCase();
-    });
-    return splitted.join(' ');
+    return contactType
+      .split('_')
+      .map(c => `${c.charAt(0)}${c.slice(1).toLowerCase()}`)
+      .join(' ');
   }
 }
