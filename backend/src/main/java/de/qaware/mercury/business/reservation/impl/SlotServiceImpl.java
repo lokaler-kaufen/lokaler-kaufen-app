@@ -27,6 +27,9 @@ class SlotServiceImpl implements SlotService {
 
     @Override
     public List<Slot> generateSlots(LocalDate start, LocalDate end, SlotConfig slotConfig, List<Interval> existingReservations) {
+        if (end.isBefore(start)) {
+            throw new IllegalArgumentException("Start date must be before or same end date.");
+        }
         // Safeguard against endless loops
         if (slotConfig.getTimePerSlot() < 1) {
             return List.of();
