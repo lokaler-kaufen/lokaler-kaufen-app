@@ -74,18 +74,16 @@ export class LandingPageComponent implements OnInit {
     this.zipCodeCacheService.setZipCode(locationFromInput);
 
     this.client.get('/api/location?zipCode=' + encodeURIComponent(locationFromInput)).subscribe(() => {
+        this.router.navigate(['/shops'], {queryParams: {location: locationFromInput}});
       },
       error => {
-        if (error.status === '404') {
+        if (error.status === 404) {
           this.notificationsService.error('Ungültige PLZ', 'Diese Postleitzahl kennen wir leider nicht, hast du dich vertippt?');
-          return;
         } else {
           this.notificationsService.error('Tut uns Leid!', 'Wir können diese Postleitzahl gerade nicht verarbeiten.');
-          return;
         }
       });
 
-    this.router.navigate(['/shops'], {queryParams: {location: locationFromInput}});
   }
 
 }
