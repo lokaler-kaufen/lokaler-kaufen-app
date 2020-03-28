@@ -5,6 +5,11 @@ import {NotificationsService} from 'angular2-notifications';
 import {ReplaySubject} from 'rxjs';
 import {ShopOwnerDetailDto} from '../data/client/model/shopOwnerDetailDto';
 import {UpdateShopData} from '../shop-details/shop-details.component';
+import {ShopDetailDto} from '../data/client/model/shopDetailDto';
+import {UpdateShopDto} from '../data/client/model/updateShopDto';
+import {SlotConfigDto} from '../data/client/model/slotConfigDto';
+import {DayDto} from '../data/client/model/dayDto';
+import ContactTypesEnum = ShopDetailDto.ContactTypesEnum;
 
 @Component({
   selector: 'shop-management-page',

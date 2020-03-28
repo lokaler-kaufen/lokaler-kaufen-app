@@ -8,6 +8,7 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import de.qaware.mercury.business.admin.Admin;
 import de.qaware.mercury.business.login.AdminToken;
+import de.qaware.mercury.business.login.KeyProvider;
 import de.qaware.mercury.business.login.LoginException;
 import de.qaware.mercury.business.login.PasswordResetToken;
 import de.qaware.mercury.business.login.ReservationCancellationToken;
@@ -25,12 +26,10 @@ import de.qaware.mercury.business.time.Clock;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-@EnableConfigurationProperties(TokenServiceConfigurationProperties.class)
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 class TokenServiceImpl implements TokenService {
     private static final String SHOP_ISSUER = "mercury-shop";
@@ -39,13 +38,13 @@ class TokenServiceImpl implements TokenService {
     private static final String PASSWORD_RESET_ISSUER = "mercury-password-reset";
     private static final String RESERVATION_CANCELLATION_ISSUER = "mercury-reservation-cancellation";
 
-    private final TokenServiceConfigurationProperties config;
+    private final KeyProvider keyProvider;
     private final Clock clock;
 
     @Override
     public AdminToken createAdminToken(Admin.Id adminId) {
         try {
-            Algorithm algorithm = getAlgorithm(config.getAdminJwtSecret());
+            Algorithm algorithm = getAlgorithm(keyProvider.getAdminJwtSecret());
             String token = JWT.create()
                 .withIssuedAt(clock.nowAsLegacyDate())
                 .withNotBefore(clock.nowAsLegacyDate())
@@ -63,7 +62,7 @@ class TokenServiceImpl implements TokenService {
     @Override
     public Admin.Id verifyAdminToken(AdminToken token) throws LoginException {
         try {
-            Algorithm algorithm = getAlgorithm(config.getAdminJwtSecret());
+            Algorithm algorithm = getAlgorithm(keyProvider.getAdminJwtSecret());
             JWTVerifier verifier = JWT.require(algorithm)
                 .withIssuer(ADMIN_ISSUER)
                 .build();
@@ -81,7 +80,7 @@ class TokenServiceImpl implements TokenService {
     @Override
     public ShopToken createShopToken(ShopLogin.Id shopLoginId, Shop.Id shopId) {
         try {
-            Algorithm algorithm = getAlgorithm(config.getShopJwtSecret());
+            Algorithm algorithm = getAlgorithm(keyProvider.getShopJwtSecret());
             String token = JWT.create()
                 .withIssuedAt(clock.nowAsLegacyDate())
                 .withNotBefore(clock.nowAsLegacyDate())
@@ -100,7 +99,7 @@ class TokenServiceImpl implements TokenService {
     @Override
     public ShopLogin.Id verifyShopToken(ShopToken token) throws LoginException {
         try {
-            Algorithm algorithm = getAlgorithm(config.getShopJwtSecret());
+            Algorithm algorithm = getAlgorithm(keyProvider.getShopJwtSecret());
             JWTVerifier verifier = JWT.require(algorithm)
                 .withIssuer(SHOP_ISSUER)
                 .build();
@@ -122,7 +121,7 @@ class TokenServiceImpl implements TokenService {
     @Override
     public ShopCreationToken createShopCreationToken(String email) {
         try {
-            Algorithm algorithm = getAlgorithm(config.getShopCreationJwtSecret());
+            Algorithm algorithm = getAlgorithm(keyProvider.getShopCreationJwtSecret());
             String token = JWT.create()
                 .withIssuedAt(clock.nowAsLegacyDate())
                 .withNotBefore(clock.nowAsLegacyDate())
@@ -140,7 +139,7 @@ class TokenServiceImpl implements TokenService {
     @Override
     public String verifyShopCreationToken(ShopCreationToken token) throws LoginException {
         try {
-            Algorithm algorithm = getAlgorithm(config.getShopCreationJwtSecret());
+            Algorithm algorithm = getAlgorithm(keyProvider.getShopCreationJwtSecret());
             JWTVerifier verifier = JWT.require(algorithm)
                 .withIssuer(SHOP_CREATION_ISSUER)
                 .build();
@@ -158,7 +157,7 @@ class TokenServiceImpl implements TokenService {
     @Override
     public PasswordResetToken createPasswordResetToken(String email) {
         try {
-            Algorithm algorithm = getAlgorithm(config.getPasswordResetJwtSecret());
+            Algorithm algorithm = getAlgorithm(keyProvider.getPasswordResetJwtSecret());
             String token = JWT.create()
                 .withIssuedAt(clock.nowAsLegacyDate())
                 .withNotBefore(clock.nowAsLegacyDate())
@@ -176,7 +175,7 @@ class TokenServiceImpl implements TokenService {
     @Override
     public String verifyPasswordResetToken(PasswordResetToken token) throws LoginException {
         try {
-            Algorithm algorithm = getAlgorithm(config.getPasswordResetJwtSecret());
+            Algorithm algorithm = getAlgorithm(keyProvider.getPasswordResetJwtSecret());
             JWTVerifier verifier = JWT.require(algorithm)
                 .withIssuer(PASSWORD_RESET_ISSUER)
                 .build();
@@ -194,7 +193,7 @@ class TokenServiceImpl implements TokenService {
     @Override
     public ReservationCancellationToken createReservationCancellationToken(Reservation.Id reservationId, ReservationCancellationSide side) {
         try {
-            Algorithm algorithm = getAlgorithm(config.getReservationCancellationJwtSecret());
+            Algorithm algorithm = getAlgorithm(keyProvider.getReservationCancellationJwtSecret());
             String token = JWT.create()
                 .withIssuedAt(clock.nowAsLegacyDate())
                 .withNotBefore(clock.nowAsLegacyDate())
@@ -213,7 +212,7 @@ class TokenServiceImpl implements TokenService {
     @Override
     public ReservationCancellation verifyReservationCancellationToken(ReservationCancellationToken token) throws LoginException {
         try {
-            Algorithm algorithm = getAlgorithm(config.getReservationCancellationJwtSecret());
+            Algorithm algorithm = getAlgorithm(keyProvider.getReservationCancellationJwtSecret());
             JWTVerifier verifier = JWT.require(algorithm)
                 .withIssuer(RESERVATION_CANCELLATION_ISSUER)
                 .build();
