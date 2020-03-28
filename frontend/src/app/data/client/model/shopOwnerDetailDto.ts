@@ -14,7 +14,7 @@ import {SlotConfigDto} from './slotConfigDto';
 export interface ShopOwnerDetailDto {
     addressSupplement?: string;
     city?: string;
-    contactTypes?: { [key: string]: string; };
+    contacts?: { [key: string]: string; };
     details?: string;
     id?: string;
     name?: string;

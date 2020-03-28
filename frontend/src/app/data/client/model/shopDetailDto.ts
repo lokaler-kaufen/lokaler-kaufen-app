@@ -13,7 +13,7 @@
 export interface ShopDetailDto { 
     addressSupplement?: string;
     city?: string;
-    contactTypes?: Array<ShopDetailDto.ContactTypesEnum>;
+    contactTypes?: Array<string>;
     details?: string;
     email?: string;
     id?: string;
@@ -22,16 +22,4 @@ export interface ShopDetailDto {
     street?: string;
     website?: string;
     zipCode?: string;
-}
-export namespace ShopDetailDto {
-    export type ContactTypesEnum = 'WHATSAPP' | 'PHONE' | 'FACETIME' | 'GOOGLE_DUO' | 'SKYPE' | 'SIGNAL' | 'VIBER';
-    export const ContactTypesEnum = {
-        WHATSAPP: 'WHATSAPP' as ContactTypesEnum,
-        PHONE: 'PHONE' as ContactTypesEnum,
-        FACETIME: 'FACETIME' as ContactTypesEnum,
-        GOOGLEDUO: 'GOOGLE_DUO' as ContactTypesEnum,
-        SKYPE: 'SKYPE' as ContactTypesEnum,
-        SIGNAL: 'SIGNAL' as ContactTypesEnum,
-        VIBER: 'VIBER' as ContactTypesEnum
-    };
 }

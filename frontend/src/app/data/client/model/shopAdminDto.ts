@@ -15,7 +15,7 @@ export interface ShopAdminDto {
     addressSupplement?: string;
     approved?: boolean;
     city?: string;
-    contactTypes?: { [key: string]: string; };
+    contacts?: { [key: string]: string; };
     details?: string;
     email?: string;
     enabled?: boolean;
@@ -26,16 +26,4 @@ export interface ShopAdminDto {
     street?: string;
     website?: string;
     zipCode?: string;
-}
-export namespace ShopAdminDto {
-    export type ContactTypesEnum = 'WHATSAPP' | 'PHONE' | 'FACETIME' | 'GOOGLE_DUO' | 'SKYPE' | 'SIGNAL' | 'VIBER';
-    export const ContactTypesEnum = {
-        WHATSAPP: 'WHATSAPP' as ContactTypesEnum,
-        PHONE: 'PHONE' as ContactTypesEnum,
-        FACETIME: 'FACETIME' as ContactTypesEnum,
-        GOOGLEDUO: 'GOOGLE_DUO' as ContactTypesEnum,
-        SKYPE: 'SKYPE' as ContactTypesEnum,
-        SIGNAL: 'SIGNAL' as ContactTypesEnum,
-        VIBER: 'VIBER' as ContactTypesEnum
-    };
 }
