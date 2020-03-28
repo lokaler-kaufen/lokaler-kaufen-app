@@ -72,30 +72,37 @@ public class ShopEntity {
 
     @Setter
     @Column
+    @Nullable
     private String whatsapp;
 
     @Setter
     @Column
+    @Nullable
     private String phone;
 
     @Setter
     @Column
+    @Nullable
     private String facetime;
 
     @Setter
     @Column
+    @Nullable
     private String googleDuo;
 
     @Setter
     @Column
+    @Nullable
     private String skype;
 
     @Setter
     @Column
+    @Nullable
     private String signal;
 
     @Setter
     @Column
+    @Nullable
     private String viber;
 
     @Setter
