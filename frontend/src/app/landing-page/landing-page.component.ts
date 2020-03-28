@@ -6,6 +6,7 @@ import {Router} from '@angular/router';
 import {ZipCodeCacheService} from './zip-code-cache.service';
 import {LocationSuggestionDto} from '../data/client/model/locationSuggestionDto';
 import {LocationSuggestionsDto} from '../data/client/model/locationSuggestionsDto';
+import {NotificationsService} from 'angular2-notifications';
 
 @Component({
   selector: 'landing-page',
@@ -22,7 +23,8 @@ export class LandingPageComponent implements OnInit {
     private formBuilder: FormBuilder,
     private client: HttpClient,
     private router: Router,
-    private zipCodeCacheService: ZipCodeCacheService
+    private zipCodeCacheService: ZipCodeCacheService,
+    private notificationsService: NotificationsService
   ) {
   }
 
@@ -58,23 +60,7 @@ export class LandingPageComponent implements OnInit {
   }
 
   private get startEnabled(): boolean {
-    // form has to be valid (of course), if it is:
-    // - we allow to click start if the value was unchanged (this way the user can research fast)
-    //    or
-    // - if the changed zip code has hits
-    return this.form.valid && this.inputUnchangedOrHasSuggestionHits;
-  }
-
-  private get inputUnchangedOrHasSuggestionHits(): boolean {
-    return this.inputUnchanged || this.hasSuggestionHits;
-  }
-
-  private get inputUnchanged(): boolean {
-    return this.zipCodeInitialValue === this.zipCodeFromInput;
-  }
-
-  private get hasSuggestionHits(): boolean {
-    return this.suggestions.length > 0;
+    return this.form.valid;
   }
 
   private get zipCodeFromInput(): string {
@@ -86,6 +72,18 @@ export class LandingPageComponent implements OnInit {
 
     // cache the zipCode for later
     this.zipCodeCacheService.setZipCode(locationFromInput);
+
+    this.client.get('/api/location?zipCode=' + encodeURIComponent(locationFromInput)).subscribe(() => {
+      },
+      error => {
+        if (error.status === '404') {
+          this.notificationsService.error('Ungültige PLZ', 'Diese Postleitzahl kennen wir leider nicht, hast du dich vertippt?');
+          return;
+        } else {
+          this.notificationsService.error('Tut uns Leid!', 'Wir können diese Postleitzahl gerade nicht verarbeiten.');
+          return;
+        }
+      });
 
     this.router.navigate(['/shops'], {queryParams: {location: locationFromInput}});
   }
