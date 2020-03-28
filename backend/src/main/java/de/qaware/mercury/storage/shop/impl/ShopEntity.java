@@ -269,6 +269,7 @@ public class ShopEntity {
     }
 
     private Map<ContactType, String> mapContactDetails() {
+        // Do NOT use Map.entry here, as it want both arguments non-null
         List<Map.Entry<ContactType, String>> contactDetails = List.of(
             new AbstractMap.SimpleEntry<>(ContactType.WHATSAPP, whatsapp),
             new AbstractMap.SimpleEntry<>(ContactType.PHONE, phone),
