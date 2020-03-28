@@ -18,10 +18,10 @@ export interface UpdateShopData {
 
 @Component({
   selector: 'shop-details',
-  templateUrl: './shop-details.component.html',
-  styleUrls: ['./shop-details.component.css']
+  templateUrl: './shop-details-config.component.html',
+  styleUrls: ['./shop-details-config.component.css']
 })
-export class ShopDetailsComponent implements OnInit {
+export class ShopDetailsConfigComponent implements OnInit {
 
   @Input()
   detailsObservable: Observable<ShopOwnerDetailDto>;

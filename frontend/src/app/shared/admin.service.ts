@@ -4,7 +4,7 @@ import {NotificationsService} from 'angular2-notifications';
 import {Observable} from 'rxjs';
 import {ShopsAdminDto} from '../data/client/model/shopsAdminDto';
 import {ShopAdminDto} from '../data/client/model/shopAdminDto';
-import {UpdateShopData} from '../shop-details/shop-details.component';
+import {UpdateShopData} from '../shop-details-config/shop-details-config.component';
 
 @Injectable({
   providedIn: 'root'

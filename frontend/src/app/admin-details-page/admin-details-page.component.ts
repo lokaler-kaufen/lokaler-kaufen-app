@@ -5,7 +5,7 @@ import {AdminService} from '../shared/admin.service';
 import {NotificationsService} from 'angular2-notifications';
 import {ShopAdminDto} from '../data/client/model/shopAdminDto';
 import {ShopOwnerDetailDto} from '../data/client/model/shopOwnerDetailDto';
-import {UpdateShopData} from '../shop-details/shop-details.component';
+import {UpdateShopData} from '../shop-details-config/shop-details-config.component';
 
 @Component({
   selector: 'admin-details-page',
