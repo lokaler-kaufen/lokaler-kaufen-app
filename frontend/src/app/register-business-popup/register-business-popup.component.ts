@@ -28,7 +28,7 @@ export class RegisterBusinessPopupComponent {
     }).subscribe(() => console.log('Shop creation link sent. '),
       error => {
         console.log('Error sending creation link: ' + error.status + ', ' + error.message);
-        if (error.status === '409') {
+        if (error.status === '409' && error.error.code === 'SHOP_ALREADY_EXISTS') {
           this.notificationsService.error(
             'Moment mal...',
             'Du hast dich bereits registriert. Du kannst dich unter Login für Ladenbesitzer anmelden.'
