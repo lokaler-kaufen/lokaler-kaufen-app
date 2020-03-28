@@ -231,20 +231,6 @@ public class ShopEntity {
     }
 
     public Shop toShop() {
-        List<Map.Entry<ContactType, String>> list = List.of(
-            new AbstractMap.SimpleEntry<>(ContactType.WHATSAPP, whatsapp),
-            new AbstractMap.SimpleEntry<>(ContactType.PHONE, phone),
-            new AbstractMap.SimpleEntry<>(ContactType.FACETIME, facetime),
-            new AbstractMap.SimpleEntry<>(ContactType.GOOGLE_DUO, googleDuo),
-            new AbstractMap.SimpleEntry<>(ContactType.SKYPE, skype),
-            new AbstractMap.SimpleEntry<>(ContactType.SIGNAL, signal),
-            new AbstractMap.SimpleEntry<>(ContactType.VIBER, viber)
-        );
-        Map<ContactType, String> map = list.stream()
-            .filter(entry -> !StringUtils.isEmpty(entry.getValue()))
-            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-
-
         return new Shop(
             Shop.Id.of(id),
             name,
@@ -254,7 +240,7 @@ public class ShopEntity {
             zipCode,
             city,
             addressSupplement,
-            map,
+            mapContactDetails(),
             enabled,
             approved,
             GeoLocation.of(latitude, longitude),
@@ -273,6 +259,21 @@ public class ShopEntity {
             created,
             updated
         );
+    }
+
+    private Map<ContactType, String> mapContactDetails() {
+        List<Map.Entry<ContactType, String>> contactDetails = List.of(
+            new AbstractMap.SimpleEntry<>(ContactType.WHATSAPP, whatsapp),
+            new AbstractMap.SimpleEntry<>(ContactType.PHONE, phone),
+            new AbstractMap.SimpleEntry<>(ContactType.FACETIME, facetime),
+            new AbstractMap.SimpleEntry<>(ContactType.GOOGLE_DUO, googleDuo),
+            new AbstractMap.SimpleEntry<>(ContactType.SKYPE, skype),
+            new AbstractMap.SimpleEntry<>(ContactType.SIGNAL, signal),
+            new AbstractMap.SimpleEntry<>(ContactType.VIBER, viber)
+        );
+        return contactDetails.stream()
+            .filter(entry -> !StringUtils.isEmpty(entry.getValue()))
+            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
     private DayConfig loadSlot(Supplier<LocalTime> start, Supplier<LocalTime> end) {
