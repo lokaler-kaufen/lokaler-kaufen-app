@@ -6,15 +6,14 @@ import de.qaware.mercury.business.shop.DayConfig;
 import de.qaware.mercury.business.shop.Shop;
 import de.qaware.mercury.business.shop.SlotConfig;
 import de.qaware.mercury.util.Null;
-import de.qaware.mercury.util.Sets;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.annotations.Type;
 import org.springframework.lang.Nullable;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,10 +21,13 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
+import java.util.AbstractMap;
 import java.util.EnumMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -69,9 +71,39 @@ public class ShopEntity {
     private String addressSupplement;
 
     @Setter
-    @Type(type = "com.vladmihalcea.hibernate.type.array.StringArrayType")
-    @Column(nullable = false)
-    private String[] contactTypes;
+    @Column
+    @Nullable
+    private String whatsapp;
+
+    @Setter
+    @Column
+    @Nullable
+    private String phone;
+
+    @Setter
+    @Column
+    @Nullable
+    private String facetime;
+
+    @Setter
+    @Column
+    @Nullable
+    private String googleDuo;
+
+    @Setter
+    @Column
+    @Nullable
+    private String skype;
+
+    @Setter
+    @Column
+    @Nullable
+    private String signal;
+
+    @Setter
+    @Column
+    @Nullable
+    private String viber;
 
     @Setter
     @Column(nullable = false)
@@ -171,7 +203,13 @@ public class ShopEntity {
             shop.getZipCode(),
             shop.getCity(),
             shop.getAddressSupplement(),
-            Sets.map(shop.getContactTypes().keySet(), ContactType::getId).toArray(new String[0]), // TODO MKA: Store contact types with contact info
+            shop.getContacts().get(ContactType.WHATSAPP),
+            shop.getContacts().get(ContactType.PHONE),
+            shop.getContacts().get(ContactType.FACETIME),
+            shop.getContacts().get(ContactType.GOOGLE_DUO),
+            shop.getContacts().get(ContactType.SKYPE),
+            shop.getContacts().get(ContactType.SIGNAL),
+            shop.getContacts().get(ContactType.VIBER),
             shop.isEnabled(),
             shop.isApproved(),
             shop.getGeoLocation().getLatitude(),
@@ -209,7 +247,7 @@ public class ShopEntity {
             zipCode,
             city,
             addressSupplement,
-            fakeMap(contactTypes), // TODO MKA: Load contact types with contact info
+            mapContactDetails(),
             enabled,
             approved,
             GeoLocation.of(latitude, longitude),
@@ -228,6 +266,21 @@ public class ShopEntity {
             created,
             updated
         );
+    }
+
+    private Map<ContactType, String> mapContactDetails() {
+        List<Map.Entry<ContactType, String>> contactDetails = List.of(
+            new AbstractMap.SimpleEntry<>(ContactType.WHATSAPP, whatsapp),
+            new AbstractMap.SimpleEntry<>(ContactType.PHONE, phone),
+            new AbstractMap.SimpleEntry<>(ContactType.FACETIME, facetime),
+            new AbstractMap.SimpleEntry<>(ContactType.GOOGLE_DUO, googleDuo),
+            new AbstractMap.SimpleEntry<>(ContactType.SKYPE, skype),
+            new AbstractMap.SimpleEntry<>(ContactType.SIGNAL, signal),
+            new AbstractMap.SimpleEntry<>(ContactType.VIBER, viber)
+        );
+        return contactDetails.stream()
+            .filter(entry -> !StringUtils.isEmpty(entry.getValue()))
+            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
     private DayConfig loadSlot(Supplier<LocalTime> start, Supplier<LocalTime> end) {
