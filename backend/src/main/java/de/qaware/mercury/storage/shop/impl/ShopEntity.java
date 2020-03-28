@@ -21,7 +21,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
-import java.util.AbstractMap;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
@@ -270,13 +269,13 @@ public class ShopEntity {
 
     private Map<ContactType, String> mapContactDetails() {
         List<Map.Entry<ContactType, String>> contactDetails = List.of(
-            new AbstractMap.SimpleEntry<>(ContactType.WHATSAPP, whatsapp),
-            new AbstractMap.SimpleEntry<>(ContactType.PHONE, phone),
-            new AbstractMap.SimpleEntry<>(ContactType.FACETIME, facetime),
-            new AbstractMap.SimpleEntry<>(ContactType.GOOGLE_DUO, googleDuo),
-            new AbstractMap.SimpleEntry<>(ContactType.SKYPE, skype),
-            new AbstractMap.SimpleEntry<>(ContactType.SIGNAL, signal),
-            new AbstractMap.SimpleEntry<>(ContactType.VIBER, viber)
+            Map.entry(ContactType.WHATSAPP, whatsapp),
+            Map.entry(ContactType.PHONE, phone),
+            Map.entry(ContactType.FACETIME, facetime),
+            Map.entry(ContactType.GOOGLE_DUO, googleDuo),
+            Map.entry(ContactType.SKYPE, skype),
+            Map.entry(ContactType.SIGNAL, signal),
+            Map.entry(ContactType.VIBER, viber)
         );
         return contactDetails.stream()
             .filter(entry -> !StringUtils.isEmpty(entry.getValue()))
