@@ -153,8 +153,12 @@ class ShopServiceImpl implements ShopService {
 
     @Override
     @Transactional(readOnly = true)
-    public void sendCreateLink(String email) {
+    public void sendCreateLink(String email) throws ShopAlreadyExistsException {
         log.info("Sending shop creation link to '{}'", email);
+
+        if (shopLoginService.hasLogin(email)) {
+            throw new ShopAlreadyExistsException(email);
+        }
 
         emailService.sendShopCreationLink(email);
     }
