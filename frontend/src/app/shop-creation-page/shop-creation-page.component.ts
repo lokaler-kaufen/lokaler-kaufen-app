@@ -187,7 +187,7 @@ export class ShopCreationPageComponent implements OnInit {
         if (error.status === 400 && error.error.code === 'LOCATION_NOT_FOUND') {
           this.notificationsService.error('Ungültige PLZ', 'Diese Postleitzahl kennen wir leider nicht, hast du dich vertippt?');
         }
-        if (error.status === '409' && error.error.code === 'SHOP_ALREADY_EXISTS') {
+        if (error.status === 409 && error.error.code === 'SHOP_ALREADY_EXISTS') {
           this.notificationsService.error(
             'Moment mal...',
             'Du hast dich bereits registriert. Du kannst dich unter Login für Ladenbesitzer anmelden.'
