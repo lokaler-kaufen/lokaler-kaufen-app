@@ -6,6 +6,11 @@
   align-items: center;
 }
 
+h2 {
+  /* prevent text */
+  text-align: center;
+}
+
 form {
   width: 75%;
   max-width: 480px;
