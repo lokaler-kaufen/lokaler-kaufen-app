@@ -5,6 +5,7 @@ import de.qaware.mercury.business.login.ReservationCancellationToken;
 import de.qaware.mercury.business.reservation.ReservationNotFoundException;
 import de.qaware.mercury.business.reservation.ReservationService;
 import de.qaware.mercury.business.reservation.Slot;
+import de.qaware.mercury.business.reservation.Slots;
 import de.qaware.mercury.business.shop.ContactType;
 import de.qaware.mercury.business.shop.Shop;
 import de.qaware.mercury.business.shop.ShopNotFoundException;
@@ -27,9 +28,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
-import java.util.List;
 
 @Slf4j
 @RestController
@@ -55,9 +56,12 @@ public class ReservationController {
     }
 
     @GetMapping(path = "/{shopId}/slot")
-    public SlotsDto getSlotsForShop(@PathVariable("shopId") @Pattern(regexp = Validation.SHOP_ID) String shopId) throws ShopNotFoundException {
+    public SlotsDto getSlotsForShop(
+        @PathVariable("shopId") @Pattern(regexp = Validation.SHOP_ID) String shopId,
+        @RequestParam(value = "days", defaultValue = "7") @Min(1) int days
+    ) throws ShopNotFoundException {
         Shop shop = shopService.findByIdOrThrow(Shop.Id.parse(shopId));
-        List<Slot> slots = reservationService.listSlots(shop);
+        Slots slots = reservationService.listSlots(shop, days);
 
         return SlotsDto.of(slots);
     }

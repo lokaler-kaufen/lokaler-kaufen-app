@@ -5,6 +5,7 @@ import de.qaware.mercury.business.login.TokenService
 import de.qaware.mercury.business.reservation.ReservationService
 import de.qaware.mercury.business.reservation.Slot
 import de.qaware.mercury.business.reservation.SlotService
+import de.qaware.mercury.business.reservation.Slots
 import de.qaware.mercury.business.shop.ContactType
 import de.qaware.mercury.business.shop.Shop
 import de.qaware.mercury.business.shop.ShopService
@@ -48,13 +49,13 @@ class ReservationServiceImplSpec extends Specification {
         Shop shop = new Shop.ShopBuilder().id(id).slotConfig(SlotConfig.builder().build()).build()
 
         when:
-        List<Slot> slots = reservationService.listSlots(shop)
+        Slots slots = reservationService.listSlots(shop, 1)
 
         then:
-        1 * clock.today() >> today
-        1 * reservationRepository.findReservationsForShop(id, today.atTime(0, 0), today.atTime(23, 59)) >> []
-        1 * slotService.generateSlots(today, today, shop.getSlotConfig(), []) >> []
-        slots.isEmpty()
+        clock.today() >> today
+        reservationRepository.findReservationsForShop(id, today.atTime(0, 0), today.atTime(23, 59)) >> []
+        slotService.generateSlots(today, today, shop.getSlotConfig(), []) >> []
+        slots.slots.isEmpty()
     }
 
     def "Create Reservation for Shop"() {

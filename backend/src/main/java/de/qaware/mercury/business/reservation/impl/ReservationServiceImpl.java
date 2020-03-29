@@ -11,6 +11,7 @@ import de.qaware.mercury.business.reservation.ReservationNotFoundException;
 import de.qaware.mercury.business.reservation.ReservationService;
 import de.qaware.mercury.business.reservation.Slot;
 import de.qaware.mercury.business.reservation.SlotService;
+import de.qaware.mercury.business.reservation.Slots;
 import de.qaware.mercury.business.shop.ContactType;
 import de.qaware.mercury.business.shop.Shop;
 import de.qaware.mercury.business.shop.ShopNotFoundException;
@@ -43,12 +44,24 @@ class ReservationServiceImpl implements ReservationService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Slot> listSlots(Shop shop) {
-        LocalDate today = clock.today();
+    public Slots listSlots(Shop shop, int days) {
+        if (days <= 0) {
+            throw new IllegalArgumentException("days must not be <= 0, was " + days);
+        }
+
+        LocalDate begin = clock.today();
+        // if passed day = 1, you'll only get today
+        // if passed day = 2, you'll get today and tomorrow
+        LocalDate end = begin.plusDays(days - 1);
+
         // Find all reservations in the time range
-        List<Reservation> reservations = reservationRepository.findReservationsForShop(shop.getId(), today.atTime(0, 0), today.atTime(23, 59));
+        List<Reservation> reservations = reservationRepository.findReservationsForShop(shop.getId(), begin.atTime(0, 0), end.atTime(23, 59));
         // Now generate slots. The time ranges which also have reservations are marked as unavailable
-        return slotService.generateSlots(today, today, shop.getSlotConfig(), mapReservations(reservations));
+        return new Slots(
+            days,
+            begin,
+            slotService.generateSlots(begin, end, shop.getSlotConfig(), mapReservations(reservations))
+        );
     }
 
     @Override

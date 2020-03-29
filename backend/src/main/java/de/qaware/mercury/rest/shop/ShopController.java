@@ -184,7 +184,7 @@ class ShopController {
      * @return a list of shops as {@link ShopListDto}.
      */
     @GetMapping("search")
-    public ShopListDto listNearby(@RequestParam @NotBlank String query, @NotBlank @RequestParam String zipCode) throws LocationNotFoundException {
+    public ShopListDto search(@RequestParam @NotBlank String query, @NotBlank @RequestParam String zipCode) throws LocationNotFoundException {
         return ShopListDto.of(shopService.search(query, zipCode));
     }
 }

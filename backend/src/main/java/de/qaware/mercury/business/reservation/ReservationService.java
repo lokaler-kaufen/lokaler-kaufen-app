@@ -6,10 +6,8 @@ import de.qaware.mercury.business.shop.ContactType;
 import de.qaware.mercury.business.shop.Shop;
 import de.qaware.mercury.business.shop.ShopNotFoundException;
 
-import java.util.List;
-
 public interface ReservationService {
-    List<Slot> listSlots(Shop shop);
+    Slots listSlots(Shop shop, int days);
 
     void createReservation(Shop shop, Slot.Id slotId, ContactType contactType, String contact, String name, String email);
 
