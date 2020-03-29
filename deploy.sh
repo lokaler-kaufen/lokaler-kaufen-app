@@ -48,7 +48,7 @@ GRADLE="./gradlew"
 
 )
 
-rm -r "${SPRING_STATIC_DIR}/dist" && echo '**' > "${SPRING_STATIC_DIR}/.gitignore"
+rm -rf "${SPRING_STATIC_DIR}" && mkdir -p "${SPRING_STATIC_DIR}" && echo '**' > "${SPRING_STATIC_DIR}/.gitignore"
 cp -r "${FRONTEND_DIR}/dist/mercury-ui/." "${SPRING_STATIC_DIR}/"
 echo "Copied Angular artifacts to ${SPRING_STATIC_DIR}"
 
