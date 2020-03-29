@@ -145,32 +145,33 @@ class ShopController {
     }
 
     /**
-     * Retrieves nearby shops given a zip code.
+     * Retrieves nearby shops, optionally within the given maxDistance of zipCode.
      *
      * @param zipCode     the zip code as String.
      * @param maxDistance the maximum distance from the given zipCode in km (optional, will return all shops if omitted)
      * @return a list of shops as {@link ShopListDto}.
      */
     @GetMapping("nearby")
-    public ShopListDto search(@RequestParam @NotBlank String zipCode, @RequestParam(required = false) @Nullable Integer maxDistance) throws LocationNotFoundException {
+    public ShopListDto findActive(@RequestParam @NotBlank String zipCode, @RequestParam(required = false) @Nullable Integer maxDistance) throws LocationNotFoundException {
         if (maxDistance != null) {
-            return ShopListDto.of(shopService.findApproved(zipCode, maxDistance));
+            return ShopListDto.of(shopService.findActive(zipCode, maxDistance));
         }
-        return ShopListDto.of(shopService.findApproved(zipCode));
+        return ShopListDto.of(shopService.findActive(zipCode));
     }
 
     /**
-     * Retrieves nearby shops given a zip code.
+     * Retrieves active and enabled shops matching the given search query, optionally within the given maxDistance of zipCode
      *
-     * @param query   a search string to match locations.
-     * @param zipCode the zip code as String.
+     * @param query       a search string to match locations.
+     * @param zipCode     the zip code as String.
+     * @param maxDistance the maximum distance from the given zip code in km (optional, will return all matching shops if omitted)
      * @return a list of shops as {@link ShopListDto}.
      */
     @GetMapping("search")
-    public ShopListDto search(@RequestParam @NotBlank String query, @NotBlank @RequestParam String zipCode, @RequestParam(required = false) @Nullable Integer maxDistance) throws LocationNotFoundException {
+    public ShopListDto searchActive(@RequestParam @NotBlank String query, @NotBlank @RequestParam String zipCode, @RequestParam(required = false) @Nullable Integer maxDistance) throws LocationNotFoundException {
         if (maxDistance != null) {
-            return ShopListDto.of(shopService.search(query, zipCode, maxDistance));
+            return ShopListDto.of(shopService.searchActive(query, zipCode, maxDistance));
         }
-        return ShopListDto.of(shopService.search(query, zipCode));
+        return ShopListDto.of(shopService.searchActive(query, zipCode));
     }
 }
