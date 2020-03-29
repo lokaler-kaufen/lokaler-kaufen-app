@@ -9,6 +9,7 @@ import de.qaware.mercury.business.login.ShopLoginNotFoundException
 import de.qaware.mercury.business.login.ShopLoginService
 import de.qaware.mercury.business.login.ShopToken
 import de.qaware.mercury.business.login.TokenService
+import de.qaware.mercury.business.login.TokenWithExpiry
 import de.qaware.mercury.business.shop.Shop
 import de.qaware.mercury.business.time.Clock
 import de.qaware.mercury.business.uuid.UUIDFactory
@@ -19,6 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
 import spock.lang.Unroll
+
+import java.time.ZonedDateTime
 
 @ContextConfiguration(classes = ShopLoginServiceImpl)
 class ShopLoginServiceImplSpec extends Specification {
@@ -72,13 +75,13 @@ class ShopLoginServiceImplSpec extends Specification {
         ShopLogin shopLogin = new ShopLogin(shopLoginId, shopId, 'email', 'hash', null, null)
 
         when:
-        ShopToken verify = loginService.login('test@lokaler.kaufen', 'geheim')
+        TokenWithExpiry<ShopToken> verify = loginService.login('test@lokaler.kaufen', 'geheim')
 
         then:
         1 * shopLoginRepository.findByEmail('test@lokaler.kaufen') >> shopLogin
         1 * passwordHasher.verify('geheim', 'hash') >> true
-        1 * tokenService.createShopToken(shopLoginId, shopId) >> shopToken
-        verify == shopToken
+        1 * tokenService.createShopToken(shopLoginId, shopId) >> new TokenWithExpiry(shopToken, ZonedDateTime.now())
+        verify.getToken() == shopToken
     }
 
     def "Verify invalid Shop Token"() {

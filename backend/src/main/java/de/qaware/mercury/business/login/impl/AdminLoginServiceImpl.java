@@ -1,7 +1,12 @@
 package de.qaware.mercury.business.login.impl;
 
 import de.qaware.mercury.business.admin.Admin;
-import de.qaware.mercury.business.login.*;
+import de.qaware.mercury.business.login.AdminLoginService;
+import de.qaware.mercury.business.login.AdminToken;
+import de.qaware.mercury.business.login.LoginException;
+import de.qaware.mercury.business.login.PasswordHasher;
+import de.qaware.mercury.business.login.TokenService;
+import de.qaware.mercury.business.login.TokenWithExpiry;
 import de.qaware.mercury.business.time.Clock;
 import de.qaware.mercury.business.uuid.UUIDFactory;
 import de.qaware.mercury.storage.admin.AdminRepository;
@@ -36,7 +41,7 @@ class AdminLoginServiceImpl implements AdminLoginService {
 
     @Override
     @Transactional(readOnly = true)
-    public AdminToken login(String email, String password) throws LoginException {
+    public TokenWithExpiry<AdminToken> login(String email, String password) throws LoginException {
         Admin admin = adminRepository.findByEmail(email);
         if (admin == null) {
             log.warn("Admin '{}' not found", email);

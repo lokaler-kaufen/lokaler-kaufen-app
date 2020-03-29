@@ -17,6 +17,7 @@ import de.qaware.mercury.business.login.ShopLogin;
 import de.qaware.mercury.business.login.ShopToken;
 import de.qaware.mercury.business.login.TokenService;
 import de.qaware.mercury.business.login.TokenTechnicalException;
+import de.qaware.mercury.business.login.TokenWithExpiry;
 import de.qaware.mercury.business.reservation.Reservation;
 import de.qaware.mercury.business.reservation.ReservationCancellation;
 import de.qaware.mercury.business.reservation.ReservationCancellationSide;
@@ -28,6 +29,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
+import java.time.ZonedDateTime;
+import java.util.Date;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
@@ -38,22 +43,27 @@ class TokenServiceImpl implements TokenService {
     private static final String PASSWORD_RESET_ISSUER = "mercury-password-reset";
     private static final String RESERVATION_CANCELLATION_ISSUER = "mercury-reservation-cancellation";
 
+    private static final Duration ADMIN_TOKEN_EXPIRY = Duration.ofDays(1);
+    private static final Duration SHOP_TOKEN_EXPIRY = Duration.ofDays(1);
+
     private final KeyProvider keyProvider;
     private final Clock clock;
 
     @Override
-    public AdminToken createAdminToken(Admin.Id adminId) {
+    public TokenWithExpiry<AdminToken> createAdminToken(Admin.Id adminId) {
         try {
             Algorithm algorithm = getAlgorithm(keyProvider.getAdminJwtSecret());
+            ZonedDateTime expiry = clock.nowZoned().plus(ADMIN_TOKEN_EXPIRY);
+
             String token = JWT.create()
                 .withIssuedAt(clock.nowAsLegacyDate())
                 .withNotBefore(clock.nowAsLegacyDate())
+                .withExpiresAt(Date.from(expiry.toInstant()))
                 .withIssuer(ADMIN_ISSUER)
                 .withSubject(adminId.toString())
                 .sign(algorithm);
-            // TODO MKA: Add expiry!
 
-            return AdminToken.of(token);
+            return new TokenWithExpiry<>(AdminToken.of(token), expiry);
         } catch (JWTCreationException exception) {
             throw new TokenTechnicalException("Failed to create admin token for " + adminId, exception);
         }
@@ -78,19 +88,21 @@ class TokenServiceImpl implements TokenService {
     }
 
     @Override
-    public ShopToken createShopToken(ShopLogin.Id shopLoginId, Shop.Id shopId) {
+    public TokenWithExpiry<ShopToken> createShopToken(ShopLogin.Id shopLoginId, Shop.Id shopId) {
         try {
             Algorithm algorithm = getAlgorithm(keyProvider.getShopJwtSecret());
+            ZonedDateTime expiry = clock.nowZoned().plus(SHOP_TOKEN_EXPIRY);
+
             String token = JWT.create()
                 .withIssuedAt(clock.nowAsLegacyDate())
                 .withNotBefore(clock.nowAsLegacyDate())
+                .withExpiresAt(Date.from(expiry.toInstant()))
                 .withIssuer(SHOP_ISSUER)
                 .withSubject(shopLoginId.toString())
                 .withClaim("shop", shopId.toString())
                 .sign(algorithm);
-            // TODO MKA: Add expiry!
 
-            return ShopToken.of(token);
+            return new TokenWithExpiry<>(ShopToken.of(token), expiry);
         } catch (JWTCreationException exception) {
             throw new TokenTechnicalException(String.format("Failed to create shop token for login %s, shop %s", shopLoginId, shopId), exception);
         }

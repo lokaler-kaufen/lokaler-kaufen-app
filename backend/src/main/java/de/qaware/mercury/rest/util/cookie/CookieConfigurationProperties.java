@@ -1,4 +1,4 @@
-package de.qaware.mercury.rest.login;
+package de.qaware.mercury.rest.util.cookie;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

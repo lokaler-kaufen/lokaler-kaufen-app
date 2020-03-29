@@ -6,7 +6,7 @@ import org.springframework.lang.Nullable;
 public interface AdminLoginService {
     Admin createLogin(String email, String password);
 
-    AdminToken login(String email, String password) throws LoginException;
+    TokenWithExpiry<AdminToken> login(String email, String password) throws LoginException;
 
     Admin verify(AdminToken token) throws LoginException;
 

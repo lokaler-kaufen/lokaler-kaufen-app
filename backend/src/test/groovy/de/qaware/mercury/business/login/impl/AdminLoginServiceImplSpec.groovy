@@ -6,6 +6,7 @@ import de.qaware.mercury.business.login.AdminToken
 import de.qaware.mercury.business.login.LoginException
 import de.qaware.mercury.business.login.PasswordHasher
 import de.qaware.mercury.business.login.TokenService
+import de.qaware.mercury.business.login.TokenWithExpiry
 import de.qaware.mercury.business.time.Clock
 import de.qaware.mercury.business.uuid.UUIDFactory
 import de.qaware.mercury.storage.admin.AdminRepository
@@ -62,14 +63,14 @@ class AdminLoginServiceImplSpec extends Specification {
         AdminToken token = AdminToken.of('token')
 
         when:
-        AdminToken adminToken = loginService.login('test@lokaler.kaufen', 'supersecret')
+        TokenWithExpiry<AdminToken> adminToken = loginService.login('test@lokaler.kaufen', 'supersecret')
 
         then:
         1 * adminRepository.findByEmail('test@lokaler.kaufen') >> admin
         1 * passwordHasher.verify('supersecret', '4711') >> true
-        1 * tokenService.createAdminToken(id) >> token
+        1 * tokenService.createAdminToken(id) >> new TokenWithExpiry(token, ZonedDateTime.now())
 
-        adminToken == token
+        adminToken.getToken() == token
     }
 
     @Unroll

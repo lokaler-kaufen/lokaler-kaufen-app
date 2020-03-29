@@ -8,29 +8,28 @@ import de.qaware.mercury.business.login.ShopCreationToken
 import de.qaware.mercury.business.login.ShopLogin
 import de.qaware.mercury.business.login.ShopToken
 import de.qaware.mercury.business.login.TokenService
+import de.qaware.mercury.business.login.TokenWithExpiry
 import de.qaware.mercury.business.shop.Shop
-import de.qaware.mercury.business.time.Clock
+import de.qaware.mercury.business.time.impl.WallClock
 import spock.lang.Specification
 
 class TokenServiceImplSpec extends Specification {
 
     TokenService tokenService
     KeyProvider keyProvider = Mock()
-    Clock clock = Mock()
 
     void setup() {
-        tokenService = new TokenServiceImpl(keyProvider, clock)
+        tokenService = new TokenServiceImpl(keyProvider, new WallClock())
     }
 
     def "Create and Verify Admin Token"() {
         given:
-        clock.nowAsLegacyDate() >> new Date()
         keyProvider.getAdminJwtSecret() >> "admin-secret"
         Admin.Id id = Admin.Id.of(UUID.randomUUID())
-        AdminToken token = tokenService.createAdminToken(id)
+        TokenWithExpiry<AdminToken> token = tokenService.createAdminToken(id)
 
         when:
-        Admin.Id idFromToken = tokenService.verifyAdminToken(token)
+        Admin.Id idFromToken = tokenService.verifyAdminToken(token.getToken())
 
         then:
         idFromToken == id
@@ -38,14 +37,13 @@ class TokenServiceImplSpec extends Specification {
 
     def "Create and Verify Shop Token"() {
         given:
-        clock.nowAsLegacyDate() >> new Date()
         keyProvider.getShopJwtSecret() >> "shop"
         ShopLogin.Id shopLoginId = ShopLogin.Id.of(UUID.randomUUID())
         Shop.Id shopId = Shop.Id.of(UUID.randomUUID())
-        ShopToken token = tokenService.createShopToken(shopLoginId, shopId)
+        TokenWithExpiry<ShopToken> token = tokenService.createShopToken(shopLoginId, shopId)
 
         when:
-        ShopLogin.Id idFromToken = tokenService.verifyShopToken(token)
+        ShopLogin.Id idFromToken = tokenService.verifyShopToken(token.getToken())
 
         then:
         idFromToken == shopLoginId
@@ -53,7 +51,6 @@ class TokenServiceImplSpec extends Specification {
 
     def "Create and Verify Shop Creation Token"() {
         given:
-        clock.nowAsLegacyDate() >> new Date()
         keyProvider.getShopCreationJwtSecret() >> "shop-creation"
         ShopCreationToken token = tokenService.createShopCreationToken("foo@bar.org")
 
@@ -66,7 +63,6 @@ class TokenServiceImplSpec extends Specification {
 
     def "Create and Verify Password Reset Token"() {
         given:
-        clock.nowAsLegacyDate() >> new Date()
         keyProvider.getPasswordResetJwtSecret() >> "password-reset"
         PasswordResetToken token = tokenService.createPasswordResetToken("foo@bar.org")
 

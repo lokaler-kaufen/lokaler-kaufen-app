@@ -5,7 +5,7 @@ import de.qaware.mercury.business.shop.Shop;
 public interface ShopLoginService {
     ShopLogin createLogin(Shop shop, String email, String password);
 
-    ShopToken login(String email, String password) throws LoginException;
+    TokenWithExpiry<ShopToken> login(String email, String password) throws LoginException;
 
     Shop verify(ShopToken token) throws LoginException;
 

@@ -1,7 +1,15 @@
 package de.qaware.mercury.business.login.impl;
 
 import de.qaware.mercury.business.email.EmailService;
-import de.qaware.mercury.business.login.*;
+import de.qaware.mercury.business.login.LoginException;
+import de.qaware.mercury.business.login.PasswordHasher;
+import de.qaware.mercury.business.login.PasswordResetToken;
+import de.qaware.mercury.business.login.ShopLogin;
+import de.qaware.mercury.business.login.ShopLoginNotFoundException;
+import de.qaware.mercury.business.login.ShopLoginService;
+import de.qaware.mercury.business.login.ShopToken;
+import de.qaware.mercury.business.login.TokenService;
+import de.qaware.mercury.business.login.TokenWithExpiry;
 import de.qaware.mercury.business.shop.Shop;
 import de.qaware.mercury.business.time.Clock;
 import de.qaware.mercury.business.uuid.UUIDFactory;
@@ -38,7 +46,7 @@ class ShopLoginServiceImpl implements ShopLoginService {
 
     @Override
     @Transactional(readOnly = true)
-    public ShopToken login(String email, String password) throws LoginException {
+    public TokenWithExpiry<ShopToken> login(String email, String password) throws LoginException {
         ShopLogin shopLogin = shopLoginRepository.findByEmail(email);
         if (shopLogin == null) {
             log.warn("Shop login '{}' not found", email);
