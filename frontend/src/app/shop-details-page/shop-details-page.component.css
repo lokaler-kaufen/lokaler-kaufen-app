@@ -42,6 +42,10 @@
   .shop-details > div {
     padding: 12px 0;
   }
+
+  .text-no-values {
+    font-size: small;
+  }
 }
 
 

@@ -19,17 +19,18 @@
       </mat-card-subtitle>
     </mat-card-header>
 
-    <div>
+    <div class="only-large">
       <mat-tab-group>
         <mat-tab *ngFor="let slots of slotsPerDay">
-          <ng-template mat-tab-label class="day-label"><span (click)="activatedSlot = slots">{{slots.dayName}}</span></ng-template>
+          <ng-template mat-tab-label class="day-label"><span (click)="activatedSlot = slots">{{slots.dayName}}</span>
+          </ng-template>
           <ng-template matTabContent>
             <h3 *ngIf="!slots.hasSlots" class="text-no-values margin-top">
               Dieser Laden bietet heute leider keine Termine an.
             </h3>
 
             <div *ngIf="slots.hasSlots">
-              <mat-table [dataSource]="slots.slots" class="only-large margin-top" id="calendar">
+              <mat-table [dataSource]="slots.slots" class="margin-top" id="calendar">
                 <ng-container matColumnDef="from">
                   <mat-header-cell *matHeaderCellDef> Start</mat-header-cell>
                   <mat-cell *matCellDef="let element">{{element.start}}</mat-cell>
@@ -60,49 +61,62 @@
                 <mat-header-row *matHeaderRowDef="['from', 'to', 'available']"></mat-header-row>
                 <mat-row *matRowDef="let row; columns: ['from', 'to', 'available']"></mat-row>
               </mat-table>
-
-              <h3 class="only-small">Termine:</h3>
-
-              <div class="only-small" *ngFor="let slot of slots.slots; last as last">
-                <mat-divider></mat-divider>
-                <div class="small-booking-row padding-vertical">
-                  <div>{{ slot.start }} - {{ slot.end }}</div>
-                  <div>
-                    <button *ngIf="slot.available"
-                            class="book-button"
-                            mat-raised-button
-                            color="primary"
-                            (click)="showBookingPopup(slot.id)">
-                      Buchen
-                    </button>
-
-                    <button *ngIf="!slot.available" class="book-button" mat-stroked-button disabled>
-                      Belegt
-                    </button>
-                  </div>
-                </div>
-                <mat-divider *ngIf="last"></mat-divider>
-              </div>
             </div>
+
+
           </ng-template>
         </mat-tab>
       </mat-tab-group>
-      <div class="shop-details margin-big-vertical">
-        <div>
-          <div>{{shop.name}}</div>
-          <div>{{shop.street}} {{shop.addressSupplement}}</div>
-          <div>{{shop.zipCode}}</div>
-          <div>{{shop.city}}</div>
-          <div><a href="{{returnValidLink(shop.website)}}">{{shop.website}}</a></div>
-          <div><a href="mailto:{{shop.email}}">{{shop.email}}</a></div>
-        </div>
+    </div>
+    <!-- ONLY SMALL -->
+    <div class="only-small">
+      <mat-accordion>
+        <mat-expansion-panel *ngFor="let slots of slotsPerDay" [expanded]="slots == activatedSlot"
+                             (opened)="activatedSlot = slots">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{slots.dayName}}
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <h3 *ngIf="!slots.hasSlots" class="text-no-values">
+            Dieser Laden bietet heute leider keine Termine an.
+          </h3>
+          <div *ngIf="slots.hasSlots">
+            <div *ngFor="let slot of slots.slots; last as last">
+              <div class="small-booking-row padding-vertical">
+                <div>{{ slot.start }} - {{ slot.end }}</div>
+                <div>
+                  <button *ngIf="slot.available"
+                          class="book-button"
+                          mat-raised-button
+                          color="primary"
+                          (click)="showBookingPopup(slot.id)">
+                    Buchen
+                  </button>
 
-        <div>
-          <contact-types [availableContactTypes]="shop.contactTypes"></contact-types>
-        </div>
+                  <button *ngIf="!slot.available" class="book-button" mat-stroked-button disabled>
+                    Belegt
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+    <div class="shop-details margin-big-vertical">
+      <div>
+        <div>{{shop.name}}</div>
+        <div>{{shop.street}} {{shop.addressSupplement}}</div>
+        <div>{{shop.zipCode}}</div>
+        <div>{{shop.city}}</div>
+        <div><a href="{{returnValidLink(shop.website)}}">{{shop.website}}</a></div>
+        <div><a href="mailto:{{shop.email}}">{{shop.email}}</a></div>
       </div>
 
+      <div>
+        <contact-types [availableContactTypes]="shop.contactTypes"></contact-types>
+      </div>
     </div>
   </mat-card>
-
 </div>

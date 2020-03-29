@@ -43,9 +43,10 @@ import {ShopDetailsConfigComponent} from './shop-details-config/shop-details-con
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {ContactTypesComponent} from './contact-types/contact-types.component';
 import {MatDividerModule} from '@angular/material/divider';
-import { NormalLayoutComponent } from './layouts/normal-layout/normal-layout.component';
-import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
+import {NormalLayoutComponent} from './layouts/normal-layout/normal-layout.component';
+import {AdminLayoutComponent} from './layouts/admin-layout/admin-layout.component';
 import {MatTabsModule} from '@angular/material/tabs';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 @NgModule({
   declarations: [
@@ -97,7 +98,8 @@ import {MatTabsModule} from '@angular/material/tabs';
     MatTableModule,
     ReactiveFormsModule,
     SimpleNotificationsModule.forRoot(),
-    MatTabsModule
+    MatTabsModule,
+    MatExpansionModule
   ],
   providers: [
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}},
