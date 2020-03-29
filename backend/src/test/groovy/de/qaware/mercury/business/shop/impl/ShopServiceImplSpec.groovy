@@ -42,7 +42,7 @@ class ShopServiceImplSpec extends Specification {
         GeoLocation location = GeoLocation.of(0.0, 0.0)
 
         when:
-        List<ShopWithDistance> nearby = shopService.findNearby('83024')
+        List<ShopWithDistance> nearby = shopService.findApproved('83024')
 
         then:
         1 * locationService.lookup('83024') >> location
@@ -63,7 +63,7 @@ class ShopServiceImplSpec extends Specification {
 
 
         when:
-        List<ShopWithDistance> nearby = shopService.findNearby('83024', maxDistance)
+        List<ShopWithDistance> nearby = shopService.findApproved('83024', maxDistance)
 
         then:
         1 * locationService.lookup('83024') >> location

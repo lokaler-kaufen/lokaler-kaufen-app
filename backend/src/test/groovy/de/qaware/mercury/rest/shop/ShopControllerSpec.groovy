@@ -4,20 +4,9 @@ import de.qaware.mercury.business.location.GeoLocation
 import de.qaware.mercury.business.login.PasswordResetToken
 import de.qaware.mercury.business.login.ShopLoginService
 import de.qaware.mercury.business.login.TokenService
-import de.qaware.mercury.business.shop.ContactType
-import de.qaware.mercury.business.shop.DayConfig
-import de.qaware.mercury.business.shop.Shop
-import de.qaware.mercury.business.shop.ShopNotFoundException
-import de.qaware.mercury.business.shop.ShopService
-import de.qaware.mercury.business.shop.ShopWithDistance
-import de.qaware.mercury.business.shop.SlotConfig
+import de.qaware.mercury.business.shop.*
 import de.qaware.mercury.rest.plumbing.authentication.AuthenticationHelper
-import de.qaware.mercury.rest.shop.dto.request.CreateShopDto
-import de.qaware.mercury.rest.shop.dto.request.ResetPasswordDto
-import de.qaware.mercury.rest.shop.dto.request.SendCreateLinkDto
-import de.qaware.mercury.rest.shop.dto.request.SendPasswordResetLinkDto
-import de.qaware.mercury.rest.shop.dto.request.SlotConfigDto
-import de.qaware.mercury.rest.shop.dto.request.UpdateShopDto
+import de.qaware.mercury.rest.shop.dto.request.*
 import de.qaware.mercury.rest.shop.dto.response.ShopDetailDto
 import de.qaware.mercury.rest.shop.dto.response.ShopListDto
 import de.qaware.mercury.rest.shop.dto.response.ShopOwnerDetailDto
@@ -167,7 +156,7 @@ class ShopControllerSpec extends Specification {
 
         then:
         result == shopListDto
-        1 * shopService.findNearby(testLocation) >> shopWithDistanceList
+        1 * shopService.findApproved(testLocation) >> shopWithDistanceList
     }
 
     def "Gets nearby shops by location string and max distance"() {
@@ -182,7 +171,7 @@ class ShopControllerSpec extends Specification {
 
         then:
         result == shopListDto
-        1 * shopService.findNearby(testLocation, maxDistance) >> shopWithDistanceList
+        1 * shopService.findApproved(testLocation, maxDistance) >> shopWithDistanceList
     }
 
     def "Search shops by query and location"() {
