@@ -50,6 +50,34 @@ class ShopServiceImplSpec extends Specification {
         nearby.size() == 1
     }
 
+    def "Shops outside the search radius are filtered"() {
+        setup:
+        GeoLocation location = GeoLocation.of(0.5, 0.5)
+        // 5 km around our location
+        int maxDistance = 5
+
+        // a location more than 5km away from our location (1.5 degrees should be about 15km)
+        GeoLocation remoteLocation = GeoLocation.of(2, 2)
+
+        String nameOfShopWithin = "within"
+
+
+        when:
+        List<ShopWithDistance> nearby = shopService.findNearby('83024', maxDistance)
+
+        then:
+        1 * locationService.lookup('83024') >> location
+
+        // one shop within our radius, one outside
+        1 * shopRepository.findApproved(_) >> [new Shop.ShopBuilder().geoLocation(location).name(nameOfShopWithin).build(), new Shop.ShopBuilder().geoLocation(remoteLocation).build()]
+
+        // we should just get one
+        nearby.size() == 1
+
+        // we get the right one back
+        nearby.get(0).shop.name == nameOfShopWithin
+    }
+
     def "Delete shop by ID"() {
         given:
         Shop.Id id = Shop.Id.of(UUID.randomUUID())
@@ -247,5 +275,33 @@ class ShopServiceImplSpec extends Specification {
         1 * locationService.lookup('83024') >> location
         1 * shopRepository.search('*') >> [new Shop.ShopBuilder().geoLocation(GeoLocation.of(0, 0)).build()]
         results.size() == 1
+    }
+
+    def "Search with max distance only provides shops within radius"() {
+        given:
+        // our location
+        GeoLocation location = GeoLocation.of(0.5, 0.5)
+
+        // a location outside our search radius
+        GeoLocation remoteLocation = GeoLocation.of(2.0, 2.0)
+
+        // our search radius in km
+        int maxDistance = 5
+        String nameOfShopWithin = "within"
+
+        when:
+        List<ShopWithDistance> results = shopService.search('*', '83024', maxDistance)
+
+        then:
+        1 * locationService.lookup('83024') >> location
+        // one shop within, one outside our search radius
+        1 * shopRepository.search('*', _) >> [new Shop.ShopBuilder().geoLocation(location).name(nameOfShopWithin).build(), new Shop.ShopBuilder().geoLocation(remoteLocation).build()]
+
+        // we only get one shop back
+        results.size() == 1
+
+        // we get the right one back
+        results.get(0).shop.name == nameOfShopWithin
+
     }
 }
