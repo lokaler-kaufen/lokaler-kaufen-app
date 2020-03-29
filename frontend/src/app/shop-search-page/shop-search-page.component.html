@@ -70,7 +70,7 @@
 
   <div class="only-small"
        [ngClass]="{'margin-big-bottom' : !last}"
-       *ngFor="let shop of shops; last as last; first as first"
+       *ngFor="let shop of shops; last as last"
        (click)="showDetailPage({id: shop.id})"
   >
     <mat-divider></mat-divider>

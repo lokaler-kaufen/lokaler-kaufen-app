@@ -279,11 +279,12 @@ For now, let's define these ranges of responsiveness based on the screen width i
 
 /* endregion */
 
+/* remove unwanted outside margins */
+.mat-card-header-text {
+  margin: 0 !important;
+}
+
 @media (max-width: 719px) {
-  /* remove unwanted outside margins on mobile */
-  .mat-card-header-text {
-    margin: 0 !important;
-  }
 
   /* deliberately set mini spacing only on the outside cells */
   .mat-header-cell {
@@ -297,4 +298,5 @@ For now, let's define these ranges of responsiveness based on the screen width i
   .mat-cell:first-of-type, .mat-header-cell:first-of-type {
     padding-left: 0 !important;
   }
+
 }

@@ -1,7 +1,3 @@
-#calendar {
-  display: grid;
-}
-
 .back-button {
   font-size: 12px;
 }
@@ -10,18 +6,39 @@
   width: 100%;
 }
 
-.description-text {
-  margin-left: 1%;
+.small-booking-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.contact-types {
-  flex: 0 0 50%;
+.small-booking-row > div {
   width: 50%;
 }
 
 .shop-details {
   display: flex;
-  justify-content: space-between;
-  margin-top: 3em;
-  align-items: flex-start;
+  justify-content: center;
+}
+
+.shop-details > div {
+  box-sizing: border-box;
+}
+
+@media screen and (max-width: 719px) {
+  .shop-details {
+    flex-direction: column;
+  }
+
+  .shop-details > div {
+    padding: 12px 0;
+  }
+}
+
+
+@media screen and (min-width: 720px) {
+  .shop-details > div {
+    width: 50%;
+    padding: 0 12px;
+  }
 }

@@ -74,9 +74,8 @@ export class ShopDetailsPageComponent implements OnInit {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
     dialogConfig.width = '450px';
-    dialogConfig.data = {
-      supportedContactTypes: this.shop.contactTypes
-    } as BookingDialogData;
+    dialogConfig.data = {supportedContactTypes: this.shop.contactTypes} as BookingDialogData;
+
     this.matDialog.open(BookingPopupComponent, dialogConfig)
       .afterClosed()
       .subscribe((data: BookingPopupResult) => {
@@ -91,6 +90,7 @@ export class ShopDetailsPageComponent implements OnInit {
             start: this.slots.find(s => s.id === id).start,
             end: this.slots.find(s => s.id === id).end
           } as BookingSuccessData;
+
           const reservationDto: CreateReservationDto = {
             contact: data.phoneNumber,
             contactType: data.option.toUpperCase(),
@@ -98,6 +98,7 @@ export class ShopDetailsPageComponent implements OnInit {
             name: data.name,
             slotId: id
           };
+
           this.client.post<SlotsDto>('/api/reservation/' + this.shopId, reservationDto)
             .subscribe(() => {
                 this.matDialog.open(BookingSuccessPopupComponent, successConfig);
