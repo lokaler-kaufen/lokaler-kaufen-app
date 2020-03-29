@@ -76,6 +76,8 @@
     <form [formGroup]="contactFormGroup">
       <ng-template matStepLabel>Welche Kontaktmöglichkeiten möchtest du anbieten?</ng-template>
       <p>Fülle einfach alle Möglichkeiten, die du hast, aus. </p>
+      <small *ngIf="contactFormGroup.hasError('atLeastOneRequired')" style="color: red">{{contactFormGroup.getError('atLeastOneRequired').text}}
+      </small>
       <div *ngFor="let contactType of contactTypes.availableContactTypes">
         <p>
           <mat-icon svgIcon="{{contactType}}"
