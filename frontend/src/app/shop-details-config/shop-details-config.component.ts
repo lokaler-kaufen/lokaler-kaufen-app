@@ -97,6 +97,8 @@ export class ShopDetailsConfigComponent implements OnInit {
         this.openingFormGroup.get(toCtrl).disable();
       }
     });
+    this.openingFormGroup.controls.defaultCtrl.setValue(this.details.slots.timePerSlot);
+    this.openingFormGroup.controls.pauseCtrl.setValue(this.details.slots.timeBetweenSlots);
   }
 
   configureFormControls() {
