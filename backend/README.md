@@ -33,6 +33,30 @@ to the application to start in `dev` profile.
 
 ## Developing
 
+### Run the build
+
+If you have docker installed, just run
+
+```shell script
+./gradlew build
+```
+
+If you have a modern linux which docker doesn't support and you normally run your containers with podman, 
+Testcontainers (which we use for integration testing) unfortunately won't work.
+
+To run the build on such a system, a runnning PostgreSQL database must be provided on port 5432 with credentials 
+`postgres:postgres`. Easiest way to do that is with podman:
+
+```
+podman run --rm -e POSTGRES_PASSWORD=password -p 5432:5432 postgres:11
+```
+
+Then set the environment variable `MERCURY_NO_TESTCONTAINER=1` and run the build:
+
+```shell script
+MERCURY_NO_TESTCONTAINER=1 ./gradlew build
+```
+
 ### Get an architectural overview
 
 Start with looking at the `de.qaware.mercury.rest.shop.ShopController` class.
