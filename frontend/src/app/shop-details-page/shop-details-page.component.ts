@@ -24,8 +24,7 @@ import {ZipCodeCacheService} from '../landing-page/zip-code-cache.service';
 export class ShopDetailsPageComponent implements OnInit {
 
   shopId: string;
-  details: ShopDetailDto;
-
+  shop: ShopDetailDto;
   slots: SlotDto[] = [];
 
   constructor(private client: HttpClient,
@@ -46,12 +45,13 @@ export class ShopDetailsPageComponent implements OnInit {
   refresh() {
     this.client.get<ShopDetailDto>('/api/shop/' + this.shopId)
       .subscribe((shopDetails: ShopDetailDto) => {
-          this.details = shopDetails;
+          this.shop = shopDetails;
         },
         error => {
           console.log('Error requesting shop details: ' + error.status + ', ' + error.message);
           this.notificationsService.error('Tut uns leid!', 'Es ist ein Fehler beim Laden der Details aufgetreten.');
         });
+
     this.client.get<SlotsDto>('/api/reservation/' + this.shopId + '/slot')
       .subscribe((slots: SlotsDto) => {
           this.slots = slots.slots;
@@ -62,8 +62,12 @@ export class ShopDetailsPageComponent implements OnInit {
         });
   }
 
-  get shopHasNoDescription(): boolean {
-    return !this.details || !this.details.details || (this.details.details.trim().length === 0);
+  get hasDescription(): boolean {
+    return this.shop?.details?.trim().length > 0;
+  }
+
+  get hasSlots(): boolean {
+    return this.slots?.length > 0;
   }
 
   showBookingPopup(id: string) {
@@ -71,7 +75,7 @@ export class ShopDetailsPageComponent implements OnInit {
     dialogConfig.autoFocus = true;
     dialogConfig.width = '450px';
     dialogConfig.data = {
-      supportedContactTypes: this.details.contactTypes
+      supportedContactTypes: this.shop.contactTypes
     } as BookingDialogData;
     this.matDialog.open(BookingPopupComponent, dialogConfig)
       .afterClosed()
@@ -81,7 +85,7 @@ export class ShopDetailsPageComponent implements OnInit {
           successConfig.autoFocus = true;
           successConfig.width = '450px';
           successConfig.data = {
-            owner: this.details.name,
+            owner: this.shop.name,
             contactNumber: data.phoneNumber,
             contactType: data.option,
             start: this.slots.find(s => s.id === id).start,

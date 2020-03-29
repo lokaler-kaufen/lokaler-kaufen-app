@@ -1,27 +1,33 @@
-<div *ngIf="details" class="app-content">
-  <div style="margin-bottom: 2em">
-    <button class="back-button" mat-button color="primary" [routerLink]="'/shops'"
-            [queryParams]="{'location' : getCachedZipCode()}">Zurück zur
-      Übersicht
+<div *ngIf="shop">
+
+  <div class="margin-bottom">
+    <button class="back-button"
+            mat-button
+            color="primary"
+            [routerLink]="'/shops'"
+            [queryParams]="{'location' : getCachedZipCode()}"
+    >
+      Zurück zur Übersicht
     </button>
   </div>
+
   <mat-card class="mat-elevation-z5">
     <mat-card-header>
-      <mat-card-title class="shop-titel" id="title">{{details.name}}</mat-card-title>
+      <mat-card-title class="margin-vertical" id="title">{{ shop.name }}</mat-card-title>
       <mat-card-subtitle>
-        <div *ngIf="shopHasNoDescription" class="mat-card-content text-no-values">Dieser Laden hat noch keine
-          Beschreibung
-          hinterlegt.
-        </div>
-        <div>{{details.details}}</div>
+        <div *ngIf="!hasDescription">Dieser Laden hat noch keine Beschreibung hinterlegt.</div>
+        <div *ngIf="hasDescription">{{ shop.details }}</div>
       </mat-card-subtitle>
     </mat-card-header>
 
-    <mat-card-content class="mat-card-content booking-table">
-      <h3 *ngIf="slots.length == 0" class="text-no-values booking-table">Dieser Laden bietet heute leider keine Termine
-        an. </h3>
-      <div *ngIf="slots.length > 0" class="booking-table">
-        <mat-table [dataSource]="slots" id="calendar">
+    <mat-card-content class="mat-card-content">
+
+      <h3 *ngIf="!hasSlots" class="text-no-values">
+        Dieser Laden bietet heute leider keine Termine an.
+      </h3>
+
+      <div *ngIf="hasSlots">
+        <mat-table [dataSource]="slots">
           <ng-container matColumnDef="from">
             <mat-header-cell *matHeaderCellDef> Start</mat-header-cell>
             <mat-cell *matCellDef="let element">{{element.start}}</mat-cell>
@@ -54,19 +60,22 @@
           <mat-row *matRowDef="let row; columns: ['from', 'to', 'available']"></mat-row>
         </mat-table>
       </div>
+
       <div class="shop-details">
         <div id="contact" class="description-text">
-          <div>{{details.name}}</div>
-          <div>{{details.street}} {{details.addressSupplement}}</div>
-          <div>{{details.zipCode}}</div>
-          <div>{{details.city}}</div>
-          <div><a href="{{returnValidLink(details.website)}}">{{details.website}}</a></div>
-          <div><a href="mailto:{{details.email}}">{{details.email}}</a></div>
+          <div>{{shop.name}}</div>
+          <div>{{shop.street}} {{shop.addressSupplement}}</div>
+          <div>{{shop.zipCode}}</div>
+          <div>{{shop.city}}</div>
+          <div><a href="{{returnValidLink(shop.website)}}">{{shop.website}}</a></div>
+          <div><a href="mailto:{{shop.email}}">{{shop.email}}</a></div>
         </div>
         <div class="contact-types">
-          <contact-types [availableContactTypes]="details.contactTypes"></contact-types>
+          <contact-types [availableContactTypes]="shop.contactTypes"></contact-types>
         </div>
       </div>
+
     </mat-card-content>
   </mat-card>
+
 </div>
