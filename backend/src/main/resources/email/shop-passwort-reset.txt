@@ -4,7 +4,7 @@ klicke auf diesen Link, um dein Passwort auf https://lokaler.kaufen neu zu verge
 
 {{ link }}
 
-Falls du dich veranlasst hast, dein Passwort neu setzen, lösche einfach diese E-Mail.
+Falls du nicht veranlasst hast, dein Passwort neu zu setzen, lösche einfach diese E-Mail.
 
 Viele Grüße,
 
