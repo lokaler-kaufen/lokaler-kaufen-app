@@ -86,6 +86,7 @@ export class ShopCreationPageComponent implements OnInit {
       const ctrl = type.toLowerCase() + 'Ctrl';
       this.contactFormGroup.addControl(ctrl, new FormControl(''));
     });
+    this.contactFormGroup.setValidators(this.atLeastOneContact());
     Array.from(this.businessHours.POSSIBLE_BUSINESS_HOURS.keys()).forEach((day: string) => {
       const fromCtrl = day + 'FromCtrl';
       const toCtrl = day + 'ToCtrl';
@@ -194,6 +195,24 @@ export class ShopCreationPageComponent implements OnInit {
         }
       });
   }
+
+  // Validation at least one contact type set
+  private atLeastOneContact = () => {
+    return (controlGroup) => {
+      const controls = controlGroup.controls;
+      if (controls) {
+        const theOne = Object.keys(controls).find(key => controls[key].value !== '');
+        if (!theOne) {
+          return {
+            atLeastOneRequired: {
+              text: 'Gib mindestens eine Kontaktmöglichkeit an.'
+            }
+          };
+        }
+      }
+      return null;
+    };
+  };
 
 }
 
