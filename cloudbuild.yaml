@@ -1,6 +1,6 @@
 steps:
   # Get the .git directory
-  - name: git
+  - name: gcr.io/cloud-builders/git
     args:
       - bash
       - -c
