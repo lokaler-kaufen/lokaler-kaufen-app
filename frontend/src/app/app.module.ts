@@ -42,6 +42,7 @@ import {AdminDetailsPageComponent} from './admin-details-page/admin-details-page
 import {ShopDetailsConfigComponent} from './shop-details-config/shop-details-config.component';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {ContactTypesComponent} from './contact-types/contact-types.component';
+import {MatDividerModule} from '@angular/material/divider';
 
 @NgModule({
   declarations: [
@@ -79,17 +80,18 @@ import {ContactTypesComponent} from './contact-types/contact-types.component';
     MatButtonModule,
     MatCardModule,
     MatDialogModule,
+    MatDividerModule,
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
     MatPasswordStrengthModule,
+    MatProgressSpinnerModule,
     MatSelectModule,
     MatSortModule,
     MatStepperModule,
     MatTableModule,
     ReactiveFormsModule,
-    SimpleNotificationsModule.forRoot(),
-    MatProgressSpinnerModule
+    SimpleNotificationsModule.forRoot()
   ],
   providers: [
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}},

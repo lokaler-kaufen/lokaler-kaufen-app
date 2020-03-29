@@ -5,6 +5,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {NotificationsService} from 'angular2-notifications';
 import {ShopListDto, ShopListEntryDto} from '../data/api';
+import {BreakpointObserver} from '@angular/cdk/layout';
 
 @Component({
   selector: 'shop-search-page',
@@ -15,7 +16,9 @@ export class ShopSearchPageComponent implements OnInit {
   searchBusiness: string;
   location: string;
   dataSource = new MatTableDataSource();
+  shops: ShopListEntryDto[] = [];
   displayedColumns: string[] = ['name', 'distance', 'supportedContactTypes'];
+  isSmallScreen: boolean;
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
@@ -23,8 +26,13 @@ export class ShopSearchPageComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private client: HttpClient,
-    private notificationsService: NotificationsService
+    private notificationsService: NotificationsService,
+    breakpointObserver: BreakpointObserver
   ) {
+    // listen to responsive breakpoint changes
+    breakpointObserver.observe('(max-width: 719px)').subscribe(
+      result => this.isSmallScreen = result.matches
+    );
   }
 
   ngOnInit(): void {
@@ -57,9 +65,11 @@ export class ShopSearchPageComponent implements OnInit {
 
   private handleResponse(response) {
     if (response.shops.length > 0) {
+      this.shops = response.shops;
       this.dataSource = new MatTableDataSource<ShopListEntryDto>(response.shops);
 
     } else {
+      this.shops = [];
       this.dataSource = new MatTableDataSource<ShopListEntryDto>([]);
       console.log('Keine Shops gefunden.');
     }

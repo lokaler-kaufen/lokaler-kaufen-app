@@ -15,8 +15,7 @@
 
 <div>
 
-  <mat-table [dataSource]="dataSource" matSort [matSortDisableClear]="true" class="mat-elevation-z1">
-
+  <mat-table [dataSource]="dataSource" matSort [matSortDisableClear]="true" class="mat-elevation-z1 only-large">
     <!-- Name Column -->
     <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef mat-sort-header>
@@ -58,8 +57,21 @@
       class="clickable highlightable"
       (click)="showDetailPage(row)"
     ></mat-row>
-
   </mat-table>
+
+  <div class="only-small"
+       [ngClass]="{'margin-big-bottom' : !last}"
+       *ngFor="let shop of shops; last as last; first as first"
+       (click)="showDetailPage({id: shop.id})"
+  >
+    <mat-divider></mat-divider>
+    <div class="padding-vertical">
+      <h3>{{ shop.name }}</h3>
+      <p>Distanz: {{shop.distance.toFixed(0)}} km</p>
+      <p>Kontaktmöglichkeiten:</p>
+      <contact-types [availableContactTypes]="shop.supportedContactTypes"></contact-types>
+    </div>
+  </div>
 
 </div>
 
