@@ -78,6 +78,7 @@ export class ShopSearchPageComponent implements OnInit {
       console.log('Keine Shops gefunden.');
     }
     this.location = this.newLocation;
+    window.history.replaceState({}, '', '/shops?location=' + this.location);
     this.dataSource.sort = this.sort;
   }
 
