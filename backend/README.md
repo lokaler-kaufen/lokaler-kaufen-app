@@ -44,7 +44,7 @@ If you have docker installed, just run
 If you have a modern linux which docker doesn't support and you normally run your containers with podman, 
 Testcontainers (which we use for integration testing) unfortunately won't work.
 
-To run the build on such a system, a runnning PostgreSQL database must be provided on port 5432 with credentials 
+To run the build on such a system, a running PostgreSQL database must be provided on port 5432 with credentials 
 `postgres:postgres`. Easiest way to do that is with podman:
 
 ```
