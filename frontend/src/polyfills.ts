@@ -54,6 +54,7 @@
 
 /**
  * IE does not support String.prototype.includes function.
+ * https://github.com/angular/angular-cli/issues/4128#issuecomment-521234905
  */
 import 'core-js/es/array';
 import 'core-js/es/string';
