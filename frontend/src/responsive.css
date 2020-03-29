@@ -255,6 +255,7 @@ For now, let's define these ranges of responsiveness based on the screen width i
     padding-left: 24px;
   }
 }
+
 /* endregion */
 
 /* region visibility helpers */
@@ -275,14 +276,12 @@ For now, let's define these ranges of responsiveness based on the screen width i
     display: none;
   }
 }
+
 /* endregion */
 
 @media (max-width: 719px) {
-  .mat-cell:first-of-type {
-    padding-left: 10px;
-  }
-
-  .mat-cell:last-of-type {
-    padding-right: 10px;
+  .mat-cell, .mat-header-cell {
+    /* deliberately set mini spacing only on the outside cells */
+    padding: 0 8px !important;
   }
 }
