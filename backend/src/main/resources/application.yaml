@@ -1,3 +1,6 @@
+# Overriden to include the traceId in the log output
+logging.pattern.console: "%date{yyyy-MM-dd HH:mm:ss.SSSZ} %clr(%5level) [%mdc{traceId:-?}] ${PID:- } --- [%15.15t] %-40.40logger{39} : %message%n%wEx"
+
 spring.datasource:
   url: "invalid-jdbc-url" # Invalid url is on purpose so that spring breaks when no database is configured
   hikari:

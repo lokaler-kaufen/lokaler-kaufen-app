@@ -31,10 +31,10 @@ class TraceIdFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         // Generate trace id
         String traceId = Hex.bin2Hex(rng.nextBytes(128 / 8));
-        log.debug("Start handling request");
-
         // Put the id on the MDC for logging
         MDC.put(MDC_TRACE_ID_FIELD, traceId);
+
+        log.debug("Start handling request");
         // Add the trace id as a header to the response
         response.addHeader(TRACE_ID_HEADER, traceId);
 
