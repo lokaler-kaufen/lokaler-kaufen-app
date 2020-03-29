@@ -111,7 +111,7 @@ export class ShopDetailsPageComponent implements OnInit {
           } as BookingSuccessData;
           const reservationDto: CreateReservationDto = {
             contact: data.phoneNumber,
-            contactType: data.option.toUpperCase(),
+            contactType: data.option,
             email: data.email,
             name: data.name,
             slotId

@@ -55,7 +55,7 @@ export class BookingPopupComponent implements OnInit {
       phoneNumber: formValue.phoneNumber,
       name: formValue.name,
       email: formValue.email,
-      option: formValue.option
+      option: this.contactTypes.getEnumValue([formValue.option])
     };
     this.dialogRef.close(popupResult);
   }
