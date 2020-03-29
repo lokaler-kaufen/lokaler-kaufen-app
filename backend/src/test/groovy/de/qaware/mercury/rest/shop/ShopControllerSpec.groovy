@@ -170,6 +170,21 @@ class ShopControllerSpec extends Specification {
         1 * shopService.findNearby(testLocation) >> shopWithDistanceList
     }
 
+    def "Gets nearby shops by location string and max distance"() {
+        setup:
+        String testLocation = "location string"
+        List<ShopWithDistance> shopWithDistanceList = [new ShopWithDistance(createShopObject(UUID.randomUUID()), 5)]
+        ShopListDto shopListDto = ShopListDto.of(shopWithDistanceList)
+        int maxDistance = 5
+
+        when:
+        ShopListDto result = controller.search(testLocation, maxDistance)
+
+        then:
+        result == shopListDto
+        1 * shopService.findNearby(testLocation, maxDistance) >> shopWithDistanceList
+    }
+
     def "Search shops by query and location"() {
         setup:
         String testLocation = "location string"
@@ -183,6 +198,22 @@ class ShopControllerSpec extends Specification {
         then:
         result == shopListDto
         1 * shopService.search(testQuery, testLocation) >> shopWithDistanceList
+    }
+
+    def "Gets nearby shops by query, location and max distance"() {
+        setup:
+        String testLocation = "location string"
+        String testQuery = "query string"
+        int maxDistance = 5
+        List<ShopWithDistance> shopWithDistanceList = [new ShopWithDistance(createShopObject(UUID.randomUUID()), 5)]
+        ShopListDto shopListDto = ShopListDto.of(shopWithDistanceList)
+
+        when:
+        ShopListDto result = controller.search(testQuery, testLocation, maxDistance)
+
+        then:
+        result == shopListDto
+        1 * shopService.search(testQuery, testLocation, maxDistance) >> shopWithDistanceList
     }
 
     private static Shop createShopObject(UUID id) {
