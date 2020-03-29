@@ -83,7 +83,7 @@ class SlotServiceSpec extends Specification {
     // To avoid silent errors due to mixed up dates, the method should throw an exception.
     def "Start dates must be before end dates."() {
         when:
-        slotService.generateSlots(nextSaturday(), saturday(), saturdayConfig(8, 18), new ArrayList<Interval>())
+        slotService.generateSlots(sunday(), saturday(), saturdayConfig(8, 18), new ArrayList<Interval>())
         then:
         IllegalArgumentException _ = thrown()
     }
@@ -125,9 +125,8 @@ class SlotServiceSpec extends Specification {
     }
 
     static LocalDate tuesday() {
-        return now()
-            .with(TemporalAdjusters.previousOrSame(DayOfWeek.TUESDAY))
-            .toLocalDate()
+        return monday()
+            .with(TemporalAdjusters.next(DayOfWeek.TUESDAY))
     }
 
     static SlotConfig tuesdayConfig(int startHour, int endHour) {
@@ -137,9 +136,8 @@ class SlotServiceSpec extends Specification {
     }
 
     static LocalDate wednesday() {
-        return now()
-            .with(TemporalAdjusters.previousOrSame(DayOfWeek.WEDNESDAY))
-            .toLocalDate()
+        return monday()
+            .with(TemporalAdjusters.next(DayOfWeek.WEDNESDAY))
     }
 
     static SlotConfig wednesdayConfig(int startHour, int endHour) {
@@ -149,9 +147,8 @@ class SlotServiceSpec extends Specification {
     }
 
     static LocalDate thursday() {
-        return now()
-            .with(TemporalAdjusters.previousOrSame(DayOfWeek.THURSDAY))
-            .toLocalDate()
+        return monday()
+            .with(TemporalAdjusters.next(DayOfWeek.THURSDAY))
     }
 
     static SlotConfig thursdayConfig(int startHour, int endHour) {
@@ -161,9 +158,8 @@ class SlotServiceSpec extends Specification {
     }
 
     static LocalDate friday() {
-        return now()
-            .with(TemporalAdjusters.previousOrSame(DayOfWeek.FRIDAY))
-            .toLocalDate()
+        return monday()
+            .with(TemporalAdjusters.next(DayOfWeek.FRIDAY))
     }
 
     static SlotConfig fridayConfig(int startHour, int endHour) {
@@ -173,15 +169,8 @@ class SlotServiceSpec extends Specification {
     }
 
     static LocalDate saturday() {
-        return now()
-            .with(TemporalAdjusters.previousOrSame(DayOfWeek.SATURDAY))
-            .toLocalDate()
-    }
-
-    static LocalDate nextSaturday() {
-        return now()
+        return monday()
             .with(TemporalAdjusters.next(DayOfWeek.SATURDAY))
-            .toLocalDate()
     }
 
     static SlotConfig saturdayConfig(int startHour, int endHour) {
@@ -191,9 +180,8 @@ class SlotServiceSpec extends Specification {
     }
 
     static LocalDate sunday() {
-        return now()
-            .with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY))
-            .toLocalDate()
+        return monday()
+            .with(TemporalAdjusters.next(DayOfWeek.SUNDAY))
     }
 
     static SlotConfig sundayConfig(int startHour, int endHour) {
