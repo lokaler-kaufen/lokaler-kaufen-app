@@ -2,13 +2,7 @@
 
   <app-header></app-header>
 
-  <section class="app-content">
-    <mat-card class="padding-horizontal padding-big-vertical">
-      <mat-card-content>
-        <router-outlet></router-outlet>
-      </mat-card-content>
-    </mat-card>
-  </section>
+  <router-outlet></router-outlet>
 
   <simple-notifications
     [options]="{timeOut: 10000, preventDuplicates: true, lastOnBottom: false}"></simple-notifications>

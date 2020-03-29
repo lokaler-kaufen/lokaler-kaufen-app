@@ -43,6 +43,8 @@ import {ShopDetailsConfigComponent} from './shop-details-config/shop-details-con
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {ContactTypesComponent} from './contact-types/contact-types.component';
 import {MatDividerModule} from '@angular/material/divider';
+import { NormalLayoutComponent } from './layouts/normal-layout/normal-layout.component';
+import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 
 @NgModule({
   declarations: [
@@ -68,7 +70,9 @@ import {MatDividerModule} from '@angular/material/divider';
     ShopManagementPageComponent,
     ShopSearchPageComponent,
     ShopDetailsConfigComponent,
-    ContactTypesComponent
+    ContactTypesComponent,
+    NormalLayoutComponent,
+    AdminLayoutComponent
   ],
   imports: [
     AppRoutingModule,

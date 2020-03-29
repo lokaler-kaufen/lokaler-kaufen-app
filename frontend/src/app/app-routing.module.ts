@@ -13,21 +13,31 @@ import {AdminLoginPageComponent} from './admin-login/admin-login-page.component'
 import {PasswordResetPageComponent} from './password-reset-page/password-reset-page.component';
 import {CancelReservationComponent} from './cancel-reservation/cancel-reservation.component';
 import {AdminDetailsPageComponent} from './admin-details-page/admin-details-page.component';
+import {NormalLayoutComponent} from './layouts/normal-layout/normal-layout.component';
+import {AdminLayoutComponent} from './layouts/admin-layout/admin-layout.component';
 
 const routes: Routes = [
-  {path: '', component: LandingPageComponent},
-  {path: 'shops', component: ShopSearchPageComponent},
-  {path: 'shops/:id', component: ShopDetailsPageComponent},
-  {path: 'create-shop', component: ShopCreationPageComponent},
-  {path: 'manage-shop', component: ShopManagementPageComponent},
-  {path: 'login', component: LoginPageComponent},
-  {path: 'imprint', component: ImprintPageComponent},
-  {path: 'privacy', component: PrivacyPageComponent},
-  {path: 'admin/overview', component: AdminOverviewPageComponent},
-  {path: 'admin', component: AdminLoginPageComponent},
-  {path: 'admin/:id', component: AdminDetailsPageComponent},
-  {path: 'reset-shop-password', component: PasswordResetPageComponent},
-  {path: 'cancel-reservation', component: CancelReservationComponent}
+  {
+    path: '', component: NormalLayoutComponent, children: [
+      {path: '', component: LandingPageComponent},
+      {path: 'shops', component: ShopSearchPageComponent},
+      {path: 'shops/:id', component: ShopDetailsPageComponent},
+      {path: 'create-shop', component: ShopCreationPageComponent},
+      {path: 'manage-shop', component: ShopManagementPageComponent},
+      {path: 'login', component: LoginPageComponent},
+      {path: 'imprint', component: ImprintPageComponent},
+      {path: 'privacy', component: PrivacyPageComponent},
+      {path: 'reset-shop-password', component: PasswordResetPageComponent},
+      {path: 'cancel-reservation', component: CancelReservationComponent}
+    ]
+  },
+  {
+    path: 'admin', component: AdminLayoutComponent, children: [
+      {path: '', component: AdminLoginPageComponent},
+      {path: 'overview', component: AdminOverviewPageComponent},
+      {path: ':id', component: AdminDetailsPageComponent},
+    ]
+  }
 ];
 
 @NgModule({
