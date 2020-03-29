@@ -8,6 +8,7 @@ export class BookingSuccessData {
   contactType: string;
   start: string;
   end: string;
+  day: string;
 }
 
 @Component({

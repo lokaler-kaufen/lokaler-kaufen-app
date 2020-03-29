@@ -16,16 +16,18 @@ import {NotificationsService} from 'angular2-notifications';
 import {CreateReservationDto, ShopDetailDto, SlotDto, SlotsDto} from '../data/api';
 import {ZipCodeCacheService} from '../landing-page/zip-code-cache.service';
 
+export interface SlotsPerDay {
+  dayName: string;
+  hasSlots: boolean;
+  slots: Array<SlotDto>;
+}
+
 @Component({
   selector: 'shop-details-page',
   templateUrl: './shop-details-page.component.html',
   styleUrls: ['./shop-details-page.component.css']
 })
 export class ShopDetailsPageComponent implements OnInit {
-
-  shopId: string;
-  shop: ShopDetailDto;
-  slots: SlotDto[] = [];
 
   constructor(private client: HttpClient,
               private activatedRoute: ActivatedRoute,
@@ -34,9 +36,25 @@ export class ShopDetailsPageComponent implements OnInit {
               private zipCodeCacheService: ZipCodeCacheService) {
   }
 
+  get hasDescription(): boolean {
+    return this.shop?.details?.trim().length > 0;
+  }
+
+  shopId: string;
+  shop: ShopDetailDto;
+  activatedSlot: SlotsPerDay;
+
+  slotsPerDay: Array<SlotsPerDay> = [];
+
+  today: Date;
+
+  weekday = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
+
   ngOnInit(): void {
+    this.today = new Date();
     this.activatedRoute.paramMap
       .subscribe(value => {
+        console.log('subscribe param map');
         this.shopId = value.get('id');
         this.refresh();
       });
@@ -44,33 +62,33 @@ export class ShopDetailsPageComponent implements OnInit {
 
   refresh() {
     this.client.get<ShopDetailDto>('/api/shop/' + this.shopId)
-      .subscribe((shopDetails: ShopDetailDto) => {
-          this.shop = shopDetails;
-        },
-        error => {
-          console.log('Error requesting shop details: ' + error.status + ', ' + error.message);
-          this.notificationsService.error('Tut uns leid!', 'Es ist ein Fehler beim Laden der Details aufgetreten.');
-        });
+      .toPromise().then((shopDetails: ShopDetailDto) => {
+      this.shop = shopDetails;
+    })
+      .catch(error => {
+        console.log('Error requesting shop details: ' + error.status + ', ' + error.message);
+        this.notificationsService.error('Tut uns leid!', 'Es ist ein Fehler beim Laden der Details aufgetreten.');
+      });
 
-    this.client.get<SlotsDto>('/api/reservation/' + this.shopId + '/slot?days=1')
+    this.client.get<SlotsDto>('/api/reservation/' + this.shopId + '/slot?days=7')
       .subscribe((slots: SlotsDto) => {
-          this.slots = slots.slots[0];
-        },
-        error => {
-          console.log('Error requesting slots: ' + error.status + ', ' + error.message);
-          this.notificationsService.error('Tut uns leid!', 'Es ist ein Fehler beim Laden der Slots aufgetreten.');
+        console.log('Subscribe Slots');
+        // convert to map
+        Object.keys(slots.slots).forEach(key => {
+          this.slotsPerDay.push({
+            dayName: this.getDayName(key),
+            slots: slots.slots[key],
+            hasSlots: slots.slots[key].length > 0
+          });
+          this.activatedSlot = this.slotsPerDay[0];
         });
+      }, error => {
+        console.log('Error requesting slots: ' + error.status + ', ' + error.message);
+        this.notificationsService.error('Tut uns leid!', 'Es ist ein Fehler beim Laden der Slots aufgetreten.');
+      });
   }
 
-  get hasDescription(): boolean {
-    return this.shop?.details?.trim().length > 0;
-  }
-
-  get hasSlots(): boolean {
-    return this.slots?.length > 0;
-  }
-
-  showBookingPopup(id: string) {
+  showBookingPopup(slotId: string) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
     dialogConfig.width = '450px';
@@ -87,25 +105,22 @@ export class ShopDetailsPageComponent implements OnInit {
             owner: this.shop.name,
             contactNumber: data.phoneNumber,
             contactType: data.option,
-            start: this.slots.find(s => s.id === id).start,
-            end: this.slots.find(s => s.id === id).end
+            day: this.activatedSlot.dayName,
+            start: this.activatedSlot.slots.find(s => s.id === slotId).start,
+            end: this.activatedSlot.slots.find(s => s.id === slotId).end
           } as BookingSuccessData;
-
           const reservationDto: CreateReservationDto = {
             contact: data.phoneNumber,
             contactType: data.option.toUpperCase(),
             email: data.email,
             name: data.name,
-            slotId: id
+            slotId
           };
 
           this.client.post<SlotsDto>('/api/reservation/' + this.shopId, reservationDto)
             .subscribe(() => {
                 this.matDialog.open(BookingSuccessPopupComponent, successConfig);
-                this.client.get<SlotsDto>('/api/reservation/' + this.shopId + '/slot?days=1')
-                  .subscribe((slots: SlotsDto) => {
-                    this.slots = slots.slots[0];
-                  });
+                this.activatedSlot.slots.find(s => s.id === slotId).available = false;
               },
               error => {
                 console.log('Error booking time slot: ' + error.status + ', ' + error.message);
@@ -132,6 +147,11 @@ export class ShopDetailsPageComponent implements OnInit {
 
   getCachedZipCode() {
     return this.zipCodeCacheService.getZipCode();
+  }
+
+  // monday is index 0, add slot offset % 7 to get day name
+  getDayName(slotOffset): string {
+    return this.weekday[this.today.getDay() + slotOffset % 7];
   }
 
 }

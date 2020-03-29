@@ -25,6 +25,15 @@
   box-sizing: border-box;
 }
 
+::ng-deep.mat-tab-labels {
+  justify-content: space-between;
+}
+
+::ng-deep.mat-tab-label, ::ng-deep.mat-tab-label-active{
+  min-width: 115px !important;
+}
+
+
 @media screen and (max-width: 719px) {
   .shop-details {
     flex-direction: column;
@@ -41,4 +50,13 @@
     width: 50%;
     padding: 0 12px;
   }
+
+}
+
+@media screen and (min-width: 940px) {
+
+  ::ng-deep .mat-tab-header-pagination {
+    display: none !important;
+  }
+
 }

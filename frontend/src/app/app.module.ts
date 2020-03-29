@@ -45,6 +45,7 @@ import {ContactTypesComponent} from './contact-types/contact-types.component';
 import {MatDividerModule} from '@angular/material/divider';
 import { NormalLayoutComponent } from './layouts/normal-layout/normal-layout.component';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
+import {MatTabsModule} from '@angular/material/tabs';
 
 @NgModule({
   declarations: [
@@ -95,7 +96,8 @@ import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.compon
     MatStepperModule,
     MatTableModule,
     ReactiveFormsModule,
-    SimpleNotificationsModule.forRoot()
+    SimpleNotificationsModule.forRoot(),
+    MatTabsModule
   ],
   providers: [
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}},

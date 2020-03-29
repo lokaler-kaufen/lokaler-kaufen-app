@@ -18,5 +18,6 @@ export * from './slotConfigDto';
 export * from './slotDto';
 export * from './slotsDto';
 export * from './updateShopDto';
+export * from './versionDto';
 export * from './view';
 export * from './whoAmIDto';
