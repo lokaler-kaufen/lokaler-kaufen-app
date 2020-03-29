@@ -35,12 +35,11 @@ RUN gradle build
 ##############################
 FROM openjdk:11-jre-slim AS runtime-build
 
-ENV PORT=8080
-ENV APM_TOKEN=override
+#ENV APM_TOKEN=override
 
 RUN apt-get update; apt-get install -y --no-install-recommends wget; rm -rf /var/lib/apt/lists/*
 RUN wget https://repo1.maven.org/maven2/co/elastic/apm/elastic-apm-agent/1.15.0/elastic-apm-agent-1.15.0.jar
 
 COPY --from=backend-build /workspace/backend/build/libs/mercury-0.0.1-SNAPSHOT.jar app.jar
 
-ENTRYPOINT ["java", "-javaagent:/elastic-apm-agent-1.15.0.jar", "-Delastic.apm.service_name=mercury-test-cloudrun", "-Delastic.apm.server_urls=https://2ed1556c8cfd4f7eb285ce4ec5d8d3ad.apm.europe-west3.gcp.cloud.es.io", "-Delastic.apm.application_packages=de.qaware.mercury", "-Delastic.apm.secret_token=$APM_TOKEN", "-Djava.security.egd=file:/dev/./urandom", "-XX:+ExitOnOutOfMemoryError", "-Dserver.port=${PORT}","-jar","/app.jar"]
+ENTRYPOINT ["java", "-javaagent:/elastic-apm-agent-1.15.0.jar", "-Delastic.apm.service_name=mercury-test-cloudrun", "-Delastic.apm.server_urls=https://2ed1556c8cfd4f7eb285ce4ec5d8d3ad.apm.europe-west3.gcp.cloud.es.io", "-Delastic.apm.application_packages=de.qaware.mercury", "-Delastic.apm.secret_token=${APM_TOKEN}", "-Djava.security.egd=file:/dev/./urandom", "-XX:+ExitOnOutOfMemoryError", "-Dserver.port=${PORT}","-jar","/app.jar"]
