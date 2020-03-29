@@ -46,7 +46,7 @@ class ShopServiceImplSpec extends Specification {
 
         then:
         1 * locationService.lookup('83024') >> location
-        1 * shopRepository.findApproved(location) >> [new Shop.ShopBuilder().build()]
+        1 * shopRepository.findApproved() >> [new Shop.ShopBuilder().geoLocation(GeoLocation.of(0.0, 0.0)).build()]
         nearby.size() == 1
     }
 
@@ -245,7 +245,7 @@ class ShopServiceImplSpec extends Specification {
 
         then:
         1 * locationService.lookup('83024') >> location
-        1 * shopRepository.search('*', location) >> [new ShopWithDistance(null, 0.0)]
+        1 * shopRepository.search('*') >> [new Shop.ShopBuilder().geoLocation(GeoLocation.of(0, 0)).build()]
         results.size() == 1
     }
 }
