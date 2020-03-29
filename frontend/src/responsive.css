@@ -140,7 +140,7 @@ For now, let's define these ranges of responsiveness based on the screen width i
   }
 
   .lk-root .margin-big-all {
-    margin: 36px;
+    margin: 24px;
   }
 
   .lk-root .margin-horizontal {
@@ -149,8 +149,8 @@ For now, let's define these ranges of responsiveness based on the screen width i
   }
 
   .lk-root .margin-big-horizontal {
-    margin-left: 36px;
-    margin-right: 36px;
+    margin-left: 24px;
+    margin-right: 24px;
   }
 
   .lk-root .margin-vertical {
@@ -159,8 +159,8 @@ For now, let's define these ranges of responsiveness based on the screen width i
   }
 
   .lk-root .margin-big-vertical {
-    margin-top: 36px;
-    margin-bottom: 36px;
+    margin-top: 24px;
+    margin-bottom: 24px;
   }
 
   .lk-root .margin-top {
@@ -168,7 +168,7 @@ For now, let's define these ranges of responsiveness based on the screen width i
   }
 
   .lk-root .margin-big-top {
-    margin-top: 36px;
+    margin-top: 24px;
   }
 
   .lk-root .margin-right {
@@ -176,7 +176,7 @@ For now, let's define these ranges of responsiveness based on the screen width i
   }
 
   .lk-root .margin-big-right {
-    margin-right: 36px;
+    margin-right: 24px;
   }
 
   .lk-root .margin-bottom {
