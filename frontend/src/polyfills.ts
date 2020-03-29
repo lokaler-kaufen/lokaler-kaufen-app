@@ -52,6 +52,12 @@
  *
  */
 
+/**
+ * IE does not support String.prototype.includes function.
+ */
+import 'core-js/es/array';
+import 'core-js/es/string';
+
 /***************************************************************************************************
  * Zone JS is required by default for Angular itself.
  */
