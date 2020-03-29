@@ -40,7 +40,8 @@
                       *ngIf="element.available"
                       (click)="showBookingPopup(element.id)"
                       color="primary">
-                Jetzt buchen
+                <span class="only-large">Jetzt buchen</span>
+                <span class="only-small">Buchen</span>
               </button>
 
               <button class="book-button" mat-stroked-button *ngIf="!element.available" disabled>

@@ -41,3 +41,26 @@ a:active {
 .highlightable:hover {
   background: rgba(209, 196, 233, 1);
 }
+
+.only-small {
+  display: none;
+}
+
+.only-large {
+  display: block;
+}
+@media (max-width: 600px) {
+  .mat-cell:first-of-type {
+    padding-left: 10px;
+  }
+  .mat-cell:last-of-type {
+    padding-right: 10px;
+  }
+  .only-small {
+    display:block;
+  }
+
+  .only-large {
+    display: none;
+  }
+}
