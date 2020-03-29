@@ -47,6 +47,21 @@ class SlotServiceImpl implements SlotService {
         return result;
     }
 
+    @Override
+    public boolean isValidSlot(LocalDateTime start, LocalDateTime end, SlotConfig slotConfig) {
+        // As slots don't go in the next day, it's safe to only generate slots for the start day
+        List<Slot> slots = generateSlotsForDay(start.toLocalDate(), slotConfig, List.of());
+
+        // And now check if the given slot is in the slot list
+        for (Slot slot : slots) {
+            if (slot.getStart().equals(start) && slot.getEnd().equals(end)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     private List<Slot> generateSlotsForDay(LocalDate date, SlotConfig slotConfig, List<Interval> existingReservations) {
         DayConfig dayConfig = getDayConfig(date.getDayOfWeek(), slotConfig);
         if (dayConfig == null) {

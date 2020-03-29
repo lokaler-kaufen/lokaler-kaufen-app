@@ -7,6 +7,7 @@ import de.qaware.mercury.business.login.TokenService;
 import de.qaware.mercury.business.reservation.Interval;
 import de.qaware.mercury.business.reservation.Reservation;
 import de.qaware.mercury.business.reservation.ReservationCancellation;
+import de.qaware.mercury.business.reservation.ReservationFailedException;
 import de.qaware.mercury.business.reservation.ReservationNotFoundException;
 import de.qaware.mercury.business.reservation.ReservationService;
 import de.qaware.mercury.business.reservation.Slot;
@@ -66,14 +67,26 @@ class ReservationServiceImpl implements ReservationService {
 
     @Override
     @Transactional
-    public void createReservation(Shop shop, Slot.Id slotId, ContactType contactType, String contact, String name, String email) {
-        // TODO: Validate that slot is available
-        // TODO: Validate if this is a valid slot
-
-        Reservation.Id reservationId = Reservation.Id.random(uuidFactory);
-
+    public void createReservation(Shop shop, Slot.Id slotId, ContactType contactType, String contact, String name, String email) throws ReservationFailedException {
         LocalDateTime start = slotId.toLocalDateTime();
         LocalDateTime end = start.plusMinutes(shop.getSlotConfig().getTimePerSlot());
+
+        // Check if that slot is a valid slot for the shop
+        if (!slotService.isValidSlot(start, end, shop.getSlotConfig())) {
+            throw new ReservationFailedException(String.format("Invalid slot [%s - %s]", start, end));
+        }
+
+        // Check if that slot is already reserved
+        if (!reservationRepository.findReservationsForShop(shop.getId(), start, end).isEmpty()) {
+            throw new ReservationFailedException(String.format("Slot [%s - %s] is already reserved", start, end));
+        }
+
+        // Check if the shop supports the contact type
+        if (!shop.getContacts().containsKey(contactType)) {
+            throw new ReservationFailedException(String.format("Shop doesn't support contact type %s", contactType));
+        }
+
+        Reservation.Id reservationId = Reservation.Id.random(uuidFactory);
 
         reservationRepository.insert(new Reservation(reservationId, shop.getId(), start, end, contact, email, name, contactType, clock.nowZoned(), clock.nowZoned()));
 

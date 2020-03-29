@@ -3,6 +3,7 @@ package de.qaware.mercury.business.reservation;
 import de.qaware.mercury.business.shop.SlotConfig;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface SlotService {
@@ -18,4 +19,14 @@ public interface SlotService {
      * @return A list of available time slots between the start and end date.
      */
     List<Slot> generateSlots(LocalDate start, LocalDate end, SlotConfig slotConfig, List<Interval> existingReservations);
+
+    /**
+     * Checks if the given slot is a valid slot under the given slot configuration.
+     *
+     * @param start      start of the slot
+     * @param end        end of the slot
+     * @param slotConfig slot config
+     * @return true if the slot is valid, false otherwise
+     */
+    boolean isValidSlot(LocalDateTime start, LocalDateTime end, SlotConfig slotConfig);
 }

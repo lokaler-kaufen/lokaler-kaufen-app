@@ -5,6 +5,7 @@ import de.qaware.mercury.business.login.LoginException;
 import de.qaware.mercury.business.login.ShopLoginNotFoundException;
 import de.qaware.mercury.business.reservation.InvalidReservationIdException;
 import de.qaware.mercury.business.reservation.InvalidSlotIdException;
+import de.qaware.mercury.business.reservation.ReservationFailedException;
 import de.qaware.mercury.business.reservation.ReservationNotFoundException;
 import de.qaware.mercury.business.shop.InvalidShopIdException;
 import de.qaware.mercury.business.shop.ShopAlreadyExistsException;
@@ -107,6 +108,13 @@ class RestExceptionHandler extends ResponseEntityExceptionHandler {
         ErrorDto errorDto = ErrorDto.of(uuidFactory, "SHOP_ALREADY_EXISTS", exception.getMessage());
         log.debug("Handled ShopAlreadyExistsException with exception id {}", errorDto.getId(), exception);
         return ResponseEntity.status(HttpStatus.CONFLICT).body(errorDto);
+    }
+
+    @ExceptionHandler(ReservationFailedException.class)
+    public ResponseEntity<ErrorDto> handleReservationFailedException(ReservationFailedException exception) {
+        ErrorDto errorDto = ErrorDto.of(uuidFactory, "RESERVATION_FAILED", exception.getMessage());
+        log.debug("Handled ReservationFailedException with exception id {}", errorDto.getId(), exception);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDto);
     }
 
     @Override

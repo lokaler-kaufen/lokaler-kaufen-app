@@ -2,6 +2,7 @@ package de.qaware.mercury.rest.reservation;
 
 import de.qaware.mercury.business.login.LoginException;
 import de.qaware.mercury.business.login.ReservationCancellationToken;
+import de.qaware.mercury.business.reservation.ReservationFailedException;
 import de.qaware.mercury.business.reservation.ReservationNotFoundException;
 import de.qaware.mercury.business.reservation.ReservationService;
 import de.qaware.mercury.business.reservation.Slot;
@@ -42,7 +43,7 @@ public class ReservationController {
     private final ShopService shopService;
 
     @PostMapping(path = "/{shopId}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void createReservation(@PathVariable("shopId") @Pattern(regexp = Validation.SHOP_ID) String shopId, @Valid @RequestBody CreateReservationDto request) throws ShopNotFoundException {
+    public void createReservation(@PathVariable("shopId") @Pattern(regexp = Validation.SHOP_ID) String shopId, @Valid @RequestBody CreateReservationDto request) throws ShopNotFoundException, ReservationFailedException {
         Shop shop = shopService.findByIdOrThrow(Shop.Id.parse(shopId));
         reservationService.createReservation(
             shop, Slot.Id.parse(request.getSlotId()), ContactType.parse(request.getContactType()),

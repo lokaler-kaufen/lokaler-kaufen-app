@@ -9,7 +9,7 @@ import de.qaware.mercury.business.shop.ShopNotFoundException;
 public interface ReservationService {
     Slots listSlots(Shop shop, int days);
 
-    void createReservation(Shop shop, Slot.Id slotId, ContactType contactType, String contact, String name, String email);
+    void createReservation(Shop shop, Slot.Id slotId, ContactType contactType, String contact, String name, String email) throws ReservationFailedException;
 
     void cancelReservation(ReservationCancellationToken token) throws ReservationNotFoundException, LoginException, ShopNotFoundException;
 }
