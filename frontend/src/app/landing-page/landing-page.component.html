@@ -12,7 +12,7 @@
              type="text"
              name="location"
              placeholder="PLZ"
-             oninput="javascript: this.value=this.value.replace(new RegExp(/[^\d]/g), ''); if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+             (keyup)="checkZipCodeInput($event)"
              required
              maxlength="5"
              minlength="5"
@@ -24,7 +24,9 @@
       </mat-autocomplete>
     </mat-form-field>
 
-    <button class="form-item" type="submit" [disabled]="startDisabled"
+    <button class="form-item"
+            type="submit"
+            [disabled]="startDisabled"
             (click)="start()"
             mat-raised-button
             color="primary">

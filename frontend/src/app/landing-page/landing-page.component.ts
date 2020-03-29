@@ -54,7 +54,21 @@ export class LandingPageComponent implements OnInit {
         })).subscribe(suggestions => this.suggestions = suggestions);
   }
 
-  public get startDisabled(): boolean {
+  checkZipCodeInput($event) {
+    const input = $event.target as HTMLInputElement;
+
+    const originalValue: string = input.value;
+    const maxLength = +input.getAttribute('maxlength');
+
+    let value = originalValue.replace(new RegExp(/[^\d]/g), '');
+    if (value.length > maxLength) {
+      value = value.slice(0, maxLength);
+    }
+
+    input.value = value;
+  }
+
+  get startDisabled(): boolean {
     return !this.startEnabled;
   }
 
@@ -66,7 +80,7 @@ export class LandingPageComponent implements OnInit {
     return this.form.controls.zipCode.value;
   }
 
-  public start(): void {
+  start(): void {
     const locationFromInput = this.zipCodeFromInput;
 
     // cache the zipCode for later
