@@ -1,11 +1,14 @@
 .app-footer {
-  margin: 4em 0 3em;
   font-size: 80%;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
 }
 
-a {
-  margin: 0 1em;
+/* switch footer links to column mode on small devices */
+@media screen and (max-width: 719px) {
+  .app-footer {
+    flex-direction: column;
+    align-items: center;
+  }
 }

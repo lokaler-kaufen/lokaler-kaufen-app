@@ -1,5 +1,4 @@
-.lk-root {
-  padding: 2em;
+main {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -12,8 +11,4 @@
   width: 100%;
   height: 100%;
   max-width: 960px;
-}
-
-.main-content-card {
-  padding: 3em 2em 5em;
 }

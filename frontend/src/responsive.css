@@ -1,0 +1,288 @@
+/*
+Some stuff that should hopefully help us with responsive issues.
+
+Based on the default breakpoints defined by https://material.io/design/layout/responsive-layout-grid.html#breakpoints
+
+For now, let's define these ranges of responsiveness based on the screen width in pixels:
+
+0 - 719: Mobile / small tablet => margins / gutters of 16px
+720 and above: Normal (Desktop) view => margins / gutters of 24 px
+
+*/
+
+/* region margins / paddings */
+
+/* all prefixed with .lk-root to increase specificity... */
+
+.lk-root .margin-all {
+  margin: 24px;
+}
+
+.lk-root .margin-big-all {
+  margin: 36px;
+}
+
+.lk-root .margin-horizontal {
+  margin-left: 24px;
+  margin-right: 24px;
+}
+
+.lk-root .margin-big-horizontal {
+  margin-left: 36px;
+  margin-right: 36px;
+}
+
+.lk-root .margin-vertical {
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+
+.lk-root .margin-big-vertical {
+  margin-top: 36px;
+  margin-bottom: 36px;
+}
+
+.lk-root .margin-top {
+  margin-top: 24px;
+}
+
+.lk-root .margin-big-top {
+  margin-top: 36px;
+}
+
+.lk-root .margin-right {
+  margin-right: 24px;
+}
+
+.lk-root .margin-big-right {
+  margin-right: 36px;
+}
+
+.lk-root .margin-bottom {
+  margin-bottom: 24px;
+}
+
+.lk-root .margin-big-bottom {
+  margin-bottom: 36px;
+}
+
+.lk-root .margin-left {
+  margin-left: 24px;
+}
+
+.lk-root .margin-big-left {
+  margin-left: 36px;
+}
+
+.lk-root .padding-all {
+  padding: 24px;
+}
+
+.lk-root .padding-big-all {
+  padding: 36px;
+}
+
+.lk-root .padding-horizontal {
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+.lk-root .padding-big-horizontal {
+  padding-left: 36px;
+  padding-right: 36px;
+}
+
+.lk-root .padding-vertical {
+  padding-top: 24px;
+  padding-bottom: 24px;
+}
+
+.lk-root .padding-big-vertical {
+  padding-top: 36px;
+  padding-bottom: 36px;
+}
+
+.lk-root .padding-top {
+  padding-top: 24px;
+}
+
+.lk-root .padding-big-top {
+  padding-top: 36px;
+}
+
+.lk-root .padding-right {
+  padding-right: 24px;
+}
+
+.lk-root .padding-big-right {
+  padding-right: 36px;
+}
+
+.lk-root .padding-bottom {
+  padding-bottom: 24px;
+}
+
+.lk-root .padding-big-bottom {
+  padding-bottom: 36px;
+}
+
+.lk-root .padding-left {
+  padding-left: 24px;
+}
+
+.lk-root .padding-big-left {
+  padding-left: 36px;
+}
+
+@media screen and (max-width: 719px) {
+  .lk-root .margin-all {
+    margin: 16px;
+  }
+
+  .lk-root .margin-big-all {
+    margin: 36px;
+  }
+
+  .lk-root .margin-horizontal {
+    margin-left: 16px;
+    margin-right: 16px;
+  }
+
+  .lk-root .margin-big-horizontal {
+    margin-left: 36px;
+    margin-right: 36px;
+  }
+
+  .lk-root .margin-vertical {
+    margin-top: 16px;
+    margin-bottom: 16px;
+  }
+
+  .lk-root .margin-big-vertical {
+    margin-top: 36px;
+    margin-bottom: 36px;
+  }
+
+  .lk-root .margin-top {
+    margin-top: 16px;
+  }
+
+  .lk-root .margin-big-top {
+    margin-top: 36px;
+  }
+
+  .lk-root .margin-right {
+    margin-right: 16px;
+  }
+
+  .lk-root .margin-big-right {
+    margin-right: 36px;
+  }
+
+  .lk-root .margin-bottom {
+    margin-bottom: 16px;
+  }
+
+  .lk-root .margin-big-bottom {
+    margin-bottom: 24px;
+  }
+
+  .lk-root .margin-left {
+    margin-left: 16px;
+  }
+
+  .lk-root .margin-big-left {
+    margin-left: 24px;
+  }
+
+  .lk-root .padding-all {
+    padding: 16px;
+  }
+
+  .lk-root .padding-big-all {
+    padding: 24px;
+  }
+
+  .lk-root .padding-horizontal {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .lk-root .padding-big-horizontal {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  .lk-root .padding-vertical {
+    padding-top: 16px;
+    padding-bottom: 16px;
+  }
+
+  .lk-root .padding-big-vertical {
+    padding-top: 24px;
+    padding-bottom: 24px;
+  }
+
+  .lk-root .padding-top {
+    padding-top: 16px;
+  }
+
+  .lk-root .padding-big-top {
+    padding-top: 24px;
+  }
+
+  .lk-root .padding-right {
+    padding-right: 16px;
+  }
+
+  .lk-root .padding-big-right {
+    padding-right: 24px;
+  }
+
+  .lk-root .padding-bottom {
+    padding-bottom: 16px;
+  }
+
+  .lk-root .padding-big-bottom {
+    padding-bottom: 24px;
+  }
+
+  .lk-root .padding-left {
+    padding-left: 16px;
+  }
+
+  .lk-root .padding-big-left {
+    padding-left: 24px;
+  }
+}
+/* endregion */
+
+/* region visibility helpers */
+.only-small {
+  display: none;
+}
+
+.only-large {
+  display: block;
+}
+
+@media (max-width: 719px) {
+  .only-small {
+    display: block;
+  }
+
+  .only-large {
+    display: none;
+  }
+}
+/* endregion */
+
+@media (max-width: 719px) {
+  .mat-cell:first-of-type {
+    padding-left: 10px;
+  }
+
+  .mat-cell:last-of-type {
+    padding-right: 10px;
+  }
+}
