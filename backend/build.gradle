@@ -95,5 +95,11 @@ sonarqube {
     }
 }
 
+gitProperties {
+    // We read last commit and stuff from .git directory
+    // This disables the exception if the .git folder isn't found
+    failOnNoGitDirectory = false
+}
+
 // have some fun ./gradlew kick ass
 task kick(dependsOn: clean) {}
