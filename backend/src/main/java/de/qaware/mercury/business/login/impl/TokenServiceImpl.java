@@ -45,6 +45,8 @@ class TokenServiceImpl implements TokenService {
 
     private static final Duration ADMIN_TOKEN_EXPIRY = Duration.ofDays(1);
     private static final Duration SHOP_TOKEN_EXPIRY = Duration.ofDays(1);
+    private static final Duration SHOP_CREATION_TOKEN_EXPIRY = Duration.ofDays(2);
+    private static final Duration PASSWORD_RESET_TOKEN_EXPIRY = Duration.ofDays(2);
 
     private final KeyProvider keyProvider;
     private final Clock clock;
@@ -134,13 +136,15 @@ class TokenServiceImpl implements TokenService {
     public ShopCreationToken createShopCreationToken(String email) {
         try {
             Algorithm algorithm = getAlgorithm(keyProvider.getShopCreationJwtSecret());
+            ZonedDateTime expiry = clock.nowZoned().plus(SHOP_CREATION_TOKEN_EXPIRY);
+
             String token = JWT.create()
                 .withIssuedAt(clock.nowAsLegacyDate())
                 .withNotBefore(clock.nowAsLegacyDate())
+                .withExpiresAt(Date.from(expiry.toInstant()))
                 .withIssuer(SHOP_CREATION_ISSUER)
                 .withSubject(email)
                 .sign(algorithm);
-            // TODO MKA: Add expiry!
 
             return ShopCreationToken.of(token);
         } catch (JWTCreationException exception) {
@@ -170,13 +174,15 @@ class TokenServiceImpl implements TokenService {
     public PasswordResetToken createPasswordResetToken(String email) {
         try {
             Algorithm algorithm = getAlgorithm(keyProvider.getPasswordResetJwtSecret());
+            ZonedDateTime expiry = clock.nowZoned().plus(PASSWORD_RESET_TOKEN_EXPIRY);
+
             String token = JWT.create()
                 .withIssuedAt(clock.nowAsLegacyDate())
                 .withNotBefore(clock.nowAsLegacyDate())
+                .withExpiresAt(Date.from(expiry.toInstant()))
                 .withIssuer(PASSWORD_RESET_ISSUER)
                 .withSubject(email)
                 .sign(algorithm);
-            // TODO MKA: Add expiry!
 
             return PasswordResetToken.of(token);
         } catch (JWTCreationException exception) {
