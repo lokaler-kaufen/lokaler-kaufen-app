@@ -154,9 +154,9 @@ class ShopController {
     @GetMapping("nearby")
     public ShopListDto search(@RequestParam @NotBlank String zipCode, @RequestParam(required = false) @Nullable Integer maxDistance) throws LocationNotFoundException {
         if (maxDistance != null) {
-            return ShopListDto.of(shopService.findNearby(zipCode, maxDistance));
+            return ShopListDto.of(shopService.findApproved(zipCode, maxDistance));
         }
-        return ShopListDto.of(shopService.findNearby(zipCode));
+        return ShopListDto.of(shopService.findApproved(zipCode));
     }
 
     /**

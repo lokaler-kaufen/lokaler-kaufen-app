@@ -45,7 +45,7 @@ class JpaShopRepositoryImpl implements ShopRepository {
     public List<Shop> findApproved() {
         log.debug("Finding approved shops");
 
-        List<ShopEntity> shops = shopDataRepository.findNearby();
+        List<ShopEntity> shops = shopDataRepository.findApproved();
         return shops.stream().map(ShopEntity::toShop).collect(Collectors.toList());
     }
 
@@ -53,7 +53,7 @@ class JpaShopRepositoryImpl implements ShopRepository {
     public List<Shop> findApproved(BoundingBox searchArea) {
         log.debug("Finding shops nearby location {}", searchArea);
 
-        List<ShopEntity> shops = shopDataRepository.findNearby(searchArea.getNorthEast().getLatitude(), searchArea.getNorthEast().getLongitude(),
+        List<ShopEntity> shops = shopDataRepository.findApproved(searchArea.getNorthEast().getLatitude(), searchArea.getNorthEast().getLongitude(),
             searchArea.getSouthWest().getLatitude(), searchArea.getSouthWest().getLongitude());
         return Lists.map(shops, ShopEntity::toShop);
     }

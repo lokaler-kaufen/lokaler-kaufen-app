@@ -14,8 +14,19 @@ public interface ShopRepository {
     @Nullable
     Shop findById(Shop.Id id);
 
+    /**
+     * Finds all approved (and enabled) shops
+     *
+     * @return all approved and enabled shops
+     */
     List<Shop> findApproved();
 
+    /**
+     * Finds all approved (and enabled) shops within the given search area
+     *
+     * @param searchArea the search area
+     * @return all approved and enabled shops within the given search area
+     */
     List<Shop> findApproved(BoundingBox searchArea);
 
     void update(Shop updatedShop);
@@ -24,7 +35,20 @@ public interface ShopRepository {
 
     List<Shop> findByName(String name);
 
+    /**
+     * Searches approved (and enabled) shops matching the given query
+     *
+     * @param query the search query, supporting '%' as a 'like' operator
+     * @return all approved and enabled shops matching the given query
+     */
     List<Shop> search(String query);
 
+    /**
+     * Searches approved (and enabled) shops matching the given query within the given search area
+     *
+     * @param query      the search query, supporting '%' as a 'like' operator
+     * @param searchArea the search area
+     * @return all approved and enabled shops matching the given query within the given search area
+     */
     List<Shop> search(String query, BoundingBox searchArea);
 }

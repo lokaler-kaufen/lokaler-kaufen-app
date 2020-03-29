@@ -45,13 +45,13 @@ class ShopServiceImpl implements ShopService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<ShopWithDistance> findNearby(String zipCode) throws LocationNotFoundException {
+    public List<ShopWithDistance> findApproved(String zipCode) throws LocationNotFoundException {
         GeoLocation location = locationService.lookup(zipCode);
         return toShopWithDistance(shopRepository.findApproved(), location);
     }
 
     @Override
-    public List<ShopWithDistance> findNearby(String zipCode, int maxDistance) throws LocationNotFoundException {
+    public List<ShopWithDistance> findApproved(String zipCode, int maxDistance) throws LocationNotFoundException {
         GeoLocation location = locationService.lookup(zipCode);
         BoundingBox searchArea = DistanceUtil.boundingBoxOf(location, maxDistance);
         List<Shop> shops = shopRepository.findApproved(searchArea);
