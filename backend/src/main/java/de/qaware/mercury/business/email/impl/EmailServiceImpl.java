@@ -57,7 +57,7 @@ class EmailServiceImpl implements EmailService {
 
     @Override
     public void sendCustomerReservationConfirmation(Shop shop, String email, String name, LocalDateTime slotStart, LocalDateTime slotEnd, ContactType contactType, String contact, Reservation.Id reservationId) {
-        ReservationCancellationToken token = tokenService.createReservationCancellationToken(reservationId, ReservationCancellationSide.CUSTOMER);
+        ReservationCancellationToken token = tokenService.createReservationCancellationToken(reservationId, ReservationCancellationSide.CUSTOMER, slotStart);
         String cancelReservationLink = config.getReservationCancellationLinkTemplate()
             .replace("{{ token }}", token.getToken());
 
@@ -77,7 +77,7 @@ class EmailServiceImpl implements EmailService {
 
     @Override
     public void sendShopNewReservation(Shop shop, String name, LocalDateTime slotStart, LocalDateTime slotEnd, ContactType contactType, String contact, Reservation.Id reservationId) {
-        ReservationCancellationToken token = tokenService.createReservationCancellationToken(reservationId, ReservationCancellationSide.SHOP);
+        ReservationCancellationToken token = tokenService.createReservationCancellationToken(reservationId, ReservationCancellationSide.SHOP, slotStart);
         String cancelReservationLink = config.getReservationCancellationLinkTemplate()
             .replace("{{ token }}", token.getToken());
 

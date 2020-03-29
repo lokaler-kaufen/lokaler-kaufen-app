@@ -55,7 +55,7 @@ class EmailServiceImplSpec extends Specification {
         1 * i18nService.formatDate(_) >> '24.12.12412'
         2 * i18nService.formatTime(_) >> '00:00:00'
         1 * properties.getReservationCancellationLinkTemplate() >> '{{ token }}'
-        1 * tokenService.createReservationCancellationToken(reservationId, ReservationCancellationSide.CUSTOMER) >> new ReservationCancellationToken("test")
+        1 * tokenService.createReservationCancellationToken(reservationId, ReservationCancellationSide.CUSTOMER, slot) >> new ReservationCancellationToken("test")
         noExceptionThrown()
     }
 
@@ -84,7 +84,7 @@ class EmailServiceImplSpec extends Specification {
         1 * i18nService.formatDate(_) >> '24.12.12412'
         2 * i18nService.formatTime(_) >> '00:00:00'
         1 * properties.getReservationCancellationLinkTemplate() >> '{{ token }}'
-        1 * tokenService.createReservationCancellationToken(reservationId, ReservationCancellationSide.SHOP) >> new ReservationCancellationToken("test")
+        1 * tokenService.createReservationCancellationToken(reservationId, ReservationCancellationSide.SHOP, slot) >> new ReservationCancellationToken("test")
         noExceptionThrown()
     }
 }

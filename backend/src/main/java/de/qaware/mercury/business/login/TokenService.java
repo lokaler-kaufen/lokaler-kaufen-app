@@ -6,6 +6,8 @@ import de.qaware.mercury.business.reservation.ReservationCancellation;
 import de.qaware.mercury.business.reservation.ReservationCancellationSide;
 import de.qaware.mercury.business.shop.Shop;
 
+import java.time.LocalDateTime;
+
 public interface TokenService {
     TokenWithExpiry<AdminToken> createAdminToken(Admin.Id adminId);
 
@@ -23,7 +25,7 @@ public interface TokenService {
 
     String verifyPasswordResetToken(PasswordResetToken token) throws LoginException;
 
-    ReservationCancellationToken createReservationCancellationToken(Reservation.Id reservationId, ReservationCancellationSide side);
+    ReservationCancellationToken createReservationCancellationToken(Reservation.Id reservationId, ReservationCancellationSide side, LocalDateTime slotStart);
 
     ReservationCancellation verifyReservationCancellationToken(ReservationCancellationToken token) throws LoginException;
 }

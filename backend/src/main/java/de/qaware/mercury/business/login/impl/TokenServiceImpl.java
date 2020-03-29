@@ -30,6 +30,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.Date;
 
@@ -209,17 +211,18 @@ class TokenServiceImpl implements TokenService {
     }
 
     @Override
-    public ReservationCancellationToken createReservationCancellationToken(Reservation.Id reservationId, ReservationCancellationSide side) {
+    public ReservationCancellationToken createReservationCancellationToken(Reservation.Id reservationId, ReservationCancellationSide side, LocalDateTime slotStart) {
         try {
             Algorithm algorithm = getAlgorithm(keyProvider.getReservationCancellationJwtSecret());
             String token = JWT.create()
                 .withIssuedAt(clock.nowAsLegacyDate())
                 .withNotBefore(clock.nowAsLegacyDate())
+                // The token expires in the moment the reserved slot starts
+                .withExpiresAt(Date.from(slotStart.toInstant(ZoneOffset.systemDefault().getRules().getOffset(slotStart))))
                 .withIssuer(RESERVATION_CANCELLATION_ISSUER)
                 .withSubject(reservationId.getId().toString())
                 .withClaim("side", side.getId())
                 .sign(algorithm);
-            // TODO MKA: Add expiry!
 
             return ReservationCancellationToken.of(token);
         } catch (JWTCreationException exception) {
