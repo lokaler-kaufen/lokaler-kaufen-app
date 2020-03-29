@@ -78,7 +78,7 @@ export class ShopSearchPageComponent implements OnInit {
       console.log('Keine Shops gefunden.');
     }
     this.location = this.newLocation;
-    window.history.replaceState({}, '', '/shops?location=' + this.location);
+    window.history.replaceState({}, '', '/#/shops?location=' + this.location);
     this.dataSource.sort = this.sort;
   }
 
@@ -107,7 +107,7 @@ export class ShopSearchPageComponent implements OnInit {
       this.notificationsService.error('Tut uns leid!', 'Ein Fehler beim Laden der Shops ist aufgetreten.');
     }
     this.newLocation = this.location;
-    window.history.replaceState({}, '', '/shops?location=' + this.location);
+    window.history.replaceState({}, '', '/#/shops?location=' + this.location);
   }
 
   checkZipCodeInput($event) {
