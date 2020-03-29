@@ -152,11 +152,11 @@ class ShopControllerSpec extends Specification {
         ShopListDto shopListDto = ShopListDto.of(shopWithDistanceList)
 
         when:
-        ShopListDto result = controller.search(testLocation, null)
+        ShopListDto result = controller.findActive(testLocation, null)
 
         then:
         result == shopListDto
-        1 * shopService.findApproved(testLocation) >> shopWithDistanceList
+        1 * shopService.findActive(testLocation) >> shopWithDistanceList
     }
 
     def "Gets nearby shops by location string and max distance"() {
@@ -167,11 +167,11 @@ class ShopControllerSpec extends Specification {
         int maxDistance = 5
 
         when:
-        ShopListDto result = controller.search(testLocation, maxDistance)
+        ShopListDto result = controller.findActive(testLocation, maxDistance)
 
         then:
         result == shopListDto
-        1 * shopService.findApproved(testLocation, maxDistance) >> shopWithDistanceList
+        1 * shopService.findActive(testLocation, maxDistance) >> shopWithDistanceList
     }
 
     def "Search shops by query and location"() {
@@ -182,11 +182,11 @@ class ShopControllerSpec extends Specification {
         ShopListDto shopListDto = ShopListDto.of(shopWithDistanceList)
 
         when:
-        ShopListDto result = controller.search(testQuery, testLocation, null)
+        ShopListDto result = controller.searchActive(testQuery, testLocation, null)
 
         then:
         result == shopListDto
-        1 * shopService.search(testQuery, testLocation) >> shopWithDistanceList
+        1 * shopService.searchActive(testQuery, testLocation) >> shopWithDistanceList
     }
 
     def "Gets nearby shops by query, location and max distance"() {
@@ -198,11 +198,11 @@ class ShopControllerSpec extends Specification {
         ShopListDto shopListDto = ShopListDto.of(shopWithDistanceList)
 
         when:
-        ShopListDto result = controller.search(testQuery, testLocation, maxDistance)
+        ShopListDto result = controller.searchActive(testQuery, testLocation, maxDistance)
 
         then:
         result == shopListDto
-        1 * shopService.search(testQuery, testLocation, maxDistance) >> shopWithDistanceList
+        1 * shopService.searchActive(testQuery, testLocation, maxDistance) >> shopWithDistanceList
     }
 
     private static Shop createShopObject(UUID id) {

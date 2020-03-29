@@ -42,11 +42,11 @@ class ShopServiceImplSpec extends Specification {
         GeoLocation location = GeoLocation.of(0.0, 0.0)
 
         when:
-        List<ShopWithDistance> nearby = shopService.findApproved('83024')
+        List<ShopWithDistance> nearby = shopService.findActive('83024')
 
         then:
         1 * locationService.lookup('83024') >> location
-        1 * shopRepository.findApproved() >> [new Shop.ShopBuilder().geoLocation(GeoLocation.of(0.0, 0.0)).build()]
+        1 * shopRepository.findActive() >> [new Shop.ShopBuilder().geoLocation(GeoLocation.of(0.0, 0.0)).build()]
         nearby.size() == 1
     }
 
@@ -63,13 +63,13 @@ class ShopServiceImplSpec extends Specification {
 
 
         when:
-        List<ShopWithDistance> nearby = shopService.findApproved('83024', maxDistance)
+        List<ShopWithDistance> nearby = shopService.findActive('83024', maxDistance)
 
         then:
         1 * locationService.lookup('83024') >> location
 
         // one shop within our radius, one outside
-        1 * shopRepository.findApproved(_) >> [new Shop.ShopBuilder().geoLocation(location).name(nameOfShopWithin).build(), new Shop.ShopBuilder().geoLocation(remoteLocation).build()]
+        1 * shopRepository.findActive(_) >> [new Shop.ShopBuilder().geoLocation(location).name(nameOfShopWithin).build(), new Shop.ShopBuilder().geoLocation(remoteLocation).build()]
 
         // we should just get one
         nearby.size() == 1
@@ -269,11 +269,11 @@ class ShopServiceImplSpec extends Specification {
         GeoLocation location = GeoLocation.of(0.0, 0.0)
 
         when:
-        List<ShopWithDistance> results = shopService.search('*', '83024')
+        List<ShopWithDistance> results = shopService.searchActive('*', '83024')
 
         then:
         1 * locationService.lookup('83024') >> location
-        1 * shopRepository.search('*') >> [new Shop.ShopBuilder().geoLocation(GeoLocation.of(0, 0)).build()]
+        1 * shopRepository.searchActive('*') >> [new Shop.ShopBuilder().geoLocation(GeoLocation.of(0, 0)).build()]
         results.size() == 1
     }
 
@@ -290,12 +290,12 @@ class ShopServiceImplSpec extends Specification {
         String nameOfShopWithin = "within"
 
         when:
-        List<ShopWithDistance> results = shopService.search('*', '83024', maxDistance)
+        List<ShopWithDistance> results = shopService.searchActive('*', '83024', maxDistance)
 
         then:
         1 * locationService.lookup('83024') >> location
         // one shop within, one outside our search radius
-        1 * shopRepository.search('*', _) >> [new Shop.ShopBuilder().geoLocation(location).name(nameOfShopWithin).build(), new Shop.ShopBuilder().geoLocation(remoteLocation).build()]
+        1 * shopRepository.searchActive('*', _) >> [new Shop.ShopBuilder().geoLocation(location).name(nameOfShopWithin).build(), new Shop.ShopBuilder().geoLocation(remoteLocation).build()]
 
         // we only get one shop back
         results.size() == 1

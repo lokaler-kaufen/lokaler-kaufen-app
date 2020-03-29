@@ -45,16 +45,16 @@ class ShopServiceImpl implements ShopService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<ShopWithDistance> findApproved(String zipCode) throws LocationNotFoundException {
+    public List<ShopWithDistance> findActive(String zipCode) throws LocationNotFoundException {
         GeoLocation location = locationService.lookup(zipCode);
-        return toShopWithDistance(shopRepository.findApproved(), location);
+        return toShopWithDistance(shopRepository.findActive(), location);
     }
 
     @Override
-    public List<ShopWithDistance> findApproved(String zipCode, int maxDistance) throws LocationNotFoundException {
+    public List<ShopWithDistance> findActive(String zipCode, int maxDistance) throws LocationNotFoundException {
         GeoLocation location = locationService.lookup(zipCode);
         BoundingBox searchArea = DistanceUtil.boundingBoxOf(location, maxDistance);
-        List<Shop> shops = shopRepository.findApproved(searchArea);
+        List<Shop> shops = shopRepository.findActive(searchArea);
         List<ShopWithDistance> shopsWithDistance = toShopWithDistance(shops, location);
         return filterByDistance(shopsWithDistance, maxDistance);
     }
@@ -178,18 +178,18 @@ class ShopServiceImpl implements ShopService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<ShopWithDistance> search(String query, String zipCode) throws LocationNotFoundException {
+    public List<ShopWithDistance> searchActive(String query, String zipCode) throws LocationNotFoundException {
         GeoLocation location = locationService.lookup(zipCode);
-        List<Shop> shops = shopRepository.search(query);
+        List<Shop> shops = shopRepository.searchActive(query);
         return toShopWithDistance(shops, location);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<ShopWithDistance> search(String query, String zipCode, int maxDistance) throws LocationNotFoundException {
+    public List<ShopWithDistance> searchActive(String query, String zipCode, int maxDistance) throws LocationNotFoundException {
         GeoLocation location = locationService.lookup(zipCode);
         BoundingBox searchArea = DistanceUtil.boundingBoxOf(location, maxDistance);
-        List<Shop> shops = shopRepository.search(query, searchArea);
+        List<Shop> shops = shopRepository.searchActive(query, searchArea);
         List<ShopWithDistance> shopsWithDistance = toShopWithDistance(shops, location);
         return filterByDistance(shopsWithDistance, maxDistance);
     }

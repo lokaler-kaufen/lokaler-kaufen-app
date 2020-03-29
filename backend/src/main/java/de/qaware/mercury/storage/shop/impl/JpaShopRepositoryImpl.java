@@ -42,31 +42,31 @@ class JpaShopRepositoryImpl implements ShopRepository {
     }
 
     @Override
-    public List<Shop> findApproved() {
+    public List<Shop> findActive() {
         log.debug("Finding approved shops");
 
-        List<ShopEntity> shops = shopDataRepository.findApproved();
+        List<ShopEntity> shops = shopDataRepository.findActive();
         return shops.stream().map(ShopEntity::toShop).collect(Collectors.toList());
     }
 
     @Override
-    public List<Shop> findApproved(BoundingBox searchArea) {
+    public List<Shop> findActive(BoundingBox searchArea) {
         log.debug("Finding shops nearby location {}", searchArea);
 
-        List<ShopEntity> shops = shopDataRepository.findApproved(searchArea.getNorthEast().getLatitude(), searchArea.getNorthEast().getLongitude(),
+        List<ShopEntity> shops = shopDataRepository.findActive(searchArea.getNorthEast().getLatitude(), searchArea.getNorthEast().getLongitude(),
             searchArea.getSouthWest().getLatitude(), searchArea.getSouthWest().getLongitude());
         return Lists.map(shops, ShopEntity::toShop);
     }
 
     @Override
-    public List<Shop> search(String query) {
-        List<ShopEntity> shops = shopDataRepository.search("%" + query + "%");
+    public List<Shop> searchActive(String query) {
+        List<ShopEntity> shops = shopDataRepository.searchActive("%" + query + "%");
         return Lists.map(shops, ShopEntity::toShop);
     }
 
     @Override
-    public List<Shop> search(String query, BoundingBox searchArea) {
-        List<ShopEntity> shops = shopDataRepository.search("%" + query + "%",
+    public List<Shop> searchActive(String query, BoundingBox searchArea) {
+        List<ShopEntity> shops = shopDataRepository.searchActive("%" + query + "%",
             searchArea.getNorthEast().getLatitude(), searchArea.getNorthEast().getLongitude(),
             searchArea.getSouthWest().getLatitude(), searchArea.getSouthWest().getLongitude());
         return Lists.map(shops, ShopEntity::toShop);
