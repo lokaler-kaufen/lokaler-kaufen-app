@@ -39,6 +39,7 @@ NPM="npm"
 ANGULAR="ng"
 GRADLE="./gradlew"
 
+# Angular Build
 (
     printf "Building Angular project ..."
     cd "${FRONTEND_DIR}"
@@ -48,10 +49,12 @@ GRADLE="./gradlew"
 
 )
 
+# Copy Angular dist files to Spring Boot static files directory
 rm -rf "${SPRING_STATIC_DIR}" && mkdir -p "${SPRING_STATIC_DIR}" && echo '**' > "${SPRING_STATIC_DIR}/.gitignore"
 cp -r "${FRONTEND_DIR}/dist/mercury-ui/." "${SPRING_STATIC_DIR}/"
 echo "Copied Angular artifacts to ${SPRING_STATIC_DIR}"
 
+# Build Spring Boot app
 (
     printf "Building Gradle project ..."
     cd "${BACKEND_DIR}"
@@ -62,6 +65,7 @@ echo "Copied Angular artifacts to ${SPRING_STATIC_DIR}"
 echo "Build successful."
 echo "Deploying artifact ${ARTIFACT} ..."
 
+# Deploy app to environment
 if [ "$PROD" = true ]
 then
 	rsync -v -e ssh "${ARTIFACT}" "${USER}@${HOST}:${DEPLOY_DIR_PROD}"
