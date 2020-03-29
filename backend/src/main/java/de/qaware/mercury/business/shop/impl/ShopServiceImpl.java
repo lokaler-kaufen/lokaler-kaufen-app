@@ -1,20 +1,17 @@
 package de.qaware.mercury.business.shop.impl;
 
 import de.qaware.mercury.business.email.EmailService;
+import de.qaware.mercury.business.location.BoundingBox;
 import de.qaware.mercury.business.location.GeoLocation;
 import de.qaware.mercury.business.location.LocationService;
+import de.qaware.mercury.business.location.impl.DistanceUtil;
 import de.qaware.mercury.business.location.impl.LocationNotFoundException;
 import de.qaware.mercury.business.login.ShopLoginService;
-import de.qaware.mercury.business.shop.Shop;
-import de.qaware.mercury.business.shop.ShopAlreadyExistsException;
-import de.qaware.mercury.business.shop.ShopCreation;
-import de.qaware.mercury.business.shop.ShopNotFoundException;
-import de.qaware.mercury.business.shop.ShopService;
-import de.qaware.mercury.business.shop.ShopUpdate;
-import de.qaware.mercury.business.shop.ShopWithDistance;
+import de.qaware.mercury.business.shop.*;
 import de.qaware.mercury.business.time.Clock;
 import de.qaware.mercury.business.uuid.UUIDFactory;
 import de.qaware.mercury.storage.shop.ShopRepository;
+import de.qaware.mercury.util.Lists;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -49,7 +47,16 @@ class ShopServiceImpl implements ShopService {
     @Transactional(readOnly = true)
     public List<ShopWithDistance> findNearby(String zipCode) throws LocationNotFoundException {
         GeoLocation location = locationService.lookup(zipCode);
-        return shopRepository.findNearby(location);
+        return toShopWithDistance(shopRepository.findApproved(), location);
+    }
+
+    @Override
+    public List<ShopWithDistance> findNearby(String zipCode, int maxDistance) throws LocationNotFoundException {
+        GeoLocation location = locationService.lookup(zipCode);
+        BoundingBox searchArea = DistanceUtil.boundingBoxOf(location, maxDistance);
+        List<Shop> shops = shopRepository.findApproved(searchArea);
+        List<ShopWithDistance> shopsWithDistance = toShopWithDistance(shops, location);
+        return filterByDistance(shopsWithDistance, maxDistance);
     }
 
     @Override
@@ -173,6 +180,27 @@ class ShopServiceImpl implements ShopService {
     @Transactional(readOnly = true)
     public List<ShopWithDistance> search(String query, String zipCode) throws LocationNotFoundException {
         GeoLocation location = locationService.lookup(zipCode);
-        return shopRepository.search(query, location);
+        List<Shop> shops = shopRepository.search(query);
+        return toShopWithDistance(shops, location);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ShopWithDistance> search(String query, String zipCode, int maxDistance) throws LocationNotFoundException {
+        GeoLocation location = locationService.lookup(zipCode);
+        BoundingBox searchArea = DistanceUtil.boundingBoxOf(location, maxDistance);
+        List<Shop> shops = shopRepository.search(query, searchArea);
+        List<ShopWithDistance> shopsWithDistance = toShopWithDistance(shops, location);
+        return filterByDistance(shopsWithDistance, maxDistance);
+    }
+
+    private List<ShopWithDistance> toShopWithDistance(List<Shop> shops, GeoLocation location) {
+        return Lists.map(shops, s -> new ShopWithDistance(s, DistanceUtil.distanceInKmBetween(s.getGeoLocation(), location)
+        ));
+    }
+
+    private List<ShopWithDistance> filterByDistance(List<ShopWithDistance> shops, int maxDistance) {
+        return shops.stream().filter(s -> s.getDistance() <= maxDistance).collect(Collectors.toList());
+    }
+
 }

@@ -4,13 +4,7 @@ import de.qaware.mercury.business.email.EmailService
 import de.qaware.mercury.business.location.GeoLocation
 import de.qaware.mercury.business.location.LocationService
 import de.qaware.mercury.business.login.ShopLoginService
-import de.qaware.mercury.business.shop.Shop
-import de.qaware.mercury.business.shop.ShopAlreadyExistsException
-import de.qaware.mercury.business.shop.ShopCreation
-import de.qaware.mercury.business.shop.ShopNotFoundException
-import de.qaware.mercury.business.shop.ShopService
-import de.qaware.mercury.business.shop.ShopUpdate
-import de.qaware.mercury.business.shop.ShopWithDistance
+import de.qaware.mercury.business.shop.*
 import de.qaware.mercury.business.time.Clock
 import de.qaware.mercury.business.uuid.UUIDFactory
 import de.qaware.mercury.storage.shop.ShopRepository
@@ -52,7 +46,7 @@ class ShopServiceImplSpec extends Specification {
 
         then:
         1 * locationService.lookup('83024') >> location
-        1 * shopRepository.findNearby(location) >> [new Shop.ShopBuilder().build()]
+        1 * shopRepository.findApproved(location) >> [new Shop.ShopBuilder().build()]
         nearby.size() == 1
     }
 
