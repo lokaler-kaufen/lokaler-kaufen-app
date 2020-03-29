@@ -163,7 +163,7 @@ class ShopControllerSpec extends Specification {
         ShopListDto shopListDto = ShopListDto.of(shopWithDistanceList)
 
         when:
-        ShopListDto result = controller.search(testLocation)
+        ShopListDto result = controller.search(testLocation, null)
 
         then:
         result == shopListDto
@@ -178,7 +178,7 @@ class ShopControllerSpec extends Specification {
         ShopListDto shopListDto = ShopListDto.of(shopWithDistanceList)
 
         when:
-        ShopListDto result = controller.search(testQuery, testLocation)
+        ShopListDto result = controller.search(testQuery, testLocation, null)
 
         then:
         result == shopListDto
