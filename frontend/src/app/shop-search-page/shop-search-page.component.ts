@@ -6,7 +6,6 @@ import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {NotificationsService} from 'angular2-notifications';
 import {ShopListDto} from '../data/client/model/shopListDto';
 import {ShopListEntryDto} from '../data/client/model/shopListEntryDto';
-import {ShopDetailDto} from '../data/client/model/shopDetailDto';
 
 @Component({
   selector: 'shop-search-page',
@@ -94,4 +93,9 @@ export class ShopSearchPageComponent implements OnInit {
     );
   }
 
+  clearSearchOnEmptyInput($event) {
+    if (!$event.target.value) {
+      this.findAllShopsNearby();
+    }
+  }
 }
