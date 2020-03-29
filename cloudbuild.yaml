@@ -1,4 +1,14 @@
 steps:
+  # Get the .git directory
+  - name: git
+    args:
+      - bash
+      - -c
+      - |-
+        # get the .git directory only
+        git clone --branch $BRANCH_NAME git@github.com:qaware/wir-vs-virus.git /tmp/repo ;
+        # move it to the workspace
+        mv /tmp/repo/.git .
   # Build backend
   - name: gradle:jdk11
     id: "build-backend"
