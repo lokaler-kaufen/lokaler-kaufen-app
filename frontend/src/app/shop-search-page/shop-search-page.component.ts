@@ -15,6 +15,7 @@ import {BreakpointObserver} from '@angular/cdk/layout';
 export class ShopSearchPageComponent implements OnInit {
   searchBusiness: string;
   location: string;
+  newLocation: string;
   dataSource = new MatTableDataSource();
   shops: ShopListEntryDto[] = [];
   displayedColumns: string[] = ['name', 'distance', 'supportedContactTypes'];
@@ -41,8 +42,8 @@ export class ShopSearchPageComponent implements OnInit {
 
     // listen to changed query params
     this.route.queryParams.subscribe((params) => {
-      this.location = params.location;
-      if (!this.location) {
+      this.newLocation = params.location;
+      if (!this.newLocation) {
         this.router.navigate(['']);
       }
 
@@ -55,6 +56,9 @@ export class ShopSearchPageComponent implements OnInit {
   }
 
   performSearch() {
+    if (this.newLocation.length < 5) {
+      return;
+    }
     if (!this.searchBusiness || this.searchBusiness.trim().length === 0) {
       this.findAllShopsNearby();
 
@@ -73,38 +77,62 @@ export class ShopSearchPageComponent implements OnInit {
       this.dataSource = new MatTableDataSource<ShopListEntryDto>([]);
       console.log('Keine Shops gefunden.');
     }
-
+    this.location = this.newLocation;
     this.dataSource.sort = this.sort;
   }
 
   private findAllShopsNearby(): void {
     const headers = new HttpHeaders().set('Content-Type', 'application/json; charset=utf-8');
-    const params = new HttpParams().append('zipCode', this.location);
+    const params = new HttpParams().append('zipCode', this.newLocation);
 
     this.client.get<ShopListDto>('/api/shop/nearby', {headers, params}).subscribe(
       response => this.handleResponse(response),
-      error => {
-        console.log('Error requesting shop overview: ' + error.status + ', ' + error.message);
-        this.notificationsService.error('Tut uns leid!', 'Ein Fehler beim Laden der Shops ist aufgetreten.');
-      }
-    );
+      error => this.handleError(error));
   }
 
   private findShopsBySearchQuery(query: string): void {
-    const params = new HttpParams().append('zipCode', this.location).append('query', query);
+    const params = new HttpParams().append('zipCode', this.newLocation).append('query', query);
 
     this.client.get<ShopListDto>('/api/shop/search', {params}).subscribe(
       response => this.handleResponse(response),
-      error => {
-        console.log('Error requesting shop overview: ' + error.status + ', ' + error.message);
-        this.notificationsService.error('Tut uns leid!', 'Es ist ein Fehler bei der Suche aufgetreten.');
-      }
-    );
+      error => this.handleError(error));
   }
 
-  clearSearchOnEmptyInput($event) {
-    if (!$event.target.value) {
+  private handleError(error) {
+    console.log('Error requesting shop overview: ' + error.status + ', ' + error.message);
+    if (error.status === 400 && error.error.code === 'LOCATION_NOT_FOUND') {
+      this.notificationsService.error('Ungültige PLZ', 'Diese Postleitzahl kennen wir leider nicht, hast du dich vertippt?');
+    } else {
+      this.notificationsService.error('Tut uns leid!', 'Ein Fehler beim Laden der Shops ist aufgetreten.');
+    }
+    this.newLocation = this.location;
+    window.history.replaceState({}, '', '/shops?location=' + this.location);
+  }
+
+  findShopsNearbyWhenInputEmpty($event) {
+    const input = $event.target as HTMLInputElement;
+
+    if (input.value) {
       this.findAllShopsNearby();
     }
+  }
+
+  checkZipCodeInput($event) {
+    const input = $event.target as HTMLInputElement;
+
+    const originalValue: string = input.value;
+    const maxLength = +input.getAttribute('maxlength');
+
+    let value = originalValue.replace(new RegExp(/[^\d]/g), '');
+    if (value.length > maxLength) {
+      value = value.slice(0, maxLength);
+    }
+
+    input.value = value;
+  }
+
+  selectAll($event: MouseEvent) {
+    const input = $event.target as HTMLInputElement;
+    input.select();
   }
 }

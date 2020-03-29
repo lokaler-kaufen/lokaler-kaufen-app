@@ -6,3 +6,19 @@ tr:not(.example-expanded-row):hover {
   flex: 0 0 50% !important;
   width: 50% !important;
 }
+
+.align-baseline {
+  display: flex;
+  align-items: baseline
+}
+
+.zip-code-text {
+  width: 40px;
+  color: #673ab7;
+  text-decoration: underline;
+}
+
+.zip-code-field {
+  width: 40px;
+  color: #673ab7;
+}

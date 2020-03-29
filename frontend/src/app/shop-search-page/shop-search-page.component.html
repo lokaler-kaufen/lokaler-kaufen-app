@@ -1,17 +1,26 @@
-<div>
-  <mat-form-field style="width: 100%;">
+<div class="align-baseline">
+  <mat-form-field class="margin-right" style="width: 75%;">
     <mat-label>Wonach suchst du heute?</mat-label>
     <input
       matInput
       placeholder="Suche nach deinem Lieblingsgeschäft oder nach Begriffen wie Kaffee, Optiker, ..."
       [(ngModel)]="searchBusiness"
-      (keyup.enter)="performSearch()"
-      (keyup)="clearSearchOnEmptyInput($event)"/>
+      (keyup.enter)="performSearch()"/>
     <a (click)="performSearch()" matSuffix>
       <mat-icon>search</mat-icon>
     </a>
   </mat-form-field>
+  <div style="width: 25%; text-align: right;">
+    Läden in der Nähe von
+    <mat-form-field class="zip-code-field">
+      <input matInput type="text"
+             (keyup)="checkZipCodeInput($event)" maxlength="5" minlength="5"
+             [(ngModel)]="newLocation"
+             (click)="selectAll($event)"
+             (keyup.enter)="performSearch()"/></mat-form-field>
+  </div>
 </div>
+
 
 <div>
 
