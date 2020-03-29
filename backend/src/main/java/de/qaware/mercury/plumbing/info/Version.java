@@ -2,12 +2,12 @@ package de.qaware.mercury.plumbing.info;
 
 import lombok.Value;
 
-import java.time.Instant;
+import java.time.OffsetDateTime;
 
 @Value
 public class Version {
     String commitHash;
-    Instant commitTime;
+    OffsetDateTime commitTime;
     boolean localChanges;
     String version;
 }

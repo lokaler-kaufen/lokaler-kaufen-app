@@ -95,11 +95,5 @@ sonarqube {
     }
 }
 
-gitProperties {
-    // Make it parsable with Instant.parse(...)
-    dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
-    dateFormatTimeZone = "UTC"
-}
-
 // have some fun ./gradlew kick ass
 task kick(dependsOn: clean) {}
