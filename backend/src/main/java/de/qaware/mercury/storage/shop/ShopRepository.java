@@ -1,8 +1,7 @@
 package de.qaware.mercury.storage.shop;
 
-import de.qaware.mercury.business.location.GeoLocation;
+import de.qaware.mercury.business.location.BoundingBox;
 import de.qaware.mercury.business.shop.Shop;
-import de.qaware.mercury.business.shop.ShopWithDistance;
 import org.springframework.lang.Nullable;
 
 import java.util.List;
@@ -15,7 +14,9 @@ public interface ShopRepository {
     @Nullable
     Shop findById(Shop.Id id);
 
-    List<ShopWithDistance> findNearby(GeoLocation location);
+    List<Shop> findApproved();
+
+    List<Shop> findApproved(BoundingBox searchArea);
 
     void update(Shop updatedShop);
 
@@ -23,5 +24,7 @@ public interface ShopRepository {
 
     List<Shop> findByName(String name);
 
-    List<ShopWithDistance> search(String query, GeoLocation location);
+    List<Shop> search(String query);
+
+    List<Shop> search(String query, BoundingBox searchArea);
 }

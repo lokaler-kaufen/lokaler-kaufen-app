@@ -1,5 +1,6 @@
 package de.qaware.mercury.business.location.impl;
 
+import de.qaware.mercury.business.location.BoundingBox;
 import de.qaware.mercury.business.location.GeoLocation;
 import org.gavaghan.geodesy.Ellipsoid;
 import org.gavaghan.geodesy.GeodeticCalculator;
@@ -30,5 +31,22 @@ public final class DistanceUtil {
 
         GeodeticCurve geoCurve = CALCULATOR.calculateGeodeticCurve(ELLIPSOID, cord1, cord2);
         return geoCurve.getEllipsoidalDistance() / METERS_IN_1_KM;
+    }
+
+    /**
+     * Calculates a box around a given coordinate with each side being exactly the given distance away from this coordinate.
+     *
+     * @param p        the geo coordinate
+     * @param distance the minimum distance from p to each side of the box in kilometers
+     * @return a box with each side being distance away from p
+     */
+    public static BoundingBox boundingBoxOf(GeoLocation p, double distance) {
+        Ellipsoid reference = Ellipsoid.WGS84;
+        double hypotenuse = Math.sqrt(distance * 1000 * distance * 1000 * 2);
+        GeodeticCalculator geodeticCalculator = new GeodeticCalculator();
+        GlobalCoordinates geoLocationCoordinates = new GlobalCoordinates(p.getLatitude(), p.getLongitude());
+        GlobalCoordinates southWest = geodeticCalculator.calculateEndingGlobalCoordinates(reference, geoLocationCoordinates, 225, hypotenuse);
+        GlobalCoordinates northEast = geodeticCalculator.calculateEndingGlobalCoordinates(reference, geoLocationCoordinates, 45, hypotenuse);
+        return BoundingBox.of(GeoLocation.of(southWest.getLatitude(), southWest.getLongitude()), GeoLocation.of(northEast.getLatitude(), northEast.getLongitude()));
     }
 }

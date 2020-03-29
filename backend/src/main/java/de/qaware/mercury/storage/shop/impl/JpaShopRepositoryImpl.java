@@ -1,9 +1,7 @@
 package de.qaware.mercury.storage.shop.impl;
 
-import de.qaware.mercury.business.location.GeoLocation;
-import de.qaware.mercury.business.location.impl.DistanceUtil;
+import de.qaware.mercury.business.location.BoundingBox;
 import de.qaware.mercury.business.shop.Shop;
-import de.qaware.mercury.business.shop.ShopWithDistance;
 import de.qaware.mercury.business.time.Clock;
 import de.qaware.mercury.storage.shop.ShopRepository;
 import de.qaware.mercury.util.Lists;
@@ -15,6 +13,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -36,25 +35,41 @@ class JpaShopRepositoryImpl implements ShopRepository {
 
     @Override
     @Nullable
-    public Shop findById(Shop.Id id) {
+    public Shop findById(de.qaware.mercury.business.shop.Shop.Id id) {
         log.debug("Find Shop {}", id);
         ShopEntity entity = shopDataRepository.findById(id.getId()).orElse(null);
         return Null.map(entity, ShopEntity::toShop);
     }
 
     @Override
-    public List<ShopWithDistance> findNearby(GeoLocation location) {
-        log.debug("Finding shops nearby location {}", location);
+    public List<Shop> findApproved() {
+        log.debug("Finding approved shops");
 
-        List<ShopWithDistanceProjection> shops = shopDataRepository.findNearby(location.getLatitude(), location.getLongitude());
-        return toShopWithDistance(shops, location);
+        List<ShopEntity> shops = shopDataRepository.findNearby();
+        return shops.stream().map(ShopEntity::toShop).collect(Collectors.toList());
     }
 
     @Override
-    public List<ShopWithDistance> search(String query, GeoLocation location) {
-        List<ShopWithDistanceProjection> shops = shopDataRepository.search("%" + query + "%", location.getLatitude(), location.getLongitude());
-        return toShopWithDistance(shops, location);
+    public List<Shop> findApproved(BoundingBox searchArea) {
+        log.debug("Finding shops nearby location {}", searchArea);
 
+        List<ShopEntity> shops = shopDataRepository.findNearby(searchArea.getNorthEast().getLatitude(), searchArea.getNorthEast().getLongitude(),
+            searchArea.getSouthWest().getLatitude(), searchArea.getSouthWest().getLongitude());
+        return Lists.map(shops, ShopEntity::toShop);
+    }
+
+    @Override
+    public List<Shop> search(String query) {
+        List<ShopEntity> shops = shopDataRepository.search("%" + query + "%");
+        return Lists.map(shops, ShopEntity::toShop);
+    }
+
+    @Override
+    public List<Shop> search(String query, BoundingBox searchArea) {
+        List<ShopEntity> shops = shopDataRepository.search("%" + query + "%",
+            searchArea.getNorthEast().getLatitude(), searchArea.getNorthEast().getLongitude(),
+            searchArea.getSouthWest().getLatitude(), searchArea.getSouthWest().getLongitude());
+        return Lists.map(shops, ShopEntity::toShop);
     }
 
     @Override
@@ -73,10 +88,4 @@ class JpaShopRepositoryImpl implements ShopRepository {
         return Lists.map(shopDataRepository.findByName(name), ShopEntity::toShop);
     }
 
-    private List<ShopWithDistance> toShopWithDistance(List<ShopWithDistanceProjection> shops, GeoLocation location) {
-        return Lists.map(shops, s -> new ShopWithDistance(
-            s.getShopEntity().toShop(),
-            DistanceUtil.distanceInKmBetween(GeoLocation.of(s.getShopEntity().getLatitude(), s.getShopEntity().getLongitude()), location)
-        ));
-    }
 }

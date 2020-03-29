@@ -16,6 +16,8 @@ public interface ShopService {
 
     List<ShopWithDistance> findNearby(String zipCode) throws LocationNotFoundException;
 
+    List<ShopWithDistance> findNearby(String zipCode, int maxDistance) throws LocationNotFoundException;
+
     void delete(Shop.Id parse) throws ShopNotFoundException;
 
     @Nullable
@@ -33,4 +35,6 @@ public interface ShopService {
     List<Shop> findByName(String name);
 
     List<ShopWithDistance> search(String query, String zipCode) throws LocationNotFoundException;
+
+    List<ShopWithDistance> search(String query, String zipCode, int maxDistance) throws LocationNotFoundException;
 }
