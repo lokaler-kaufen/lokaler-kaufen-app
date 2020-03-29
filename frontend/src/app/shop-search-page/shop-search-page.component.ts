@@ -109,14 +109,6 @@ export class ShopSearchPageComponent implements OnInit {
     window.history.replaceState({}, '', '/shops?location=' + this.location);
   }
 
-  findShopsNearbyWhenInputEmpty($event) {
-    const input = $event.target as HTMLInputElement;
-
-    if (input.value) {
-      this.findAllShopsNearby();
-    }
-  }
-
   checkZipCodeInput($event) {
     const input = $event.target as HTMLInputElement;
 
