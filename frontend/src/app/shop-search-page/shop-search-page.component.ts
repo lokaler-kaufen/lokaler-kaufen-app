@@ -4,8 +4,7 @@ import {MatSort} from '@angular/material/sort';
 import {ActivatedRoute, Router} from '@angular/router';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {NotificationsService} from 'angular2-notifications';
-import {ShopListDto} from '../data/client/model/shopListDto';
-import {ShopListEntryDto} from '../data/client/model/shopListEntryDto';
+import {ShopListDto, ShopListEntryDto} from '../data/api';
 
 @Component({
   selector: 'shop-search-page',

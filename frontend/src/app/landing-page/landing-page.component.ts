@@ -4,9 +4,8 @@ import {debounceTime, map, switchMap} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {ZipCodeCacheService} from './zip-code-cache.service';
-import {LocationSuggestionDto} from '../data/client/model/locationSuggestionDto';
-import {LocationSuggestionsDto} from '../data/client/model/locationSuggestionsDto';
 import {NotificationsService} from 'angular2-notifications';
+import {LocationSuggestionDto, LocationSuggestionsDto} from '../data/api';
 
 @Component({
   selector: 'landing-page',

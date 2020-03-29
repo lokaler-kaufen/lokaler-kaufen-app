@@ -4,7 +4,7 @@ import {ActivatedRoute} from '@angular/router';
 import {AdminService} from '../shared/admin.service';
 import {NotificationsService} from 'angular2-notifications';
 import {UpdateShopData} from '../shop-details-config/shop-details-config.component';
-import {ShopAdminDto, ShopOwnerDetailDto} from '../data/client';
+import {ShopAdminDto, ShopOwnerDetailDto} from '../data/api';
 
 @Component({
   selector: 'admin-details-page',

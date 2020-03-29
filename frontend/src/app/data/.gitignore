@@ -1,0 +1,12 @@
+client/.swagger-codegen/
+client/api/
+client/.gitignore
+client/.npmignore
+client/.swagger-codegen-ignore
+client/api.module.ts
+client/configuration.ts
+client/encoder.ts
+client/git_push.sh
+api.ts
+client/ng-package.json
+client/variables.ts

@@ -5,7 +5,7 @@ import {ActivatedRoute} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {ShopCreationSuccessPopupComponent} from '../shop-creation-success-popup/shop-creation-success-popup.component';
 import {NotificationsService} from 'angular2-notifications';
-import {CreateShopDto, SlotConfigDto} from '../data/client';
+import {CreateShopDto, SlotConfigDto} from '../data/api';
 import {ContactTypesEnum} from '../contact-types/available-contact-types';
 
 export class OpeningHours {

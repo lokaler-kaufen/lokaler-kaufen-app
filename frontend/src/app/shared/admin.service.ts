@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {ShopsAdminDto} from '../data/client/model/shopsAdminDto';
-import {ShopAdminDto} from '../data/client/model/shopAdminDto';
+import {ShopAdminDto, ShopsAdminDto} from '../data/api';
 import {UpdateShopData} from '../shop-details-config/shop-details-config.component';
 
 @Injectable({providedIn: 'root'})

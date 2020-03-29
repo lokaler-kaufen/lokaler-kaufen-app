@@ -13,12 +13,8 @@ import {
 } from '../booking-success-popup/booking-success-popup.component';
 import {HttpClient} from '@angular/common/http';
 import {NotificationsService} from 'angular2-notifications';
-import {ShopDetailDto} from '../data/client/model/shopDetailDto';
-import {SlotDto} from '../data/client/model/slotDto';
-import {SlotsDto} from '../data/client/model/slotsDto';
-import {CreateReservationDto} from '../data/client/model/createReservationDto';
+import {CreateReservationDto, ShopDetailDto, SlotDto, SlotsDto} from '../data/api';
 import {ZipCodeCacheService} from '../landing-page/zip-code-cache.service';
-import {ShopAdminDto} from '../data/client/model/shopAdminDto';
 
 @Component({
   selector: 'shop-details-page',

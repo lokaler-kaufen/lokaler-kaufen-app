@@ -3,7 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {NotificationsService} from 'angular2-notifications';
 import {ReplaySubject} from 'rxjs';
-import {ShopOwnerDetailDto} from '../data/client/model/shopOwnerDetailDto';
+import {ShopOwnerDetailDto} from '../data/api';
 import {UpdateShopData} from '../shop-details-config/shop-details-config.component';
 
 @Component({

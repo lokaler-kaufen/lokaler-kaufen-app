@@ -4,7 +4,7 @@ import {BusinessHours, setRightSlot} from '../shop-creation-page/shop-creation-p
 import {MatDialog} from '@angular/material/dialog';
 import {NotificationsService} from 'angular2-notifications';
 import {Observable, ReplaySubject} from 'rxjs';
-import {DayDto, ShopOwnerDetailDto, SlotConfigDto, UpdateShopDto} from '../data/client';
+import {DayDto, ShopOwnerDetailDto, SlotConfigDto, UpdateShopDto} from '../data/api';
 import {ContactTypesEnum} from '../contact-types/available-contact-types';
 
 export interface UpdateShopData {
