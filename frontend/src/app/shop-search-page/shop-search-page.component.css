@@ -12,13 +12,36 @@ tr:not(.example-expanded-row):hover {
   align-items: baseline
 }
 
-.zip-code-text {
-  width: 40px;
-  color: #673ab7;
-  text-decoration: underline;
+.zip-code-div {
+  width: 25%;
+  text-align: right;
 }
 
 .zip-code-field {
   width: 40px;
   color: #673ab7;
+  line-height: 1;
+}
+
+.search-field {
+  width: 75%;
+}
+
+/* switch footer links to column mode on small devices */
+@media screen and (max-width: 719px) {
+  .align-baseline {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .zip-code-div {
+    width: 100%;
+    text-align: center;
+    order: 1;
+  }
+
+  .search-field {
+    width: 100%;
+    order: 2;
+  }
 }
