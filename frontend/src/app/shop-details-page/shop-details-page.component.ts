@@ -52,9 +52,9 @@ export class ShopDetailsPageComponent implements OnInit {
           this.notificationsService.error('Tut uns leid!', 'Es ist ein Fehler beim Laden der Details aufgetreten.');
         });
 
-    this.client.get<SlotsDto>('/api/reservation/' + this.shopId + '/slot')
+    this.client.get<SlotsDto>('/api/reservation/' + this.shopId + '/slot?days=1')
       .subscribe((slots: SlotsDto) => {
-          this.slots = slots.slots;
+          this.slots = slots.slots[0];
         },
         error => {
           console.log('Error requesting slots: ' + error.status + ', ' + error.message);
@@ -102,9 +102,9 @@ export class ShopDetailsPageComponent implements OnInit {
           this.client.post<SlotsDto>('/api/reservation/' + this.shopId, reservationDto)
             .subscribe(() => {
                 this.matDialog.open(BookingSuccessPopupComponent, successConfig);
-                this.client.get<SlotsDto>('/api/reservation/' + this.shopId + '/slot')
+                this.client.get<SlotsDto>('/api/reservation/' + this.shopId + '/slot?days=1')
                   .subscribe((slots: SlotsDto) => {
-                    this.slots = slots.slots;
+                    this.slots = slots.slots[0];
                   });
               },
               error => {

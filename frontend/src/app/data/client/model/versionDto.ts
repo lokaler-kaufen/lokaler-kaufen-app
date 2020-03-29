@@ -10,10 +10,9 @@
  * Do not edit the class manually.
  */
 
-export interface SlotDto { 
-    available?: boolean;
-    date?: string;
-    end?: string;
-    id?: string;
-    start?: string;
+export interface VersionDto { 
+    commitHash?: string;
+    commitTime?: string;
+    localChanges?: boolean;
+    version?: string;
 }

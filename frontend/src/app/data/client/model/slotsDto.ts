@@ -12,5 +12,5 @@
 import {SlotDto} from './slotDto';
 
 export interface SlotsDto {
-    slots?: Array<SlotDto>;
+    slots?: { [key: string]: Array<SlotDto>; };
 }
