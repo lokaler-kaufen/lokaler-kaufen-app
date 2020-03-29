@@ -1,0 +1,6 @@
+# If you run tests with that profile, you have to start a postgres:11 container with exposed port 5432 yourself
+# docker run --rm -e POSTGRES_PASSWORD=password -p 5432:5432 postgres:11
+spring.datasource:
+  url: "jdbc:postgresql://localhost:5432/postgres"
+  username: "postgres"
+  password: "password"
