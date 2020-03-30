@@ -17,7 +17,7 @@
              maxlength="5"
              minlength="5"
              matInput/>
-      <mat-autocomplete #auto="matAutocomplete">
+      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="start()">
         <mat-option *ngFor="let suggestion of suggestions" [value]="suggestion.zipCode">
           {{suggestion.zipCode}} {{suggestion.placeName}}
         </mat-option>
