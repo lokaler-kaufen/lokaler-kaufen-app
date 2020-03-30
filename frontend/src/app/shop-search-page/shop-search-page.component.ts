@@ -128,4 +128,8 @@ export class ShopSearchPageComponent implements OnInit {
     const input = $event.target as HTMLInputElement;
     input.select();
   }
+
+  sortShopsForMobile() {
+    return this.shops.sort((shop1, shop2) => shop1.distance - shop2.distance);
+  }
 }

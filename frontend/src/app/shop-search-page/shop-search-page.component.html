@@ -21,9 +21,7 @@
   </div>
 </div>
 
-
 <div>
-
   <mat-table [dataSource]="dataSource" matSort [matSortDisableClear]="true" class="mat-elevation-z1 only-large">
     <!-- Name Column -->
     <ng-container matColumnDef="name">
@@ -70,9 +68,8 @@
 
   <div class="only-small"
        [ngClass]="{'margin-big-bottom' : !last}"
-       *ngFor="let shop of shops; last as last"
-       (click)="showDetailPage({id: shop.id})"
-  >
+       *ngFor="let shop of sortShopsForMobile(); last as last"
+       (click)="showDetailPage({id: shop.id})">
     <mat-divider></mat-divider>
     <div class="padding-vertical">
       <h3>{{ shop.name }}</h3>
