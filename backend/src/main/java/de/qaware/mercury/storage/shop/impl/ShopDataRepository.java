@@ -20,14 +20,23 @@ public interface ShopDataRepository extends JpaRepository<ShopEntity, UUID> {
     )
     List<ShopEntity> findActive();
 
+    /*
+     *
+     * This query will not work, if the minimum longitude is in the eastern hemisphere (>0) while the maximum longitude
+     * is in the western hemisphere (<0). Those regions in question are mostly ocean and do not have any zipCodes,
+     * so we're fine with this simpler solution for the moment. If we want to support the eastern most regions of Russia,
+     * we need to add another query which handles the case maxLong < minLong correctly.
+     *
+     */
+
     /**
      * Finds all approved and enabled shops within the given coordinates matching the given query string
      *
      * @param query        a query string, supporting '%' as a 'like' operator
-     * @param maxLatitude  the maximum latitude
-     * @param maxLongitude the maximum longitude
-     * @param minLatitude  the minimum latitude
-     * @param minLongitude the minimum longitude
+     * @param maxLatitude  the maximum latitude (must be > minimum latitude)
+     * @param maxLongitude the maximum longitude (must be > minimum longitude)
+     * @param minLatitude  the minimum latitude (must be < minimum latitude)
+     * @param minLongitude the minimum longitude (must be < maximum longitude)
      * @return all shop entities matching the given query within the given coordinates
      */
     @Query(
@@ -39,13 +48,22 @@ public interface ShopDataRepository extends JpaRepository<ShopEntity, UUID> {
                                   @Param("maxLatitude") double maxLatitude, @Param("maxLongitude") double maxLongitude,
                                   @Param("minLatitude") double minLatitude, @Param("minLongitude") double minLongitude);
 
+    /*
+     *
+     * This query will not work, if the minimum longitude is in the eastern hemisphere (>0) while the maximum longitude
+     * is in the western hemisphere (<0). Those regions in question are mostly ocean and do not have any zipCodes,
+     * so we're fine with this simpler solution for the moment. If we want to support the eastern most regions of Russia,
+     * we need to add another query which handles the case maxLong < minLong correctly.
+     *
+     */
+
     /**
      * Finds all approved and enabled shops within the given coordinates
      *
-     * @param maxLatitude  the maximum latitude
-     * @param maxLongitude the maximum longitude
-     * @param minLatitude  the minimum latitude
-     * @param minLongitude the minimum longitude
+     * @param maxLatitude  the maximum latitude (must be > minimum latitude)
+     * @param maxLongitude the maximum longitude (must be > minimum longitude)
+     * @param minLatitude  the minimum latitude (must be < minimum latitude)
+     * @param minLongitude the minimum longitude (must be < maximum longitude)
      * @return all approved (and enabled) shops within the given coordinates
      */
     @Query(
