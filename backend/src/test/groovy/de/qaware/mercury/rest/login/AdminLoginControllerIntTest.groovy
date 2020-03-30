@@ -1,7 +1,7 @@
 package de.qaware.mercury.rest.login
 
 import de.qaware.mercury.business.login.AdminLoginService
-import de.qaware.mercury.plumbing.CustomActiveProfileResolver
+import de.qaware.mercury.test.plumbing.CustomActiveProfileResolver
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest

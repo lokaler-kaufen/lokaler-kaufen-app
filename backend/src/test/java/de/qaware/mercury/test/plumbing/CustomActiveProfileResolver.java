@@ -1,4 +1,4 @@
-package de.qaware.mercury.plumbing;
+package de.qaware.mercury.test.plumbing;
 
 import org.springframework.test.context.ActiveProfilesResolver;
 
