@@ -16,7 +16,7 @@ public interface ShopDataRepository extends JpaRepository<ShopEntity, UUID> {
      * @return all approved and enabled shops
      */
     @Query(
-        "SELECT s as shopEntity  FROM ShopEntity AS s WHERE s.enabled = true AND s.approved = true"
+        "SELECT s FROM ShopEntity s WHERE s.enabled = true AND s.approved = true"
     )
     List<ShopEntity> findActive();
 
@@ -31,9 +31,9 @@ public interface ShopDataRepository extends JpaRepository<ShopEntity, UUID> {
      * @return all shop entities matching the given query within the given coordinates
      */
     @Query(
-        "SELECT s as shopEntity FROM ShopEntity AS s " +
+        "SELECT s FROM ShopEntity s " +
             "WHERE (lower(s.name) LIKE lower(:query) OR lower(s.details) LIKE lower(:query)) AND s.enabled = true AND s.approved = true " +
-            "AND s.latitude < :maxLatitude AND s.latitude > :minLatitude AND s.longitude < :maxLongitude AND s.longitude > :minLongitude"
+            "AND s.latitude <= :maxLatitude AND s.latitude >= :minLatitude AND s.longitude <= :maxLongitude AND s.longitude >= :minLongitude"
     )
     List<ShopEntity> searchActive(@Param("query") String query,
                                   @Param("maxLatitude") double maxLatitude, @Param("maxLongitude") double maxLongitude,
@@ -49,8 +49,8 @@ public interface ShopDataRepository extends JpaRepository<ShopEntity, UUID> {
      * @return all approved (and enabled) shops within the given coordinates
      */
     @Query(
-        "SELECT s as shopEntity  FROM ShopEntity AS s WHERE s.enabled = true AND s.approved = true " +
-            "AND s.latitude < :maxLatitude AND s.latitude > :minLatitude AND s.longitude < :maxLongitude AND s.longitude > :minLongitude"
+        "SELECT s FROM ShopEntity s WHERE s.enabled = true AND s.approved = true " +
+            "AND s.latitude <= :maxLatitude AND s.latitude >= :minLatitude AND s.longitude <= :maxLongitude AND s.longitude >= :minLongitude"
     )
     List<ShopEntity> findActive(@Param("maxLatitude") double maxLatitude, @Param("maxLongitude") double maxLongitude,
                                 @Param("minLatitude") double minLatitude, @Param("minLongitude") double minLongitude);
@@ -62,7 +62,7 @@ public interface ShopDataRepository extends JpaRepository<ShopEntity, UUID> {
      * @return all shop entities matching the given query
      */
     @Query(
-        "SELECT s as shopEntity FROM ShopEntity AS s " +
+        "SELECT s FROM ShopEntity s " +
             "WHERE (lower(s.name) LIKE lower(:query) OR lower(s.details) LIKE lower(:query)) AND s.enabled = true AND s.approved = true"
     )
     List<ShopEntity> searchActive(@Param("query") String query);
