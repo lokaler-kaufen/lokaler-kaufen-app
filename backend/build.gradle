@@ -33,7 +33,6 @@ repositories {
 
 ext {
     drivers = ["firefox", "chrome", "chromeHeadless"]
-    baseUrl = "http://localhost:4200"
 
     ext {
         gebVersion = '3.4'
@@ -169,7 +168,7 @@ drivers.each { driver ->
 
         outputs.upToDateWhen { false }
 
-        systemProperty "geb.build.baseUrl", "$baseUrl"
+        systemProperty "geb.build.baseUrl", System.getProperty("baseUrl", "http://localhost:4200")
         systemProperty "geb.build.reportsDir", reporting.file("geb/$name")
         systemProperty "geb.env", driver
     }
