@@ -48,7 +48,7 @@
   </mat-step>
   <mat-step [stepControl]="descriptionFormGroup">
     <form [formGroup]="descriptionFormGroup">
-      <ng-template matStepLabel>Beschreiben Sie Ihren Laden ein bisschen.</ng-template>
+      <ng-template matStepLabel>Beschreiben Sie Ihren Laden.</ng-template>
       <div style="width: 100%">
         <p>Was verkaufen Sie, was zeichnet Ihren Laden aus und wobei können Sie Ihre Kunden am besten beraten?</p>
         <mat-form-field style="width: 100%">
@@ -74,7 +74,7 @@
   </mat-step>
   <mat-step [stepControl]="contactFormGroup">
     <form [formGroup]="contactFormGroup">
-      <ng-template matStepLabel>Welche Kontaktmöglichkeiten möchten Sie anbieten?</ng-template>
+      <ng-template matStepLabel>Ihre Kontaktmöglichkeiten. </ng-template>
       <p>Füllen Sie einfach alle Möglichkeiten aus, die Sie bedienen wollen. </p>
       <small *ngIf="contactFormGroup.hasError('atLeastOneRequired')" style="color: red">{{contactFormGroup.getError('atLeastOneRequired').text}}
       </small>

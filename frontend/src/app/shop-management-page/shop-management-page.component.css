@@ -1,0 +1,11 @@
+.save-button {
+  width: 25%;
+  text-align: center
+}
+
+@media (max-width: 719px) {
+  .save-button {
+    width: 50%;
+    text-align: center;
+  }
+}
