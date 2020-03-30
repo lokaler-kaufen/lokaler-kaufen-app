@@ -50,7 +50,7 @@ If you want to skip all tests, run gradle with `-x test`:
 To skip only the integration tests, run gradle with `-DskipIntegrationTests`:
 
 ```
-./gradlew -DskipIntegrationTests
+./gradlew build -DskipIntegrationTests
 ```
 
 If you have a modern linux which docker doesn't support and you normally run your containers with podman, 
