@@ -45,7 +45,7 @@ If you have a modern linux which docker doesn't support and you normally run you
 Testcontainers (which we use for integration testing) unfortunately won't work.
 
 To run the build on such a system, a running PostgreSQL database must be provided on port 5432 with credentials 
-`postgres:postgres`. Easiest way to do that is with podman:
+`postgres:password`. Easiest way to do that is with podman:
 
 ```
 podman run --rm -e POSTGRES_PASSWORD=password -p 5432:5432 postgres:11
