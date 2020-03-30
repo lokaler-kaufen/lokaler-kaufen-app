@@ -88,6 +88,8 @@ Start with looking at the `de.qaware.mercury.rest.shop.ShopController` class.
 * Don't use `Random` etc. These are not mockable in tests. Use the `RNG` interface instead.
 * Don't write the constructors of your Spring beans by hand, use `@RequiredArgsConstructor(access = AccessLevel.PACKAGE)`
 * When writing Spock tests, use `def` as little as possible (`def` breaks refactoring) 
+* When writing Spock tests, annotate the class with `@TypeChecked` (this enables strict type checking in Groovy)
+* When writing integration tests, annotate the class with `@IntegrationTest`
 
 ## How To's
 
