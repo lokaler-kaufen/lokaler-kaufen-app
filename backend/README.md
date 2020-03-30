@@ -41,6 +41,18 @@ If you have docker installed, just run
 ./gradlew build
 ```
 
+If you want to skip all tests, run gradle with `-x test`:
+
+```
+./gradlew build -x test
+```
+
+To skip only the integration tests, run gradle with `-DskipIntegrationTests`:
+
+```
+./gradlew -DskipIntegrationTests
+```
+
 If you have a modern linux which docker doesn't support and you normally run your containers with podman, 
 Testcontainers (which we use for integration testing) unfortunately won't work.
 
