@@ -1,11 +1,11 @@
 Hallo,
 
-wir freuen uns, dass du deinen Laden bei uns registrieren möchtest! Klicke dazu einfach auf diesen Link:
+wir freuen uns, dass Sie Ihren Laden bei uns registrieren möchten! Klicken Sie dazu bitte einfach auf diesen Link:
 
 {{ link }}
 
-Falls das nicht funktioniert, kopiere den Link bitte in deinen Browser.
+Falls das nicht funktioniert, können Sie den Link auch direkt in den Browser kopieren.
 
 Viele Grüße,
 
-dein lokaler.kaufen Team
+Ihr lokaler.kaufen Team

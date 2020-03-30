@@ -1,7 +1,7 @@
 Hallo,
 
-wir wollten dir nur kurz bestätigen, dass wir deine Terminabsage für den Termin am {{ date }} um {{ start }} Uhr erhalten haben.
+wir wollten Ihnen nur kurz bestätigen, dass wir Ihre Terminabsage für den Termin am {{ date }} um {{ start }} Uhr erhalten haben.
 
 Viele Grüße,
 
-dein lokaler.kaufen Team
+Ihr lokaler.kaufen Team
