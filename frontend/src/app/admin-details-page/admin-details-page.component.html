@@ -2,7 +2,7 @@
   <shop-details *ngIf="shopOwnerDetails" (updateShopEvent)="updateShop($event)"
                 [detailsObservable]="shopOwnerDetails"
                 [sendUpdatedShopDetails]="getUpdatedDetails"></shop-details>
-  <div><h3>Email: {{shopDetails.email}}</h3></div>
+  <div><h3>E-Mail: {{shopDetails.email}}</h3></div>
   <button class="admin-button" mat-raised-button color="primary"
           (click)="this.getUpdatedDetails.next(true)">Änderungen speichern
   </button>

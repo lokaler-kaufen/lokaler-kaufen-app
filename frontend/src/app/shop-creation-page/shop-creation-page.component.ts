@@ -188,7 +188,7 @@ export class ShopCreationPageComponent implements OnInit {
         if (error.status === 409 && error.error.code === 'SHOP_ALREADY_EXISTS') {
           this.notificationsService.error(
             'Moment mal...',
-            'Sie haben sich bereits registriert. Sie können Sich unter Login für Ladenbesitzer anmelden.'
+            'Sie haben sich bereits registriert. Sie können sich unter Login für Ladenbesitzer anmelden.'
           );
         } else {
           this.notificationsService.error('Tut uns leid!', 'Ihr Laden konnte nicht angelegt werden.');

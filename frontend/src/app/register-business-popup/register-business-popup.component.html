@@ -1,10 +1,10 @@
 <div *ngIf="!showConfirmDialog">
   <h1 mat-dialog-title>Jetzt geht's los!</h1>
   <div mat-dialog-content>
-    <p>In wenigen Schritten zu Ihrem eigenen Laden auf lokaler.kaufen! Geben Sie einfach Ihre Email-Adresse ein und
+    <p>In wenigen Schritten zu Ihrem eigenen Laden auf lokaler.kaufen! Geben Sie einfach Ihre E-Mail-Adresse ein und
       lassen Sie sich von unserem Assistenten durch die Laden-Erstellung begleiten. Ganz einfach, versprochen!</p>
     <mat-form-field>
-      <mat-label>Email</mat-label>
+      <mat-label>E-Mail</mat-label>
       <input matInput pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$" required [(ngModel)]="email"
              (keyup.enter)="sendConfirmationMail()">
     </mat-form-field>
@@ -17,7 +17,7 @@
 <div *ngIf="showConfirmDialog">
   <h1 mat-dialog-title>Soweit so gut!</h1>
   <div mat-dialog-content>
-    <p>Wir haben Ihnen eine Email an {{email}} geschickt. Bitte bestätigen Sie kurz Ihre Email-Adresse, indem Sie auf
+    <p>Wir haben Ihnen eine E-Mail an {{email}} geschickt. Bitte bestätigen Sie kurz Ihre E-Mail-Adresse, indem Sie auf
       den Link in der Mail klicken.</p>
   </div>
   <div mat-dialog-actions style="alignment: center">

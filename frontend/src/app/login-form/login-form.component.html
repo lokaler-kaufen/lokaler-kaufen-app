@@ -1,10 +1,10 @@
 <form [formGroup]="formController" (ngSubmit)="onSubmit()">
   <mat-form-field class="form-item">
-    <mat-label>Email</mat-label>
+    <mat-label>E-Mail</mat-label>
     <input
       type="text"
       formControlName="email"
-      placeholder="Email"
+      placeholder="E-Mail"
       required
       matInput
     />
@@ -30,7 +30,7 @@
   </button>
 
   <p class="error" *ngIf="isFailed()">
-    Tut uns leid, der Login ist fehlgeschlagen. Entweder haben Sie sich bei Ihrer Email-Adresse und/oder beim Passwort
+    Tut uns leid, der Login ist fehlgeschlagen. Entweder haben Sie sich bei Ihrer E-Mail-Adresse und/oder beim Passwort
     vertippt oder das System hat gerade ein paar Problemchen.
   </p>
 </form>
