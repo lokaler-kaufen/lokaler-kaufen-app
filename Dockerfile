@@ -27,8 +27,8 @@ COPY . /workspace
 COPY --from=frontend-build /workspace/frontend/dist/mercury-ui/. /workspace/backend/src/main/resources/static
 WORKDIR /workspace/backend
 
-# run backend build
-RUN gradle build
+# assemble backend
+RUN gradle assemble
 
 ##############################
 # STAGE 3: App package build #
