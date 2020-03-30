@@ -61,11 +61,19 @@ dependencies {
     testImplementation "org.spockframework:spock-core"
     testImplementation "org.spockframework:spock-spring"
 
+    // Testcontainers for integration tests
+    testCompile 'org.testcontainers:postgresql:1.13.0'
+
     testRuntimeOnly "net.bytebuddy:byte-buddy:1.9.3"
     testRuntimeOnly "org.objenesis:objenesis:2.6"
 }
 
 test {
+    // Run gradle with -DskipIntegrationTests to skip integration tests
+    if (System.getProperty("skipIntegrationTests") != null) {
+        systemProperty("spock.configuration", "SpockNoIntegrationTests.groovy")
+    }
+
     useJUnitPlatform()
     testLogging {
         events "skipped", "failed"

@@ -33,6 +33,42 @@ to the application to start in `dev` profile.
 
 ## Developing
 
+### Run the build
+
+If you have docker installed, just run
+
+```shell script
+./gradlew build
+```
+
+If you want to skip all tests, run gradle with `-x test`:
+
+```
+./gradlew build -x test
+```
+
+To skip only the integration tests, run gradle with `-DskipIntegrationTests`:
+
+```
+./gradlew -DskipIntegrationTests
+```
+
+If you have a modern linux which docker doesn't support and you normally run your containers with podman, 
+Testcontainers (which we use for integration testing) unfortunately won't work.
+
+To run the integration tests on such a system, a running PostgreSQL database must be provided on port 5432 with credentials 
+`postgres:password`. Easiest way to do that is with podman:
+
+```
+podman run --rm -e POSTGRES_PASSWORD=password -p 5432:5432 postgres:11
+```
+
+Then set the environment variable `MERCURY_NO_TESTCONTAINER=1` and run the build:
+
+```shell script
+MERCURY_NO_TESTCONTAINER=1 ./gradlew build
+```
+
 ### Get an architectural overview
 
 Start with looking at the `de.qaware.mercury.rest.shop.ShopController` class.
@@ -51,7 +87,13 @@ Start with looking at the `de.qaware.mercury.rest.shop.ShopController` class.
 * Don't use `Instant.now()`, `LocalDateTime.now()` etc. These are not mockable in tests. Use the `Clock` interface instead.
 * Don't use `Random` etc. These are not mockable in tests. Use the `RNG` interface instead.
 * Don't write the constructors of your Spring beans by hand, use `@RequiredArgsConstructor(access = AccessLevel.PACKAGE)`
+
+### Conventions for tests
+
+* Use Spock, not JUnit 
 * When writing Spock tests, use `def` as little as possible (`def` breaks refactoring) 
+* When writing Spock tests, annotate the class with `@TypeChecked` (this enables strict type checking in Groovy)
+* When writing integration tests, annotate the tests with `@IntegrationTest`
 
 ## How To's
 

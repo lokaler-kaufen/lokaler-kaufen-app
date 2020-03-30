@@ -1,0 +1,5 @@
+# This will automatically start a docker container running PostgreSQL 11 and connects to it
+# See https://www.testcontainers.org/modules/databases/#database-containers-launched-via-jdbc-url-scheme
+spring.datasource:
+  driver-class-name: "org.testcontainers.jdbc.ContainerDatabaseDriver"
+  url: "jdbc:tc:postgresql:11:///mercury"
