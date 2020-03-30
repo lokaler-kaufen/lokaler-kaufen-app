@@ -22,7 +22,8 @@
     <div class="only-large">
       <mat-tab-group>
         <mat-tab *ngFor="let slots of slotsPerDay">
-          <ng-template mat-tab-label class="day-label"><span (click)="activatedSlot = slots">{{slots.dayName}}</span>
+          <ng-template mat-tab-label><div (click)="activatedSlot = slots"
+                                           [ngClass]="!slots.hasSlots? 'not-open' : ''">{{slots.dayName}}</div>
           </ng-template>
           <ng-template matTabContent>
             <h3 *ngIf="!slots.hasSlots" class="text-no-values margin-top">
