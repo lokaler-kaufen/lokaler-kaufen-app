@@ -4,13 +4,7 @@ import de.qaware.mercury.business.email.EmailService
 import de.qaware.mercury.business.location.GeoLocation
 import de.qaware.mercury.business.location.LocationService
 import de.qaware.mercury.business.login.ShopLoginService
-import de.qaware.mercury.business.shop.Shop
-import de.qaware.mercury.business.shop.ShopAlreadyExistsException
-import de.qaware.mercury.business.shop.ShopCreation
-import de.qaware.mercury.business.shop.ShopNotFoundException
-import de.qaware.mercury.business.shop.ShopService
-import de.qaware.mercury.business.shop.ShopUpdate
-import de.qaware.mercury.business.shop.ShopWithDistance
+import de.qaware.mercury.business.shop.*
 import de.qaware.mercury.business.time.Clock
 import de.qaware.mercury.business.uuid.UUIDFactory
 import de.qaware.mercury.storage.shop.ShopRepository
@@ -48,12 +42,40 @@ class ShopServiceImplSpec extends Specification {
         GeoLocation location = GeoLocation.of(0.0, 0.0)
 
         when:
-        List<ShopWithDistance> nearby = shopService.findNearby('83024')
+        List<ShopWithDistance> nearby = shopService.findActive('83024')
 
         then:
         1 * locationService.lookup('83024') >> location
-        1 * shopRepository.findNearby(location) >> [new Shop.ShopBuilder().build()]
+        1 * shopRepository.findActive() >> [new Shop.ShopBuilder().geoLocation(GeoLocation.of(0.0, 0.0)).build()]
         nearby.size() == 1
+    }
+
+    def "Shops outside the search radius are filtered"() {
+        setup:
+        GeoLocation location = GeoLocation.of(0.5, 0.5)
+        // 5 km around our location
+        int maxDistance = 5
+
+        // a location more than 5km away from our location (1.5 degrees should be about 15km)
+        GeoLocation remoteLocation = GeoLocation.of(2, 2)
+
+        String nameOfShopWithin = "within"
+
+
+        when:
+        List<ShopWithDistance> nearby = shopService.findActive('83024', maxDistance)
+
+        then:
+        1 * locationService.lookup('83024') >> location
+
+        // one shop within our radius, one outside
+        1 * shopRepository.findActive(_) >> [new Shop.ShopBuilder().geoLocation(location).name(nameOfShopWithin).build(), new Shop.ShopBuilder().geoLocation(remoteLocation).build()]
+
+        // we should just get one
+        nearby.size() == 1
+
+        // we get the right one back
+        nearby.get(0).shop.name == nameOfShopWithin
     }
 
     def "Delete shop by ID"() {
@@ -247,11 +269,39 @@ class ShopServiceImplSpec extends Specification {
         GeoLocation location = GeoLocation.of(0.0, 0.0)
 
         when:
-        List<ShopWithDistance> results = shopService.search('*', '83024')
+        List<ShopWithDistance> results = shopService.searchActive('*', '83024')
 
         then:
         1 * locationService.lookup('83024') >> location
-        1 * shopRepository.search('*', location) >> [new ShopWithDistance(null, 0.0)]
+        1 * shopRepository.searchActive('*') >> [new Shop.ShopBuilder().geoLocation(GeoLocation.of(0, 0)).build()]
         results.size() == 1
+    }
+
+    def "Search with max distance only provides shops within radius"() {
+        given:
+        // our location
+        GeoLocation location = GeoLocation.of(0.5, 0.5)
+
+        // a location outside our search radius
+        GeoLocation remoteLocation = GeoLocation.of(2.0, 2.0)
+
+        // our search radius in km
+        int maxDistance = 5
+        String nameOfShopWithin = "within"
+
+        when:
+        List<ShopWithDistance> results = shopService.searchActive('*', '83024', maxDistance)
+
+        then:
+        1 * locationService.lookup('83024') >> location
+        // one shop within, one outside our search radius
+        1 * shopRepository.searchActive('*', _) >> [new Shop.ShopBuilder().geoLocation(location).name(nameOfShopWithin).build(), new Shop.ShopBuilder().geoLocation(remoteLocation).build()]
+
+        // we only get one shop back
+        results.size() == 1
+
+        // we get the right one back
+        results.get(0).shop.name == nameOfShopWithin
+
     }
 }

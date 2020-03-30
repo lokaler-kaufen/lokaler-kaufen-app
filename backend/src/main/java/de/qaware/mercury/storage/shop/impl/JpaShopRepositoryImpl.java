@@ -1,9 +1,7 @@
 package de.qaware.mercury.storage.shop.impl;
 
-import de.qaware.mercury.business.location.GeoLocation;
-import de.qaware.mercury.business.location.impl.DistanceUtil;
+import de.qaware.mercury.business.location.BoundingBox;
 import de.qaware.mercury.business.shop.Shop;
-import de.qaware.mercury.business.shop.ShopWithDistance;
 import de.qaware.mercury.business.time.Clock;
 import de.qaware.mercury.storage.shop.ShopRepository;
 import de.qaware.mercury.util.Lists;
@@ -43,18 +41,34 @@ class JpaShopRepositoryImpl implements ShopRepository {
     }
 
     @Override
-    public List<ShopWithDistance> findNearby(GeoLocation location) {
-        log.debug("Finding shops nearby location {}", location);
+    public List<Shop> findActive() {
+        log.debug("Finding approved shops");
 
-        List<ShopWithDistanceProjection> shops = shopDataRepository.findNearby(location.getLatitude(), location.getLongitude());
-        return toShopWithDistance(shops, location);
+        List<ShopEntity> shops = shopDataRepository.findActive();
+        return Lists.map(shops, ShopEntity::toShop);
     }
 
     @Override
-    public List<ShopWithDistance> search(String query, GeoLocation location) {
-        List<ShopWithDistanceProjection> shops = shopDataRepository.search("%" + query + "%", location.getLatitude(), location.getLongitude());
-        return toShopWithDistance(shops, location);
+    public List<Shop> findActive(BoundingBox searchArea) {
+        log.debug("Finding shops nearby location {}", searchArea);
 
+        List<ShopEntity> shops = shopDataRepository.findActive(searchArea.getNorthEast().getLatitude(), searchArea.getNorthEast().getLongitude(),
+            searchArea.getSouthWest().getLatitude(), searchArea.getSouthWest().getLongitude());
+        return Lists.map(shops, ShopEntity::toShop);
+    }
+
+    @Override
+    public List<Shop> searchActive(String query) {
+        List<ShopEntity> shops = shopDataRepository.searchActive("%" + query + "%");
+        return Lists.map(shops, ShopEntity::toShop);
+    }
+
+    @Override
+    public List<Shop> searchActive(String query, BoundingBox searchArea) {
+        List<ShopEntity> shops = shopDataRepository.searchActive("%" + query + "%",
+            searchArea.getNorthEast().getLatitude(), searchArea.getNorthEast().getLongitude(),
+            searchArea.getSouthWest().getLatitude(), searchArea.getSouthWest().getLongitude());
+        return Lists.map(shops, ShopEntity::toShop);
     }
 
     @Override
@@ -73,10 +87,4 @@ class JpaShopRepositoryImpl implements ShopRepository {
         return Lists.map(shopDataRepository.findByName(name), ShopEntity::toShop);
     }
 
-    private List<ShopWithDistance> toShopWithDistance(List<ShopWithDistanceProjection> shops, GeoLocation location) {
-        return Lists.map(shops, s -> new ShopWithDistance(
-            s.getShopEntity().toShop(),
-            DistanceUtil.distanceInKmBetween(GeoLocation.of(s.getShopEntity().getLatitude(), s.getShopEntity().getLongitude()), location)
-        ));
-    }
 }

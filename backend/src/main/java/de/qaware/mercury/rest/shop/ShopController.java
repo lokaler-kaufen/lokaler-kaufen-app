@@ -1,25 +1,10 @@
 package de.qaware.mercury.rest.shop;
 
 import de.qaware.mercury.business.location.impl.LocationNotFoundException;
-import de.qaware.mercury.business.login.LoginException;
-import de.qaware.mercury.business.login.PasswordResetToken;
-import de.qaware.mercury.business.login.ShopCreationToken;
-import de.qaware.mercury.business.login.ShopLoginNotFoundException;
-import de.qaware.mercury.business.login.ShopLoginService;
-import de.qaware.mercury.business.login.TokenService;
-import de.qaware.mercury.business.shop.ContactType;
-import de.qaware.mercury.business.shop.Shop;
-import de.qaware.mercury.business.shop.ShopAlreadyExistsException;
-import de.qaware.mercury.business.shop.ShopCreation;
-import de.qaware.mercury.business.shop.ShopNotFoundException;
-import de.qaware.mercury.business.shop.ShopService;
-import de.qaware.mercury.business.shop.ShopUpdate;
+import de.qaware.mercury.business.login.*;
+import de.qaware.mercury.business.shop.*;
 import de.qaware.mercury.rest.plumbing.authentication.AuthenticationHelper;
-import de.qaware.mercury.rest.shop.dto.request.CreateShopDto;
-import de.qaware.mercury.rest.shop.dto.request.ResetPasswordDto;
-import de.qaware.mercury.rest.shop.dto.request.SendCreateLinkDto;
-import de.qaware.mercury.rest.shop.dto.request.SendPasswordResetLinkDto;
-import de.qaware.mercury.rest.shop.dto.request.UpdateShopDto;
+import de.qaware.mercury.rest.shop.dto.request.*;
 import de.qaware.mercury.rest.shop.dto.response.ShopDetailDto;
 import de.qaware.mercury.rest.shop.dto.response.ShopListDto;
 import de.qaware.mercury.rest.shop.dto.response.ShopOwnerDetailDto;
@@ -29,15 +14,9 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
+import org.springframework.lang.Nullable;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -166,25 +145,33 @@ class ShopController {
     }
 
     /**
-     * Retrieves nearby shops given a zip code.
+     * Retrieves nearby shops, optionally within the given maxDistance of zipCode.
      *
-     * @param zipCode the zip code as String.
+     * @param zipCode     the zip code as String.
+     * @param maxDistance the maximum distance from the given zipCode in km (optional, will return all shops if omitted)
      * @return a list of shops as {@link ShopListDto}.
      */
     @GetMapping("nearby")
-    public ShopListDto listNearby(@RequestParam @NotBlank String zipCode) throws LocationNotFoundException {
-        return ShopListDto.of(shopService.findNearby(zipCode));
+    public ShopListDto findActive(@RequestParam @NotBlank String zipCode, @RequestParam(required = false) @Nullable Integer maxDistance) throws LocationNotFoundException {
+        if (maxDistance != null) {
+            return ShopListDto.of(shopService.findActive(zipCode, maxDistance));
+        }
+        return ShopListDto.of(shopService.findActive(zipCode));
     }
 
     /**
-     * Retrieves nearby shops given a zip code.
+     * Retrieves active and enabled shops matching the given search query, optionally within the given maxDistance of zipCode
      *
-     * @param query   a search string to match locations.
-     * @param zipCode the zip code as String.
+     * @param query       a search string to match locations.
+     * @param zipCode     the zip code as String.
+     * @param maxDistance the maximum distance from the given zip code in km (optional, will return all matching shops if omitted)
      * @return a list of shops as {@link ShopListDto}.
      */
     @GetMapping("search")
-    public ShopListDto search(@RequestParam @NotBlank String query, @NotBlank @RequestParam String zipCode) throws LocationNotFoundException {
-        return ShopListDto.of(shopService.search(query, zipCode));
+    public ShopListDto searchActive(@RequestParam @NotBlank String query, @NotBlank @RequestParam String zipCode, @RequestParam(required = false) @Nullable Integer maxDistance) throws LocationNotFoundException {
+        if (maxDistance != null) {
+            return ShopListDto.of(shopService.searchActive(query, zipCode, maxDistance));
+        }
+        return ShopListDto.of(shopService.searchActive(query, zipCode));
     }
 }

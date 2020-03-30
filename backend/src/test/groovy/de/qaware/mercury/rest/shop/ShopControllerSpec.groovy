@@ -4,20 +4,9 @@ import de.qaware.mercury.business.location.GeoLocation
 import de.qaware.mercury.business.login.PasswordResetToken
 import de.qaware.mercury.business.login.ShopLoginService
 import de.qaware.mercury.business.login.TokenService
-import de.qaware.mercury.business.shop.ContactType
-import de.qaware.mercury.business.shop.DayConfig
-import de.qaware.mercury.business.shop.Shop
-import de.qaware.mercury.business.shop.ShopNotFoundException
-import de.qaware.mercury.business.shop.ShopService
-import de.qaware.mercury.business.shop.ShopWithDistance
-import de.qaware.mercury.business.shop.SlotConfig
+import de.qaware.mercury.business.shop.*
 import de.qaware.mercury.rest.plumbing.authentication.AuthenticationHelper
-import de.qaware.mercury.rest.shop.dto.request.CreateShopDto
-import de.qaware.mercury.rest.shop.dto.request.ResetPasswordDto
-import de.qaware.mercury.rest.shop.dto.request.SendCreateLinkDto
-import de.qaware.mercury.rest.shop.dto.request.SendPasswordResetLinkDto
-import de.qaware.mercury.rest.shop.dto.request.SlotConfigDto
-import de.qaware.mercury.rest.shop.dto.request.UpdateShopDto
+import de.qaware.mercury.rest.shop.dto.request.*
 import de.qaware.mercury.rest.shop.dto.response.ShopDetailDto
 import de.qaware.mercury.rest.shop.dto.response.ShopListDto
 import de.qaware.mercury.rest.shop.dto.response.ShopOwnerDetailDto
@@ -163,11 +152,26 @@ class ShopControllerSpec extends Specification {
         ShopListDto shopListDto = ShopListDto.of(shopWithDistanceList)
 
         when:
-        ShopListDto result = controller.listNearby(testLocation)
+        ShopListDto result = controller.findActive(testLocation, null)
 
         then:
         result == shopListDto
-        1 * shopService.findNearby(testLocation) >> shopWithDistanceList
+        1 * shopService.findActive(testLocation) >> shopWithDistanceList
+    }
+
+    def "Gets nearby shops by location string and max distance"() {
+        setup:
+        String testLocation = "location string"
+        List<ShopWithDistance> shopWithDistanceList = [new ShopWithDistance(createShopObject(UUID.randomUUID()), 5)]
+        ShopListDto shopListDto = ShopListDto.of(shopWithDistanceList)
+        int maxDistance = 5
+
+        when:
+        ShopListDto result = controller.findActive(testLocation, maxDistance)
+
+        then:
+        result == shopListDto
+        1 * shopService.findActive(testLocation, maxDistance) >> shopWithDistanceList
     }
 
     def "Search shops by query and location"() {
@@ -178,11 +182,27 @@ class ShopControllerSpec extends Specification {
         ShopListDto shopListDto = ShopListDto.of(shopWithDistanceList)
 
         when:
-        ShopListDto result = controller.search(testQuery, testLocation)
+        ShopListDto result = controller.searchActive(testQuery, testLocation, null)
 
         then:
         result == shopListDto
-        1 * shopService.search(testQuery, testLocation) >> shopWithDistanceList
+        1 * shopService.searchActive(testQuery, testLocation) >> shopWithDistanceList
+    }
+
+    def "Gets nearby shops by query, location and max distance"() {
+        setup:
+        String testLocation = "location string"
+        String testQuery = "query string"
+        int maxDistance = 5
+        List<ShopWithDistance> shopWithDistanceList = [new ShopWithDistance(createShopObject(UUID.randomUUID()), 5)]
+        ShopListDto shopListDto = ShopListDto.of(shopWithDistanceList)
+
+        when:
+        ShopListDto result = controller.searchActive(testQuery, testLocation, maxDistance)
+
+        then:
+        result == shopListDto
+        1 * shopService.searchActive(testQuery, testLocation, maxDistance) >> shopWithDistanceList
     }
 
     private static Shop createShopObject(UUID id) {
