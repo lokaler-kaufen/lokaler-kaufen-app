@@ -31,5 +31,5 @@ export default function () {
         });
     });
 
-    sleep(500 * Math.random());
+    sleep(5 * Math.random());
 }

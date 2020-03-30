@@ -71,5 +71,5 @@ export default function () {
         });
     });
 
-    sleep(250 * Math.random());
+    sleep(3 * Math.random());
 }
