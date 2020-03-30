@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
+import org.springframework.transaction.annotation.Transactional
 import spock.lang.Specification
 
 import javax.servlet.http.Cookie
@@ -21,11 +22,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles(resolver = CustomActiveProfileResolver.class)
+@Transactional
+// Spring will rollback any changes in the test methods
 class AdminLoginControllerIntTest extends Specification {
     @Autowired
     MockMvc mvc
     @Autowired
     AdminLoginService adminLoginService
+
 
     def "login and get user info"() {
         given: "an admin account"
