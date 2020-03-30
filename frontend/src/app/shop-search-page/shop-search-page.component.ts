@@ -14,12 +14,15 @@ import {BreakpointObserver} from '@angular/cdk/layout';
 })
 export class ShopSearchPageComponent implements OnInit {
   searchBusiness: string;
+  // we don't search while typing, so remember the last executed search
+  lastSearchString: string;
   location: string;
   newLocation: string;
   dataSource = new MatTableDataSource();
   shops: ShopListEntryDto[] = [];
   displayedColumns: string[] = ['name', 'distance', 'supportedContactTypes'];
   isSmallScreen: boolean;
+  isSearchEmpty = false;
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
@@ -71,12 +74,14 @@ export class ShopSearchPageComponent implements OnInit {
     if (response.shops.length > 0) {
       this.shops = response.shops;
       this.dataSource = new MatTableDataSource<ShopListEntryDto>(response.shops);
-
+      this.isSearchEmpty = false;
     } else {
       this.shops = [];
       this.dataSource = new MatTableDataSource<ShopListEntryDto>([]);
       console.log('Keine Läden gefunden.');
+      this.isSearchEmpty = true;
     }
+    this.lastSearchString = this.searchBusiness;
     this.location = this.newLocation;
     window.history.replaceState({}, '', '/#/shops?location=' + this.location);
     this.dataSource.sort = this.sort;
@@ -138,4 +143,5 @@ export class ShopSearchPageComponent implements OnInit {
       this.performSearch();
     }
   }
+
 }
