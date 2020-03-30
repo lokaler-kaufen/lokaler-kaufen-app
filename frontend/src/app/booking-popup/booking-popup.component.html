@@ -14,25 +14,25 @@
           </mat-select>
         </mat-form-field>
         <mat-form-field style="width: 60%">
-          <mat-label>Deine Kontaktdaten</mat-label>
+          <mat-label>Ihre Kontaktdaten</mat-label>
           <input required matInput formControlName="phoneNumber">
         </mat-form-field>
       </div>
 
       <div>
         <mat-form-field class="booking-popup-form-label">
-          <mat-label>Dein Name</mat-label>
+          <mat-label>Ihr Name</mat-label>
           <input required matInput formControlName="name">
         </mat-form-field>
       </div>
 
       <div>
         <mat-form-field class="booking-popup-form-label">
-          <mat-label>Deine E-Mail Adresse</mat-label>
+          <mat-label>Ihre Email-Adresse</mat-label>
           <input (keyup.enter)="onSubmit()" required matInput formControlName="email"
                  pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$">
           <mat-error *ngIf="bookingGroup.hasError('email') && !bookingGroup.hasError('required')">
-            Bitte gib eine valide E-Mail Adresse ein!
+            Bitte geben Sie eine valide Email-Adresse ein!
           </mat-error>
         </mat-form-field>
       </div>

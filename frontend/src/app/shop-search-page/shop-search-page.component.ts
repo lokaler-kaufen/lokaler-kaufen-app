@@ -75,7 +75,7 @@ export class ShopSearchPageComponent implements OnInit {
     } else {
       this.shops = [];
       this.dataSource = new MatTableDataSource<ShopListEntryDto>([]);
-      console.log('Keine Shops gefunden.');
+      console.log('Keine Läden gefunden.');
     }
     this.location = this.newLocation;
     window.history.replaceState({}, '', '/#/shops?location=' + this.location);
@@ -102,9 +102,9 @@ export class ShopSearchPageComponent implements OnInit {
   private handleError(error) {
     console.log('Error requesting shop overview: ' + error.status + ', ' + error.message);
     if (error.status === 400 && error.error.code === 'LOCATION_NOT_FOUND') {
-      this.notificationsService.error('Ungültige PLZ', 'Diese Postleitzahl kennen wir leider nicht, hast du dich vertippt?');
+      this.notificationsService.error('Ungültige PLZ', 'Diese Postleitzahl kennen wir leider nicht, haben Sie sich vertippt?');
     } else {
-      this.notificationsService.error('Tut uns leid!', 'Ein Fehler beim Laden der Shops ist aufgetreten.');
+      this.notificationsService.error('Tut uns leid!', 'Ein Fehler beim Laden der Läden ist aufgetreten.');
     }
     this.newLocation = this.location;
     window.history.replaceState({}, '', '/#/shops?location=' + this.location);

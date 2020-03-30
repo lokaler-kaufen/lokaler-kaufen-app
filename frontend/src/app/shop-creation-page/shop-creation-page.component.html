@@ -1,16 +1,15 @@
-<p>Hallo und herzlich willkommen! Toll, dass du einen Shop auf lokaler.kaufen anlegen willst! Dafür brauchen wir noch
-  ein paar Infos
-  von dir. </p>
+<p>Hallo und herzlich willkommen! Toll, dass Sie einen Laden auf lokaler.kaufen anlegen wollen! Dafür brauchen wir noch
+  ein paar Informationen von Ihnen. </p>
 <mat-vertical-stepper [linear]="true" #stepper>
   <mat-step [stepControl]="nameFormGroup">
     <form [formGroup]="nameFormGroup">
       <ng-template matStepLabel>Starten wir ganz einfach</ng-template>
       <mat-form-field>
-        <mat-label>Wie ist dein Name?</mat-label>
+        <mat-label>Wie ist Ihr Name?</mat-label>
         <input matInput placeholder="Max Mustermann" formControlName="nameCtrl" required>
       </mat-form-field>
       <mat-form-field>
-        <mat-label>Und wie heißt dein Laden?</mat-label>
+        <mat-label>Und wie heißt Ihr Laden?</mat-label>
         <input matInput placeholder="Maxis Modeladen" formControlName="businessNameCtrl" required>
       </mat-form-field>
       <div>
@@ -20,7 +19,7 @@
   </mat-step>
   <mat-step [stepControl]="addressFormGroup">
     <form [formGroup]="addressFormGroup">
-      <ng-template matStepLabel>Und wo ist dein Laden?</ng-template>
+      <ng-template matStepLabel>Wo befindet sich Ihr Laden?</ng-template>
       <mat-form-field>
         <mat-label>Straße</mat-label>
         <input matInput formControlName="streetCtrl" placeholder="Hauptstr. 11"
@@ -50,9 +49,9 @@
   </mat-step>
   <mat-step [stepControl]="descriptionFormGroup">
     <form [formGroup]="descriptionFormGroup">
-      <ng-template matStepLabel>Beschreibe deinen Laden ein bisschen.</ng-template>
+      <ng-template matStepLabel>Beschreiben Sie Ihren Laden ein bisschen.</ng-template>
       <div style="width: 100%">
-        <p>Was verkaufst du, was zeichnet deinen Laden aus und wobei kannst du deine Kunden am besten beraten?</p>
+        <p>Was verkaufen Sie, was zeichnet Ihren Laden aus und wobei können Sie Ihre Kunden am besten beraten?</p>
         <mat-form-field style="width: 100%">
           <mat-label>Beschreibung</mat-label>
           <textarea matInput formControlName="descriptionCtrl"
@@ -61,10 +60,10 @@
         </mat-form-field>
       </div>
       <div>
-        <p>Falls du eine Website hast, kannst du sie mit anzeigen lassen und deinen Kunden dort weitere Details zu
-          deinem Laden zeigen.</p>
+        <p>Falls Sie eine Webseite haben, können Sie diese anzeigen lassen und Ihren Kunden dort weitere Details zu
+          Ihrem Laden zur Verfügung stellen.</p>
         <mat-form-field>
-          <mat-label>Website Link</mat-label>
+          <mat-label>Webseite</mat-label>
           <input matInput formControlName="urlCtrl" placeholder="https://mywebsite.de">
         </mat-form-field>
       </div>
@@ -76,8 +75,8 @@
   </mat-step>
   <mat-step [stepControl]="contactFormGroup">
     <form [formGroup]="contactFormGroup">
-      <ng-template matStepLabel>Welche Kontaktmöglichkeiten möchtest du anbieten?</ng-template>
-      <p>Fülle einfach alle Möglichkeiten, die du hast, aus. </p>
+      <ng-template matStepLabel>Welche Kontaktmöglichkeiten möchten Sie anbieten?</ng-template>
+      <p>Füllen Sie einfach alle Möglichkeiten aus, die Sie bedienen wollen. </p>
       <small *ngIf="contactFormGroup.hasError('atLeastOneRequired')" style="color: red">{{contactFormGroup.getError('atLeastOneRequired').text}}
       </small>
       <div *ngFor="let contactType of contactTypes.availableContactTypes">
@@ -87,8 +86,8 @@
           {{contactTypes.getDisplayName(contactType)}}
         </p>
         <mat-form-field>
-          <mat-label>Dein Kontakt</mat-label>
-          <input matInput formControlName="{{contactType.toLowerCase()}}Ctrl" placeholder="Deine Kontaktmöglichkeit">
+          <mat-label>Ihr Kontakt</mat-label>
+          <input matInput formControlName="{{contactType.toLowerCase()}}Ctrl" placeholder="Ihre Kontaktmöglichkeit">
         </mat-form-field>
       </div>
       <div>
@@ -99,7 +98,7 @@
   </mat-step>
   <mat-step [stepControl]="openingFormGroup">
     <form [formGroup]="openingFormGroup">
-      <ng-template matStepLabel>Was sind deine Öffnungszeiten?</ng-template>
+      <ng-template matStepLabel>Was sind Ihre Öffnungszeiten?</ng-template>
       <div style="margin-top: 15px; margin-bottom: 30px; float:left;"
            *ngFor="let day of days">
         <button mat-mini-fab color="primary"
@@ -122,14 +121,14 @@
         </mat-form-field>
       </div>
       <div>
-        Wie lange berätst du deine Kunden im Schnitt?
+        Wie lange beratend Sie Ihre Kunden im Schnitt?
         <mat-form-field style="width: 30px; padding-left: 8px;">
           <input formControlName="defaultCtrl" matInput type="number">
         </mat-form-field>
         Minuten
       </div>
       <div>
-        Wie viel Pause brauchst du dazwischen?
+        Wie viel Pause brauchen Sie dazwischen?
         <mat-form-field style="width: 30px; padding-left: 8px;">
           <input formControlName="pauseCtrl" matInput type="number">
         </mat-form-field>
@@ -144,11 +143,11 @@
   <mat-step [stepControl]="passwordFormGroup">
     <form [formGroup]="passwordFormGroup">
       <ng-template matStepLabel>Fast fertig!</ng-template>
-      <p>Wähle noch ein Passwort, damit du deine Angaben später ändern kannst. Wähle ein sicheres Passwort, das
-        mindestens 14 Zeichen hat. Ein gutes Beispiel ist ein Satz, den du dir gut merken kannst.</p>
+      <p>Wählen Sie noch ein Passwort. Damit können Sie Ihre Angaben später ändern. Wählen Sie ein sicheres Passwort, das
+        mindestens 14 Zeichen hat. Ein gutes Beispiel ist ein Satz, den Sie sich gut merken können.</p>
       <div style="width: 100%">
         <mat-form-field appearance="outline">
-          <mat-label>Password</mat-label>
+          <mat-label>Passwort</mat-label>
           <mat-pass-toggle-visibility #toggleVisbility matSuffix></mat-pass-toggle-visibility>
           <input matInput #passwordWithValidation
                  [type]="toggleVisbility.type"
@@ -164,7 +163,7 @@
           </mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline">
-          <mat-label>Password wiederholen</mat-label>
+          <mat-label>Passwort wiederholen</mat-label>
           <mat-pass-toggle-visibility #toggleVisbility matSuffix></mat-pass-toggle-visibility>
           <input matInput #passwordConfirm
                  [type]="toggleVisbility.type"
@@ -201,7 +200,7 @@
   </mat-step>
   <mat-step>
     <ng-template matStepLabel>Geschafft!</ng-template>
-    <p>Wir können deinen Laden jetzt anlegen. </p>
+    <p>Wir können Ihren Laden jetzt anlegen. </p>
     <div>
       <button mat-button matStepperPrevious>Zurück</button>
       <button mat-button (click)="createShop()">Speichern</button>

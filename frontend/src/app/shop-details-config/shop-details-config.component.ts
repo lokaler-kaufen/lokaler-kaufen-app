@@ -203,7 +203,7 @@ export class ShopDetailsConfigComponent implements OnInit {
         if (!theOne) {
           return {
             atLeastOneRequired: {
-              text: 'Gib mindestens eine Kontaktmöglichkeit an.'
+              text: 'Geben Sie mindestens eine Kontaktmöglichkeit an.'
             }
           };
         }
