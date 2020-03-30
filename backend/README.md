@@ -69,6 +69,8 @@ Then set the environment variable `MERCURY_NO_TESTCONTAINER=1` and run the build
 MERCURY_NO_TESTCONTAINER=1 ./gradlew build
 ```
 
+Keep in mind that the database needs to be restarted after each build since it will preserve all changes made by the tests and run into key constraint violations on the next test run.
+
 ### Get an architectural overview
 
 Start with looking at the `de.qaware.mercury.rest.shop.ShopController` class.
