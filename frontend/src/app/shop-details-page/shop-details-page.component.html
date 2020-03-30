@@ -76,11 +76,11 @@
                              (opened)="activatedSlot = slots">
           <mat-expansion-panel-header>
             <mat-panel-title>
-              {{slots.dayName}}
+              <div [ngClass]="!slots.hasSlots? 'not-open' : ''">{{slots.dayName}}</div>
             </mat-panel-title>
           </mat-expansion-panel-header>
           <h3 *ngIf="!slots.hasSlots" class="text-no-values">
-            Dieser Laden bietet heute leider keine Termine an.
+            Dieser Laden bietet am {{slots.dayName}} leider keine Termine an.
           </h3>
           <div *ngIf="slots.hasSlots">
             <div *ngFor="let slot of slots.slots; last as last">
