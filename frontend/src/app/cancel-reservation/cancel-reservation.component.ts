@@ -27,12 +27,12 @@ export class CancelReservationComponent implements OnInit {
   cancelReservation() {
     this.client.delete('/api/reservation?token=' + encodeURIComponent(this.token))
       .subscribe(() => {
-          this.notificationsService.success('Alles klar!', 'Wir haben deine Buchung storniert. Der Händler wird von uns informiert.');
+          this.notificationsService.success('Alles klar!', 'Wir haben Ihre Buchung storniert. Der Laden wird von uns informiert.');
           this.router.navigate(['/']);
         },
         error => {
           console.log('Error cancelling reservation: ' + error.status + ', ' + error.message);
-          this.notificationsService.error('Tut uns leid!', 'Wir konnten deine Buchung leider nicht stornieren.');
+          this.notificationsService.error('Tut uns leid!', 'Wir konnten Ihre Buchung leider nicht stornieren.');
         });
   }
 

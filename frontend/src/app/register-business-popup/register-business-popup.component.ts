@@ -31,11 +31,11 @@ export class RegisterBusinessPopupComponent {
         if (error.status === '409' && error.error.code === 'SHOP_ALREADY_EXISTS') {
           this.notificationsService.error(
             'Moment mal...',
-            'Du hast dich bereits registriert. Du kannst dich unter Login für Ladenbesitzer anmelden.'
+            'Sie haben sich bereits registriert. Sie können sich unter Login für Ladenbesitzer anmelden.'
           );
 
         } else {
-          this.notificationsService.error('Tut uns leid!', 'Ein Fehler beim Senden deines Links ist aufgetreten.');
+          this.notificationsService.error('Tut uns leid!', 'Es ist ein Fehler beim Senden Ihres Links aufgetreten.');
         }
       });
   }

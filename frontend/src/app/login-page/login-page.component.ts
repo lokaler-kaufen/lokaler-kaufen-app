@@ -19,11 +19,11 @@ export class LoginPageComponent {
       .afterClosed().subscribe(result => {
       if (result) {
         this.client.post('/api/shop/send-password-reset-link', result).subscribe(() => {
-            this.notificationsService.success('Alles klar!', 'Wir haben dir eine E-Mail zum Zurücksetzen deines Passworts geschickt.');
+            this.notificationsService.success('Alles klar!', 'Wir haben Ihnen eine Email zum Zurücksetzen Ihres Passworts geschickt.');
           },
           error => {
             console.log('Error password reset: ' + error.status + ', ' + error.message);
-            this.notificationsService.error('Tut uns leid!', 'Es ist ein Fehler beim Zurücksetzen deines Passworts aufgetreten.');
+            this.notificationsService.error('Tut uns leid!', 'Es ist ein Fehler beim Zurücksetzen Ihres Passworts aufgetreten.');
           });
       }
     });
