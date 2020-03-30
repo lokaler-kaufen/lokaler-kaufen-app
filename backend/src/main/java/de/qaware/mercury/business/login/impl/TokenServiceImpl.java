@@ -31,7 +31,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Date;
 
@@ -218,7 +218,7 @@ class TokenServiceImpl implements TokenService {
                 .withIssuedAt(clock.nowAsLegacyDate())
                 .withNotBefore(clock.nowAsLegacyDate())
                 // The token expires in the moment the reserved slot starts
-                .withExpiresAt(Date.from(slotStart.toInstant(ZoneOffset.systemDefault().getRules().getOffset(slotStart))))
+                .withExpiresAt(Date.from(slotStart.toInstant(ZoneId.systemDefault().getRules().getOffset(slotStart))))
                 .withIssuer(RESERVATION_CANCELLATION_ISSUER)
                 .withSubject(reservationId.getId().toString())
                 .withClaim("side", side.getId())
