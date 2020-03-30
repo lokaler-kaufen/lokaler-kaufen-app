@@ -35,9 +35,6 @@ dependencies {
     runtimeOnly 'org.postgresql:postgresql'
     annotationProcessor 'org.projectlombok:lombok'
 
-    // Hibernate types
-    implementation 'com.vladmihalcea:hibernate-types-52:2.9.6'
-
     // Fixes the 'warning: unknown enum constant When.MAYBE' warnings
     compileOnly 'com.google.code.findbugs:jsr305:3.0.2'
 

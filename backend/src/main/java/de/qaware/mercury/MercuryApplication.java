@@ -12,9 +12,6 @@ import org.springframework.context.ConfigurableApplicationContext;
 @Slf4j
 public class MercuryApplication {
     public static void main(String[] args) {
-        // Shut up Vlads stupid banner, ffs
-        System.setProperty("hibernate.types.print.banner", "false");
-
         if (hasFlag(args, "--add-admin")) {
             log.info("Starting in 'Add admin' mode");
             // This starts the Spring Boot application without the HTTP layer, then runs the AddAdminRunner bean, then shuts down again
