@@ -17,4 +17,9 @@ public interface ReservationRepository {
     Reservation findById(Reservation.Id id);
 
     void deleteById(Reservation.Id id) throws ReservationNotFoundException;
+
+    /**
+     * Anonymizes all reservations that expired the day before.
+     */
+    void anonymizeExpired(LocalDateTime until);
 }

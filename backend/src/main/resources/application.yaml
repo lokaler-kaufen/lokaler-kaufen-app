@@ -36,3 +36,5 @@ spring.mail:
 
 variables:
   domain: "http://localhost:4200"
+
+reservation.cleanup.cron.expression: "0 0 2 * * *"

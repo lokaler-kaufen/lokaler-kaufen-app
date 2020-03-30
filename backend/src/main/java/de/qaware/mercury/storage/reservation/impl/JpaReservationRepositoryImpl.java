@@ -53,4 +53,9 @@ class JpaReservationRepositoryImpl implements ReservationRepository {
             throw new ReservationNotFoundException(id, e);
         }
     }
+
+    @Override
+    public void anonymizeExpired(LocalDateTime until) {
+        reservationDataRepository.anonymizeExpired(until);
+    }
 }

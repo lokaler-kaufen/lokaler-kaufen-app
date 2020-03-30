@@ -1,6 +1,7 @@
 package de.qaware.mercury.storage.reservation.impl;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -13,4 +14,8 @@ interface ReservationDataRepository extends JpaRepository<ReservationEntity, UUI
     List<ReservationEntity> findReservationsForShop(
         @Param("shopId") UUID shopId, @Param("start") LocalDateTime start, @Param("end") LocalDateTime end
     );
+
+    @Modifying
+    @Query("UPDATE ReservationEntity r SET contact = \'<anonymized>\', email = \'<anonymized>\', name = \'<anonymized>\'  WHERE r.endTime < :until")
+    void anonymizeExpired(@Param("until") LocalDateTime until);
 }

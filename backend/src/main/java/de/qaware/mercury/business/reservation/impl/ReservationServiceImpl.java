@@ -67,6 +67,13 @@ class ReservationServiceImpl implements ReservationService {
 
     @Override
     @Transactional
+    public void anonymizeExpired() {
+        LocalDateTime until = clock.today().atStartOfDay();
+        reservationRepository.anonymizeExpired(until);
+    }
+
+    @Override
+    @Transactional
     public void createReservation(Shop shop, Slot.Id slotId, ContactType contactType, String contact, String name, String email) throws ReservationFailedException {
         LocalDateTime start = slotId.toLocalDateTime();
         LocalDateTime end = start.plusMinutes(shop.getSlotConfig().getTimePerSlot());
