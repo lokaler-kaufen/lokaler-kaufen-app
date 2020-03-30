@@ -151,7 +151,7 @@ export class ShopDetailsPageComponent implements OnInit {
 
   // monday is index 0, add slot offset % 7 to get day name
   getDayName(slotOffset): string {
-    return this.weekday[this.today.getDay() + slotOffset % 7];
+    return this.weekday[(this.today.getDay() + parseInt(slotOffset, 10)) % 7];
   }
 
 }
