@@ -13,7 +13,6 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -35,7 +34,7 @@ class JpaShopRepositoryImpl implements ShopRepository {
 
     @Override
     @Nullable
-    public Shop findById(de.qaware.mercury.business.shop.Shop.Id id) {
+    public Shop findById(Shop.Id id) {
         log.debug("Find Shop {}", id);
         ShopEntity entity = shopDataRepository.findById(id.getId()).orElse(null);
         return Null.map(entity, ShopEntity::toShop);
@@ -46,7 +45,7 @@ class JpaShopRepositoryImpl implements ShopRepository {
         log.debug("Finding approved shops");
 
         List<ShopEntity> shops = shopDataRepository.findActive();
-        return shops.stream().map(ShopEntity::toShop).collect(Collectors.toList());
+        return Lists.map(shops, ShopEntity::toShop);
     }
 
     @Override
