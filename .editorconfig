@@ -11,3 +11,8 @@ tab_width = 4
 
 [{*.yaml, *.yml}]
 indent_size = 2
+
+[*.java]
+# Disable wildcard imports
+ij_java_class_count_to_use_import_on_demand = 3000
+ij_java_names_count_to_use_import_on_demand = 3000
