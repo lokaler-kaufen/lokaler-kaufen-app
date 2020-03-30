@@ -2,12 +2,15 @@ package de.qaware.mercury.rest.login
 
 import de.qaware.mercury.business.login.AdminLoginService
 import de.qaware.mercury.test.plumbing.CustomActiveProfileResolver
+import de.qaware.mercury.test.plumbing.IntegrationTest
+import groovy.transform.TypeChecked
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.ResultActions
 import org.springframework.transaction.annotation.Transactional
 import spock.lang.Specification
 
@@ -24,12 +27,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles(resolver = CustomActiveProfileResolver.class)
 // Spring will rollback any changes in the test methods
 @Transactional
+@TypeChecked
+@IntegrationTest
 class AdminLoginControllerIntTest extends Specification {
     @Autowired
     MockMvc mvc
     @Autowired
     AdminLoginService adminLoginService
-
 
     def "login and get user info"() {
         given: "an admin account"
@@ -37,7 +41,7 @@ class AdminLoginControllerIntTest extends Specification {
         adminLoginService.createLogin("admin-1@localhost", "admin-1")
 
         when: "we call the login endpoint"
-        def result = mvc.perform(post("/api/admin/login").contentType(MediaType.APPLICATION_JSON).content(
+        ResultActions result = mvc.perform(post("/api/admin/login").contentType(MediaType.APPLICATION_JSON).content(
             """
             {
               "email": "admin-1@localhost",
@@ -56,7 +60,7 @@ class AdminLoginControllerIntTest extends Specification {
         result = mvc.perform(get("/api/admin/login").cookie(cookie))
 
         then: "we get our email address"
-        result
+        ResultActions _ = result
             .andExpect(status().isOk())
             .andExpect(content().json(
                 """

@@ -72,6 +72,11 @@ dependencies {
 }
 
 test {
+    // Run gradle with -DskipIntegrationTests to skip integration tests
+    if (System.getProperty("skipIntegrationTests") != null) {
+        systemProperty("spock.configuration", "SpockNoIntegrationTests.groovy")
+    }
+
     useJUnitPlatform()
     testLogging {
         events "skipped", "failed"
