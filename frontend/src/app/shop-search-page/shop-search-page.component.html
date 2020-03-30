@@ -5,7 +5,7 @@
       matInput
       placeholder="Suchen Sie nach Ihrem Lieblingsgeschäft oder nach Begriffen wie Kaffee, Optiker, ..."
       [(ngModel)]="searchBusiness"
-      (keyup.enter)="performSearch()"/>
+      (keyup)="handleKeyEvent($event)"/>
     <a (click)="performSearch()" matSuffix>
       <mat-icon>search</mat-icon>
     </a>

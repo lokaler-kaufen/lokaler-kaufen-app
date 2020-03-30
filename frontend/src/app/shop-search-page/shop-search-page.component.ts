@@ -132,4 +132,10 @@ export class ShopSearchPageComponent implements OnInit {
   sortShopsForMobile() {
     return this.shops.sort((shop1, shop2) => shop1.distance - shop2.distance);
   }
+
+  handleKeyEvent($event: KeyboardEvent) {
+    if ($event.code === 'Enter') {
+      this.performSearch();
+    }
+  }
 }
