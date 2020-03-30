@@ -22,8 +22,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles(resolver = CustomActiveProfileResolver.class)
-@Transactional
 // Spring will rollback any changes in the test methods
+@Transactional
 class AdminLoginControllerIntTest extends Specification {
     @Autowired
     MockMvc mvc
