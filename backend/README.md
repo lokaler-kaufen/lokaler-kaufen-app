@@ -56,7 +56,7 @@ To skip only the integration tests, run gradle with `-DskipIntegrationTests`:
 If you have a modern linux which docker doesn't support and you normally run your containers with podman, 
 Testcontainers (which we use for integration testing) unfortunately won't work.
 
-To run the build on such a system, a running PostgreSQL database must be provided on port 5432 with credentials 
+To run the integration tests on such a system, a running PostgreSQL database must be provided on port 5432 with credentials 
 `postgres:password`. Easiest way to do that is with podman:
 
 ```
