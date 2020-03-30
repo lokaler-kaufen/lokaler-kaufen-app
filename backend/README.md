@@ -92,7 +92,7 @@ Start with looking at the `de.qaware.mercury.rest.shop.ShopController` class.
 
 * Use Spock, not JUnit 
 * When writing Spock tests, use `def` as little as possible (`def` breaks refactoring) 
-* When writing Spock tests, annotate the class with `@TypeChecked` (this enables strict type checking in Groovy)
+* When writing Spock tests, annotate the class with `@TypeChecked` if possible (this enables strict type checking in Groovy)
 * When writing integration tests, annotate the tests with `@IntegrationTest`
 
 ## How To's
