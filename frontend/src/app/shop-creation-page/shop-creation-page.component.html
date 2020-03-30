@@ -49,7 +49,7 @@
   </mat-step>
   <mat-step [stepControl]="descriptionFormGroup">
     <form [formGroup]="descriptionFormGroup">
-      <ng-template matStepLabel>Beschreiben Sie Ihren Laden ein bisschen.</ng-template>
+      <ng-template matStepLabel>Beschreibe Sie ihren Laden.</ng-template>
       <div style="width: 100%">
         <p>Was verkaufen Sie, was zeichnet Ihren Laden aus und wobei können Sie Ihre Kunden am besten beraten?</p>
         <mat-form-field style="width: 100%">
@@ -63,7 +63,7 @@
         <p>Falls Sie eine Webseite haben, können Sie diese anzeigen lassen und Ihren Kunden dort weitere Details zu
           Ihrem Laden zur Verfügung stellen.</p>
         <mat-form-field>
-          <mat-label>Webseite</mat-label>
+          <mat-label>Website Link</mat-label>
           <input matInput formControlName="urlCtrl" placeholder="https://mywebsite.de">
         </mat-form-field>
       </div>
@@ -145,9 +145,9 @@
       <ng-template matStepLabel>Fast fertig!</ng-template>
       <p>Wählen Sie noch ein Passwort. Damit können Sie Ihre Angaben später ändern. Wählen Sie ein sicheres Passwort, das
         mindestens 14 Zeichen hat. Ein gutes Beispiel ist ein Satz, den Sie sich gut merken können.</p>
-      <div style="width: 100%">
+      <div>
         <mat-form-field appearance="outline">
-          <mat-label>Passwort</mat-label>
+          <mat-label>Password</mat-label>
           <mat-pass-toggle-visibility #toggleVisbility matSuffix></mat-pass-toggle-visibility>
           <input matInput #passwordWithValidation
                  [type]="toggleVisbility.type"
@@ -163,7 +163,7 @@
           </mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline">
-          <mat-label>Passwort wiederholen</mat-label>
+          <mat-label>Password wiederholen</mat-label>
           <mat-pass-toggle-visibility #toggleVisbility matSuffix></mat-pass-toggle-visibility>
           <input matInput #passwordConfirm
                  [type]="toggleVisbility.type"
