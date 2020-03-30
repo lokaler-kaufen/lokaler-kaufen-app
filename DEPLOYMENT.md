@@ -29,6 +29,7 @@ The build also execute all tests, which include the backend tests using "Testcon
 ```
 $ MERCURY_NO_TESTCONTAINER=1 ./deploy.sh [-p] <username>
 ```
+Keep in mind that the database does not reset automatically, so you have to restart the container after each build.
 
 If you want to deploy from a system which does neither have docker nor podman, you can skip running the integration tests [NOT RECOMMENDED] by running:
 ```
