@@ -1,25 +1,25 @@
 <div *ngIf="!showConfirmDialog">
   <h1 mat-dialog-title>Jetzt geht's los!</h1>
   <div mat-dialog-content>
-    <p>In wenigen Schritten zu deinem eigenen Laden auf lokaler.kaufen! Gib einfach deine E-Mail-Adresse ein und lass
-      dich
-      von unserem Assistenten durch die Shop-Erstellung begleiten. Ganz einfach, versprochen!</p>
+    <p>In wenigen Schritten zu Ihrem eigenen Laden auf lokaler.kaufen! Geben Sie einfach Ihre E-Mail-Adresse ein und
+      lassen Sie sich von unserem Assistenten durch die Laden-Erstellung begleiten. Ganz einfach, versprochen!</p>
     <mat-form-field>
       <mat-label>E-Mail</mat-label>
-      <input matInput pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$" required [(ngModel)]="email"
+      <input matInput pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$" required [formControl]="email"
              (keyup.enter)="sendConfirmationMail()">
     </mat-form-field>
   </div>
   <div mat-dialog-actions>
     <button mat-raised-button (click)="onNoClick()">Doch nicht</button>
-    <button mat-raised-button type="button" (click)="sendConfirmationMail()">OK</button>
+    <button mat-raised-button type="button" (click)="sendConfirmationMail()" [disabled]="!email.valid">OK</button>
   </div>
 </div>
 <div *ngIf="showConfirmDialog">
   <h1 mat-dialog-title>Soweit so gut!</h1>
   <div mat-dialog-content>
-    <p>Wir haben dir eine E-Mail an {{email}} geschickt. Bitte bestätige kurz deine E-Mail-Adresse, indem du auf
-      den Link in der Mail klickst.</p>
+    <p>Wir haben Ihnen eine E-Mail an {{email.value}} geschickt. Bitte bestätigen Sie kurz Ihre E-Mail-Adresse, indem
+      Sie auf
+      den Link in der Mail klicken.</p>
   </div>
   <div mat-dialog-actions style="alignment: center">
     <button mat-raised-button [mat-dialog-close]="" cdkFocusInitial>OK</button>

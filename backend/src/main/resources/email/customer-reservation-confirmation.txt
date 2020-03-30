@@ -1,12 +1,12 @@
 Hallo {{ name }},
 
-{{ shopName }} ruft dich per {{ contactType }} am {{ date }} zwischen {{ start }} Uhr und {{ end }} Uhr unter {{ contact }} an.
-Bitte beachte, dass es zu Stoßzeiten zu Verzögerungen kommen kann.
+{{ shopName }} ruft Sie per {{ contactType }} am {{ date }} zwischen {{ start }} Uhr und {{ end }} Uhr unter {{ contact }} an.
+Bitte beachten Sie, dass es zu Stoßzeiten zu Verzögerungen kommen kann.
 
-Um die Reservierung abzusagen, klicke einfach auf diesen Link:
+Wenn Sie die Reservierung absagen möchten, klicken Sie bitte auf diesen Link:
 
 {{ cancelReservationLink }}
 
 Viele Grüße,
 
-dein lokaler.kaufen Team
+Ihr lokaler.kaufen Team

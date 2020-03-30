@@ -28,15 +28,15 @@ import java.time.LocalDateTime;
 @EnableConfigurationProperties(EmailConfigurationProperties.class)
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 class EmailServiceImpl implements EmailService {
-    static final String SHOP_CREATION_SUBJECT = "Dein Laden auf lokaler.kaufen";
+    static final String SHOP_CREATION_SUBJECT = "Ihr Laden auf lokaler.kaufen";
     private static final String CUSTOMER_RESERVATION_CONFIRMATION_SUBJECT = "Reservierungsbestätigung auf lokaler.kaufen";
     private static final String SHOP_NEW_RESERVATION_SUBJECT = "Es gibt eine neue Reservierung auf lokaler.kaufen";
     private static final String SHOP_RESET_PASSWORD_SUBJECT = "Passwort auf lokaler.kaufen zurücksetzen";
-    private static final String RESERVATION_CANCELLATION_SUBJECT = "Dein Termin auf lokaler.kaufen wurde leider abgesagt";
+    private static final String RESERVATION_CANCELLATION_SUBJECT = "Ihr Termin auf lokaler.kaufen wurde leider abgesagt";
     private static final String RESERVATION_CANCELLATION_CONFIRMATION_SUBJECT = "Absagebestätigung von lokaler.kaufen";
     private static final String SHOP_CREATED_APPROVAL_NEEDED_SUBJECT = "Gleich kann's auf lokaler.kaufen losgehen!";
     private static final String SHOP_APPROVED_SUBJECT = "Es kann auf lokaler.kaufen losgehen!";
-    private static final String SHOP_DISAPPROVED_SUBJECT = "Dein Laden auf lokaler.kaufen wurde deaktiviert";
+    private static final String SHOP_DISAPPROVED_SUBJECT = "Ihr Laden auf lokaler.kaufen wurde deaktiviert";
 
     private final EmailSender emailSender;
     private final EmailConfigurationProperties config;

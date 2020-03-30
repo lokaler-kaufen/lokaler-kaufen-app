@@ -43,9 +43,9 @@ export class ShopManagementPageComponent implements OnInit {
       error => {
         console.log('Error updating shop: ' + error.status + ', ' + error.message + ', ' + error.error.code);
         if (error.status === 400 && error.error.code === 'LOCATION_NOT_FOUND') {
-          this.notificationsService.error('Ungültige PLZ', 'Diese Postleitzahl kennen wir leider nicht, hast du dich vertippt?');
+          this.notificationsService.error('Ungültige PLZ', 'Diese Postleitzahl kennen wir leider nicht, haben Sie sich vertippt?');
         } else {
-          this.notificationsService.error('Tut uns leid!', 'Dein Laden konnte leider nicht aktualisiert werden.');
+          this.notificationsService.error('Tut uns leid!', 'Ihr Laden konnte leider nicht aktualisiert werden.');
         }
       });
   }

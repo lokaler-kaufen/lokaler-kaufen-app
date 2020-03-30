@@ -27,6 +27,10 @@ tr:not(.example-expanded-row):hover {
   width: 75%;
 }
 
+.hide {
+  visibility: hidden;
+}
+
 /* switch footer links to column mode on small devices */
 @media screen and (max-width: 719px) {
   .align-baseline {

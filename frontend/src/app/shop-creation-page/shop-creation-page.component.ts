@@ -183,15 +183,15 @@ export class ShopCreationPageComponent implements OnInit {
       error => {
         console.log('Error creating new shop: ' + error.status + ', ' + error.message + ', ' + error.error.code);
         if (error.status === 400 && error.error.code === 'LOCATION_NOT_FOUND') {
-          this.notificationsService.error('Ungültige PLZ', 'Diese Postleitzahl kennen wir leider nicht, hast du dich vertippt?');
+          this.notificationsService.error('Ungültige PLZ', 'Diese Postleitzahl kennen wir leider nicht, haben Sie sich vertippt?');
         }
         if (error.status === 409 && error.error.code === 'SHOP_ALREADY_EXISTS') {
           this.notificationsService.error(
             'Moment mal...',
-            'Du hast dich bereits registriert. Du kannst dich unter Login für Ladenbesitzer anmelden.'
+            'Sie haben sich bereits registriert. Sie können sich unter Login für Ladenbesitzer anmelden.'
           );
         } else {
-          this.notificationsService.error('Tut uns leid!', 'Dein Laden konnte nicht angelegt werden.');
+          this.notificationsService.error('Tut uns leid!', 'Ihr Laden konnte nicht angelegt werden.');
         }
       });
   }
@@ -205,7 +205,7 @@ export class ShopCreationPageComponent implements OnInit {
         if (!theOne) {
           return {
             atLeastOneRequired: {
-              text: 'Gib mindestens eine Kontaktmöglichkeit an.'
+              text: 'Geben Sie mindestens eine Kontaktmöglichkeit an.'
             }
           };
         }

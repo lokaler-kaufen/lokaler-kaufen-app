@@ -13,3 +13,39 @@
 .disabled-font {
   color: lightgrey;
 }
+
+.password-strength-box {
+  width: 50%;
+}
+
+@media (max-width: 719px) {
+
+  ::ng-deep .mat-vertical-stepper .mat-step-header {
+    width: 90vw !important;
+  }
+
+  ::ng-deep .mat-step {
+    width: 90vw !important;
+  }
+
+  ::ng-deep .mat-stepper-vertical-line::before {
+    border-left-width: 0 !important;
+  }
+
+  .mat-mini-fab {
+    width: 30px;
+    height: 30px;
+    line-height: 14px;
+    font-size: 14px;
+  }
+
+  ::ng-deep .mat-button-wrapper {
+    line-height: 14px;
+    padding: 0;
+    vertical-align: center;
+  }
+
+  .password-strength-box {
+    width: 100%;
+  }
+}

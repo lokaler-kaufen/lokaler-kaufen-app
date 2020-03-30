@@ -1,7 +1,9 @@
 Hallo {{ ownerName }},
 
-danke für deine Registrierung auf lokaler.kaufen! Gleich geht es los - sobald wir deinen Laden freigeschaltet haben, informieren wir dich per Mail. Schau dir doch inzwischen folgende Seite an, damit du mit deinem Geschäft reibungslos auf lokaler.kaufen starten kannst: https://lokaler.kaufen/welcome
+danke für Ihre Registrierung auf lokaler.kaufen! Gleich geht es los - sobald wir Ihren Laden freigeschaltet haben, informieren wir Sie per Mail.
+
+Schauen Sie sich doch inzwischen folgende Seite an, damit Sie mit Ihrem Geschäft reibungslos auf lokaler.kaufen starten können: https://lokaler.kaufen/welcome
 
 Viele Grüße
 
-Dein lokaler.kaufen Team
+Ihr lokaler.kaufen Team

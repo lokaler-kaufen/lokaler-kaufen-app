@@ -1,12 +1,12 @@
 <div class="landing-page">
 
   <header>
-    <h2>Hast Du Lust, Deine lokalen Läden zu unterstützen?</h2>
+    <h2>Haben Sie Lust, Ihre lokalen Läden zu unterstützen?</h2>
   </header>
 
   <form [formGroup]="form">
     <mat-form-field class="form-item">
-      <mat-label>Deine Postleitzahl</mat-label>
+      <mat-label>Ihre Postleitzahl</mat-label>
       <input [matAutocomplete]="auto"
              formControlName="zipCode"
              type="text"
@@ -17,7 +17,7 @@
              maxlength="5"
              minlength="5"
              matInput/>
-      <mat-autocomplete #auto="matAutocomplete">
+      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="start()">
         <mat-option *ngFor="let suggestion of suggestions" [value]="suggestion.zipCode">
           {{suggestion.zipCode}} {{suggestion.placeName}}
         </mat-option>

@@ -41,7 +41,7 @@ export class PasswordResetPageComponent implements OnInit {
       },
       error => {
         console.log('Error resetting password: ' + error.status + ', ' + error.message);
-        this.notificationsService.error('Tut uns leid!', 'Wir konnten dein Passwort nicht zurücksetzen.');
+        this.notificationsService.error('Tut uns leid!', 'Wir konnten Ihr Passwort nicht zurücksetzen.');
       });
   }
 

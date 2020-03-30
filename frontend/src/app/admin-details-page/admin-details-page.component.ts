@@ -41,19 +41,19 @@ export class AdminDetailsPageComponent implements OnInit {
 
   updateShop($event: UpdateShopData) {
     this.adminService.updateShop($event)
-      .then(() => this.notificationsService.success('Alles klar!', 'Der Laden wurde aktualisiert.'))
+      .then(() => this.notificationsService.success('Alles klar!', 'Ihr Laden wurde aktualisiert.'))
       .catch(error => {
         console.log('Error updating shop: ' + error.status + ', ' + error.message);
-        this.notificationsService.error('Tut uns leid!', 'Der Laden konnte leider nicht aktualisiert werden.');
+        this.notificationsService.error('Tut uns leid!', 'Ihr Laden konnte leider nicht aktualisiert werden.');
       });
   }
 
   deleteShop() {
     this.adminService.deleteShop(this.shopId)
-      .then(() => this.notificationsService.success('Alles klar!', 'Der Laden wurde gelöscht.'))
+      .then(() => this.notificationsService.success('Alles klar!', 'Ihr Laden wurde gelöscht.'))
       .catch(error => {
         console.log('Error updating shop: ' + error.status + ', ' + error.message);
-        this.notificationsService.error('Tut uns leid!', 'Der Laden konnte leider nicht gelöscht werden.');
+        this.notificationsService.error('Tut uns leid!', 'Ihr Laden konnte leider nicht gelöscht werden.');
       });
   }
 
@@ -64,7 +64,7 @@ export class AdminDetailsPageComponent implements OnInit {
       .then(() => this.notificationsService.success('Alles klar!', `Das approved flag wurde auf ${nextValue} gesetzt.`))
       .catch(error => {
         console.log('Error updating shop: ' + error.status + ', ' + error.message);
-        this.notificationsService.error('Tut uns leid!', 'Die Aktivierung des Ladens konnte nicht geändert werden.');
+        this.notificationsService.error('Tut uns leid!', 'Die Aktivierung Ihres Ladens konnte nicht geändert werden.');
       })
       .finally(() => this.shopDetails.approved = nextValue);
   }

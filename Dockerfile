@@ -27,8 +27,8 @@ COPY . /workspace
 COPY --from=frontend-build /workspace/frontend/dist/mercury-ui/. /workspace/backend/src/main/resources/static
 WORKDIR /workspace/backend
 
-# run backend build
-RUN gradle build
+# Build backend, don't run tests (they are ran in the cloudbuild.yaml anyway)
+RUN gradle --no-daemon build -x test
 
 ##############################
 # STAGE 3: App package build #
