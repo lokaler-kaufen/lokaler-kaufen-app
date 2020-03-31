@@ -25,6 +25,9 @@ mercury:
   features:
     enableDebugDataCreation: false
     approveShopsOnCreation: false
+  cleanup-job:
+    reservation:
+      cron: "0 0 2 * * *"
 
 spring.mail:
   host: "smtp.gmail.com"

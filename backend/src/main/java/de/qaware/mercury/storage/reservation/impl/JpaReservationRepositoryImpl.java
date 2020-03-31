@@ -15,12 +15,16 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 class JpaReservationRepositoryImpl implements ReservationRepository {
+
+    private static final String ANONYMIZED_VALUE = "<anonymized>";
+
     private final ReservationDataRepository reservationDataRepository;
     private final Clock clock;
 
@@ -52,5 +56,10 @@ class JpaReservationRepositoryImpl implements ReservationRepository {
         } catch (EmptyResultDataAccessException e) {
             throw new ReservationNotFoundException(id, e);
         }
+    }
+
+    @Override
+    public int anonymizeExpired(LocalDateTime until, ZonedDateTime updated) {
+        return reservationDataRepository.anonymizeExpired(until, ANONYMIZED_VALUE, updated);
     }
 }
