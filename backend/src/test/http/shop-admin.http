@@ -5,7 +5,7 @@ POST {{ host }}/api/admin/login
 Content-Type: application/json
 
 {
-    "email": "admin-1@localhost",
+    "email": "admin-1@local.host",
     "password": "admin-1"
 }
 

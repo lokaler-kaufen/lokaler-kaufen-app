@@ -5,7 +5,7 @@ Content-Type: application/json
 Accept: application/json, */*
 
 {
-    "email": "admin-1@localhost",
+    "email": "admin-1@local.host",
     "password": "admin-1"
 }
 
@@ -16,7 +16,7 @@ Content-Type: application/json
 Accept: application/json, */*
 
 {
-    "email": "moe@localhost",
+    "email": "moe@local.host",
     "password": "moe"
 }
 

@@ -78,7 +78,7 @@ Accept: application/json
 Content-Type: application/json
 
 {
-    "email": "foo@localhost"
+    "email": "foo@local.host"
 }
 
 ### Send password reset link
@@ -88,7 +88,7 @@ Accept: application/json
 Content-Type: application/json
 
 {
-    "email": "moe@localhost"
+    "email": "moe@local.host"
 }
 
 ### Reset password

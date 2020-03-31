@@ -12,7 +12,7 @@ Content-Type: application/json
     "contactType": "WHATSAPP",
     "contact": "01511234567",
     "name": "Bernd",
-    "email": "bernd@localhost"
+    "email": "bernd@local.host"
 }
 
 ### Cancel reservation
