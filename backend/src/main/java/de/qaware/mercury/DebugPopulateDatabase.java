@@ -40,8 +40,8 @@ class DebugPopulateDatabase implements ApplicationRunner {
     }
 
     private void createAdmins() {
-        createAdmin("admin-1@localhost", "admin-1");
-        createAdmin("admin-2@localhost", "admin-2");
+        createAdmin("admin-1@local.host", "admin-1");
+        createAdmin("admin-2@local.host", "admin-2");
     }
 
     private void createAdmin(String email, String password) {
@@ -52,9 +52,9 @@ class DebugPopulateDatabase implements ApplicationRunner {
 
     private void createShops() throws ShopNotFoundException, ShopAlreadyExistsException, LocationNotFoundException {
         createShop(new ShopCreation(
-            "moe@localhost", "Moe", "Moe's Whiskey", "Lothstr. 64", "85579", "Neubiberg", "", "Bester Whiskey in ganz Neubiberg!",
+            "moe@local.host", "Moe", "Moe's Whiskey", "Lothstr. 64", "85579", "Neubiberg", "", "Bester Whiskey in ganz Neubiberg!",
             "https://www.moes-whiskey.com/", "moe",
-            Map.of(ContactType.WHATSAPP, "0151/123456789", ContactType.FACETIME, "moe@localhost"),
+            Map.of(ContactType.WHATSAPP, "0151/123456789", ContactType.FACETIME, "moe@local.host"),
             SlotConfig.builder().timePerSlot(15).timeBetweenSlots(5)
                 .monday(new DayConfig(LocalTime.of(8, 0), LocalTime.of(17, 0)))
                 .tuesday(new DayConfig(LocalTime.of(8, 0), LocalTime.of(17, 0)))
@@ -66,13 +66,13 @@ class DebugPopulateDatabase implements ApplicationRunner {
                 .build()
         ));
         createShop(new ShopCreation(
-            "flo@localhost", "Flo", "Flo's Kaffeeladen", "Aschauer Str. 32", "81549", "München", "", "", null,
+            "flo@local.host", "Flo", "Flo's Kaffeeladen", "Aschauer Str. 32", "81549", "München", "", "", null,
             "flo", Map.of(ContactType.GOOGLE_DUO, "@vlow"),
             SlotConfig.builder().timePerSlot(30).timeBetweenSlots(10).build()
         ));
         createShop(new ShopCreation(
-            "vroni@localhost", "Vroni", "Vroni's Kleiderladen", "Rheinstraße 4C", "55116", "Mainz", "", "", null,
-            "vroni", Map.of(ContactType.GOOGLE_DUO, "vroni@localhost", ContactType.SIGNAL, "@vroni"),
+            "vroni@local.host", "Vroni", "Vroni's Kleiderladen", "Rheinstraße 4C", "55116", "Mainz", "", "", null,
+            "vroni", Map.of(ContactType.GOOGLE_DUO, "vroni@local.host", ContactType.SIGNAL, "@vroni"),
             SlotConfig.builder().timePerSlot(60).timeBetweenSlots(15).build()
         ));
     }
