@@ -5,6 +5,6 @@
   <a class="margin-horizontal margin-bottom" routerLink="imprint">Impressum</a>
   <a class="margin-horizontal margin-bottom" routerLink="privacy">Datenschutz</a>
 </div>
-<div class="app-footer margin-vertical margin-horizontal">
+<div class="app-footer margin-vertical margin-horizontal" *ngIf="versionInfo">
   <span class="version-info">{{versionInfo.version}} #{{versionInfo.commitHash}} - {{versionInfo.commitTime}}</span>
 </div>
