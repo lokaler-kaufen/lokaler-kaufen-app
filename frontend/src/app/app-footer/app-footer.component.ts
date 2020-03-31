@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {RegisterBusinessPopupComponent} from '../register-business-popup/register-business-popup.component';
+import {UserContextService} from '../shared/user-context.service';
 
 @Component({
   selector: 'app-footer',
@@ -12,7 +13,7 @@ export class AppFooterComponent implements OnInit {
   // hold the dialog ref as long as the dialog is open
   dialogRef;
 
-  constructor(public dialog: MatDialog) {
+  constructor(public dialog: MatDialog, public userContextService: UserContextService) {
   }
 
   openRegisterBusinessPopup(): void {
