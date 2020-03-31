@@ -61,4 +61,65 @@ class LocationServiceImplSpec extends Specification {
         1 * repository.suggest('%8302%', LocationServiceImpl.MAXIMUM_SUGGESTION_COUNT) >> data
         suggestions.size() == 2
     }
+
+    def "Duplicate cities are deduplicated"() {
+        given:
+        List<LocationSuggestion> data = []
+        data << new LocationSuggestion('DE', '83024', 'Rosenheim')
+        data << new LocationSuggestion('DE', '83024', 'Rosenheim')
+
+        when:
+        List<LocationSuggestion> suggestions = locationService.suggest('8302')
+
+        then:
+        _ * repository.suggest(_, LocationServiceImpl.MAXIMUM_SUGGESTION_COUNT) >> data
+        suggestions.size() == 1
+    }
+
+    def "Identical cities are only deduplicated if the have the same ZIP code"() {
+        given:
+        List<LocationSuggestion> data = []
+        data << new LocationSuggestion('DE', '83024', 'Rosenheim')
+        data << new LocationSuggestion('DE', '83025', 'Rosenheim')
+
+        when:
+        List<LocationSuggestion> suggestions = locationService.suggest('8302')
+
+        then:
+        _ * repository.suggest(_, LocationServiceImpl.MAXIMUM_SUGGESTION_COUNT) >> data
+        suggestions.size() == 2
+    }
+
+    def "Identical ZIP codes are only deduplicated if the have the same city"() {
+        given:
+        List<LocationSuggestion> data = []
+        data << new LocationSuggestion('DE', '83024', 'Rosenheim A')
+        data << new LocationSuggestion('DE', '83024', 'Rosenheim B')
+
+        when:
+        List<LocationSuggestion> suggestions = locationService.suggest('8302')
+
+        then:
+        _ * repository.suggest(_, LocationServiceImpl.MAXIMUM_SUGGESTION_COUNT) >> data
+        suggestions.size() == 2
+    }
+
+    def "Suggestions for complete ZIP codes return all results"() {
+        given:
+        List<LocationSuggestion> dataWildCardEnd = []
+        dataWildCardEnd << new LocationSuggestion('DE', '83024', 'Rosenheim unique 1')
+        dataWildCardEnd << new LocationSuggestion('DE', '83024', 'Rosenheim unique 2')
+        dataWildCardEnd << new LocationSuggestion('DE', '83024', 'Rosenheim unique 3')
+        dataWildCardEnd << new LocationSuggestion('DE', '83024', 'Rosenheim unique 4')
+        dataWildCardEnd << new LocationSuggestion('DE', '83024', 'Rosenheim unique 5')
+        dataWildCardEnd << new LocationSuggestion('DE', '83024', 'Rosenheim unique 6')
+        dataWildCardEnd << new LocationSuggestion('DE', '83024', 'Rosenheim unique 7')
+
+        when:
+        List<LocationSuggestion> suggestions = locationService.suggest('83024')
+
+        then:
+        1 * repository.suggest(_) >> dataWildCardEnd
+        suggestions.size() == 7
+    }
 }
