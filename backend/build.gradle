@@ -106,5 +106,10 @@ gitProperties {
     failOnNoGitDirectory = false
 }
 
+bootJar {
+    // Remove version from artifact
+    archiveFileName = "${archiveBaseName.get()}.${archiveExtension.get()}"
+}
+
 // have some fun ./gradlew kick ass
 task kick(dependsOn: clean) {}
