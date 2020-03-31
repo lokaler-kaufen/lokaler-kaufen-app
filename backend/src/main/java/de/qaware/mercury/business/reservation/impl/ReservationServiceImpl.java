@@ -97,7 +97,7 @@ class ReservationServiceImpl implements ReservationService {
 
         Reservation.Id reservationId = Reservation.Id.random(uuidFactory);
 
-        reservationRepository.insert(new Reservation(reservationId, shop.getId(), start, end, contact, email, name, contactType, clock.nowZoned(), clock.nowZoned()));
+        reservationRepository.insert(new Reservation(reservationId, shop.getId(), start, end, contact, email, name, contactType, false, clock.nowZoned(), clock.nowZoned()));
 
         log.info("Sending customer reservation confirmation to '{}'", email);
         emailService.sendCustomerReservationConfirmation(shop, email, name, start, end, contactType, contact, reservationId);

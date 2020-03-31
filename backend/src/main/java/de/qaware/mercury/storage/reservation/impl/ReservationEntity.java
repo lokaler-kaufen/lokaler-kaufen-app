@@ -60,6 +60,9 @@ class ReservationEntity {
     private String contactType;
 
     @Column(nullable = false)
+    private boolean anonymized;
+
+    @Column(nullable = false)
     private ZonedDateTime created;
 
     @Column(nullable = false)
@@ -75,6 +78,7 @@ class ReservationEntity {
             reservation.getEmail(),
             reservation.getName(),
             reservation.getContactType().getId(),
+            reservation.isAnonymized(),
             reservation.getCreated(),
             reservation.getUpdated()
         );
@@ -90,6 +94,7 @@ class ReservationEntity {
             email,
             name,
             ContactType.parse(contactType),
+            anonymized,
             created,
             updated
         );

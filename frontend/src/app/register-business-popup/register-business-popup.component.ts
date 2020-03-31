@@ -35,8 +35,8 @@ export class RegisterBusinessPopupComponent {
         this.showConfirmDialog = !this.showConfirmDialog;
       },
       error => {
-        console.log('Error sending creation link: ' + error.status + ', ' + error.message);
-        if (error.status === '409' && error.error.code === 'SHOP_ALREADY_EXISTS') {
+        console.log('Error sending creation link: ' + error.status + ', ' + error.message + ', ' + error.headers.get('x-trace-id'));
+        if (error.status === 409 && error.error.code === 'SHOP_ALREADY_EXISTS') {
           this.notificationsService.error(
             'Moment mal...',
             'Sie haben sich bereits registriert. Sie können sich unter Login für Ladenbesitzer anmelden.'

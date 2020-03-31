@@ -22,7 +22,7 @@ export class LoginPageComponent {
       .afterClosed().subscribe(result => {
       if (result) {
         this.client.post('/api/shop/send-password-reset-link', result).subscribe(() => {
-            this.notificationsService.success('Alles klar!', 'Wir haben Ihnen eine E-Mail zum Zurücksetzen Ihres Passworts geschickt.');
+            this.notificationsService.success('Alles klar!', 'Wir haben Ihnen eine E-Mail zum Zurücksetzen Ihres Passworts geschickt. Sollte die Mail nicht angekommen sein, schauen Sie bitte auch in Ihren Spam-Ordner.');
           },
           error => {
             console.log('Error password reset: ' + error.status + ', ' + error.message);

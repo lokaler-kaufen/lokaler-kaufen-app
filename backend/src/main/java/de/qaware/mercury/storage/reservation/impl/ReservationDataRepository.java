@@ -17,9 +17,12 @@ interface ReservationDataRepository extends JpaRepository<ReservationEntity, UUI
     );
 
     @Modifying
-    @Query("UPDATE ReservationEntity r SET r.contact = :anonymizedValue, r.email = :anonymizedValue, r.name = :anonymizedValue, r.updated = :updatedTimestamp " +
-        "WHERE r.endTime < :until AND (r.contact <> :anonymizedValue OR r.email <> :anonymizedValue OR r.name <> :anonymizedValue)")
-    int anonymizeExpired(@Param("until") LocalDateTime until,
-                         @Param("anonymizedValue") String anonymizedValue,
-                         @Param("updatedTimestamp") ZonedDateTime updatedTimestamp);
+    @Query(
+        "UPDATE ReservationEntity r SET r.contact = :anonymizedValue, r.email = :anonymizedValue, r.name = :anonymizedValue, " +
+            "r.updated = :updatedTimestamp, r.anonymized = true WHERE r.endTime <= :until AND r.anonymized = false"
+    )
+    int anonymizeExpired(
+        @Param("until") LocalDateTime until, @Param("anonymizedValue") String anonymizedValue,
+        @Param("updatedTimestamp") ZonedDateTime updatedTimestamp
+    );
 }

@@ -76,6 +76,7 @@ CREATE TABLE reservation
     contact      varchar                     not null,
     email        varchar                     not null,
     contact_type varchar                     not null,
+    anonymized   boolean                     not null,
     created      timestamp with time zone    not null,
     updated      timestamp with time zone    not null,
     unique (shop_id, start_time, end_time)
@@ -87,6 +88,7 @@ CREATE INDEX idx_reservation_end_time ON reservation (end_time);
 -- schema derived from https://www.geonames.org/
 CREATE TABLE geolocation
 (
+    id           bigint generated always as identity primary key,
     country_code varchar          not null,
     zip_code     varchar          not null,
     place_name   varchar          not null,

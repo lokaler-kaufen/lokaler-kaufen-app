@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {RegisterBusinessPopupComponent} from '../register-business-popup/register-business-popup.component';
-import {UserContextService} from '../shared/user-context.service';
 
 @Component({
   selector: 'app-footer',
@@ -13,7 +12,10 @@ export class AppFooterComponent implements OnInit {
   // hold the dialog ref as long as the dialog is open
   dialogRef;
 
-  constructor(public dialog: MatDialog, public userContextService: UserContextService) {
+  // version info
+  versionInfo: VersionInfo;
+
+  constructor(public dialog: MatDialog, private client: HttpClient, public userContextService: UserContextService) {
   }
 
   openRegisterBusinessPopup(): void {
@@ -32,6 +34,16 @@ export class AppFooterComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.client.get<VersionInfo>('/api/info/version').toPromise().then(info => {
+      this.versionInfo = info;
+    });
   }
 
+}
+
+export interface VersionInfo {
+  commitHash: string;
+  commitTime: string;
+  localChanges: string;
+  version: string;
 }
