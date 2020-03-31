@@ -143,8 +143,8 @@ export class ShopDetailsConfigComponent implements OnInit {
     Array.from(this.businessHours.POSSIBLE_BUSINESS_HOURS.keys()).forEach((day: string) => {
       const fromCtrl = day + 'FromCtrl';
       const toCtrl = day + 'ToCtrl';
-      this.openingFormGroup.addControl(fromCtrl, new FormControl(''));
-      this.openingFormGroup.addControl(toCtrl, new FormControl(''));
+      this.openingFormGroup.addControl(fromCtrl, new FormControl('', Validators.required));
+      this.openingFormGroup.addControl(toCtrl, new FormControl('', Validators.required));
       this.openingFormGroup.controls[fromCtrl].setValue('09:00');
       this.openingFormGroup.controls[toCtrl].setValue('16:00');
       this.openingFormGroup.addControl('defaultCtrl', new FormControl(''));
@@ -175,7 +175,9 @@ export class ShopDetailsConfigComponent implements OnInit {
   }
 
   updateShop() {
-    if (!this.addressFormGroup.valid || !this.contactFormGroup.valid || !this.descriptionFormGroup.valid || !this.nameFormGroup.valid || !this.openingFormGroup.valid) {
+    // If one form group is invalid, don't save the changes
+    if (!this.addressFormGroup.valid || !this.contactFormGroup.valid || !this.descriptionFormGroup.valid ||
+      !this.nameFormGroup.valid || !this.openingFormGroup.valid) {
       this.notificationsService.error('Ungültige Eingabe', 'Bitte überprüfen Sie Ihre Änderungen nochmal.');
       return;
     }
@@ -233,7 +235,7 @@ export class ShopDetailsConfigComponent implements OnInit {
       }
       return null;
     };
-  };
+  }
 
   private onZipCodeValid() {
     const zipCode = this.addressFormGroup.get('zipCtrl').value;
