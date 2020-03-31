@@ -20,7 +20,7 @@ public class JanitorJob {
     /**
      * Anonymizes all reservations that expired the day before.
      */
-    @Scheduled(cron = "${reservation.cleanup.cron.expression}")
+    @Scheduled(cron = "${mercury.cleanup-job.reservation.cron}")
     public void cleanReservations() {
         log.info("Anonymizing all reservations that expired the day before ...");
         reservationService.anonymizeExpired();
