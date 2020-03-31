@@ -1,7 +1,6 @@
 <div class="app-footer margin-big-vertical margin-horizontal">
   <a class="margin-horizontal margin-bottom" routerLink="login"
-     *ngIf="!userContextService.isLoggedInStoreOwner">Login für Ladenbesitzer
-  </a>
+     *ngIf="!userContextService.isLoggedInStoreOwner">Login für Ladenbesitzer</a>
   <a class="margin-horizontal margin-bottom link" (click)="openRegisterBusinessPopup()"
      *ngIf="!userContextService.isLoggedInStoreOwner">Als Ladenbesitzer registrieren</a>
   <a class="margin-horizontal margin-bottom link" routerLink="manage-shop"
