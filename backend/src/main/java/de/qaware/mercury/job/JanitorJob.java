@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 public class JanitorJob {
-
     private final ReservationService reservationService;
 
     /**
@@ -26,5 +25,4 @@ public class JanitorJob {
         int count = reservationService.anonymizeExpired();
         log.info("... done anonymizing {} entries.", count);
     }
-
 }
