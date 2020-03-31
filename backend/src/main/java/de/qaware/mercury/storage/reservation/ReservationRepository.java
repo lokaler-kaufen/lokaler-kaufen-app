@@ -6,6 +6,7 @@ import de.qaware.mercury.business.shop.Shop;
 import org.springframework.lang.Nullable;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 public interface ReservationRepository {
@@ -21,8 +22,9 @@ public interface ReservationRepository {
     /**
      * Anonymizes all reservations that expired the day before.
      *
-     * @param until defines until which date and time the reservations should be anonymized.
+     * @param until   defines until which date and time the reservations should be anonymized.
+     * @param updated current timestamp
      * @return the number of entries anonymized.
      */
-    int anonymizeExpired(LocalDateTime until);
+    int anonymizeExpired(LocalDateTime until, ZonedDateTime updated);
 }

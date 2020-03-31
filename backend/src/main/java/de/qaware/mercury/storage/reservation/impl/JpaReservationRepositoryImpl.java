@@ -15,6 +15,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Slf4j
@@ -58,7 +59,7 @@ class JpaReservationRepositoryImpl implements ReservationRepository {
     }
 
     @Override
-    public int anonymizeExpired(LocalDateTime until) {
-        return reservationDataRepository.anonymizeExpired(until, ANONYMIZED_VALUE);
+    public int anonymizeExpired(LocalDateTime until, ZonedDateTime updated) {
+        return reservationDataRepository.anonymizeExpired(until, ANONYMIZED_VALUE, updated);
     }
 }

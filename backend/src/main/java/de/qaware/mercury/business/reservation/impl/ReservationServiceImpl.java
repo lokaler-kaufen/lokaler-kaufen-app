@@ -29,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Service
@@ -69,7 +70,8 @@ class ReservationServiceImpl implements ReservationService {
     @Transactional
     public int anonymizeExpired() {
         LocalDateTime until = clock.today().atStartOfDay();
-        return reservationRepository.anonymizeExpired(until);
+        ZonedDateTime updatedTimestamp = clock.nowZoned();
+        return reservationRepository.anonymizeExpired(until, updatedTimestamp);
     }
 
     @Override
