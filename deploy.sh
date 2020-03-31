@@ -13,7 +13,7 @@ NC='\033[0m' # No Color	echo -e "INFO: Deploying to ${RED}PRODUCTION${NC}"
 if [[ "$1" = "-p" ]]
 then
 	RED='\033[0;31m'
-	echo -e "INFO: Deploying to ${RED}PRODUCTION${NC} (https://demo.lokaler.kaufen)."
+	echo -e "INFO: Deploying to ${RED}PRODUCTION${NC} (https://app.lokaler.kaufen)."
 	PROD=true
 	USER="$2"
 else
@@ -29,7 +29,7 @@ FRONTEND_DIR="${DIR}/frontend"
 BACKEND_DIR="${DIR}/backend"
 
 SPRING_STATIC_DIR="${BACKEND_DIR}/src/main/resources/static"
-ARTIFACT="${BACKEND_DIR}/build/libs/mercury-0.0.1-SNAPSHOT.jar"
+ARTIFACT="${BACKEND_DIR}/build/libs/mercury-1.0.0.jar"
 
 DEPLOY_DIR_PROD="/opt/mercury/prod"
 DEPLOY_DIR_TEST="/opt/mercury/test"
@@ -58,7 +58,7 @@ echo "Copied Angular artifacts to ${SPRING_STATIC_DIR}"
 (
     printf "Building Gradle project ..."
     cd "${BACKEND_DIR}"
-    "${GRADLE}" build
+    "${GRADLE}" clean build
     echo " done."
 )
 
