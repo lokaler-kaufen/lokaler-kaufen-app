@@ -5,8 +5,9 @@ import {ActivatedRoute} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {ShopCreationSuccessPopupComponent} from '../shop-creation-success-popup/shop-creation-success-popup.component';
 import {NotificationsService} from 'angular2-notifications';
-import {CreateShopDto, SlotConfigDto} from '../data/api';
+import {CreateShopDto, LocationSuggestionDto, LocationSuggestionsDto, SlotConfigDto} from '../data/api';
 import {ContactTypesEnum} from '../contact-types/available-contact-types';
+import {filter} from 'rxjs/operators';
 
 export class OpeningHours {
   constructor(enabled: boolean = true, from: string = '09:00', to: string = '16:00') {
@@ -53,6 +54,7 @@ export class ShopCreationPageComponent implements OnInit {
   businessHours = BusinessHours;
 
   days;
+  citySuggestions: LocationSuggestionDto[] = [];
 
   constructor(
     private client: HttpClient,
@@ -78,6 +80,13 @@ export class ShopCreationPageComponent implements OnInit {
       cityCtrl: ['', Validators.required],
       suffixCtrl: ''
     });
+    this.addressFormGroup.get('zipCtrl').statusChanges.pipe(
+      filter((status: string) => {
+        console.log(status);
+        this.citySuggestions = [];
+        return status === 'VALID';
+      }))
+      .subscribe(() => this.onZipCodeValid());
     this.descriptionFormGroup = this.formBuilder.group({
       descriptionCtrl: ['', Validators.required],
       urlCtrl: ['', [Validators.pattern('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]]
@@ -108,6 +117,7 @@ export class ShopCreationPageComponent implements OnInit {
       passwordCtrl: ['', [Validators.required, Validators.pattern(this.passwordRegex), Validators.minLength(12)]],
       confirmPasswordCtrl: ['', Validators.required]
     }, {validator: this.checkMatchingPasswords('passwordCtrl', 'confirmPasswordCtrl')});
+
   }
 
   // Validation password equals confirmed password
@@ -212,8 +222,21 @@ export class ShopCreationPageComponent implements OnInit {
       }
       return null;
     };
-  };
+  }
 
+  private onZipCodeValid() {
+    const zipCode = this.addressFormGroup.get('zipCtrl').value;
+    this.client.get<LocationSuggestionsDto>('/api/location/suggestion?zipCode=' + zipCode).toPromise()
+      .then(response => {
+        if (response.suggestions.length > 0) {
+          this.citySuggestions = response.suggestions;
+          this.addressFormGroup.get('cityCtrl').setValue(this.citySuggestions[0].placeName);
+        } else {
+          this.addressFormGroup.get('cityCtrl').setErrors({noCityFound: true});
+        }
+      })
+      .catch(error => console.log('Error fetching cities to zip code'));
+  }
 }
 
 export function setRightSlot(dayString: string, from: string, to: string, slots: SlotConfigDto) {
