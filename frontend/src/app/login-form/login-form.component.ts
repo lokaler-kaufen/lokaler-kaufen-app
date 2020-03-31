@@ -26,7 +26,7 @@ export class LoginFormComponent {
   redirectPath: string;
 
   formController = new FormGroup({
-    email: new FormControl('', [Validators.email, Validators.required]),
+    email: new FormControl('', [Validators.pattern('^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$'), Validators.required]),
     password: new FormControl('', [Validators.required])
   });
 

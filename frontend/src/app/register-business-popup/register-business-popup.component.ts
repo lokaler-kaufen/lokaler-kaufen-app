@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {MatDialogRef} from '@angular/material/dialog';
 import {HttpClient} from '@angular/common/http';
 import {NotificationsService} from 'angular2-notifications';
-import {FormControl, Validators} from "@angular/forms";
+import {FormControl, Validators} from '@angular/forms';
 
 @Component({
   selector: 'register-business-popup',
@@ -12,7 +12,8 @@ import {FormControl, Validators} from "@angular/forms";
 export class RegisterBusinessPopupComponent {
   showConfirmDialog = false;
 
-  email: FormControl = new FormControl('', [Validators.required, Validators.email]);
+  email: FormControl = new FormControl('', [Validators.required,
+    Validators.pattern('^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$')]);
 
   constructor(private client: HttpClient,
               public dialogRef: MatDialogRef<RegisterBusinessPopupComponent>,
@@ -24,6 +25,9 @@ export class RegisterBusinessPopupComponent {
   }
 
   sendConfirmationMail() {
+    if (!this.email.valid) {
+      return;
+    }
     this.client.post('/api/shop/send-create-link', {
       email: this.email.value
     }).subscribe(() => {

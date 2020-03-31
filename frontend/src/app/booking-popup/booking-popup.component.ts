@@ -39,7 +39,7 @@ export class BookingPopupComponent implements OnInit {
       name: new FormControl('', [Validators.required]),
       email: new FormControl('', [
         Validators.required,
-        Validators.email]
+        Validators.pattern('^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$')]
       )
     });
     this.bookingGroup.controls.option.setValue(this.contactTypes.getDisplayName(this.data.supportedContactTypes[0]));
