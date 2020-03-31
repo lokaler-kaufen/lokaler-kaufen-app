@@ -1,6 +1,6 @@
 <p>Hallo und herzlich willkommen! Toll, dass Sie einen Laden auf lokaler.kaufen anlegen wollen! Dafür brauchen wir noch
   ein paar Informationen von Ihnen. </p>
-<mat-vertical-stepper [linear]="true" #stepper>
+<mat-vertical-stepper [linear]="false" #stepper>
   <mat-step [stepControl]="nameFormGroup">
     <form [formGroup]="nameFormGroup">
       <ng-template matStepLabel>Starten wir ganz einfach</ng-template>
@@ -78,7 +78,8 @@
     <form [formGroup]="contactFormGroup">
       <ng-template matStepLabel>Welche Kontaktmöglichkeiten möchten Sie anbieten?</ng-template>
       <p>Füllen Sie einfach alle Möglichkeiten aus, die Sie bedienen wollen. </p>
-      <small *ngIf="contactFormGroup.hasError('atLeastOneRequired')" style="color: red">{{contactFormGroup.getError('atLeastOneRequired').text}}
+      <small *ngIf="contactFormGroup.hasError('atLeastOneRequired')"
+             style="color: red">{{contactFormGroup.getError('atLeastOneRequired').text}}
       </small>
       <div *ngFor="let contactType of contactTypes.availableContactTypes">
         <p>
@@ -144,7 +145,8 @@
   <mat-step [stepControl]="passwordFormGroup">
     <form [formGroup]="passwordFormGroup">
       <ng-template matStepLabel>Fast fertig!</ng-template>
-      <p>Wählen Sie noch ein Passwort. Damit können Sie Ihre Angaben später ändern. Wählen Sie ein sicheres Passwort, das
+      <p>Wählen Sie noch ein Passwort. Damit können Sie Ihre Angaben später ändern. Wählen Sie ein sicheres Passwort,
+        das
         mindestens 12 Zeichen hat. Ein gutes Beispiel ist ein Satz, den Sie sich gut merken können.</p>
       <div>
         <mat-form-field appearance="outline">
@@ -189,9 +191,13 @@
           [passwordComponent]="passwordComponentWithValidation"
           minCharsCriteriaMsg="Minimum 12 Zeichen"
           lowerCaseCriteriaMsg="Mindestens ein Kleinbuchstabe"
-          upperCaseCriteriaMsg="Mindestens ein Großbuchstabe"
-        >
+          upperCaseCriteriaMsg="Mindestens ein Großbuchstabe">
         </mat-password-strength-info>
+      </div>
+      <div class="padding-vertical">
+        <mat-checkbox formControlName="privacyCtrl">Ich habe die <a target="_blank" [routerLink]="'/privacy'">Datenschutzerklärung</a>
+          gelesen und akzeptiere diese.
+        </mat-checkbox>
       </div>
       <div>
         <button mat-button matStepperPrevious>Zurück</button>

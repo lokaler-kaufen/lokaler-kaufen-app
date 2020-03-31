@@ -115,7 +115,8 @@ export class ShopCreationPageComponent implements OnInit {
     this.openingFormGroup.controls.SonntagToCtrl.disable();
     this.passwordFormGroup = this.formBuilder.group({
       passwordCtrl: ['', [Validators.required, Validators.pattern(this.passwordRegex), Validators.minLength(12)]],
-      confirmPasswordCtrl: ['', Validators.required]
+      confirmPasswordCtrl: ['', Validators.required],
+      privacyCtrl: ['', Validators.requiredTrue]
     }, {validator: this.checkMatchingPasswords('passwordCtrl', 'confirmPasswordCtrl')});
 
   }

@@ -47,6 +47,7 @@ import {NormalLayoutComponent} from './layouts/normal-layout/normal-layout.compo
 import {AdminLayoutComponent} from './layouts/admin-layout/admin-layout.component';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatExpansionModule} from '@angular/material/expansion';
+import {MatCheckboxModule} from "@angular/material/checkbox";
 
 @NgModule({
   declarations: [
@@ -76,31 +77,32 @@ import {MatExpansionModule} from '@angular/material/expansion';
     NormalLayoutComponent,
     AdminLayoutComponent
   ],
-  imports: [
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    BrowserModule,
-    FormsModule,
-    HttpClientModule,
-    MatAutocompleteModule,
-    MatButtonModule,
-    MatCardModule,
-    MatDialogModule,
-    MatDividerModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    MatPasswordStrengthModule,
-    MatProgressSpinnerModule,
-    MatSelectModule,
-    MatSortModule,
-    MatStepperModule,
-    MatTableModule,
-    ReactiveFormsModule,
-    SimpleNotificationsModule.forRoot(),
-    MatTabsModule,
-    MatExpansionModule
-  ],
+    imports: [
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        BrowserModule,
+        FormsModule,
+        HttpClientModule,
+        MatAutocompleteModule,
+        MatButtonModule,
+        MatCardModule,
+        MatDialogModule,
+        MatDividerModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        MatPasswordStrengthModule,
+        MatProgressSpinnerModule,
+        MatSelectModule,
+        MatSortModule,
+        MatStepperModule,
+        MatTableModule,
+        ReactiveFormsModule,
+        SimpleNotificationsModule.forRoot(),
+        MatTabsModule,
+        MatExpansionModule,
+        MatCheckboxModule
+    ],
   providers: [
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}},
     {provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher}
