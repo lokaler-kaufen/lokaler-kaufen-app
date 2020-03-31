@@ -5,6 +5,10 @@
   justify-content: center;
 }
 
+
+.version-info {
+  color: #fafafa;
+}
 /* switch footer links to column mode on small devices */
 @media screen and (max-width: 719px) {
   .app-footer {

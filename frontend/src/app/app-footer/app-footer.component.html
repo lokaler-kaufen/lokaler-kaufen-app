@@ -1,6 +1,10 @@
 <div class="app-footer margin-big-vertical margin-horizontal">
   <a class="margin-horizontal margin-bottom" routerLink="login">Login für Ladenbesitzer</a>
-  <a class="margin-horizontal margin-bottom link" (click)="openRegisterBusinessPopup()">Als Ladenbesitzer registrieren</a>
+  <a class="margin-horizontal margin-bottom link" (click)="openRegisterBusinessPopup()">Als Ladenbesitzer
+    registrieren</a>
   <a class="margin-horizontal margin-bottom" routerLink="imprint">Impressum</a>
   <a class="margin-horizontal margin-bottom" routerLink="privacy">Datenschutz</a>
+</div>
+<div class="app-footer margin-vertical margin-horizontal">
+  <span class="version-info">{{versionInfo.version}} #{{versionInfo.commitHash}} - {{versionInfo.commitTime}}</span>
 </div>
