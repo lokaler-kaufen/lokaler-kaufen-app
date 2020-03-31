@@ -33,8 +33,9 @@
       </mat-form-field>
       <mat-form-field>
         <mat-label>Stadt</mat-label>
-        <input matInput formControlName="cityCtrl" placeholder="Maulwurfshausen"
-               required>
+        <mat-select formControlName="cityCtrl" style="width: 100%" required>
+          <mat-option *ngFor="let city of citySuggestions" [value]="city.placeName">{{city.placeName}}</mat-option>
+        </mat-select>
       </mat-form-field>
       <mat-form-field>
         <mat-label>Adresszusatz</mat-label>

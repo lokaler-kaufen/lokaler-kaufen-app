@@ -1,6 +1,6 @@
 <shop-details (updateShopEvent)="updateShop($event)"
               [detailsObservable]="shopDetails"
-[sendUpdatedShopDetails]="getUpdatedDetails"></shop-details>
+              [sendUpdatedShopDetails]="getUpdatedDetails"></shop-details>
 <button class="save-button" mat-raised-button color="primary"
         (click)="this.getUpdatedDetails.next(true)">Speichern
 </button>

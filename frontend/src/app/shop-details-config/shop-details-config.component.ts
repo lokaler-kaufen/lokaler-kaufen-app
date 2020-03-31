@@ -4,8 +4,17 @@ import {BusinessHours, setRightSlot} from '../shop-creation-page/shop-creation-p
 import {MatDialog} from '@angular/material/dialog';
 import {NotificationsService} from 'angular2-notifications';
 import {Observable, ReplaySubject} from 'rxjs';
-import {DayDto, ShopOwnerDetailDto, SlotConfigDto, UpdateShopDto} from '../data/api';
+import {
+  DayDto,
+  LocationSuggestionDto,
+  LocationSuggestionsDto,
+  ShopOwnerDetailDto,
+  SlotConfigDto,
+  UpdateShopDto
+} from '../data/api';
 import {ContactTypesEnum} from '../contact-types/available-contact-types';
+import {filter} from 'rxjs/operators';
+import {HttpClient} from '@angular/common/http';
 
 export interface UpdateShopData {
   updateShopDto: UpdateShopDto;
@@ -38,10 +47,13 @@ export class ShopDetailsConfigComponent implements OnInit {
   businessHours = BusinessHours;
   days;
   details: ShopOwnerDetailDto = {};
+  citySuggestions: LocationSuggestionDto[] = [];
+
 
   constructor(private formBuilder: FormBuilder,
               private matDialog: MatDialog,
-              private notificationsService: NotificationsService) {
+              private notificationsService: NotificationsService,
+              private client: HttpClient) {
     this.days = Array.from(this.businessHours.POSSIBLE_BUSINESS_HOURS.keys());
   }
 
@@ -112,6 +124,13 @@ export class ShopDetailsConfigComponent implements OnInit {
       cityCtrl: ['', Validators.required],
       suffixCtrl: ''
     });
+    this.addressFormGroup.get('zipCtrl').statusChanges.pipe(
+      filter((status: string) => {
+        console.log(status);
+        this.citySuggestions = [];
+        return status === 'VALID';
+      }))
+      .subscribe(() => this.onZipCodeValid());
     this.descriptionFormGroup = this.formBuilder.group({
       descriptionCtrl: ['', Validators.required],
       urlCtrl: ['', [Validators.pattern('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]]
@@ -156,6 +175,10 @@ export class ShopDetailsConfigComponent implements OnInit {
   }
 
   updateShop() {
+    if (!this.addressFormGroup.valid || !this.contactFormGroup.valid || !this.descriptionFormGroup.valid || !this.nameFormGroup.valid || !this.openingFormGroup.valid) {
+      this.notificationsService.error('Ungültige Eingabe', 'Bitte überprüfen Sie Ihre Änderungen nochmal.');
+      return;
+    }
     console.log('Update shop');
     const updateShopDto: UpdateShopDto = {};
     updateShopDto.ownerName = this.nameFormGroup.get('nameCtrl').value;
@@ -212,6 +235,19 @@ export class ShopDetailsConfigComponent implements OnInit {
     };
   };
 
+  private onZipCodeValid() {
+    const zipCode = this.addressFormGroup.get('zipCtrl').value;
+    this.client.get<LocationSuggestionsDto>('/api/location/suggestion?zipCode=' + zipCode).toPromise()
+      .then(response => {
+        if (response.suggestions.length > 0) {
+          this.citySuggestions = response.suggestions;
+          this.addressFormGroup.get('cityCtrl').setValue(this.citySuggestions[0].placeName);
+        } else {
+          this.addressFormGroup.get('cityCtrl').setErrors({noCityFound: true});
+        }
+      })
+      .catch(error => console.log('Error fetching cities to zip code'));
+  }
 
   private getRightSlot(day: string, slots: SlotConfigDto): DayDto {
     switch (day) {
