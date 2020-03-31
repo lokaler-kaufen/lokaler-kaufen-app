@@ -12,11 +12,9 @@ import lombok.ToString;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
 import javax.persistence.Table;
 
 @Entity
-@IdClass(GeoLocationId.class) // Get hibernate to use compound id
 @Getter
 // See https://vladmihalcea.com/the-best-way-to-implement-equals-hashcode-and-tostring-with-jpa-and-hibernate/
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -26,12 +24,19 @@ import javax.persistence.Table;
 @Table(name = "geolocation")
 class GeoLocationEntity {
     @Id
+    @EqualsAndHashCode.Include
+    private Long id;
+
+    @Setter
+    @Column(nullable = false)
     private String countryCode;
 
-    @Id
+    @Setter
+    @Column(nullable = false)
     private String zipCode;
 
-    @Id
+    @Setter
+    @Column(nullable = false)
     private String placeName;
 
     @Setter
@@ -52,7 +57,7 @@ class GeoLocationEntity {
 
     public LocationSuggestion toLocationSuggestion() {
         return new LocationSuggestion(
-            countryCode + "-" + zipCode + "-" + placeName,
+            id == null ? "null" : Long.toString(id),
             countryCode,
             zipCode,
             placeName

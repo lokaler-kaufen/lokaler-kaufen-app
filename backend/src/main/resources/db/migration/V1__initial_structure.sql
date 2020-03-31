@@ -87,6 +87,7 @@ CREATE INDEX idx_reservation_end_time ON reservation (end_time);
 -- schema derived from https://www.geonames.org/
 CREATE TABLE geolocation
 (
+    id           bigint generated always as identity primary key,
     country_code varchar          not null,
     zip_code     varchar          not null,
     place_name   varchar          not null,
