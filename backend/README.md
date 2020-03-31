@@ -160,7 +160,7 @@ If that happens on your server, you have to configure a database, see [the setti
 Start the application with the `--add-admin` flag. The application will then prompt for an email and a password,
 creates the admin and shuts down again. This can be done while another instance of the application is running.
 
-### Create a database and an user with limited rights
+### Create a database and a user with limited rights
 
 ```sql
 create user mercury with encrypted password '<password>';

@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-* Access to an user account on the target machine
+* Access to a user account on the target machine
 * Public key configured on the target machine
 * User needs to be part of the group `deployment`
 
