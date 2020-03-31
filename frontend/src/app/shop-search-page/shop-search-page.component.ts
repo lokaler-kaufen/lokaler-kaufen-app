@@ -139,7 +139,7 @@ export class ShopSearchPageComponent implements OnInit {
   }
 
   handleKeyEvent($event: KeyboardEvent) {
-    if ($event.code === 'Enter') {
+    if ($event.key === 'Enter') {
       this.performSearch();
     }
   }
