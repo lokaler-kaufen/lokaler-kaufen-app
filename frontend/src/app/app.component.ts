@@ -32,4 +32,6 @@ export class AppComponent {
         this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/signal.svg')
       );
   }
+
+  isIEOrEdge = /msie\s|trident\/|edge\//i.test(window.navigator.userAgent)
 }

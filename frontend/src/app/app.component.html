@@ -1,3 +1,6 @@
+<div *ngIf="isIEOrEdge" class="not-supported-banner">Wir unterstützen Ihren Browser leider nicht. Wir empfehlen Ihnen
+  Firefox, Chrome oder Safari.
+</div>
 <main class="padding-all">
 
   <app-header></app-header>
@@ -8,5 +11,6 @@
     [options]="{timeOut: 10000, preventDuplicates: true, lastOnBottom: false}"></simple-notifications>
 
   <app-footer></app-footer>
+
 
 </main>
