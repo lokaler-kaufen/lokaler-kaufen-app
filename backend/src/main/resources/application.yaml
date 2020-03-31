@@ -27,7 +27,7 @@ mercury:
     approveShopsOnCreation: false
   cleanup-job:
     reservation:
-      cron: "0 0 2 * * *"
+      cron: "0 0 2 * * *" # Every night at 2am
 
 spring.mail:
   host: "smtp.gmail.com"
