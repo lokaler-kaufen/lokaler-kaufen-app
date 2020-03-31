@@ -15,6 +15,7 @@ import {
 import {ContactTypesEnum} from '../contact-types/available-contact-types';
 import {filter} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
+import {ErrorReportingService} from '../shared/error-reporting.service';
 
 export interface UpdateShopData {
   updateShopDto: UpdateShopDto;
@@ -53,7 +54,8 @@ export class ShopDetailsConfigComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
               private matDialog: MatDialog,
               private notificationsService: NotificationsService,
-              private client: HttpClient) {
+              private client: HttpClient,
+              private errorReportingService: ErrorReportingService) {
     this.days = Array.from(this.businessHours.POSSIBLE_BUSINESS_HOURS.keys());
   }
 
@@ -66,6 +68,8 @@ export class ShopDetailsConfigComponent implements OnInit {
         },
         error => {
           console.log('Error requesting shop details: ' + error.status + ', ' + error.message);
+          this.errorReportingService.reportError(JSON.stringify(error.error), '/api/shop/send-create-link',
+            error.status, error.headers.get('x-trace-id'));
           this.notificationsService.error('Tut uns leid!', 'Es ist ein Fehler beim Laden der Details aufgetreten.');
         });
     this.sendUpdatedShopDetails.subscribe((sendUpdatedShopDetails: boolean) => {

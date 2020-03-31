@@ -8,6 +8,7 @@ import {NotificationsService} from 'angular2-notifications';
 import {CreateShopDto, LocationSuggestionDto, LocationSuggestionsDto, SlotConfigDto} from '../data/api';
 import {ContactTypesEnum} from '../contact-types/available-contact-types';
 import {filter} from 'rxjs/operators';
+import {ErrorReportingService} from '../shared/error-reporting.service';
 
 export class OpeningHours {
   constructor(enabled: boolean = true, from: string = '09:00', to: string = '16:00') {
@@ -61,8 +62,8 @@ export class ShopCreationPageComponent implements OnInit {
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private matDialog: MatDialog,
-    private notificationsService: NotificationsService
-  ) {
+    private notificationsService: NotificationsService,
+    private errorReportingService: ErrorReportingService) {
     this.days = Array.from(this.businessHours.POSSIBLE_BUSINESS_HOURS.keys());
   }
 
@@ -194,14 +195,20 @@ export class ShopCreationPageComponent implements OnInit {
       error => {
         console.log('Error creating new shop: ' + error.status + ', ' + error.message + ', ' + error.error.code);
         if (error.status === 400 && error.error.code === 'LOCATION_NOT_FOUND') {
+          this.errorReportingService.reportError(JSON.stringify(error.error), '/api/shop/send-create-link',
+            error.status, error.headers.get('x-trace-id'));
           this.notificationsService.error('Ungültige PLZ', 'Diese Postleitzahl kennen wir leider nicht, haben Sie sich vertippt?');
         }
         if (error.status === 409 && error.error.code === 'SHOP_ALREADY_EXISTS') {
+          this.errorReportingService.reportError(JSON.stringify(error.error), '/api/shop/send-create-link',
+            error.status, error.headers.get('x-trace-id'));
           this.notificationsService.error(
             'Moment mal...',
             'Sie haben sich bereits registriert. Sie können sich unter Login für Ladenbesitzer anmelden.'
           );
         } else {
+          this.errorReportingService.reportError(JSON.stringify(error.error), '/api/shop/send-create-link',
+            error.status, error.headers.get('x-trace-id'));
           this.notificationsService.error('Tut uns leid!', 'Ihr Laden konnte nicht angelegt werden.');
         }
       });

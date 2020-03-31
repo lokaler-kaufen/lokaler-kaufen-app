@@ -16,6 +16,7 @@ import {NotificationsService} from 'angular2-notifications';
 import {CreateReservationDto, ShopDetailDto, SlotDto, SlotsDto} from '../data/api';
 import {ZipCodeCacheService} from '../landing-page/zip-code-cache.service';
 import {ContactTypesEnum} from '../contact-types/available-contact-types';
+import {ErrorReportingService} from '../shared/error-reporting.service';
 
 export interface SlotsPerDay {
   dayName: string;
@@ -34,7 +35,8 @@ export class ShopDetailsPageComponent implements OnInit {
               private activatedRoute: ActivatedRoute,
               private matDialog: MatDialog,
               private notificationsService: NotificationsService,
-              private zipCodeCacheService: ZipCodeCacheService) {
+              private zipCodeCacheService: ZipCodeCacheService,
+              private errorReportingService: ErrorReportingService) {
   }
 
   get hasDescription(): boolean {
@@ -125,6 +127,8 @@ export class ShopDetailsPageComponent implements OnInit {
               },
               error => {
                 console.log('Error booking time slot: ' + error.status + ', ' + error.message);
+                this.errorReportingService.reportError(JSON.stringify(error.error), '/api/shop/send-create-link',
+                  error.status, error.headers.get('x-trace-id'));
                 this.notificationsService.error('Tut uns leid!', 'Es ist ein Fehler bei der Buchung aufgetreten.');
               });
         }

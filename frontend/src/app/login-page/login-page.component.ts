@@ -3,6 +3,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {PasswordResetPopupComponent} from '../password-reset-popup/password-reset-popup.component';
 import {HttpClient} from '@angular/common/http';
 import {NotificationsService} from 'angular2-notifications';
+import {ErrorReportingService} from '../shared/error-reporting.service';
 
 @Component({
   selector: 'login-page',
@@ -11,7 +12,10 @@ import {NotificationsService} from 'angular2-notifications';
 })
 export class LoginPageComponent {
 
-  constructor(private matDialog: MatDialog, private client: HttpClient, private notificationsService: NotificationsService) {
+  constructor(private matDialog: MatDialog,
+              private client: HttpClient,
+              private notificationsService: NotificationsService,
+              private errorReportingService: ErrorReportingService) {
   }
 
   passwordReset() {
@@ -23,7 +27,9 @@ export class LoginPageComponent {
           },
           error => {
             console.log('Error password reset: ' + error.status + ', ' + error.message);
-            this.notificationsService.error('Tut uns leid!', 'Es ist ein Fehler beim Zurücksetzen Ihres Passworts aufgetreten.');
+            this.errorReportingService.reportError(JSON.stringify(error.error), '/api/shop/send-create-link',
+            error.status, error.headers.get('x-trace-id'));
+          this.notificationsService.error('Tut uns leid!', 'Es ist ein Fehler beim Zurücksetzen Ihres Passworts aufgetreten.');
           });
       }
     });
