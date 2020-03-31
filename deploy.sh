@@ -29,7 +29,7 @@ FRONTEND_DIR="${DIR}/frontend"
 BACKEND_DIR="${DIR}/backend"
 
 SPRING_STATIC_DIR="${BACKEND_DIR}/src/main/resources/static"
-ARTIFACT="${BACKEND_DIR}/build/libs/mercury-1.0.0.jar"
+ARTIFACT="${BACKEND_DIR}/build/libs/mercury.jar"
 
 DEPLOY_DIR_PROD="/opt/mercury/prod"
 DEPLOY_DIR_TEST="/opt/mercury/test"
