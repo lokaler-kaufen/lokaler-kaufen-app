@@ -148,6 +148,14 @@ If that happens on your server, you have to configure a database, see [the setti
 Start the application with the `--add-admin` flag. The application will then prompt for an email and a password,
 creates the admin and shuts down again. This can be done while another instance of the application is running.
 
+### Create a database and an user with limited rights
+
+```sql
+create user mercury with encrypted password '<password>';
+create database mercury;
+grant all privileges on database mercury to mercury;
+```
+
 # Credits
 
 For geolocation lookups we are using data from [GeoNames](https://download.geonames.org/export/zip/)
