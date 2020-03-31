@@ -22,12 +22,14 @@ public class LocationSuggestionsDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class LocationSuggestionDto {
+        String id;
         String countryCode;
         String zipCode;
         String placeName;
 
         public static LocationSuggestionDto of(LocationSuggestion g) {
             return new LocationSuggestionDto(
+                g.getId(),
                 g.getCountryCode(),
                 g.getZipCode(),
                 g.getPlaceName()

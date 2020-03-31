@@ -4,6 +4,7 @@ import lombok.Value;
 
 @Value
 public class LocationSuggestion {
+    String id;
     String countryCode;
     String zipCode;
     String placeName;
