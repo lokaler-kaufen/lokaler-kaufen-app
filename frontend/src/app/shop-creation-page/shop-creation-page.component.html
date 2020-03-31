@@ -144,7 +144,7 @@
     <form [formGroup]="passwordFormGroup">
       <ng-template matStepLabel>Fast fertig!</ng-template>
       <p>Wählen Sie noch ein Passwort. Damit können Sie Ihre Angaben später ändern. Wählen Sie ein sicheres Passwort, das
-        mindestens 14 Zeichen hat. Ein gutes Beispiel ist ein Satz, den Sie sich gut merken können.</p>
+        mindestens 12 Zeichen hat. Ein gutes Beispiel ist ein Satz, den Sie sich gut merken können.</p>
       <div>
         <mat-form-field appearance="outline">
           <mat-label>Password</mat-label>
@@ -181,12 +181,12 @@
                                [password]="passwordWithValidation.value"
                                [enableSpecialCharRule]=false
                                [enableDigitRule]=false
-                               [min]=14>
+                               [min]=12>
         </mat-password-strength>
         <!--Password's strength info-->
         <mat-password-strength-info
           [passwordComponent]="passwordComponentWithValidation"
-          minCharsCriteriaMsg="Minimum 14 Zeichen"
+          minCharsCriteriaMsg="Minimum 12 Zeichen"
           lowerCaseCriteriaMsg="Mindestens ein Kleinbuchstabe"
           upperCaseCriteriaMsg="Mindestens ein Großbuchstabe"
         >

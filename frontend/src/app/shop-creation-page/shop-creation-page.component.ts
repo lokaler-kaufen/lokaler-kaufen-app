@@ -45,7 +45,7 @@ export class ShopCreationPageComponent implements OnInit {
   openingFormGroup = new FormGroup({});
   passwordFormGroup: FormGroup;
 
-  passwordRegex: RegExp = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.{14,})');
+  passwordRegex: RegExp = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.{12,})');
 
   token: string;
   contactTypes = ContactTypesEnum;
@@ -105,7 +105,7 @@ export class ShopCreationPageComponent implements OnInit {
     this.openingFormGroup.controls.SamstagToCtrl.disable();
     this.openingFormGroup.controls.SonntagToCtrl.disable();
     this.passwordFormGroup = this.formBuilder.group({
-      passwordCtrl: ['', [Validators.required, Validators.pattern(this.passwordRegex), Validators.minLength(14)]],
+      passwordCtrl: ['', [Validators.required, Validators.pattern(this.passwordRegex), Validators.minLength(12)]],
       confirmPasswordCtrl: ['', Validators.required]
     }, {validator: this.checkMatchingPasswords('passwordCtrl', 'confirmPasswordCtrl')});
   }

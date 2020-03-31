@@ -12,7 +12,7 @@ import {NotificationsService} from 'angular2-notifications';
 export class PasswordResetPageComponent implements OnInit {
   form: FormGroup;
   token: string;
-  passwordRegex: RegExp = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.{14,})');
+  passwordRegex: RegExp = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.{12,})');
 
 
   constructor(private route: ActivatedRoute,
@@ -27,7 +27,7 @@ export class PasswordResetPageComponent implements OnInit {
       this.token = params.token;
     });
     this.form = this.formBuilder.group({
-      passwordCtrl: ['', [Validators.required, Validators.pattern(this.passwordRegex), Validators.minLength(14)]],
+      passwordCtrl: ['', [Validators.required, Validators.pattern(this.passwordRegex), Validators.minLength(12)]],
       confirmPasswordCtrl: ['', Validators.required]
     }, {validator: this.checkMatchingPasswords('passwordCtrl', 'confirmPasswordCtrl')});
 
