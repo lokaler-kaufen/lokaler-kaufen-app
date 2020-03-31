@@ -12,6 +12,9 @@ mercury:
   features:
     enableDebugDataCreation: true
     approveShopsOnCreation: true
+  cleanup-job:
+    reservation:
+      cron: "0 * * * * *"
 
 variables:
   domain: "http://localhost:4200"

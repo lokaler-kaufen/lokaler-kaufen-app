@@ -20,6 +20,9 @@ public interface ReservationRepository {
 
     /**
      * Anonymizes all reservations that expired the day before.
+     *
+     * @param until defines until which date and time the reservations should be anonymized.
+     * @return the number of entries anonymized.
      */
-    void anonymizeExpired(LocalDateTime until);
+    int anonymizeExpired(LocalDateTime until);
 }

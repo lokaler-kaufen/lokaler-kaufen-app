@@ -21,6 +21,9 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 class JpaReservationRepositoryImpl implements ReservationRepository {
+
+    private static final String ANONYMIZED_VALUE = "<anonymized>";
+
     private final ReservationDataRepository reservationDataRepository;
     private final Clock clock;
 
@@ -55,7 +58,7 @@ class JpaReservationRepositoryImpl implements ReservationRepository {
     }
 
     @Override
-    public void anonymizeExpired(LocalDateTime until) {
-        reservationDataRepository.anonymizeExpired(until);
+    public int anonymizeExpired(LocalDateTime until) {
+        return reservationDataRepository.anonymizeExpired(until, ANONYMIZED_VALUE);
     }
 }

@@ -11,8 +11,10 @@ public interface ReservationService {
 
     /**
      * Anonymize all reservations that ended the day before.
+     *
+     * @return the number of entries anonymized.
      */
-    void anonymizeExpired();
+    int anonymizeExpired();
 
     void createReservation(Shop shop, Slot.Id slotId, ContactType contactType, String contact, String name, String email) throws ReservationFailedException;
 

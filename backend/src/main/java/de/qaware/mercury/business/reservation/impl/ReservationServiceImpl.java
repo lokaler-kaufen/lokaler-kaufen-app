@@ -67,9 +67,9 @@ class ReservationServiceImpl implements ReservationService {
 
     @Override
     @Transactional
-    public void anonymizeExpired() {
+    public int anonymizeExpired() {
         LocalDateTime until = clock.today().atStartOfDay();
-        reservationRepository.anonymizeExpired(until);
+        return reservationRepository.anonymizeExpired(until);
     }
 
     @Override
