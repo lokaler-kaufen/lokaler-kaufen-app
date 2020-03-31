@@ -41,7 +41,7 @@ public class CreateShopDto {
     @Nullable
     private String website;
     @NotBlank
-    @Size(min = 14)
+    @Size(min = 12)
     private String password;
     // Maps from WHATSAPP -> Telephone number, for example
     @NotEmpty

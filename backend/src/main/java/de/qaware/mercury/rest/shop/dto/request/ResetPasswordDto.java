@@ -12,6 +12,6 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 public class ResetPasswordDto {
     @NotBlank
-    @Size(min = 14)
+    @Size(min = 12)
     String password;
 }
