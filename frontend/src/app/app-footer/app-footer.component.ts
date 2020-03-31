@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {RegisterBusinessPopupComponent} from '../register-business-popup/register-business-popup.component';
+import {UserContextService} from '../shared/user-context.service';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-footer',
