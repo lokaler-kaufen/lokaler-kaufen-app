@@ -82,6 +82,14 @@ export class ShopDetailsConfigComponent implements OnInit {
     this.addressFormGroup.controls.zipCtrl.setValue(this.details.zipCode);
     this.addressFormGroup.controls.cityCtrl.setValue(this.details.city);
     this.addressFormGroup.controls.suffixCtrl.setValue(this.details.addressSupplement);
+    this.citySuggestions.push({placeName: this.details.city});
+    this.addressFormGroup.get('zipCtrl').statusChanges.pipe(
+      filter((status: string) => {
+        console.log(status);
+        this.citySuggestions = [];
+        return status === 'VALID';
+      }))
+      .subscribe(() => this.onZipCodeValid());
     this.descriptionFormGroup.controls.descriptionCtrl.setValue(this.details.details);
     this.descriptionFormGroup.controls.urlCtrl.setValue(this.details.website);
     this.contactTypes.availableContactTypes.forEach(contact => {
@@ -124,13 +132,6 @@ export class ShopDetailsConfigComponent implements OnInit {
       cityCtrl: ['', Validators.required],
       suffixCtrl: ''
     });
-    this.addressFormGroup.get('zipCtrl').statusChanges.pipe(
-      filter((status: string) => {
-        console.log(status);
-        this.citySuggestions = [];
-        return status === 'VALID';
-      }))
-      .subscribe(() => this.onZipCodeValid());
     this.descriptionFormGroup = this.formBuilder.group({
       descriptionCtrl: ['', Validators.required],
       urlCtrl: ['', [Validators.pattern('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]]
@@ -235,7 +236,7 @@ export class ShopDetailsConfigComponent implements OnInit {
       }
       return null;
     };
-  }
+  };
 
   private onZipCodeValid() {
     const zipCode = this.addressFormGroup.get('zipCtrl').value;
