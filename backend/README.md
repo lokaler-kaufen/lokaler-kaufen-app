@@ -99,6 +99,18 @@ Start with looking at the `de.qaware.mercury.rest.shop.ShopController` class.
 
 ## How To's
 
+### What are the default logins?
+
+If you start the application in the `dev` profile, it will create some admin accounts and some shops:
+
+|Type   |Email              |Password   |
+|-------|-------------------|-----------|
+|Admin  |admin-1@local.host |admin-1    |
+|Admin  |admin-2@local.host |admin-2    |
+|Shop   |moe@local.host     |moe        |
+|Shop   |flo@local.host     |flo        |
+|Shop   |vroni@local.host   |vroni      |
+
 ### Add a column to existing database tables
 
 1. Add column with `DEFAULT` and a sane value for the existing rows
