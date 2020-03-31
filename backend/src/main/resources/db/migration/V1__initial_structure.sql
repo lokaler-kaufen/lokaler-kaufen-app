@@ -76,6 +76,7 @@ CREATE TABLE reservation
     contact      varchar                     not null,
     email        varchar                     not null,
     contact_type varchar                     not null,
+    anonymized   boolean                     not null,
     created      timestamp with time zone    not null,
     updated      timestamp with time zone    not null,
     unique (shop_id, start_time, end_time)

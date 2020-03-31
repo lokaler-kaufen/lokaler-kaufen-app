@@ -20,6 +20,7 @@ public class Reservation {
     String email;
     String name;
     ContactType contactType;
+    boolean anonymized;
     @With
     ZonedDateTime created;
     @With
