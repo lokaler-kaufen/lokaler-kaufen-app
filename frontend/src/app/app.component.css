@@ -6,3 +6,14 @@ main {
   align-items: center;
   min-height: 100%;
 }
+
+.not-supported-banner {
+  width: 100%;
+  color: white;
+  background-color: #673ab7;
+  padding-top: 10px;
+  text-align: center;
+  font-size: 28px;
+  height: 32px;
+  justify-items: end;
+}
