@@ -1,18 +1,11 @@
 package de.qaware.mercury.rest.login
 
 import de.qaware.mercury.business.login.AdminLoginService
-import de.qaware.mercury.test.plumbing.CustomActiveProfileResolver
-import de.qaware.mercury.test.plumbing.IntegrationTest
-import groovy.transform.TypeChecked
+import de.qaware.mercury.test.IntegrationTestSpecification
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
-import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.ResultActions
-import org.springframework.transaction.annotation.Transactional
-import spock.lang.Specification
 
 import javax.servlet.http.Cookie
 
@@ -22,14 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.cookie
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
-@SpringBootTest
-@AutoConfigureMockMvc
-@ActiveProfiles(resolver = CustomActiveProfileResolver.class)
-// Spring will rollback any changes in the test methods
-@Transactional
-@TypeChecked
-@IntegrationTest
-class AdminLoginControllerIntTest extends Specification {
+class AdminLoginControllerIntTest extends IntegrationTestSpecification {
     @Autowired
     MockMvc mvc
     @Autowired

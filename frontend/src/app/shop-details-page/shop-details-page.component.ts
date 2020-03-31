@@ -15,6 +15,7 @@ import {HttpClient} from '@angular/common/http';
 import {NotificationsService} from 'angular2-notifications';
 import {CreateReservationDto, ShopDetailDto, SlotDto, SlotsDto} from '../data/api';
 import {ZipCodeCacheService} from '../landing-page/zip-code-cache.service';
+import {ContactTypesEnum} from '../contact-types/available-contact-types';
 
 export interface SlotsPerDay {
   dayName: string;
@@ -104,7 +105,7 @@ export class ShopDetailsPageComponent implements OnInit {
           successConfig.data = {
             owner: this.shop.name,
             contactNumber: data.phoneNumber,
-            contactType: data.option,
+            contactType: ContactTypesEnum.getDisplayName(data.option),
             day: this.activatedSlot.dayName,
             start: this.activatedSlot.slots.find(s => s.id === slotId).start,
             end: this.activatedSlot.slots.find(s => s.id === slotId).end
