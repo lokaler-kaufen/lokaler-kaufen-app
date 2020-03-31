@@ -38,13 +38,13 @@ class AdminLoginControllerIntTest extends Specification {
     def "login and get user info"() {
         given: "an admin account"
         // An admin account
-        adminLoginService.createLogin("admin-1@localhost", "admin-1")
+        adminLoginService.createLogin("admin-1@lokaler.kaufen", "admin-1")
 
         when: "we call the login endpoint"
         ResultActions result = mvc.perform(post("/api/admin/login").contentType(MediaType.APPLICATION_JSON).content(
             """
             {
-              "email": "admin-1@localhost",
+              "email": "admin-1@lokaler.kaufen",
               "password": "admin-1"
             }
             """
@@ -65,7 +65,7 @@ class AdminLoginControllerIntTest extends Specification {
             .andExpect(content().json(
                 """
                 {
-                  "email": "admin-1@localhost"
+                  "email": "admin-1@lokaler.kaufen"
                 }
                 """
             ))
