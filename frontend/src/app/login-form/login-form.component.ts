@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
@@ -25,6 +25,9 @@ export class LoginFormComponent {
   @Input()
   redirectPath: string;
 
+  @Output()
+  loginSuccessful: EventEmitter<void> = new EventEmitter<void>();
+
   formController = new FormGroup({
     email: new FormControl('', [Validators.pattern('^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$'), Validators.required]),
     password: new FormControl('', [Validators.required])
@@ -47,6 +50,7 @@ export class LoginFormComponent {
       .subscribe(
         () => {
           this.loginState = LoginState.BLANK;
+          this.loginSuccessful.emit();
           this.router.navigate([this.redirectPath]);
         },
         error => {
