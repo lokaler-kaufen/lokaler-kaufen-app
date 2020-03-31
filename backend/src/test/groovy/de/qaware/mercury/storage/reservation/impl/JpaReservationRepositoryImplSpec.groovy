@@ -40,6 +40,7 @@ class JpaReservationRepositoryImplSpec extends Specification {
             "email",
             "name",
             ContactType.FACETIME,
+            true,
             ZonedDateTime.now(),
             ZonedDateTime.now()
         )
@@ -70,6 +71,7 @@ class JpaReservationRepositoryImplSpec extends Specification {
             "email",
             "name",
             ContactType.FACETIME,
+            true,
             ZonedDateTime.now(),
             ZonedDateTime.now()
         )
@@ -98,6 +100,7 @@ class JpaReservationRepositoryImplSpec extends Specification {
             "email",
             "name",
             ContactType.FACETIME,
+            true,
             ZonedDateTime.now(),
             ZonedDateTime.now()
         )
