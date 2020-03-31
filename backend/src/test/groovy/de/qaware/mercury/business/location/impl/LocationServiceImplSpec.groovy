@@ -50,8 +50,8 @@ class LocationServiceImplSpec extends Specification {
     def "Suggestions for ZIP code"() {
         setup:
         List<LocationSuggestion> data = []
-        data << new LocationSuggestion('DE', '83024', 'Rosenheim')
-        data << new LocationSuggestion('EN', 'X8302', 'London')
+        data << new LocationSuggestion('id1', 'DE', '83024', 'Rosenheim')
+        data << new LocationSuggestion('id2', 'EN', 'X8302', 'London')
 
         when:
         List<LocationSuggestion> suggestions = locationService.suggest('8302')
@@ -65,8 +65,8 @@ class LocationServiceImplSpec extends Specification {
     def "Duplicate cities are deduplicated"() {
         given:
         List<LocationSuggestion> data = []
-        data << new LocationSuggestion('DE', '83024', 'Rosenheim')
-        data << new LocationSuggestion('DE', '83024', 'Rosenheim')
+        data << new LocationSuggestion('id1', 'DE', '83024', 'Rosenheim')
+        data << new LocationSuggestion('id2', 'DE', '83024', 'Rosenheim')
 
         when:
         List<LocationSuggestion> suggestions = locationService.suggest('8302')
@@ -79,8 +79,8 @@ class LocationServiceImplSpec extends Specification {
     def "Identical cities are only deduplicated if the have the same ZIP code"() {
         given:
         List<LocationSuggestion> data = []
-        data << new LocationSuggestion('DE', '83024', 'Rosenheim')
-        data << new LocationSuggestion('DE', '83025', 'Rosenheim')
+        data << new LocationSuggestion('id1', 'DE', '83024', 'Rosenheim')
+        data << new LocationSuggestion('id2', 'DE', '83025', 'Rosenheim')
 
         when:
         List<LocationSuggestion> suggestions = locationService.suggest('8302')
@@ -93,8 +93,8 @@ class LocationServiceImplSpec extends Specification {
     def "Identical ZIP codes are only deduplicated if the have the same city"() {
         given:
         List<LocationSuggestion> data = []
-        data << new LocationSuggestion('DE', '83024', 'Rosenheim A')
-        data << new LocationSuggestion('DE', '83024', 'Rosenheim B')
+        data << new LocationSuggestion('id1', 'DE', '83024', 'Rosenheim A')
+        data << new LocationSuggestion('id2', 'DE', '83024', 'Rosenheim B')
 
         when:
         List<LocationSuggestion> suggestions = locationService.suggest('8302')
@@ -107,13 +107,13 @@ class LocationServiceImplSpec extends Specification {
     def "Suggestions for complete ZIP codes return all results"() {
         given:
         List<LocationSuggestion> dataWildCardEnd = []
-        dataWildCardEnd << new LocationSuggestion('DE', '83024', 'Rosenheim unique 1')
-        dataWildCardEnd << new LocationSuggestion('DE', '83024', 'Rosenheim unique 2')
-        dataWildCardEnd << new LocationSuggestion('DE', '83024', 'Rosenheim unique 3')
-        dataWildCardEnd << new LocationSuggestion('DE', '83024', 'Rosenheim unique 4')
-        dataWildCardEnd << new LocationSuggestion('DE', '83024', 'Rosenheim unique 5')
-        dataWildCardEnd << new LocationSuggestion('DE', '83024', 'Rosenheim unique 6')
-        dataWildCardEnd << new LocationSuggestion('DE', '83024', 'Rosenheim unique 7')
+        dataWildCardEnd << new LocationSuggestion('id1', 'DE', '83024', 'Rosenheim unique 1')
+        dataWildCardEnd << new LocationSuggestion('id2', 'DE', '83024', 'Rosenheim unique 2')
+        dataWildCardEnd << new LocationSuggestion('id3', 'DE', '83024', 'Rosenheim unique 3')
+        dataWildCardEnd << new LocationSuggestion('id4', 'DE', '83024', 'Rosenheim unique 4')
+        dataWildCardEnd << new LocationSuggestion('id5', 'DE', '83024', 'Rosenheim unique 5')
+        dataWildCardEnd << new LocationSuggestion('id6', 'DE', '83024', 'Rosenheim unique 6')
+        dataWildCardEnd << new LocationSuggestion('id7', 'DE', '83024', 'Rosenheim unique 7')
 
         when:
         List<LocationSuggestion> suggestions = locationService.suggest('83024')
