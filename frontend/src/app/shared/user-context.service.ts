@@ -26,4 +26,11 @@ export class UserContextService {
   public storeOwnerLoggedIn(): void {
     this.isLoggedInStoreOwner$ = true;
   }
+
+  /**
+   * Resets state to logged out
+   */
+  public storeOwnerLoggedOut(): void {
+    this.isLoggedInStoreOwner$ = false;
+  }
 }
