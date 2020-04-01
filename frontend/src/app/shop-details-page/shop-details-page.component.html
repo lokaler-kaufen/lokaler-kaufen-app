@@ -3,10 +3,8 @@
   <div class="margin-bottom">
     <button class="back-button"
             mat-button
-            color="primary"
-            [routerLink]="'/shops'"
-            [queryParams]="{'location' : getCachedZipCode()}">
-      Zurück zur Übersicht
+            color="primary" (click)="back()">
+      Zurück
     </button>
   </div>
 
