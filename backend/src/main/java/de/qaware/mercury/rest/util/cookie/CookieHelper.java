@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.time.Duration;
 
 @Component
@@ -22,12 +22,21 @@ public class CookieHelper {
     private final Clock clock;
     private final CookieConfigurationProperties cookieConfig;
 
-    public Cookie createTokenCookie(String name, TokenWithExpiry<?> token) {
-        Cookie cookie = new Cookie(name, token.getToken().getToken());
-        cookie.setHttpOnly(true);
-        cookie.setSecure(cookieConfig.isSecure());
-        cookie.setMaxAge(Math.toIntExact(token.expiryInSeconds(clock.nowZoned()) - COOKIE_LEEWAY.getSeconds()));
+    public void addTokenCookie(String name, TokenWithExpiry<?> token, HttpServletResponse response) {
+        // Java doesn't support setting the SameSite attribute on cookies, so we have
+        // to build the header ourself
+        StringBuilder cookie = new StringBuilder();
+        cookie
+            .append(name).append("=").append(token.getToken().getToken()).append("; ")
+            .append("Max-Age=").append(token.expiryInSeconds(clock.nowZoned()) - COOKIE_LEEWAY.getSeconds()).append("; ")
+            .append("Path=/; ")
+            .append("HttpOnly; ")
+            .append("SameSite=Lax");
 
-        return cookie;
+        if (cookieConfig.isSecure()) {
+            cookie.append("; Secure");
+        }
+
+        response.addHeader("Set-Cookie", cookie.toString());
     }
 }

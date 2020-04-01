@@ -38,7 +38,7 @@ class AdminLoginController {
     public void login(@Valid @RequestBody LoginDto request, HttpServletResponse response) throws LoginException {
         TokenWithExpiry<AdminToken> token = adminLoginService.login(request.getEmail(), request.getPassword());
 
-        response.addCookie(cookieHelper.createTokenCookie(ADMIN_COOKIE_NAME, token));
+        cookieHelper.addTokenCookie(ADMIN_COOKIE_NAME, token, response);
     }
 
     @GetMapping

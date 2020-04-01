@@ -38,7 +38,7 @@ class ShopLoginController {
     public void login(@Valid @RequestBody LoginDto request, HttpServletResponse response) throws LoginException {
         TokenWithExpiry<ShopToken> token = shopLoginService.login(request.getEmail(), request.getPassword());
 
-        response.addCookie(cookieHelper.createTokenCookie(SHOP_COOKIE_NAME, token));
+        cookieHelper.addTokenCookie(SHOP_COOKIE_NAME, token, response);
     }
 
     @GetMapping
