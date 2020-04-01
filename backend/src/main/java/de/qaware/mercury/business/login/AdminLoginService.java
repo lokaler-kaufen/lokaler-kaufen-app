@@ -4,7 +4,7 @@ import de.qaware.mercury.business.admin.Admin;
 import org.springframework.lang.Nullable;
 
 public interface AdminLoginService {
-    Admin createLogin(String email, String password);
+    Admin createLogin(String email, String password, AdminEmailSettings emailSettings);
 
     TokenWithExpiry<AdminToken> login(String email, String password) throws LoginException;
 

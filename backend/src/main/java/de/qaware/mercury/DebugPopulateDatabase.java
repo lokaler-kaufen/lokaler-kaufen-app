@@ -1,6 +1,7 @@
 package de.qaware.mercury;
 
 import de.qaware.mercury.business.location.impl.LocationNotFoundException;
+import de.qaware.mercury.business.login.AdminEmailSettings;
 import de.qaware.mercury.business.login.AdminLoginService;
 import de.qaware.mercury.business.shop.ContactType;
 import de.qaware.mercury.business.shop.DayConfig;
@@ -46,7 +47,7 @@ class DebugPopulateDatabase implements ApplicationRunner {
 
     private void createAdmin(String email, String password) {
         if (adminLoginService.findByEmail(email) == null) {
-            adminLoginService.createLogin(email, password);
+            adminLoginService.createLogin(email, password, new AdminEmailSettings(true));
         }
     }
 

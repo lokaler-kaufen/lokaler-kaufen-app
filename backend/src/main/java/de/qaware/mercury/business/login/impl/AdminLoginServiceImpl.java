@@ -1,6 +1,7 @@
 package de.qaware.mercury.business.login.impl;
 
 import de.qaware.mercury.business.admin.Admin;
+import de.qaware.mercury.business.login.AdminEmailSettings;
 import de.qaware.mercury.business.login.AdminLoginService;
 import de.qaware.mercury.business.login.AdminToken;
 import de.qaware.mercury.business.login.LoginException;
@@ -29,11 +30,11 @@ class AdminLoginServiceImpl implements AdminLoginService {
 
     @Override
     @Transactional
-    public Admin createLogin(String email, String password) {
+    public Admin createLogin(String email, String password, AdminEmailSettings emailSettings) {
         Admin.Id id = Admin.Id.random(uuidFactory);
         String hash = passwordHasher.hash(password);
 
-        Admin admin = new Admin(id, email, hash, clock.nowZoned(), clock.nowZoned());
+        Admin admin = new Admin(id, email, hash, emailSettings.isOnShopApprovalNeeded(), clock.nowZoned(), clock.nowZoned());
         adminRepository.insert(admin);
         log.info("Created admin '{}', id {}", email, id);
         return admin;

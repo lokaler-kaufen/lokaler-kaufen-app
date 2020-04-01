@@ -1,6 +1,7 @@
 package de.qaware.mercury.business.login.impl
 
 import de.qaware.mercury.business.admin.Admin
+import de.qaware.mercury.business.login.AdminEmailSettings
 import de.qaware.mercury.business.login.AdminLoginService
 import de.qaware.mercury.business.login.AdminToken
 import de.qaware.mercury.business.login.LoginException
@@ -41,7 +42,7 @@ class AdminLoginServiceImplSpec extends Specification {
         String hasher = '4711'
 
         when:
-        Admin admin = loginService.createLogin('test@lokaler.kaufen', 'supersecret')
+        Admin admin = loginService.createLogin('test@lokaler.kaufen', 'supersecret', AdminEmailSettings.noEmails())
 
         then:
         1 * uuidFactory.create() >> uuid
@@ -59,7 +60,7 @@ class AdminLoginServiceImplSpec extends Specification {
     def "Successful login for Admin"() {
         given:
         Admin.Id id = Admin.Id.of(UUID.randomUUID())
-        Admin admin = new Admin(id, 'test@lokaler.kaufen', '4711', ZonedDateTime.now(), ZonedDateTime.now())
+        Admin admin = new Admin(id, 'test@lokaler.kaufen', '4711', false, ZonedDateTime.now(), ZonedDateTime.now())
         AdminToken token = AdminToken.of('token')
 
         when:
@@ -86,13 +87,13 @@ class AdminLoginServiceImplSpec extends Specification {
         thrown LoginException
 
         where:
-        admin << [null, new Admin(Admin.Id.of(UUID.randomUUID()), 'test@lokaler.kaufen', '4711', null, null)]
+        admin << [null, new Admin(Admin.Id.of(UUID.randomUUID()), 'test@lokaler.kaufen', '4711', false, null, null)]
     }
 
     def "Successful AdminToken Verification"() {
         given:
         Admin.Id id = Admin.Id.of(UUID.randomUUID())
-        Admin admin = new Admin(id, 'test@lokaler.kaufen', '4711', ZonedDateTime.now(), ZonedDateTime.now())
+        Admin admin = new Admin(id, 'test@lokaler.kaufen', '4711', false, ZonedDateTime.now(), ZonedDateTime.now())
         AdminToken token = AdminToken.of('token')
 
         when:
@@ -130,6 +131,6 @@ class AdminLoginServiceImplSpec extends Specification {
         where:
         email                     | admin
         'notfound@lokaler.kaufen' | null
-        'test@lokaler.kaufen'     | new Admin(Admin.Id.of(UUID.randomUUID()), 'test@lokaler.kaufen', '4711', null, null)
+        'test@lokaler.kaufen' | new Admin(Admin.Id.of(UUID.randomUUID()), 'test@lokaler.kaufen', '4711', false, null, null)
     }
 }

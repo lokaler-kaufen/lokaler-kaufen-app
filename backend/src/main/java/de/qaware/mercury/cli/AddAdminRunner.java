@@ -1,5 +1,6 @@
 package de.qaware.mercury.cli;
 
+import de.qaware.mercury.business.login.AdminEmailSettings;
 import de.qaware.mercury.business.login.AdminLoginService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +35,8 @@ public class AddAdminRunner {
         System.out.print("Password: ");
         String password = scanner.nextLine();
 
-        adminLoginService.createLogin(email, password);
+        // TODO MKA: Make this configurable
+        adminLoginService.createLogin(email, password, new AdminEmailSettings(true));
         log.info("Added admin '{}'", email);
     }
 }
