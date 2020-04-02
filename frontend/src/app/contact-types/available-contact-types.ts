@@ -1,9 +1,9 @@
 export class ContactTypesEnum {
   static readonly availableContactTypes: string[] = [
     'WHATSAPP',
-    'PHONE',
     'FACETIME',
     'GOOGLE_DUO',
+    'PHONE',
     'SKYPE',
     'SIGNAL',
     'VIBER'
