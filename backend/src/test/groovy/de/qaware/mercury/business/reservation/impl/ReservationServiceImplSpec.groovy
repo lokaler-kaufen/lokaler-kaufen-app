@@ -1,16 +1,11 @@
 package de.qaware.mercury.business.reservation.impl
 
 import de.qaware.mercury.business.email.EmailService
+import de.qaware.mercury.business.location.GeoLocation
+import de.qaware.mercury.business.login.ReservationCancellationToken
 import de.qaware.mercury.business.login.TokenService
-import de.qaware.mercury.business.reservation.Reservation
-import de.qaware.mercury.business.reservation.ReservationService
-import de.qaware.mercury.business.reservation.Slot
-import de.qaware.mercury.business.reservation.SlotService
-import de.qaware.mercury.business.reservation.Slots
-import de.qaware.mercury.business.shop.ContactType
-import de.qaware.mercury.business.shop.Shop
-import de.qaware.mercury.business.shop.ShopService
-import de.qaware.mercury.business.shop.SlotConfig
+import de.qaware.mercury.business.reservation.*
+import de.qaware.mercury.business.shop.*
 import de.qaware.mercury.business.time.Clock
 import de.qaware.mercury.business.uuid.UUIDFactory
 import de.qaware.mercury.storage.reservation.ReservationRepository
@@ -21,6 +16,8 @@ import spock.lang.Specification
 
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.ZonedDateTime
 
 @ContextConfiguration(classes = ReservationServiceImpl)
 class ReservationServiceImplSpec extends Specification {
@@ -85,5 +82,117 @@ class ReservationServiceImplSpec extends Specification {
         1 * emailService.sendCustomerReservationConfirmation(shop, 'test@lokaler.kaufen', 'Spock', now, now.plusMinutes(15), ContactType.WHATSAPP, 'Contact', new Reservation.Id(reservationId))
         // Sends an email to the shop
         1 * emailService.sendShopNewReservation(shop, 'Spock', now, now.plusMinutes(15), ContactType.WHATSAPP, 'Contact', new Reservation.Id(reservationId))
+    }
+
+    def "Cancel reservation as shop"() {
+        setup:
+        ReservationCancellationToken cancellationToken = new ReservationCancellationToken("cancellation-token")
+        Reservation.Id reservationId = Reservation.Id.of(UUID.randomUUID())
+        Shop.Id shopId = Shop.Id.of(UUID.randomUUID())
+        ReservationCancellationSide cancellationSide = ReservationCancellationSide.SHOP
+        ReservationCancellation cancellation = new ReservationCancellation(reservationId, cancellationSide)
+        Reservation reservation = createTestReservation(reservationId, shopId)
+        Shop shop = createTestShop(shopId)
+
+        when:
+        reservationService.cancelReservation(cancellationToken)
+
+        then:
+        1 * tokenService.verifyReservationCancellationToken(cancellationToken) >> cancellation
+        1 * reservationRepository.findById(reservationId) >> reservation
+        1 * shopService.findByIdOrThrow(shopId) >> shop
+        1 * reservationRepository.deleteById(reservationId)
+        1 * emailService.sendReservationCancellationToCustomer(shop, reservation)
+        1 * emailService.sendReservationCancellationConfirmation(shop.getEmail(), reservation)
+    }
+
+    def "Cancel reservation as customer"() {
+        setup:
+        ReservationCancellationToken cancellationToken = new ReservationCancellationToken("cancellation-token")
+        Reservation.Id reservationId = Reservation.Id.of(UUID.randomUUID())
+        Shop.Id shopId = Shop.Id.of(UUID.randomUUID())
+        ReservationCancellationSide cancellationSide = ReservationCancellationSide.CUSTOMER
+        ReservationCancellation cancellation = new ReservationCancellation(reservationId, cancellationSide)
+        Reservation reservation = createTestReservation(reservationId, shopId)
+        Shop shop = createTestShop(shopId)
+
+        when:
+        reservationService.cancelReservation(cancellationToken)
+
+        then:
+        1 * tokenService.verifyReservationCancellationToken(cancellationToken) >> cancellation
+        1 * reservationRepository.findById(reservationId) >> reservation
+        1 * shopService.findByIdOrThrow(shopId) >> shop
+        1 * reservationRepository.deleteById(reservationId)
+        1 * emailService.sendReservationCancellationToShop(shop, reservation)
+        1 * emailService.sendReservationCancellationConfirmation(reservation.getEmail(), reservation)
+    }
+
+    def "Throws if reservation cannot be found"() {
+        setup:
+        ReservationCancellationToken cancellationToken = new ReservationCancellationToken("cancellation-token")
+        Reservation.Id reservationId = Reservation.Id.of(UUID.randomUUID())
+        ReservationCancellationSide cancellationSide = ReservationCancellationSide.CUSTOMER
+        ReservationCancellation cancellation = new ReservationCancellation(reservationId, cancellationSide)
+
+        when:
+        reservationService.cancelReservation(cancellationToken)
+
+        then:
+        1 * tokenService.verifyReservationCancellationToken(cancellationToken) >> cancellation
+        1 * reservationRepository.findById(reservationId) >> null
+        thrown ReservationNotFoundException
+    }
+
+    private static Reservation createTestReservation(Reservation.Id reservationId, Shop.Id shopId) {
+        new Reservation.ReservationBuilder()
+            .id(reservationId)
+            .shopId(shopId)
+            .start(LocalDateTime.now())
+            .end(LocalDateTime.now())
+            .contact("contact")
+            .email("email")
+            .name("name")
+            .contactType(ContactType.FACETIME)
+            .anonymized(true)
+            .created(ZonedDateTime.now())
+            .updated(ZonedDateTime.now())
+            .build()
+    }
+
+    private Shop createTestShop(Shop.Id shopId) {
+        new Shop.ShopBuilder()
+            .id(shopId)
+            .name("name")
+            .ownerName("owner name")
+            .email("email")
+            .street("street")
+            .zipCode("zip code")
+            .city("city")
+            .addressSupplement("address supplement")
+            .contacts(new HashMap<ContactType, String>())
+            .enabled(true)
+            .approved(true)
+            .geoLocation(new GeoLocation(47, 12))
+            .details("details")
+            .website("https://website.com")
+            .slotConfig(createSlotConfig())
+            .created(ZonedDateTime.now())
+            .updated(ZonedDateTime.now())
+            .build()
+    }
+
+    private static SlotConfig createSlotConfig() {
+        return new SlotConfig(
+            15,
+            15,
+            new DayConfig(LocalTime.parse("10:00"), LocalTime.parse("11:00")),
+            new DayConfig(LocalTime.parse("11:30"), LocalTime.parse("12:30")),
+            new DayConfig(LocalTime.parse("13:00"), LocalTime.parse("14:00")),
+            new DayConfig(LocalTime.parse("14:30"), LocalTime.parse("15:30")),
+            new DayConfig(LocalTime.parse("16:00"), LocalTime.parse("17:00")),
+            new DayConfig(LocalTime.parse("17:30"), LocalTime.parse("18:30")),
+            new DayConfig(LocalTime.parse("19:00"), LocalTime.parse("20:00"))
+        )
     }
 }

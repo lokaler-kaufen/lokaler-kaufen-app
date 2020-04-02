@@ -3,6 +3,8 @@ package de.qaware.mercury.business.reservation;
 import de.qaware.mercury.business.shop.ContactType;
 import de.qaware.mercury.business.shop.Shop;
 import de.qaware.mercury.business.uuid.UUIDFactory;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Value;
 import lombok.With;
 
@@ -11,6 +13,8 @@ import java.time.ZonedDateTime;
 import java.util.UUID;
 
 @Value
+@Builder
+@AllArgsConstructor
 public class Reservation {
     Id id;
     Shop.Id shopId;
