@@ -5,13 +5,7 @@ import de.qaware.mercury.business.email.EmailService
 import de.qaware.mercury.business.location.GeoLocation
 import de.qaware.mercury.business.location.LocationService
 import de.qaware.mercury.business.login.ShopLoginService
-import de.qaware.mercury.business.shop.Shop
-import de.qaware.mercury.business.shop.ShopAlreadyExistsException
-import de.qaware.mercury.business.shop.ShopCreation
-import de.qaware.mercury.business.shop.ShopNotFoundException
-import de.qaware.mercury.business.shop.ShopService
-import de.qaware.mercury.business.shop.ShopUpdate
-import de.qaware.mercury.business.shop.ShopWithDistance
+import de.qaware.mercury.business.shop.*
 import de.qaware.mercury.business.time.Clock
 import de.qaware.mercury.business.uuid.UUIDFactory
 import de.qaware.mercury.storage.shop.ShopRepository
@@ -248,6 +242,33 @@ class ShopServiceImplSpec extends Specification {
         then:
         1 * shopRepository.findById(shopId) >> shop
         1 * shopRepository.update({ Shop s -> s.approved })
+    }
+
+    def "Does nothing if already approved"() {
+        given:
+        Shop.Id shopId = Shop.Id.of(UUID.randomUUID())
+        Shop shop = new Shop.ShopBuilder().id(shopId).approved(true).build()
+
+        when:
+        shopService.changeApproved(shopId, true)
+
+        then:
+        1 * shopRepository.findById(_) >> shop
+        0 * shopRepository.update(_)
+    }
+
+    def "Disapproval sends email"() {
+        given:
+        Shop.Id shopId = Shop.Id.of(UUID.randomUUID())
+        Shop shop = new Shop.ShopBuilder().id(shopId).approved(true).build()
+
+        when:
+        shopService.changeApproved(shopId, false)
+
+        then:
+        1 * shopRepository.findById(shopId) >> shop
+        1 * shopRepository.update({ Shop s -> !s.approved })
+        1 * emailService.sendShopApprovalRevoked(shop)
     }
 
     def "Send create link to email"() {
