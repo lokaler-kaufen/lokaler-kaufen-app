@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -13,17 +14,15 @@ import java.util.List;
 class DummyEmailSender implements EmailSender {
     @Override
     public void sendEmail(String recipient, String subject, String body) {
-        log.info("----------------------");
-        log.info("Sending email to {}", recipient);
-        log.info("{}", subject);
-        log.info("{}", body);
-        log.info("----------------------");
+        sendEmails(Collections.singletonList(recipient), subject, body);
     }
 
     @Override
     public void sendEmails(List<String> recipients, String subject, String body) {
-        for (String recipient : recipients) {
-            sendEmail(recipient, subject, body);
-        }
+        log.info("----------------------");
+        log.info("Sending email(s) to {}", recipients);
+        log.info("{}", subject);
+        log.info("{}", body);
+        log.info("----------------------");
     }
 }
