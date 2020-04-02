@@ -3,6 +3,8 @@
      *ngIf="!userContextService.isLoggedInStoreOwner">Login für Ladenbesitzer</a>
   <a class="margin-horizontal margin-bottom link" (click)="openRegisterBusinessPopup()"
      *ngIf="!userContextService.isLoggedInStoreOwner">Als Ladenbesitzer registrieren</a>
+  <a class="margin-horizontal margin-bottom link" (click)="logoutStoreOwner()"
+     *ngIf="userContextService.isLoggedInStoreOwner">Logout</a>
   <a class="margin-horizontal margin-bottom link" routerLink="manage-shop"
      *ngIf="userContextService.isLoggedInStoreOwner">Laden bearbeiten</a>
   <a class="margin-horizontal margin-bottom" routerLink="imprint">Impressum</a>
