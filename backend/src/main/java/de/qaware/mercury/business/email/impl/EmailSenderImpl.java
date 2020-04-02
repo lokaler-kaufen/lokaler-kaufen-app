@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
@@ -43,8 +46,6 @@ class EmailSenderImpl implements EmailSender {
 
     /**
      * Is called when Spring shuts down. Shuts down the executor.
-     *
-     * @throws Exception if something went wrong
      */
     @PreDestroy
     void close() {
@@ -60,29 +61,38 @@ class EmailSenderImpl implements EmailSender {
 
     @Override
     public void sendEmail(String recipient, String subject, String body) {
+        sendEmails(Collections.singletonList(recipient), subject, body);
+    }
+
+    @Override
+    public void sendEmails(List<String> recipients, String subject, String body) {
+        String[] recipientArray = recipients.toArray(new String[0]);
+
         SimpleMailMessage mail = new SimpleMailMessage();
         mail.setFrom(config.getFrom());
-        mail.setTo(recipient);
+        mail.setTo(recipientArray);
         mail.setSubject(subject);
         mail.setText(body);
 
         // Send email async
-        executor.submit(() -> sendMailSafe(mail, recipient));
+        executor.submit(() -> sendMailSafe(mail, recipientArray));
     }
 
     /**
      * Sends an email without throwing exceptions
      *
-     * @param mail      mail to send
-     * @param recipient recipient of the mail
+     * @param mail       mail to send
+     * @param recipients recipient of the mail
      */
-    private void sendMailSafe(SimpleMailMessage mail, String recipient) {
-        log.debug("Sending mail to '{}'", recipient);
+    private void sendMailSafe(SimpleMailMessage mail, String... recipients) {
+        String recipientsAsString = Arrays.toString(recipients);
+
+        log.debug("Sending mail to '{}'", recipientsAsString);
         try {
             mailSender.send(mail);
-            log.debug("Sent mail to '{}'", recipient);
+            log.debug("Sent mail to '{}'", recipientsAsString);
         } catch (Exception e) {
-            log.error("Failed to send email to '{}', subject '{}'", recipient, mail.getSubject(), e);
+            log.error("Failed to send email to '{}', subject '{}'", recipientsAsString, mail.getSubject(), e);
         }
     }
 }

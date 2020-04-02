@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 @ConditionalOnProperty(name = "mercury.email.use-dummy", havingValue = "true", matchIfMissing = true)
 @Slf4j
@@ -16,5 +18,12 @@ class DummyEmailSender implements EmailSender {
         log.info("{}", subject);
         log.info("{}", body);
         log.info("----------------------");
+    }
+
+    @Override
+    public void sendEmails(List<String> recipients, String subject, String body) {
+        for (String recipient : recipients) {
+            sendEmail(recipient, subject, body);
+        }
     }
 }

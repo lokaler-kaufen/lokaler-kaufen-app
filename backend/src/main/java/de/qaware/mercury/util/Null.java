@@ -25,4 +25,16 @@ public final class Null {
 
         return mapper.apply(input);
     }
+
+    /**
+     * Returns input if not null, else the alternative.
+     *
+     * @param input       input. May be null
+     * @param alternative alternative
+     * @param <T>         Type of input and alternative
+     * @return input if not null, else the alternative
+     */
+    public static <T> T or(@Nullable T input, T alternative) {
+        return input == null ? alternative : input;
+    }
 }
