@@ -3,8 +3,13 @@ tr:not(.example-expanded-row):hover {
 }
 
 .mat-column-supportedContactTypes {
-  flex: 0 0 50% !important;
-  width: 50% !important;
+  flex: 0 0 40% !important;
+  width: 40% !important;
+}
+
+.mat-column-distance {
+  flex: 0 0 10% !important;
+  width: 10% !important;
 }
 
 .align-baseline {
