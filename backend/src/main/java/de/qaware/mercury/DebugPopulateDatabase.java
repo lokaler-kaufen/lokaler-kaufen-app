@@ -47,7 +47,7 @@ class DebugPopulateDatabase implements ApplicationRunner {
 
     private void createAdmin(String email, String password) {
         if (adminLoginService.findByEmail(email) == null) {
-            adminLoginService.createLogin(email, password, new AdminEmailSettings(true));
+            adminLoginService.createLogin(email, password, new AdminEmailSettings(false));
         }
     }
 
