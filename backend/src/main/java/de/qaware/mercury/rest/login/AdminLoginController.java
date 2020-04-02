@@ -41,6 +41,11 @@ class AdminLoginController {
         cookieHelper.addTokenCookie(ADMIN_COOKIE_NAME, token, response);
     }
 
+    @PostMapping("/logout")
+    public void logout(HttpServletResponse response) {
+        cookieHelper.removeCookie(ADMIN_COOKIE_NAME, response);
+    }
+
     @GetMapping
     public WhoAmIDto whoami(HttpServletRequest request) throws LoginException {
         Admin admin = authenticationHelper.authenticateAdmin(request);

@@ -39,4 +39,20 @@ public class CookieHelper {
 
         response.addHeader("Set-Cookie", cookie.toString());
     }
+
+    public void removeCookie(String name, HttpServletResponse response) {
+        StringBuilder cookie = new StringBuilder();
+        // See https://stackoverflow.com/questions/20320549/how-can-you-delete-a-cookie-in-an-http-response/20320610
+        cookie.append(name).append("=").append("; ")
+            .append("expires=Thu, 01 Jan 1970 00:00:00 GMT; ")
+            .append("Path=/; ")
+            .append("HttpOnly; ")
+            .append("SameSite=Lax");
+
+        if (cookieConfig.isSecure()) {
+            cookie.append("; Secure");
+        }
+
+        response.addHeader("Set-Cookie", cookie.toString());
+    }
 }

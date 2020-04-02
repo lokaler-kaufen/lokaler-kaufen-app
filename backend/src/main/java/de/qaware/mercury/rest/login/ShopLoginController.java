@@ -41,6 +41,11 @@ class ShopLoginController {
         cookieHelper.addTokenCookie(SHOP_COOKIE_NAME, token, response);
     }
 
+    @PostMapping("/logout")
+    public void logout(HttpServletResponse response) {
+        cookieHelper.removeCookie(SHOP_COOKIE_NAME, response);
+    }
+
     @GetMapping
     public WhoAmIDto whoami(HttpServletRequest request) throws LoginException {
         Shop shop = authenticationHelper.authenticateShop(request);
