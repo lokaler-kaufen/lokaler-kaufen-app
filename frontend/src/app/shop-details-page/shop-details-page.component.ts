@@ -14,7 +14,6 @@ import {
 import {HttpClient} from '@angular/common/http';
 import {NotificationsService} from 'angular2-notifications';
 import {CreateReservationDto, ShopDetailDto, SlotDto, SlotsDto} from '../data/api';
-import {ZipCodeCacheService} from '../landing-page/zip-code-cache.service';
 import {ContactTypesEnum} from '../contact-types/available-contact-types';
 
 export interface SlotsPerDay {
@@ -33,8 +32,7 @@ export class ShopDetailsPageComponent implements OnInit {
   constructor(private client: HttpClient,
               private activatedRoute: ActivatedRoute,
               private matDialog: MatDialog,
-              private notificationsService: NotificationsService,
-              private zipCodeCacheService: ZipCodeCacheService) {
+              private notificationsService: NotificationsService) {
   }
 
   get hasDescription(): boolean {
@@ -146,13 +144,12 @@ export class ShopDetailsPageComponent implements OnInit {
     return result;
   }
 
-  getCachedZipCode() {
-    return this.zipCodeCacheService.getZipCode();
-  }
-
   // monday is index 0, add slot offset % 7 to get day name
   getDayName(slotOffset): string {
     return this.weekday[(this.today.getDay() + parseInt(slotOffset, 10)) % 7];
   }
 
+  public back(): void {
+    window.history.back();
+  }
 }

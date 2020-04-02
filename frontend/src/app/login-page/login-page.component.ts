@@ -3,6 +3,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {PasswordResetPopupComponent} from '../password-reset-popup/password-reset-popup.component';
 import {HttpClient} from '@angular/common/http';
 import {NotificationsService} from 'angular2-notifications';
+import {UserContextService} from '../shared/user-context.service';
 
 @Component({
   selector: 'login-page',
@@ -11,10 +12,12 @@ import {NotificationsService} from 'angular2-notifications';
 })
 export class LoginPageComponent {
 
-  constructor(private matDialog: MatDialog, private client: HttpClient, private notificationsService: NotificationsService) {
+  constructor(private matDialog: MatDialog, private client: HttpClient,
+              private notificationsService: NotificationsService,
+              private userContextService: UserContextService) {
   }
 
-  passwordReset() {
+  public passwordReset(): void {
     this.matDialog.open(PasswordResetPopupComponent, {width: '500px'})
       .afterClosed().subscribe(result => {
       if (result) {
@@ -27,5 +30,9 @@ export class LoginPageComponent {
           });
       }
     });
+  }
+
+  public onLoginSuccess(): void {
+    this.userContextService.storeOwnerLoggedIn();
   }
 }
