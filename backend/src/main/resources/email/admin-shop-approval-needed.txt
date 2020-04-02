@@ -1,0 +1,18 @@
+Hallo,
+
+ein neuer Laden auf lokaler.kaufen wartet auf Bestätigung.
+
+- Name: {{ shopName }}
+- Besitzer: {{ ownerName }}
+- E-Mail: {{ email }}
+- Adresse: {{ street }} {{ zipCode }} {{ city }} {{ addressSupplement }}
+- Website: {{ website }}
+- Details: {{ details }}
+
+Klicke den Link, um direkt auf die Admin-UI zu kommen:
+
+{{ adminUiLink }}
+
+Grüße,
+
+Mercury

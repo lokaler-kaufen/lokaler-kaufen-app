@@ -3,11 +3,14 @@ package de.qaware.mercury.storage.admin.impl;
 import de.qaware.mercury.business.admin.Admin;
 import de.qaware.mercury.business.time.Clock;
 import de.qaware.mercury.storage.admin.AdminRepository;
+import de.qaware.mercury.util.Lists;
 import de.qaware.mercury.util.Null;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 @Slf4j
@@ -34,5 +37,11 @@ class JpaAdminRepository implements AdminRepository {
     public void insert(Admin admin) {
         log.debug("Insert admin {}", admin);
         adminDataRepository.save(AdminEntity.of(admin.withCreated(clock.nowZoned())));
+    }
+
+    @Override
+    public List<Admin> findWithEmailOnShopApprovalNeeded(boolean value) {
+        List<AdminEntity> entities = adminDataRepository.findWithEmailOnShopApprovalNeeded(value);
+        return Lists.map(entities, AdminEntity::toAdmin);
     }
 }

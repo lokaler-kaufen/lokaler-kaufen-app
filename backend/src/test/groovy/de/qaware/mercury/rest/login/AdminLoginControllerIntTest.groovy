@@ -1,5 +1,6 @@
 package de.qaware.mercury.rest.login
 
+import de.qaware.mercury.business.login.AdminEmailSettings
 import de.qaware.mercury.business.login.AdminLoginService
 import de.qaware.mercury.test.IntegrationTestSpecification
 import org.springframework.beans.factory.annotation.Autowired
@@ -24,7 +25,7 @@ class AdminLoginControllerIntTest extends IntegrationTestSpecification {
     def "login and get user info"() {
         given: "an admin account"
         // An admin account
-        adminLoginService.createLogin("admin-1@lokaler.kaufen", "admin-1")
+        adminLoginService.createLogin("admin-1@lokaler.kaufen", "admin-1", AdminEmailSettings.noEmails())
 
         when: "we call the login endpoint"
         ResultActions result = mvc.perform(post("/api/admin/login").contentType(MediaType.APPLICATION_JSON).content(

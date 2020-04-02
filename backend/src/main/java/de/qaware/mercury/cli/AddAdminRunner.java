@@ -1,12 +1,11 @@
 package de.qaware.mercury.cli;
 
+import de.qaware.mercury.business.login.AdminEmailSettings;
 import de.qaware.mercury.business.login.AdminLoginService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-
-import java.util.Scanner;
 
 /**
  * This bean is run when the application is started with '--add-admin'
@@ -16,25 +15,28 @@ import java.util.Scanner;
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 public class AddAdminRunner {
     private final AdminLoginService adminLoginService;
+    private final Console console;
 
     public void run() {
-        System.out.println("######################");
-        System.out.println("# Adding a new admin #");
-        System.out.println("######################");
+        console.printLine("######################");
+        console.printLine("# Adding a new admin #");
+        console.printLine("######################");
 
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Email: ");
-        String email = scanner.nextLine();
+        console.print("Email: ");
+        String email = console.readLine();
 
         if (adminLoginService.findByEmail(email) != null) {
             log.error("Admin with email '{}' already exists", email);
             return;
         }
 
-        System.out.print("Password: ");
-        String password = scanner.nextLine();
+        console.print("Password: ");
+        String password = console.readPassword();
 
-        adminLoginService.createLogin(email, password);
+        console.print("Notify on shop approval needed? (y/N): ");
+        boolean notifyOnShopApprovalNeeded = console.readBoolean(false);
+
+        adminLoginService.createLogin(email, password, new AdminEmailSettings(notifyOnShopApprovalNeeded));
         log.info("Added admin '{}'", email);
     }
 }

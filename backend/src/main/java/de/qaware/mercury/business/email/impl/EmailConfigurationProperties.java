@@ -29,4 +29,7 @@ class EmailConfigurationProperties {
      */
     @NotBlank
     private String reservationCancellationLinkTemplate;
+
+    @NotBlank
+    private String adminUiLink;
 }

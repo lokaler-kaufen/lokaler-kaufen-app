@@ -1,5 +1,6 @@
 package de.qaware.mercury.business.email.impl;
 
+import de.qaware.mercury.business.admin.Admin;
 import de.qaware.mercury.business.email.EmailSender;
 import de.qaware.mercury.business.email.EmailService;
 import de.qaware.mercury.business.email.SendEmailException;
@@ -12,6 +13,8 @@ import de.qaware.mercury.business.reservation.Reservation;
 import de.qaware.mercury.business.reservation.ReservationCancellationSide;
 import de.qaware.mercury.business.shop.ContactType;
 import de.qaware.mercury.business.shop.Shop;
+import de.qaware.mercury.util.Lists;
+import de.qaware.mercury.util.Null;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -37,6 +41,7 @@ class EmailServiceImpl implements EmailService {
     private static final String SHOP_CREATED_APPROVAL_NEEDED_SUBJECT = "Gleich kann's auf lokaler.kaufen losgehen!";
     private static final String SHOP_APPROVED_SUBJECT = "Es kann auf lokaler.kaufen losgehen!";
     private static final String SHOP_DISAPPROVED_SUBJECT = "Ihr Laden auf lokaler.kaufen wurde deaktiviert";
+    private static final String ADMIN_SHOP_APPROVAL_NEEDED = "Ein Laden auf lokaler.kaufen wartet auf Freischaltung";
 
     private final EmailSender emailSender;
     private final EmailConfigurationProperties config;
@@ -158,6 +163,23 @@ class EmailServiceImpl implements EmailService {
             .replace("{{ ownerName }}", shop.getOwnerName());
 
         emailSender.sendEmail(shop.getEmail(), SHOP_DISAPPROVED_SUBJECT, body);
+    }
+
+    @Override
+    public void sendAdminShopApprovalNeeded(List<Admin> admins, Shop shop) {
+        String body = loadTemplate("/email/admin-shop-approval-needed.txt")
+            .replace("{{ shopName }}", shop.getName())
+            .replace("{{ ownerName }}", shop.getOwnerName())
+            .replace("{{ email }}", shop.getEmail())
+            .replace("{{ street }}", shop.getStreet())
+            .replace("{{ zipCode }}", shop.getZipCode())
+            .replace("{{ city }}", shop.getCity())
+            .replace("{{ addressSupplement }}", shop.getAddressSupplement())
+            .replace("{{ website }}", Null.or(shop.getWebsite(), ""))
+            .replace("{{ details }}", shop.getDetails())
+            .replace("{{ adminUiLink }}", config.getAdminUiLink());
+
+        emailSender.sendEmails(Lists.map(admins, Admin::getEmail), ADMIN_SHOP_APPROVAL_NEEDED, body);
     }
 
     private String loadTemplate(String location) {

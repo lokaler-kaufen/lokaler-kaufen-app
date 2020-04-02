@@ -1,7 +1,12 @@
 package de.qaware.mercury.storage.admin.impl;
 
 import de.qaware.mercury.business.admin.Admin;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,18 +37,22 @@ public class AdminEntity {
     private String passwordHash;
 
     @Column(nullable = false)
+    private boolean emailOnShopApprovalNeeded;
+
+    @Column(nullable = false)
     private ZonedDateTime created;
 
     @Column(nullable = false)
     private ZonedDateTime updated;
 
     public Admin toAdmin() {
-        return new Admin(Admin.Id.of(id), email, passwordHash, created, updated);
+        return new Admin(Admin.Id.of(id), email, passwordHash, emailOnShopApprovalNeeded, created, updated);
     }
 
     public static AdminEntity of(Admin admin) {
         return new AdminEntity(
-            admin.getId().getId(), admin.getEmail(), admin.getPasswordHash(), admin.getCreated(), admin.getUpdated()
+            admin.getId().getId(), admin.getEmail(), admin.getPasswordHash(),
+            admin.isEmailOnShopApprovalNeeded(), admin.getCreated(), admin.getUpdated()
         );
     }
 }

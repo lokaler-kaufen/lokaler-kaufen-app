@@ -1,5 +1,7 @@
 package de.qaware.mercury.business.shop.impl;
 
+import de.qaware.mercury.business.admin.Admin;
+import de.qaware.mercury.business.admin.AdminService;
 import de.qaware.mercury.business.email.EmailService;
 import de.qaware.mercury.business.location.BoundingBox;
 import de.qaware.mercury.business.location.GeoLocation;
@@ -7,7 +9,13 @@ import de.qaware.mercury.business.location.LocationService;
 import de.qaware.mercury.business.location.impl.DistanceUtil;
 import de.qaware.mercury.business.location.impl.LocationNotFoundException;
 import de.qaware.mercury.business.login.ShopLoginService;
-import de.qaware.mercury.business.shop.*;
+import de.qaware.mercury.business.shop.Shop;
+import de.qaware.mercury.business.shop.ShopAlreadyExistsException;
+import de.qaware.mercury.business.shop.ShopCreation;
+import de.qaware.mercury.business.shop.ShopNotFoundException;
+import de.qaware.mercury.business.shop.ShopService;
+import de.qaware.mercury.business.shop.ShopUpdate;
+import de.qaware.mercury.business.shop.ShopWithDistance;
 import de.qaware.mercury.business.time.Clock;
 import de.qaware.mercury.business.uuid.UUIDFactory;
 import de.qaware.mercury.storage.shop.ShopRepository;
@@ -36,6 +44,7 @@ class ShopServiceImpl implements ShopService {
     private final ShopLoginService shopLoginService;
     private final Clock clock;
     private final ShopServiceConfigurationProperties config;
+    private final AdminService adminService;
 
     @Override
     @Transactional(readOnly = true)
@@ -111,6 +120,8 @@ class ShopServiceImpl implements ShopService {
             // If the shop needs approval, send an email to the shop
             log.info("Sending shop created, awaiting approval email to {}", shop.getEmail());
             emailService.sendShopCreatedApprovalNeeded(shop);
+            List<Admin> adminsToNotify = adminService.findAdminsToNotifyOnShopApprovalNeeded();
+            emailService.sendAdminShopApprovalNeeded(adminsToNotify, shop);
         }
 
         return shop;

@@ -22,6 +22,7 @@ mercury:
     creationLinkTemplate: "${variables.domain}/#/create-shop?token={{ token }}"
     shopPasswordResetLinkTemplate: "${variables.domain}/#/reset-shop-password?token={{ token }}"
     reservationCancellationLinkTemplate: "${variables.domain}/#/cancel-reservation?token={{ token }}"
+    adminUiLink: "${variables.domain}/#/admin/overview"
   features:
     enableDebugDataCreation: false
     approveShopsOnCreation: false

@@ -12,6 +12,7 @@ public class Admin {
     Id id;
     String email;
     String passwordHash;
+    boolean emailOnShopApprovalNeeded;
     @With
     ZonedDateTime created;
     @With
