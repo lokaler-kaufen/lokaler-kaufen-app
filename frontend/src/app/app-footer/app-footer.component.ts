@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {RegisterBusinessPopupComponent} from '../register-business-popup/register-business-popup.component';
+import {UserContextService} from '../shared/user-context.service';
 import {HttpClient} from '@angular/common/http';
 
 @Component({
@@ -16,7 +17,7 @@ export class AppFooterComponent implements OnInit {
   // version info
   versionInfo: VersionInfo;
 
-  constructor(public dialog: MatDialog, private client: HttpClient) {
+  constructor(public dialog: MatDialog, private client: HttpClient, public userContextService: UserContextService) {
   }
 
   openRegisterBusinessPopup(): void {
