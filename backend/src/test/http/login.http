@@ -9,7 +9,15 @@ Accept: application/json, */*
     "password": "admin-1"
 }
 
-### Login as user
+### Check admin login
+
+GET {{ host }}/api/admin/login
+
+### Logout as admin
+
+DELETE {{ host }}/api/admin/login
+
+### Login as shop
 
 POST {{ host }}/api/shop/login
 Content-Type: application/json
@@ -19,5 +27,13 @@ Accept: application/json, */*
     "email": "moe@local.host",
     "password": "moe"
 }
+
+### Check shop login
+
+GET {{ host }}/api/shop/login
+
+### Logout as shop
+
+DELETE {{ host }}/api/shop/login
 
 ###
