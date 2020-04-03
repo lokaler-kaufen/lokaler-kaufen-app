@@ -5,7 +5,7 @@ import de.qaware.mercury.business.uuid.UUIDFactory
 import de.qaware.mercury.test.IntegrationTestSpecification
 import org.springframework.beans.factory.annotation.Autowired
 
-class AdminDataRepositoryTest extends IntegrationTestSpecification {
+class AdminDataRepositoryIntTest extends IntegrationTestSpecification {
     @Autowired
     AdminDataRepository repository
     @Autowired
