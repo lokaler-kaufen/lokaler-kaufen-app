@@ -46,7 +46,7 @@ export class AppFooterComponent implements OnInit {
     }
 
     logoutStoreOwner() {
-        this.client.post('/api/shop/login/logout', {}).toPromise().then(() => {
+        this.client.delete('/api/shop/login', {}).toPromise().then(() => {
             console.log('Shop Owner logged out. ');
             this.userContextService.storeOwnerLoggedOut();
         }).catch(error => {
