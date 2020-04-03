@@ -1,6 +1,6 @@
 .landing-page {
   display: flex;
-  width: 912px;
+  width: 609px; /* found this value at exactly 720px screen width (i.e. smallest "non-small" screen width) */
 }
 
 section {
