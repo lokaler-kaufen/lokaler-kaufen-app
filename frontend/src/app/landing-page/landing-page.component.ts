@@ -6,6 +6,10 @@ import {Router} from '@angular/router';
 import {ZipCodeCacheService} from './zip-code-cache.service';
 import {NotificationsService} from 'angular2-notifications';
 import {LocationSuggestionDto, LocationSuggestionsDto} from '../data/api';
+import {UserContextService} from '../shared/user-context.service';
+import {RegisterBusinessPopupComponent} from '../register-business-popup/register-business-popup.component';
+import {MatDialog} from '@angular/material/dialog';
+import {BreakpointObserver} from '@angular/cdk/layout';
 
 @Component({
   selector: 'landing-page',
@@ -13,18 +17,34 @@ import {LocationSuggestionDto, LocationSuggestionsDto} from '../data/api';
   styleUrls: ['./landing-page.component.css']
 })
 export class LandingPageComponent implements OnInit {
-  location: string;
+
+  /**
+   * Reference to the shop registration dialog.
+   */
+  private dialogRef;
+
   private zipCodeInitialValue: string;
+
   suggestions: LocationSuggestionDto[] = [];
+
   form: FormGroup;
+
+  isSmallScreen: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
     private client: HttpClient,
     private router: Router,
     private zipCodeCacheService: ZipCodeCacheService,
-    private notificationsService: NotificationsService
+    private notificationsService: NotificationsService,
+    private userContextService: UserContextService,
+    private dialog: MatDialog,
+    breakpointObserver: BreakpointObserver
   ) {
+    // listen to responsive breakpoint changes
+    breakpointObserver.observe('(max-width: 719px)').subscribe(
+      result => this.isSmallScreen = result.matches
+    );
   }
 
   ngOnInit(): void {
@@ -41,13 +61,14 @@ export class LandingPageComponent implements OnInit {
         this.suggestions = [];
       }
     });
+
     this.form.controls.zipCode.valueChanges
       .pipe(
         debounceTime(150),
         switchMap(value => {
           if (value) {
             return this.client.get<LocationSuggestionsDto>('/api/location/suggestion?zipCode=' + value)
-              .pipe(map((response) => response.suggestions));
+              .pipe(map(({suggestions}) => suggestions));
           } else {
             return [];
           }
@@ -69,15 +90,26 @@ export class LandingPageComponent implements OnInit {
   }
 
   get startDisabled(): boolean {
-    return !this.startEnabled;
+    return !this.form.valid;
   }
 
-  private get startEnabled(): boolean {
-    return this.form.valid;
+  get isLoggedInShopOwner(): boolean {
+    return this.userContextService.isLoggedInStoreOwner;
   }
 
-  private get zipCodeFromInput(): string {
-    return this.form.controls.zipCode.value;
+  openRegisterBusinessPopup(): void {
+    if (!this.dialogRef) {
+      this.dialogRef = this.dialog.open(RegisterBusinessPopupComponent, {
+        width: '500px'
+      });
+
+      this.dialogRef.afterClosed().subscribe(
+        () => {
+          // Reset the dialogRef because the user should be able to open the dialog again.
+          this.dialogRef = null;
+        }
+      );
+    }
   }
 
   start(): void {
@@ -97,6 +129,23 @@ export class LandingPageComponent implements OnInit {
         }
       });
 
+  }
+
+  private get zipCodeFromInput(): string {
+    return this.form.controls.zipCode.value;
+  }
+
+  logoutStoreOwner() {
+    this.client.delete('/api/shop/login', {}).toPromise()
+      .then(() => {
+        console.log('Shop Owner logged out. ');
+        this.userContextService.storeOwnerLoggedOut();
+        this.router.navigate(['/login']);
+      })
+      .catch(error => {
+        console.log('Unable to logout shop owner: ' + error.status + ' ' + error.message);
+        this.notificationsService.error('Tut uns Leid!', 'Beim Logout ist etwas schiefgegangen.');
+      });
   }
 
 }
