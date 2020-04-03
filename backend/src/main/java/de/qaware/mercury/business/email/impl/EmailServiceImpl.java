@@ -167,6 +167,11 @@ class EmailServiceImpl implements EmailService {
 
     @Override
     public void sendAdminShopApprovalNeeded(List<Admin> admins, Shop shop) {
+        if (admins.isEmpty()) {
+            // Nothing to do here
+            return;
+        }
+
         String body = loadTemplate("/email/admin-shop-approval-needed.txt")
             .replace("{{ shopName }}", shop.getName())
             .replace("{{ ownerName }}", shop.getOwnerName())
