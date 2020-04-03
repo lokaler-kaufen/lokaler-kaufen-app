@@ -15,7 +15,7 @@ class AdminDataRepositoryIntTest extends IntegrationTestSpecification {
 
     def "find by email is case sensitive"() {
         given: "an admin with email admin@local.host"
-        AdminEntity entity = new AdminEntity(uuidFactory.create(), "admin@local.host", "dummy", clock.nowZoned(), clock.nowZoned())
+        AdminEntity entity = new AdminEntity(uuidFactory.create(), "admin@local.host", "dummy", false, clock.nowZoned(), clock.nowZoned())
         repository.save(entity)
 
         when: "we search for admins by ADMIN@LOCAL.HOST"
