@@ -9,6 +9,12 @@ insert_final_newline = false
 max_line_length = 120
 tab_width = 4
 
+# Frontend
+[{*.css, *.html, *.ts}]
+indent_size = 2
+insert_final_newline = true
+trim_trailing_whitespace = true
+
 [{*.yaml, *.yml}]
 indent_size = 2
 
@@ -16,3 +22,7 @@ indent_size = 2
 # Disable wildcard imports
 ij_java_class_count_to_use_import_on_demand = 3000
 ij_java_names_count_to_use_import_on_demand = 3000
+
+[*.md]
+max_line_length = off
+trim_trailing_whitespace = false
