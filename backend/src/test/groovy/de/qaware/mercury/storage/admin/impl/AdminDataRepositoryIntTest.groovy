@@ -2,6 +2,8 @@ package de.qaware.mercury.storage.admin.impl
 
 import de.qaware.mercury.business.time.Clock
 import de.qaware.mercury.business.uuid.UUIDFactory
+import de.qaware.mercury.storage.admin.impl.AdminDataRepository
+import de.qaware.mercury.storage.admin.impl.AdminEntity
 import de.qaware.mercury.test.IntegrationTestSpecification
 import org.springframework.beans.factory.annotation.Autowired
 

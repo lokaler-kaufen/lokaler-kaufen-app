@@ -2,6 +2,8 @@ package de.qaware.mercury.storage.login.impl
 
 import de.qaware.mercury.business.time.Clock
 import de.qaware.mercury.business.uuid.UUIDFactory
+import de.qaware.mercury.storage.login.impl.ShopLoginDataRepository
+import de.qaware.mercury.storage.login.impl.ShopLoginEntity
 import de.qaware.mercury.storage.shop.impl.ShopDataRepository
 import de.qaware.mercury.storage.shop.impl.ShopEntity
 import de.qaware.mercury.test.IntegrationTestSpecification
