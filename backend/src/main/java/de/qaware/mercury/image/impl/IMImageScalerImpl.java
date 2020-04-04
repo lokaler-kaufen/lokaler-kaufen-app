@@ -47,6 +47,7 @@ class IMImageScalerImpl implements ImageScaler {
 
         // We pipe the data stream directly into the stdin of ImageMagick
         log.debug("Piping image to ImageMagick ...");
+        // process.getOutputStream() returns the stdin of the process, wtf
         long transferred = data.transferTo(process.getOutputStream());
         process.getOutputStream().close();
         log.debug("Done, piped {} bytes", transferred);
