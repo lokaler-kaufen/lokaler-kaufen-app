@@ -6,12 +6,15 @@ import de.qaware.mercury.business.shop.ShopNotFoundException;
 import de.qaware.mercury.business.shop.ShopService;
 import de.qaware.mercury.image.Image;
 import de.qaware.mercury.image.ImageService;
+import de.qaware.mercury.rest.image.response.ImageDto;
 import de.qaware.mercury.rest.plumbing.authentication.AuthenticationHelper;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -39,7 +42,8 @@ public class ShopImageController {
      * @throws LoginException if the caller is not authenticated as a shop owner.
      */
     @PostMapping(path = "/upload")
-    public String uploadImageForShop(
+    @ResponseStatus(HttpStatus.CREATED)
+    public ImageDto uploadImageForShop(
         @RequestParam("file") MultipartFile file, HttpServletRequest servletRequest
     ) throws LoginException, IOException, ShopNotFoundException {
         Shop shop = authenticationHelper.authenticateShop(servletRequest);
@@ -49,6 +53,6 @@ public class ShopImageController {
             image = imageService.addImage(shop.getId(), stream);
         }
         shopService.addImage(shop.getId(), image.getId());
-        return image.getId().toString();
+        return ImageDto.of(image);
     }
 }
