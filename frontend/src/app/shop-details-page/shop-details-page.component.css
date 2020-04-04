@@ -21,8 +21,18 @@
   justify-content: center;
 }
 
+.shop-header {
+  display: inline;
+  width: 100%;
+}
+
 .shop-details > div {
   box-sizing: border-box;
+}
+
+.shop-logo {
+  max-height: 84px;
+  display: block;
 }
 
 ::ng-deep.mat-tab-labels {
