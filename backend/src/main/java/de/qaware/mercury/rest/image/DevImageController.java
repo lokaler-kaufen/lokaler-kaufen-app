@@ -23,7 +23,7 @@ import java.io.InputStream;
  * <p>
  * When requesting an URL like
  * <p>
- * GET http://localhost:8080/image/fbd52c31-235f-482d-828f-4fa875b1791e.jpeg
+ * GET http://localhost:8080/dev/image/fbd52c31-235f-482d-828f-4fa875b1791e.jpeg
  * <p>
  * this controller will load the image with id fbd52c31-235f-482d-828f-4fa875b1791e and serves it. This is useful when
  * developing. In production you would want to serve the static files with a real web server.
