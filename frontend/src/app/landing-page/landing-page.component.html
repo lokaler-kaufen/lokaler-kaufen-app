@@ -37,26 +37,16 @@
     </form>
   </section>
 
-  <mat-divider [vertical]="!isSmallScreen"></mat-divider>
+  <mat-divider [vertical]="!isSmallScreen" *ngIf="!isLoggedInShopOwner"></mat-divider>
 
-  <section class="padding-vertical" [ngClass]="{'margin-horizontal': !isSmallScreen}">
+  <section class="padding-vertical" [ngClass]="{'margin-horizontal': !isSmallScreen}" *ngIf="!isLoggedInShopOwner">
 
     <header>
       <h2>Für Ladenbesitzer</h2>
       <p>Wollen Sie Ihre Kunden per Videochat beraten?</p>
     </header>
 
-    <div *ngIf="isLoggedInShopOwner">
-      <button mat-raised-button (click)="logoutStoreOwner()" class="margin-bottom">
-        Logout
-      </button>
-
-      <a mat-raised-button color="primary" routerLink="manage-shop">
-        Laden bearbeiten
-      </a>
-    </div>
-
-    <div *ngIf="!isLoggedInShopOwner">
+    <div>
       <a mat-raised-button routerLink="login" class="margin-bottom">
         Login für Ladenbesitzer
       </a>

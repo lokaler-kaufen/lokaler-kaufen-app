@@ -135,17 +135,4 @@ export class LandingPageComponent implements OnInit {
     return this.form.controls.zipCode.value;
   }
 
-  logoutStoreOwner() {
-    this.client.delete('/api/shop/login', {}).toPromise()
-      .then(() => {
-        console.log('Shop Owner logged out. ');
-        this.userContextService.storeOwnerLoggedOut();
-        this.router.navigate(['/login']);
-      })
-      .catch(error => {
-        console.log('Unable to logout shop owner: ' + error.status + ' ' + error.message);
-        this.notificationsService.error('Tut uns Leid!', 'Beim Logout ist etwas schiefgegangen.');
-      });
-  }
-
 }

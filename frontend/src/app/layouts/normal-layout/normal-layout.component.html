@@ -1,7 +1,19 @@
 <section class="app-content">
+
+  <div *ngIf="isLoggedInShopOwner" class="shop-owner-actions margin-big-bottom">
+    <a mat-stroked-button class="margin-right" routerLink="/manage-shop" color="primary">
+      Laden bearbeiten
+    </a>
+
+    <button mat-stroked-button (click)="logout()" color="accent">
+      Logout
+    </button>
+  </div>
+
   <mat-card class="padding-horizontal padding-big-vertical">
     <mat-card-content>
       <router-outlet></router-outlet>
     </mat-card-content>
   </mat-card>
+
 </section>
