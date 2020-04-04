@@ -8,6 +8,8 @@ mercury:
   images:
     publicUrlTemplate: "http://localhost:8080/images/{{ filename }}"
     storageLocation: "/tmp/mercury-images"
+    size: 500 # pixel
+    quality: 90
   cookies:
     secure: false
   email:
