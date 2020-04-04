@@ -1,6 +1,7 @@
 package de.qaware.mercury.business.shop;
 
 import de.qaware.mercury.business.location.impl.LocationNotFoundException;
+import de.qaware.mercury.image.Image;
 import org.springframework.lang.Nullable;
 
 import java.util.List;
@@ -13,6 +14,15 @@ public interface ShopService {
     Shop update(Shop shop, ShopUpdate update) throws LocationNotFoundException;
 
     void changeApproved(Shop.Id id, boolean approved) throws ShopNotFoundException;
+
+    /**
+     * Adds an image to a shop.
+     *
+     * @param id      the id of the shop.
+     * @param imageId the id of the image to store.
+     * @throws ShopNotFoundException if the given shop does not exist.
+     */
+    void addImage(Shop.Id id, Image.Id imageId) throws ShopNotFoundException;
 
     /**
      * Finds all approved and enabled shops

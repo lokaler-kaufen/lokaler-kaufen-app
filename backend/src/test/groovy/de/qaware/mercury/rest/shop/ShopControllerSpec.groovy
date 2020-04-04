@@ -133,7 +133,7 @@ class ShopControllerSpec extends Specification {
         setup:
         UUID id = UUID.randomUUID()
         Shop shop = createShopObject(id)
-        UpdateShopDto dto = new UpdateShopDto("name", "ownername", "street", "zipCode", "city", "addressSupplement", "details", "www.example.com", new HashMap<String, String>(), Null.map(createSlotConfig(), { slotConfig -> SlotConfigDto.of(slotConfig) }))
+        UpdateShopDto dto = new UpdateShopDto("name", "ownername", "street", "zipCode", "city", "addressSupplement", "details", null, "www.example.com", new HashMap<String, String>(), Null.map(createSlotConfig(), { slotConfig -> SlotConfigDto.of(slotConfig) }))
 
         when:
         ShopDetailDto result = controller.updateShop(dto, httpServletRequest)
@@ -218,6 +218,7 @@ class ShopControllerSpec extends Specification {
             new HashMap<ContactType, String>(),
             true,
             true,
+            null,
             GeoLocation.of(47, 12),
             "Details",
             "www.example.com",

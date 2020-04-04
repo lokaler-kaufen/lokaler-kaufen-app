@@ -18,8 +18,10 @@ import de.qaware.mercury.business.shop.ShopUpdate;
 import de.qaware.mercury.business.shop.ShopWithDistance;
 import de.qaware.mercury.business.time.Clock;
 import de.qaware.mercury.business.uuid.UUIDFactory;
+import de.qaware.mercury.image.Image;
 import de.qaware.mercury.storage.shop.ShopRepository;
 import de.qaware.mercury.util.Lists;
+import de.qaware.mercury.util.Null;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -107,9 +109,23 @@ class ShopServiceImpl implements ShopService {
 
         GeoLocation geoLocation = locationService.lookup(creation.getZipCode());
         Shop shop = new Shop(
-            Shop.Id.of(id), creation.getName(), creation.getOwnerName(), creation.getEmail(), creation.getStreet(),
-            creation.getZipCode(), creation.getCity(), creation.getAddressSupplement(), creation.getContacts(),
-            true, config.isApproveShopsOnCreation(), geoLocation, creation.getDetails(), creation.getWebsite(), creation.getSlotConfig(), clock.nowZoned(),
+            Shop.Id.of(id),
+            creation.getName(),
+            creation.getOwnerName(),
+            creation.getEmail(),
+            creation.getStreet(),
+            creation.getZipCode(),
+            creation.getCity(),
+            creation.getAddressSupplement(),
+            creation.getContacts(),
+            true,
+            config.isApproveShopsOnCreation(),
+            null,
+            geoLocation,
+            creation.getDetails(),
+            creation.getWebsite(),
+            creation.getSlotConfig(),
+            clock.nowZoned(),
             clock.nowZoned()
         );
 
@@ -133,10 +149,24 @@ class ShopServiceImpl implements ShopService {
         GeoLocation geoLocation = locationService.lookup(update.getZipCode());
 
         Shop updatedShop = new Shop(
-            shop.getId(), update.getName(), update.getOwnerName(), shop.getEmail(), update.getStreet(), update.getZipCode(),
-            update.getCity(), update.getAddressSupplement(), update.getContacts(),
-            shop.isEnabled(), shop.isApproved(), geoLocation, update.getDetails(), update.getWebsite(), update.getSlotConfig(),
-            shop.getCreated(), clock.nowZoned()
+            shop.getId(),
+            update.getName(),
+            update.getOwnerName(),
+            shop.getEmail(),
+            update.getStreet(),
+            update.getZipCode(),
+            update.getCity(),
+            update.getAddressSupplement(),
+            update.getContacts(),
+            shop.isEnabled(),
+            shop.isApproved(),
+            Null.map(update.getImageId(), Image.Id::parse),
+            geoLocation,
+            update.getDetails(),
+            update.getWebsite(),
+            update.getSlotConfig(),
+            shop.getCreated(),
+            clock.nowZoned()
         );
 
         shopRepository.update(updatedShop);
@@ -167,6 +197,18 @@ class ShopServiceImpl implements ShopService {
             log.info("Shop '{}' has been disapproved", shop.getId());
             emailService.sendShopApprovalRevoked(shop);
         }
+    }
+
+
+    @Override
+    public void addImage(Shop.Id id, Image.Id imageId) throws ShopNotFoundException {
+        Shop shop = shopRepository.findById(id);
+        if (shop == null) {
+            throw new ShopNotFoundException(id);
+        }
+
+        Shop updatedShop = shop.withImageId(imageId);
+        shopRepository.update(updatedShop);
     }
 
     @Override

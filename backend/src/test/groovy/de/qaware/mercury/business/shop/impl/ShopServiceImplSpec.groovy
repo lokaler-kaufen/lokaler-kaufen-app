@@ -8,9 +8,11 @@ import de.qaware.mercury.business.login.ShopLoginService
 import de.qaware.mercury.business.shop.*
 import de.qaware.mercury.business.time.Clock
 import de.qaware.mercury.business.uuid.UUIDFactory
+import de.qaware.mercury.image.Image
 import de.qaware.mercury.storage.shop.ShopRepository
 import spock.lang.Specification
 
+import java.time.LocalTime
 import java.time.ZonedDateTime
 
 class ShopServiceImplSpec extends Specification {
@@ -271,6 +273,36 @@ class ShopServiceImplSpec extends Specification {
         1 * emailService.sendShopApprovalRevoked(shop)
     }
 
+    def "Adds image to shop"() {
+        setup:
+        Shop.Id shopId = Shop.Id.of(UUID.randomUUID())
+        Image.Id imageId = Image.Id.of(UUID.randomUUID())
+        Shop shop = createShopObject(shopId.getId())
+
+        when:
+        shopService.addImage(shopId, imageId)
+
+        then:
+        1 * shopRepository.findById(shopId) >> shop
+        1 * shopRepository.update(_) >> { Shop updatedShop ->
+            updatedShop.getImageId() == imageId
+        }
+    }
+
+    def "Throws if shop was not found when trying to add image"() {
+        setup:
+        Shop.Id shopId = Shop.Id.of(UUID.randomUUID())
+        Image.Id imageId = Image.Id.of(UUID.randomUUID())
+
+        when:
+        shopService.addImage(shopId, imageId)
+
+        then:
+        1 * shopRepository.findById(shopId) >> null
+        0 * shopRepository.update(_)
+        thrown ShopNotFoundException
+    }
+
     def "Send create link to email"() {
         when:
         shopService.sendCreateLink('test@lokaler.kaufen')
@@ -332,5 +364,46 @@ class ShopServiceImplSpec extends Specification {
         // we get the right one back
         results.get(0).shop.name == nameOfShopWithin
 
+    }
+
+    private static Shop createShopObject(UUID id) {
+        return new Shop(
+            Shop.Id.parse(id.toString()),
+            "Name",
+            "Owner Name",
+            "info@example.com",
+            "Street",
+            "23947",
+            "City",
+            "Address Supplement",
+            new HashMap<ContactType, String>(),
+            true,
+            true,
+            null,
+            GeoLocation.of(47, 12),
+            "Details",
+            "www.example.com",
+            createSlotConfig(),
+            createZonedDateTime(),
+            createZonedDateTime()
+        )
+    }
+
+    private static SlotConfig createSlotConfig() {
+        return new SlotConfig(
+            15,
+            15,
+            new DayConfig(LocalTime.parse("10:00"), LocalTime.parse("11:00")),
+            new DayConfig(LocalTime.parse("11:30"), LocalTime.parse("12:30")),
+            new DayConfig(LocalTime.parse("13:00"), LocalTime.parse("14:00")),
+            new DayConfig(LocalTime.parse("14:30"), LocalTime.parse("15:30")),
+            new DayConfig(LocalTime.parse("16:00"), LocalTime.parse("17:00")),
+            new DayConfig(LocalTime.parse("17:30"), LocalTime.parse("18:30")),
+            new DayConfig(LocalTime.parse("19:00"), LocalTime.parse("20:00"))
+        )
+    }
+
+    private static ZonedDateTime createZonedDateTime() {
+        return ZonedDateTime.now()
     }
 }

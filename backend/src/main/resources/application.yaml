@@ -31,6 +31,11 @@ mercury:
   cleanup-job:
     reservation:
       cron: "0 0 2 * * *" # Every night at 2am
+  images:
+    storageLocation: "/var/www/..." # TODO: Configure image storage path
+    publicUrlTemplate: "/image/shop/{{ filename }}"
+    size: "512"
+    quality: "95"
 
 spring.mail:
   host: "smtp.gmail.com"
@@ -39,6 +44,18 @@ spring.mail:
   password: ""
   properties:
     mail.smtp.starttls.enable: true
+
+spring.servlet:
+  # Enable multipart uploads
+  multipart:
+    enabled: true
+    max-file-size: 5MB
+    max-request-size: 6MB
+
+## File Storage Properties
+# All files uploaded through the REST API will be stored in this directory
+# file.upload-dir=/Users/callicoder/uploads
+
 
 variables:
   domain: "http://localhost:4200"

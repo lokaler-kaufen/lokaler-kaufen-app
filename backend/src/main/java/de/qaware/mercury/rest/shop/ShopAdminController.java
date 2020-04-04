@@ -95,6 +95,7 @@ class ShopAdminController {
             request.getCity(),
             request.getAddressSupplement(),
             request.getDetails(),
+            request.getImageId(),
             request.getWebsite(),
             Maps.mapKeys(request.getContacts(), ContactType::parse),
             request.getSlots().toSlots()

@@ -217,6 +217,7 @@ class JpaShopRepositoryImplSpec extends Specification {
             new HashMap<ContactType, String>(),
             true,
             true,
+            null,
             GeoLocation.of(47, 12),
             "Details",
             "www.example.com",

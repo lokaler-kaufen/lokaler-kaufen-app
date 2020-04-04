@@ -19,6 +19,7 @@ public class ShopUpdate {
     String city;
     String addressSupplement;
     String details;
+    String imageId;
     @Nullable
     String website;
     // Maps from WHATSAPP -> Telephone number, for example
