@@ -1,23 +1,14 @@
 package de.qaware.mercury.rest.shop
 
+import de.qaware.mercury.business.image.Image
+import de.qaware.mercury.business.image.ImageService
 import de.qaware.mercury.business.location.GeoLocation
 import de.qaware.mercury.business.login.PasswordResetToken
 import de.qaware.mercury.business.login.ShopLoginService
 import de.qaware.mercury.business.login.TokenService
-import de.qaware.mercury.business.shop.ContactType
-import de.qaware.mercury.business.shop.DayConfig
-import de.qaware.mercury.business.shop.Shop
-import de.qaware.mercury.business.shop.ShopNotFoundException
-import de.qaware.mercury.business.shop.ShopService
-import de.qaware.mercury.business.shop.ShopWithDistance
-import de.qaware.mercury.business.shop.SlotConfig
+import de.qaware.mercury.business.shop.*
 import de.qaware.mercury.rest.plumbing.authentication.AuthenticationHelper
-import de.qaware.mercury.rest.shop.dto.request.CreateShopDto
-import de.qaware.mercury.rest.shop.dto.request.ResetPasswordDto
-import de.qaware.mercury.rest.shop.dto.request.SendCreateLinkDto
-import de.qaware.mercury.rest.shop.dto.request.SendPasswordResetLinkDto
-import de.qaware.mercury.rest.shop.dto.request.SlotConfigDto
-import de.qaware.mercury.rest.shop.dto.request.UpdateShopDto
+import de.qaware.mercury.rest.shop.dto.request.*
 import de.qaware.mercury.rest.shop.dto.response.ShopDetailDto
 import de.qaware.mercury.rest.shop.dto.response.ShopListDto
 import de.qaware.mercury.rest.shop.dto.response.ShopOwnerDetailDto
@@ -38,25 +29,32 @@ class ShopControllerSpec extends Specification {
     TokenService tokenService = Mock(TokenService)
     AuthenticationHelper authenticationHelper = Mock(AuthenticationHelper)
     ShopLoginService shopLoginService = Mock(ShopLoginService)
+    ImageService imageService = Mock(ImageService)
 
     HttpServletRequest httpServletRequest = Mock(HttpServletRequest)
 
     void setup() {
-        controller = new ShopController(shopService, tokenService, authenticationHelper, shopLoginService)
+        controller = new ShopController(shopService, imageService, tokenService, authenticationHelper, shopLoginService)
     }
 
     def "Retrieve shop details"() {
         setup:
         UUID id = UUID.randomUUID()
-        Shop shop = createShopObject(id)
+        Image.Id imageId = Image.Id.of(UUID.randomUUID())
+        Shop shop = createShopObject(id, imageId.getId())
+        String testImageUrl = "http://image.url/path"
+        URI testImageUri = new URI(testImageUrl)
 
         when:
         ShopDetailDto result = controller.getShopDetails(id.toString())
 
         then:
         result
-        result.id == id.toString();
+        result.id == id.toString()
+        result.imageUrl == testImageUrl
+
         1 * shopService.findById(Shop.Id.parse(id.toString())) >> shop
+        1 * imageService.generatePublicUrl(imageId) >> testImageUri
     }
 
     def "getShopDetails throws ShopNotFoundException if shop is not found"() {
@@ -74,14 +72,21 @@ class ShopControllerSpec extends Specification {
     def "Retrieve shop settings"() {
         setup:
         UUID id = UUID.randomUUID()
-        Shop shop = createShopObject(id)
+        Image.Id imageId = Image.Id.of(UUID.randomUUID())
+        Shop shop = createShopObject(id, imageId.getId())
+        String testImageUrl = "http://image.url/path"
+        URI testImageUri = new URI(testImageUrl)
 
         when:
         ShopOwnerDetailDto result = controller.getShopSettings(httpServletRequest)
 
         then:
-        result.id == shop.id.getId().toString()
+        result
+        result.id == id.toString()
+        result.imageUrl == testImageUrl
+
         1 * authenticationHelper.authenticateShop(httpServletRequest) >> shop
+        1 * imageService.generatePublicUrl(imageId) >> testImageUri
     }
 
     def "sendCreateLink calls shopService"() {
@@ -127,98 +132,134 @@ class ShopControllerSpec extends Specification {
     def "Shop gets created"() {
         setup:
         UUID id = UUID.randomUUID()
-        Shop shop = createShopObject(id)
         CreateShopDto dto = new CreateShopDto("name", "ownername", "street", "zipCode", "city", "addressSupplement", "details", "www.example.com", "password", new HashMap<String, String>(), Null.map(createSlotConfig(), { slotConfig -> SlotConfigDto.of(slotConfig) }))
         String token = "test-token"
+        Image.Id imageId = Image.Id.of(UUID.randomUUID())
+        Shop shop = createShopObject(id, imageId.getId())
+        String testImageUrl = "http://image.url/path"
+        URI testImageUri = new URI(testImageUrl)
 
         when:
         ShopDetailDto result = controller.createShop(dto, token)
 
         then:
-        result == ShopDetailDto.of(shop)
+        result
         result.id == id.toString()
+        result.imageUrl == testImageUrl
+
         1 * shopService.create(_) >> shop
+        1 * imageService.generatePublicUrl(imageId) >> testImageUri
     }
 
     def "Shop gets updated"() {
         setup:
         UUID id = UUID.randomUUID()
-        Shop shop = createShopObject(id)
         UpdateShopDto dto = new UpdateShopDto("name", "ownername", "street", "zipCode", "city", "addressSupplement", "details", "61910c7c-46ec-4b13-b7df-f5761a4dbaa0", "www.example.com", new HashMap<String, String>(), Null.map(createSlotConfig(), { slotConfig -> SlotConfigDto.of(slotConfig) }))
+        Image.Id imageId = Image.Id.of(UUID.randomUUID())
+        Shop shop = createShopObject(id, imageId.getId())
+        String testImageUrl = "http://image.url/path"
+        URI testImageUri = new URI(testImageUrl)
 
         when:
         ShopDetailDto result = controller.updateShop(dto, httpServletRequest)
 
         then:
-        result == ShopDetailDto.of(shop)
+        result
         result.id == id.toString()
+        result.imageUrl == testImageUrl
+
         1 * authenticationHelper.authenticateShop(httpServletRequest)
         1 * shopService.update(_, _) >> shop
+        1 * imageService.generatePublicUrl(imageId) >> testImageUri
     }
 
     def "Gets nearby shops by location string"() {
         setup:
         String testLocation = "location string"
-        List<ShopWithDistance> shopWithDistanceList = [new ShopWithDistance(createShopObject(UUID.randomUUID()), 12.1)]
-        ShopListDto shopListDto = ShopListDto.of(shopWithDistanceList)
+        String testImageUrl = "http://image.url/path"
+        URI testImageUri = new URI(testImageUrl)
+        Image.Id imageId = Image.Id.of(UUID.randomUUID())
+        List<ShopWithDistance> shopWithDistanceList = [new ShopWithDistance(createShopObject(UUID.randomUUID(), imageId.getId()), 12.1)]
 
         when:
         ShopListDto result = controller.findActive(testLocation, null)
 
         then:
-        result == shopListDto
+        result
+        result.shops.each {
+            assert it.imageUrl == testImageUrl
+        }
         1 * shopService.findActive(testLocation) >> shopWithDistanceList
+        1 * imageService.generatePublicUrl(imageId) >> testImageUri
     }
 
     def "Gets nearby shops by location string and max distance"() {
         setup:
         String testLocation = "location string"
-        List<ShopWithDistance> shopWithDistanceList = [new ShopWithDistance(createShopObject(UUID.randomUUID()), 5)]
-        ShopListDto shopListDto = ShopListDto.of(shopWithDistanceList)
+        String testImageUrl = "http://image.url/path"
+        URI testImageUri = new URI(testImageUrl)
+        Image.Id imageId = Image.Id.of(UUID.randomUUID())
+        List<ShopWithDistance> shopWithDistanceList = [new ShopWithDistance(createShopObject(UUID.randomUUID(), imageId.getId()), 5)]
         int maxDistance = 5
 
         when:
         ShopListDto result = controller.findActive(testLocation, maxDistance)
 
         then:
-        result == shopListDto
+        result
+        result.shops.each {
+            assert it.imageUrl == testImageUrl
+        }
         1 * shopService.findActive(testLocation, maxDistance) >> shopWithDistanceList
+        1 * imageService.generatePublicUrl(imageId) >> testImageUri
     }
 
     def "Search shops by query and location"() {
         setup:
         String testLocation = "location string"
         String testQuery = "query string"
-        List<ShopWithDistance> shopWithDistanceList = [new ShopWithDistance(createShopObject(UUID.randomUUID()), 12.1)]
-        ShopListDto shopListDto = ShopListDto.of(shopWithDistanceList)
+        String testImageUrl = "http://image.url/path"
+        URI testImageUri = new URI(testImageUrl)
+        Image.Id imageId = Image.Id.of(UUID.randomUUID())
+        List<ShopWithDistance> shopWithDistanceList = [new ShopWithDistance(createShopObject(UUID.randomUUID(), imageId.getId()), 12.1)]
 
         when:
         ShopListDto result = controller.searchActive(testQuery, testLocation, null)
 
         then:
-        result == shopListDto
+        result
+        result.shops.each {
+            assert it.imageUrl == testImageUrl
+        }
         1 * shopService.searchActive(testQuery, testLocation) >> shopWithDistanceList
+        1 * imageService.generatePublicUrl(imageId) >> testImageUri
     }
 
     def "Gets nearby shops by query, location and max distance"() {
         setup:
         String testLocation = "location string"
         String testQuery = "query string"
+        String testImageUrl = "http://image.url/path"
+        URI testImageUri = new URI(testImageUrl)
         int maxDistance = 5
-        List<ShopWithDistance> shopWithDistanceList = [new ShopWithDistance(createShopObject(UUID.randomUUID()), 5)]
-        ShopListDto shopListDto = ShopListDto.of(shopWithDistanceList)
+        Image.Id imageId = Image.Id.of(UUID.randomUUID())
+        List<ShopWithDistance> shopWithDistanceList = [new ShopWithDistance(createShopObject(UUID.randomUUID(), imageId.getId()), 5)]
 
         when:
         ShopListDto result = controller.searchActive(testQuery, testLocation, maxDistance)
 
         then:
-        result == shopListDto
+        result
+        result.shops.each {
+            assert it.imageUrl == testImageUrl
+        }
         1 * shopService.searchActive(testQuery, testLocation, maxDistance) >> shopWithDistanceList
+        1 * imageService.generatePublicUrl(imageId) >> testImageUri
     }
 
-    private static Shop createShopObject(UUID id) {
+    private static Shop createShopObject(UUID id, UUID imageId) {
         return new Shop(
-            Shop.Id.parse(id.toString()),
+            Shop.Id.of(id),
             "Name",
             "Owner Name",
             "info@example.com",
@@ -229,7 +270,7 @@ class ShopControllerSpec extends Specification {
             new HashMap<ContactType, String>(),
             true,
             true,
-            null,
+            Image.Id.of(imageId),
             GeoLocation.of(47, 12),
             "Details",
             "www.example.com",

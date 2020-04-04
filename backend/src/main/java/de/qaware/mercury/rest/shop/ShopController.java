@@ -1,5 +1,7 @@
 package de.qaware.mercury.rest.shop;
 
+import de.qaware.mercury.business.image.Image;
+import de.qaware.mercury.business.image.ImageService;
 import de.qaware.mercury.business.location.impl.LocationNotFoundException;
 import de.qaware.mercury.business.login.LoginException;
 import de.qaware.mercury.business.login.PasswordResetToken;
@@ -14,7 +16,6 @@ import de.qaware.mercury.business.shop.ShopCreation;
 import de.qaware.mercury.business.shop.ShopNotFoundException;
 import de.qaware.mercury.business.shop.ShopService;
 import de.qaware.mercury.business.shop.ShopUpdate;
-import de.qaware.mercury.business.image.Image;
 import de.qaware.mercury.rest.plumbing.authentication.AuthenticationHelper;
 import de.qaware.mercury.rest.shop.dto.request.CreateShopDto;
 import de.qaware.mercury.rest.shop.dto.request.ResetPasswordDto;
@@ -56,6 +57,7 @@ import javax.validation.constraints.Pattern;
 @Validated
 class ShopController {
     private final ShopService shopService;
+    private final ImageService imageService;
     private final TokenService tokenService;
     private final AuthenticationHelper authenticationHelper;
     private final ShopLoginService shopLoginService;
@@ -74,7 +76,7 @@ class ShopController {
             throw new ShopNotFoundException(Shop.Id.parse(id));
         }
 
-        return ShopDetailDto.of(shop);
+        return ShopDetailDto.of(shop, imageService);
     }
 
     /**
@@ -88,7 +90,7 @@ class ShopController {
     public ShopOwnerDetailDto getShopSettings(HttpServletRequest servletRequest) throws LoginException {
         Shop shop = authenticationHelper.authenticateShop(servletRequest);
 
-        return ShopOwnerDetailDto.of(shop);
+        return ShopOwnerDetailDto.of(shop, imageService);
     }
 
     /**
@@ -141,11 +143,22 @@ class ShopController {
         // It contains the email address, and is used to verify that the user really has access to this email address
         String email = tokenService.verifyShopCreationToken(ShopCreationToken.of(token));
 
-        return ShopDetailDto.of(shopService.create(new ShopCreation(
-            email, request.getOwnerName(), request.getName(), request.getStreet(), request.getZipCode(), request.getCity(),
-            request.getAddressSupplement(), request.getDetails(), request.getWebsite(), request.getPassword(),
-            Maps.mapKeys(request.getContacts(), ContactType::parse), request.getSlots().toSlots()
-        )));
+        Shop createdShop = shopService.create(new ShopCreation(
+            email,
+            request.getOwnerName(),
+            request.getName(),
+            request.getStreet(),
+            request.getZipCode(),
+            request.getCity(),
+            request.getAddressSupplement(),
+            request.getDetails(),
+            request.getWebsite(),
+            request.getPassword(),
+            Maps.mapKeys(request.getContacts(), ContactType::parse),
+            request.getSlots().toSlots()
+        ));
+
+        return ShopDetailDto.of(createdShop, imageService);
     }
 
     /**
@@ -160,7 +173,7 @@ class ShopController {
     public ShopDetailDto updateShop(@Valid @RequestBody UpdateShopDto request, HttpServletRequest servletRequest) throws LoginException, LocationNotFoundException {
         Shop shop = authenticationHelper.authenticateShop(servletRequest);
 
-        return ShopDetailDto.of(shopService.update(shop, new ShopUpdate(
+        Shop updatedShop = shopService.update(shop, new ShopUpdate(
             request.getName(),
             request.getOwnerName(),
             request.getStreet(),
@@ -170,10 +183,11 @@ class ShopController {
             request.getDetails(),
             Image.Id.parse(request.getImageId()),
             request.getWebsite(),
-            Maps.mapKeys(request.getContacts(),
-                ContactType::parse),
+            Maps.mapKeys(request.getContacts(), ContactType::parse),
             request.getSlots().toSlots()
-        )));
+        ));
+
+        return ShopDetailDto.of(updatedShop, imageService);
     }
 
     /**
@@ -186,9 +200,9 @@ class ShopController {
     @GetMapping("nearby")
     public ShopListDto findActive(@RequestParam @NotBlank String zipCode, @RequestParam(required = false) @Nullable Integer maxDistance) throws LocationNotFoundException {
         if (maxDistance != null) {
-            return ShopListDto.of(shopService.findActive(zipCode, maxDistance));
+            return ShopListDto.of(shopService.findActive(zipCode, maxDistance), imageService);
         }
-        return ShopListDto.of(shopService.findActive(zipCode));
+        return ShopListDto.of(shopService.findActive(zipCode), imageService);
     }
 
     /**
@@ -202,8 +216,8 @@ class ShopController {
     @GetMapping("search")
     public ShopListDto searchActive(@RequestParam @NotBlank String query, @NotBlank @RequestParam String zipCode, @RequestParam(required = false) @Nullable Integer maxDistance) throws LocationNotFoundException {
         if (maxDistance != null) {
-            return ShopListDto.of(shopService.searchActive(query, zipCode, maxDistance));
+            return ShopListDto.of(shopService.searchActive(query, zipCode, maxDistance), imageService);
         }
-        return ShopListDto.of(shopService.searchActive(query, zipCode));
+        return ShopListDto.of(shopService.searchActive(query, zipCode), imageService);
     }
 }

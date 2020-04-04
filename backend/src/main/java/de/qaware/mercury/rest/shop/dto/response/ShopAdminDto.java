@@ -1,5 +1,6 @@
 package de.qaware.mercury.rest.shop.dto.response;
 
+import de.qaware.mercury.business.image.ImageService;
 import de.qaware.mercury.business.shop.ContactType;
 import de.qaware.mercury.business.shop.Shop;
 import de.qaware.mercury.rest.shop.dto.request.SlotConfigDto;
@@ -10,6 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
 
+import java.net.URI;
 import java.util.Map;
 
 @Data
@@ -29,10 +31,13 @@ public class ShopAdminDto {
     boolean approved;
     String details;
     @Nullable
+    String imageUrl;
+    @Nullable
     String website;
     SlotConfigDto slots;
 
-    public static ShopAdminDto of(Shop shop) {
+    public static ShopAdminDto of(Shop shop, ImageService imageService) {
+        URI imageUrl = imageService.generatePublicUrl(shop.getImageId());
         return new ShopAdminDto(
             shop.getId().getId().toString(),
             shop.getName(),
@@ -46,6 +51,7 @@ public class ShopAdminDto {
             shop.isEnabled(),
             shop.isApproved(),
             shop.getDetails(),
+            Null.map(imageUrl, URI::toString),
             shop.getWebsite(),
             Null.map(shop.getSlotConfig(), SlotConfigDto::of)
         );

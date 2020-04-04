@@ -1,6 +1,8 @@
 package de.qaware.mercury.rest.shop;
 
 import de.qaware.mercury.business.admin.Admin;
+import de.qaware.mercury.business.image.Image;
+import de.qaware.mercury.business.image.ImageService;
 import de.qaware.mercury.business.location.impl.LocationNotFoundException;
 import de.qaware.mercury.business.login.LoginException;
 import de.qaware.mercury.business.shop.ContactType;
@@ -8,7 +10,6 @@ import de.qaware.mercury.business.shop.Shop;
 import de.qaware.mercury.business.shop.ShopNotFoundException;
 import de.qaware.mercury.business.shop.ShopService;
 import de.qaware.mercury.business.shop.ShopUpdate;
-import de.qaware.mercury.business.image.Image;
 import de.qaware.mercury.rest.plumbing.authentication.AuthenticationHelper;
 import de.qaware.mercury.rest.shop.dto.request.UpdateShopDto;
 import de.qaware.mercury.rest.shop.dto.response.ShopAdminDto;
@@ -32,6 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
+import java.net.URI;
 
 @RestController
 @RequestMapping(value = "/api/admin/shop", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -40,6 +42,7 @@ import javax.validation.constraints.Pattern;
 @Validated
 class ShopAdminController {
     private final ShopService shopService;
+    private final ImageService imageService;
     private final AuthenticationHelper authenticationHelper;
 
     /**
@@ -59,14 +62,20 @@ class ShopAdminController {
             throw new ShopNotFoundException(Shop.Id.parse(id));
         }
 
-        return ShopAdminDto.of(shop);
+        String imageUrl = null;
+        if (shop.getImageId() != null) {
+            URI url = imageService.generatePublicUrl(shop.getImageId());
+            imageUrl = url.toString();
+        }
+
+        return ShopAdminDto.of(shop, imageService);
     }
 
     @GetMapping
     public ShopsAdminDto listAll(HttpServletRequest request) throws LoginException {
         authenticationHelper.authenticateAdmin(request);
 
-        return ShopsAdminDto.of(shopService.listAll());
+        return ShopsAdminDto.of(shopService.listAll(), imageService);
     }
 
     @PutMapping(path = "/{id}/approve")
@@ -87,8 +96,7 @@ class ShopAdminController {
             throw new ShopNotFoundException(shopId);
         }
 
-        log.info("Admin {} updated shop '{}'", admin.getEmail(), shop.getName());
-        return ShopAdminDto.of(shopService.update(shop, new ShopUpdate(
+        Shop updatedShop = shopService.update(shop, new ShopUpdate(
             request.getName(),
             request.getOwnerName(),
             request.getStreet(),
@@ -100,7 +108,9 @@ class ShopAdminController {
             request.getWebsite(),
             Maps.mapKeys(request.getContacts(), ContactType::parse),
             request.getSlots().toSlots()
-        )));
+        ));
+        log.info("Admin {} updated shop '{}'", admin.getEmail(), shop.getName());
+        return ShopAdminDto.of(updatedShop, imageService);
     }
 
     @DeleteMapping(path = "/{id}")
