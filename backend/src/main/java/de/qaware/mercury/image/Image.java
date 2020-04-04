@@ -1,9 +1,11 @@
 package de.qaware.mercury.image;
 
+import de.qaware.mercury.business.uuid.UUIDFactory;
 import lombok.Value;
 
 import java.util.UUID;
 
+@Value
 public class Image {
     Id id;
 
@@ -17,6 +19,10 @@ public class Image {
             } catch (IllegalArgumentException e) {
                 throw new InvalidImageIdException(input, e);
             }
+        }
+
+        public static Id random(UUIDFactory uuidFactory) {
+            return of(uuidFactory.create());
         }
 
         @Override
