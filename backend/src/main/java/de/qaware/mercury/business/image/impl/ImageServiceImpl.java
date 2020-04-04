@@ -1,7 +1,5 @@
 package de.qaware.mercury.business.image.impl;
 
-import de.qaware.mercury.business.shop.Shop;
-import de.qaware.mercury.business.uuid.UUIDFactory;
 import de.qaware.mercury.business.image.Image;
 import de.qaware.mercury.business.image.ImageConfigurationProperties;
 import de.qaware.mercury.business.image.ImageException;
@@ -9,6 +7,8 @@ import de.qaware.mercury.business.image.ImageFormat;
 import de.qaware.mercury.business.image.ImageNotFoundException;
 import de.qaware.mercury.business.image.ImageScaler;
 import de.qaware.mercury.business.image.ImageService;
+import de.qaware.mercury.business.shop.Shop;
+import de.qaware.mercury.business.uuid.UUIDFactory;
 import de.qaware.mercury.storage.image.ImageRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -65,6 +65,9 @@ class ImageServiceImpl implements ImageService {
 
     @Override
     public URI generatePublicUrl(Image.Id imageId) {
+        if (imageId == null) {
+            return null;
+        }
         return URI.create(
             configuration.getPublicUrlTemplate().replace("{{ filename }}", generateFilename(imageId))
         );
