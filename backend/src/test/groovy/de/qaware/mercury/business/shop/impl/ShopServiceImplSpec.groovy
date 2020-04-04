@@ -2,6 +2,7 @@ package de.qaware.mercury.business.shop.impl
 
 import de.qaware.mercury.business.admin.AdminService
 import de.qaware.mercury.business.email.EmailService
+import de.qaware.mercury.business.image.Image
 import de.qaware.mercury.business.location.GeoLocation
 import de.qaware.mercury.business.location.LocationService
 import de.qaware.mercury.business.login.ShopLoginService
@@ -17,7 +18,6 @@ import de.qaware.mercury.business.shop.ShopWithDistance
 import de.qaware.mercury.business.shop.SlotConfig
 import de.qaware.mercury.business.time.Clock
 import de.qaware.mercury.business.uuid.UUIDFactory
-import de.qaware.mercury.image.Image
 import de.qaware.mercury.storage.shop.ShopRepository
 import spock.lang.Specification
 
