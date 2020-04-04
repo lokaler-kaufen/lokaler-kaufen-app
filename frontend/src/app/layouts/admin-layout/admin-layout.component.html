@@ -1,7 +1,19 @@
 <section>
+
+  <div *ngIf="isLoggedInAdmin" class="admin-actions margin-big-bottom">
+    <a mat-stroked-button class="margin-right" routerLink="/admin/overview" color="primary">
+      Übersicht
+    </a>
+
+    <button mat-stroked-button (click)="logout()" color="accent">
+      Logout
+    </button>
+  </div>
+
   <mat-card class="padding-horizontal padding-big-vertical">
     <mat-card-content>
       <router-outlet></router-outlet>
     </mat-card-content>
   </mat-card>
+
 </section>
