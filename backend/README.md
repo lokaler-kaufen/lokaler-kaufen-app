@@ -4,10 +4,8 @@
 
 ### With Docker Compose
 
-(assuming you've already built the backend JAR with `./gradlew build`)
-
 ```shell script
-docker-compose up
+docker-compose up --build
 ```
 
 ### With gradle

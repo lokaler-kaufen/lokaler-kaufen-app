@@ -1,37 +1,45 @@
 <div class="landing-page">
 
-  <header>
-    <h2>Haben Sie Lust, Ihre lokalen Läden zu unterstützen?</h2>
-  </header>
+  <section class="padding-vertical"
+           [ngClass]="{'margin-horizontal': !isSmallScreen, 'margin-big-bottom': isSmallScreen}">
+    <header>
+      <h2>Haben Sie Lust, Ihre lokalen Läden zu unterstützen?</h2>
+    </header>
 
-  <form [formGroup]="form">
-    <mat-form-field class="form-item">
-      <mat-label>Ihre Postleitzahl</mat-label>
-      <input [matAutocomplete]="auto"
-             formControlName="zipCode"
-             type="text"
-             name="location"
-             placeholder="PLZ"
-             (keyup)="checkZipCodeInput($event)"
-             required
-             maxlength="5"
-             minlength="5"
-             matInput/>
-      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="start()">
-        <mat-option *ngFor="let suggestion of suggestions" [value]="suggestion.zipCode">
-          {{suggestion.zipCode}} {{suggestion.placeName}}
-        </mat-option>
-      </mat-autocomplete>
-    </mat-form-field>
+    <form [formGroup]="form">
+      <mat-form-field>
+        <mat-label>Ihre Postleitzahl</mat-label>
+        <input [matAutocomplete]="auto"
+               formControlName="zipCode"
+               type="text"
+               name="location"
+               placeholder="PLZ"
+               (keyup)="checkZipCodeInput($event)"
+               required
+               maxlength="5"
+               minlength="5"
+               matInput
+               autofocus
+        />
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="start()">
+          <mat-option *ngFor="let suggestion of suggestions" [value]="suggestion.zipCode">
+            {{suggestion.zipCode}} {{suggestion.placeName}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
 
-    <button class="form-item"
-            type="submit"
-            [disabled]="startDisabled"
-            (click)="start()"
-            mat-raised-button
-            color="primary">
-      Los geht's!
-    </button>
-  </form>
+      <button type="submit"
+              [disabled]="startDisabled"
+              (click)="start()"
+              mat-raised-button
+              color="primary">
+        Los geht's!
+      </button>
+    </form>
+
+    <a mat-button routerLink="/login" class="margin-top">
+      Sie sind Ladenbesitzer? Hier geht's lang...
+    </a>
+  </section>
 
 </div>

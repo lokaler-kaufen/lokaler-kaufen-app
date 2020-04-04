@@ -236,7 +236,7 @@ export class ShopDetailsConfigComponent implements OnInit {
       }
       return null;
     };
-  };
+  }
 
   private onZipCodeValid() {
     const zipCode = this.addressFormGroup.get('zipCtrl').value;
