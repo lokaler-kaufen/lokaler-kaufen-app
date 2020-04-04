@@ -17,22 +17,30 @@ export class LoginPageComponent {
               private userContextService: UserContextService) {
   }
 
-  public passwordReset(): void {
+  passwordReset(): void {
     this.matDialog.open(PasswordResetPopupComponent, {width: '500px'})
       .afterClosed().subscribe(result => {
       if (result) {
         this.client.post('/api/shop/send-password-reset-link', result).subscribe(() => {
-            this.notificationsService.success('Alles klar!', 'Wir haben Ihnen eine E-Mail zum Zurücksetzen Ihres Passworts geschickt. Sollte die Mail nicht angekommen sein, schauen Sie bitte auch in Ihren Spam-Ordner.');
+            this.notificationsService.success(
+              'Alles klar!',
+              'Wir haben Ihnen eine E-Mail zum Zurücksetzen Ihres Passworts geschickt. Sollte die Mail nicht ' +
+              'angekommen sein, schauen Sie bitte auch in Ihren Spam-Ordner.'
+            );
           },
           error => {
             console.log('Error password reset: ' + error.status + ', ' + error.message);
-            this.notificationsService.error('Tut uns leid!', 'Es ist ein Fehler beim Zurücksetzen Ihres Passworts aufgetreten.');
+            this.notificationsService.error(
+              'Tut uns leid!',
+              'Es ist ein Fehler beim Zurücksetzen Ihres Passworts aufgetreten.'
+            );
           });
       }
     });
   }
 
-  public onLoginSuccess(): void {
+  onLoginSuccess(): void {
     this.userContextService.storeOwnerLoggedIn();
   }
+
 }
