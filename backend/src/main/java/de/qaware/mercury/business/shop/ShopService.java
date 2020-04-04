@@ -16,13 +16,13 @@ public interface ShopService {
     void changeApproved(Shop.Id id, boolean approved) throws ShopNotFoundException;
 
     /**
-     * Adds an image to a shop.
+     * Sets the image of a shop.
      *
-     * @param id      the id of the shop.
-     * @param imageId the id of the image to store.
-     * @throws ShopNotFoundException if the given shop does not exist.
+     * @param id      the id of the shop
+     * @param imageId the id of the image to store
+     * @throws ShopNotFoundException if the given shop does not exist
      */
-    void addImage(Shop.Id id, Image.Id imageId) throws ShopNotFoundException;
+    void setImage(Shop.Id id, Image.Id imageId) throws ShopNotFoundException;
 
     /**
      * Finds all approved and enabled shops

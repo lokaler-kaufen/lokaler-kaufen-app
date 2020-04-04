@@ -201,7 +201,7 @@ class ShopServiceImpl implements ShopService {
 
 
     @Override
-    public void addImage(Shop.Id id, Image.Id imageId) throws ShopNotFoundException {
+    public void setImage(Shop.Id id, Image.Id imageId) throws ShopNotFoundException {
         Shop shop = findByIdOrThrow(id);
         Shop updatedShop = shop.withImageId(imageId);
         shopRepository.update(updatedShop);

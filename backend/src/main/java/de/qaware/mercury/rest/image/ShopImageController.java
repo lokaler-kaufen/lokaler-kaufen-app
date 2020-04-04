@@ -52,7 +52,7 @@ public class ShopImageController {
         try (InputStream stream = file.getInputStream()) {
             image = imageService.addImage(shop.getId(), stream);
         }
-        shopService.addImage(shop.getId(), image.getId());
+        shopService.setImage(shop.getId(), image.getId());
         return ImageDto.of(image);
     }
 }
