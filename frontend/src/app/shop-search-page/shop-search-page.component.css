@@ -39,8 +39,7 @@ tr:not(.example-expanded-row):hover {
 .shop-logo {
   max-width: 80px;
   max-height: 80px;
-  width: auto;
-  height: auto;
+  display: block;
 }
 
 .shop-titel {
@@ -56,6 +55,7 @@ tr:not(.example-expanded-row):hover {
 
 .image-and-shop {
   display: flex;
+  align-items: center;
 }
 
 .shop-contact-types {
