@@ -36,6 +36,7 @@ public class UpdateShopDto {
     private String addressSupplement;
     @NotBlank
     private String details;
+    @NotBlank
     private String imageId;
     @Nullable
     private String website;

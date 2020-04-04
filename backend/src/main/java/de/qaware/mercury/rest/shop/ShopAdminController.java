@@ -8,6 +8,7 @@ import de.qaware.mercury.business.shop.Shop;
 import de.qaware.mercury.business.shop.ShopNotFoundException;
 import de.qaware.mercury.business.shop.ShopService;
 import de.qaware.mercury.business.shop.ShopUpdate;
+import de.qaware.mercury.image.Image;
 import de.qaware.mercury.rest.plumbing.authentication.AuthenticationHelper;
 import de.qaware.mercury.rest.shop.dto.request.UpdateShopDto;
 import de.qaware.mercury.rest.shop.dto.response.ShopAdminDto;
@@ -95,7 +96,7 @@ class ShopAdminController {
             request.getCity(),
             request.getAddressSupplement(),
             request.getDetails(),
-            request.getImageId(),
+            Image.Id.parse(request.getImageId()),
             request.getWebsite(),
             Maps.mapKeys(request.getContacts(), ContactType::parse),
             request.getSlots().toSlots()

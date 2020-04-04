@@ -21,7 +21,6 @@ import de.qaware.mercury.business.uuid.UUIDFactory;
 import de.qaware.mercury.image.Image;
 import de.qaware.mercury.storage.shop.ShopRepository;
 import de.qaware.mercury.util.Lists;
-import de.qaware.mercury.util.Null;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -160,7 +159,7 @@ class ShopServiceImpl implements ShopService {
             update.getContacts(),
             shop.isEnabled(),
             shop.isApproved(),
-            Null.map(update.getImageId(), Image.Id::parse),
+            update.getImageId(),
             geoLocation,
             update.getDetails(),
             update.getWebsite(),
