@@ -1,4 +1,4 @@
-package de.qaware.mercury.image;
+package de.qaware.mercury.business.image;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

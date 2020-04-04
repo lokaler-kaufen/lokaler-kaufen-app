@@ -1,6 +1,6 @@
 package de.qaware.mercury.business.shop;
 
-import de.qaware.mercury.image.Image;
+import de.qaware.mercury.business.image.Image;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

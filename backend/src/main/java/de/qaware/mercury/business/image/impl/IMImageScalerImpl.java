@@ -1,9 +1,9 @@
-package de.qaware.mercury.image.impl;
+package de.qaware.mercury.business.image.impl;
 
-import de.qaware.mercury.image.Image;
-import de.qaware.mercury.image.ImageException;
-import de.qaware.mercury.image.ImageFormat;
-import de.qaware.mercury.image.ImageScaler;
+import de.qaware.mercury.business.image.Image;
+import de.qaware.mercury.business.image.ImageException;
+import de.qaware.mercury.business.image.ImageFormat;
+import de.qaware.mercury.business.image.ImageScaler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

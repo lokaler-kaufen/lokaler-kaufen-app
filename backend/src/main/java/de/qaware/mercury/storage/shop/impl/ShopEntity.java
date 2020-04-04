@@ -5,7 +5,7 @@ import de.qaware.mercury.business.shop.ContactType;
 import de.qaware.mercury.business.shop.DayConfig;
 import de.qaware.mercury.business.shop.Shop;
 import de.qaware.mercury.business.shop.SlotConfig;
-import de.qaware.mercury.image.Image;
+import de.qaware.mercury.business.image.Image;
 import de.qaware.mercury.util.Null;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;

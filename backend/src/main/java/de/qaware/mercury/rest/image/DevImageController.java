@@ -1,9 +1,9 @@
 package de.qaware.mercury.rest.image;
 
-import de.qaware.mercury.image.Image;
-import de.qaware.mercury.image.ImageFormat;
-import de.qaware.mercury.image.ImageNotFoundException;
-import de.qaware.mercury.image.ImageService;
+import de.qaware.mercury.business.image.Image;
+import de.qaware.mercury.business.image.ImageFormat;
+import de.qaware.mercury.business.image.ImageNotFoundException;
+import de.qaware.mercury.business.image.ImageService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

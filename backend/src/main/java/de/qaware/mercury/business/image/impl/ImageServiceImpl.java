@@ -1,14 +1,14 @@
-package de.qaware.mercury.image.impl;
+package de.qaware.mercury.business.image.impl;
 
 import de.qaware.mercury.business.shop.Shop;
 import de.qaware.mercury.business.uuid.UUIDFactory;
-import de.qaware.mercury.image.Image;
-import de.qaware.mercury.image.ImageConfigurationProperties;
-import de.qaware.mercury.image.ImageException;
-import de.qaware.mercury.image.ImageFormat;
-import de.qaware.mercury.image.ImageNotFoundException;
-import de.qaware.mercury.image.ImageScaler;
-import de.qaware.mercury.image.ImageService;
+import de.qaware.mercury.business.image.Image;
+import de.qaware.mercury.business.image.ImageConfigurationProperties;
+import de.qaware.mercury.business.image.ImageException;
+import de.qaware.mercury.business.image.ImageFormat;
+import de.qaware.mercury.business.image.ImageNotFoundException;
+import de.qaware.mercury.business.image.ImageScaler;
+import de.qaware.mercury.business.image.ImageService;
 import de.qaware.mercury.storage.image.ImageRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

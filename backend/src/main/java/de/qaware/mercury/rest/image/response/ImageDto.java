@@ -1,6 +1,6 @@
 package de.qaware.mercury.rest.image.response;
 
-import de.qaware.mercury.image.Image;
+import de.qaware.mercury.business.image.Image;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

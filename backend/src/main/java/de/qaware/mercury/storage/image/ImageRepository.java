@@ -1,7 +1,7 @@
 package de.qaware.mercury.storage.image;
 
-import de.qaware.mercury.image.Image;
-import de.qaware.mercury.image.ImageNotFoundException;
+import de.qaware.mercury.business.image.Image;
+import de.qaware.mercury.business.image.ImageNotFoundException;
 
 import java.io.InputStream;
 

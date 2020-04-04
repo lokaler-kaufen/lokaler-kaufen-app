@@ -18,7 +18,7 @@ import de.qaware.mercury.business.shop.ShopUpdate;
 import de.qaware.mercury.business.shop.ShopWithDistance;
 import de.qaware.mercury.business.time.Clock;
 import de.qaware.mercury.business.uuid.UUIDFactory;
-import de.qaware.mercury.image.Image;
+import de.qaware.mercury.business.image.Image;
 import de.qaware.mercury.storage.shop.ShopRepository;
 import de.qaware.mercury.util.Lists;
 import lombok.AccessLevel;

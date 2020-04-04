@@ -1,4 +1,4 @@
-package de.qaware.mercury.image.impl;
+package de.qaware.mercury.business.image.impl;
 
 import lombok.extern.slf4j.Slf4j;
 

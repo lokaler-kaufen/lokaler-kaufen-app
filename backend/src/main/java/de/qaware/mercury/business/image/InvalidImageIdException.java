@@ -1,4 +1,4 @@
-package de.qaware.mercury.image;
+package de.qaware.mercury.business.image;
 
 import de.qaware.mercury.business.TechnicalException;
 

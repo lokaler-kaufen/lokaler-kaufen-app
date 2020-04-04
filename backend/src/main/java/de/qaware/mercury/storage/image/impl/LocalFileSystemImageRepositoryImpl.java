@@ -1,8 +1,8 @@
 package de.qaware.mercury.storage.image.impl;
 
-import de.qaware.mercury.image.Image;
-import de.qaware.mercury.image.ImageConfigurationProperties;
-import de.qaware.mercury.image.ImageNotFoundException;
+import de.qaware.mercury.business.image.Image;
+import de.qaware.mercury.business.image.ImageConfigurationProperties;
+import de.qaware.mercury.business.image.ImageNotFoundException;
 import de.qaware.mercury.storage.image.ImageRepository;
 import de.qaware.mercury.storage.image.ImageStorageException;
 import lombok.AccessLevel;

@@ -1,7 +1,7 @@
 package de.qaware.mercury.business.shop;
 
 import de.qaware.mercury.business.location.impl.LocationNotFoundException;
-import de.qaware.mercury.image.Image;
+import de.qaware.mercury.business.image.Image;
 import org.springframework.lang.Nullable;
 
 import java.util.List;
