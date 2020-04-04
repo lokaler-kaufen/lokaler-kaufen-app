@@ -3,7 +3,7 @@ import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {BusinessHours, setRightSlot} from '../shop-creation-page/shop-creation-page.component';
 import {MatDialog} from '@angular/material/dialog';
 import {NotificationsService} from 'angular2-notifications';
-import {Observable, ReplaySubject} from 'rxjs';
+import {Observable, of, ReplaySubject} from 'rxjs';
 import {
   DayDto,
   LocationSuggestionDto,
@@ -13,12 +13,18 @@ import {
   UpdateShopDto
 } from '../data/api';
 import {ContactTypesEnum} from '../contact-types/available-contact-types';
-import {filter} from 'rxjs/operators';
-import {HttpClient} from '@angular/common/http';
+import {catchError, filter, map} from 'rxjs/operators';
+import {HttpClient, HttpErrorResponse, HttpEventType} from '@angular/common/http';
+import {ImageService} from '../shared/image.service';
 
 export interface UpdateShopData {
   updateShopDto: UpdateShopDto;
   id: string;
+}
+
+export interface ShopImage {
+  data: File,
+  progress: number
 }
 
 @Component({
@@ -49,11 +55,13 @@ export class ShopDetailsConfigComponent implements OnInit {
   details: ShopOwnerDetailDto = {};
   citySuggestions: LocationSuggestionDto[] = [];
 
+  image: ShopImage = {data: null, progress: 0};
 
   constructor(private formBuilder: FormBuilder,
               private matDialog: MatDialog,
               private notificationsService: NotificationsService,
-              private client: HttpClient) {
+              private client: HttpClient,
+              private imageService: ImageService) {
     this.days = Array.from(this.businessHours.POSSIBLE_BUSINESS_HOURS.keys());
   }
 
@@ -250,6 +258,41 @@ export class ShopDetailsConfigComponent implements OnInit {
         }
       })
       .catch(error => console.log('Error fetching cities to zip code'));
+  }
+
+  fileIsTooBig: boolean = false;
+
+  onFileChanged(event) {
+    const file = event.target.files[0];
+    if (file.size > 2097152) {
+      this.fileIsTooBig = true;
+      return;
+    }
+    this.image.data = file;
+    this.fileIsTooBig = false;
+  }
+
+  onUpload() {
+    // TODO: Upload image on click, add to updateShop() method
+    const uploadData = new FormData();
+    uploadData.append('file', this.image.data, this.image.data.name);
+    this.imageService.upload(uploadData).pipe(
+      map(event => {
+        switch (event.type) {
+          case HttpEventType.UploadProgress:
+            this.image.progress = Math.round(event.loaded * 100 / event.total);
+            break;
+          case HttpEventType.Response:
+            return event;
+        }
+      }),
+      catchError((error: HttpErrorResponse) => {
+        return of(`${this.image.data.name} upload failed.`);
+      })).subscribe((event: any) => {
+      if (typeof (event) === 'object') {
+        console.log(event.body);
+      }
+    });
   }
 
   private getRightSlot(day: string, slots: SlotConfigDto): DayDto {

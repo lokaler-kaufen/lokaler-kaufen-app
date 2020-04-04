@@ -1,4 +1,5 @@
 <p>Bei Ihnen hat sich etwas geändert? Dann aktualisieren Sie hier einfach Ihre Daten. </p>
+
 <mat-vertical-stepper [linear]="false" #stepper>
   <mat-step [stepControl]="nameFormGroup">
     <form [formGroup]="nameFormGroup">
@@ -139,4 +140,17 @@
       </div>
     </form>
   </mat-step>
+  <mat-step [optional]="true">
+    <ng-template matStepLabel>Sie haben ein Logo?</ng-template>
+    <p>Bitte beachten Sie die maximale Dateigröße von 2 MB.</p>
+    <input
+      style="display: none"
+      type="file" (change)="onFileChanged($event)"
+      #fileInput>
+    <div *ngIf="this.image.data">{{this.image.data.name}}</div>
+    <button (click)="fileInput.click()">Datei auswählen...</button>
+    <mat-error *ngIf="fileIsTooBig">Die Datei ist zu groß. Bitte wählen Sie eine Datei aus, die maximal 2 MB groß ist.</mat-error>
+  </mat-step>
 </mat-vertical-stepper>
+<!-- TODO: Show progress bar on save -->
+<mat-progress-bar *ngIf="this.image.progress > 0" [value]="this.image.progress"></mat-progress-bar>

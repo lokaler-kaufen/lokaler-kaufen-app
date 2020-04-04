@@ -47,7 +47,8 @@ import {NormalLayoutComponent} from './layouts/normal-layout/normal-layout.compo
 import {AdminLayoutComponent} from './layouts/admin-layout/admin-layout.component';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatExpansionModule} from '@angular/material/expansion';
-import {MatCheckboxModule} from "@angular/material/checkbox";
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 @NgModule({
   declarations: [
@@ -101,7 +102,8 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
         SimpleNotificationsModule.forRoot(),
         MatTabsModule,
         MatExpansionModule,
-        MatCheckboxModule
+        MatCheckboxModule,
+        MatProgressBarModule
     ],
   providers: [
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}},
