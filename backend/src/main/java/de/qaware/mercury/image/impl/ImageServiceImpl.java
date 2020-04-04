@@ -6,6 +6,7 @@ import de.qaware.mercury.image.Image;
 import de.qaware.mercury.image.ImageConfigurationProperties;
 import de.qaware.mercury.image.ImageException;
 import de.qaware.mercury.image.ImageFormat;
+import de.qaware.mercury.image.ImageNotFoundException;
 import de.qaware.mercury.image.ImageScaler;
 import de.qaware.mercury.image.ImageService;
 import de.qaware.mercury.storage.image.ImageRepository;
@@ -46,6 +47,16 @@ class ImageServiceImpl implements ImageService {
         }
 
         return image;
+    }
+
+    @Override
+    public InputStream loadImage(Image.Id imageId) throws ImageNotFoundException {
+        return imageRepository.loadImage(imageId, generateFilename(imageId));
+    }
+
+    @Override
+    public ImageFormat getImageFormat() {
+        return IMAGE_FORMAT;
     }
 
     private String generateFilename(Image.Id imageId) {

@@ -2,6 +2,7 @@ package de.qaware.mercury.storage.image.impl;
 
 import de.qaware.mercury.image.Image;
 import de.qaware.mercury.image.ImageConfigurationProperties;
+import de.qaware.mercury.image.ImageNotFoundException;
 import de.qaware.mercury.storage.image.ImageRepository;
 import de.qaware.mercury.storage.image.ImageStorageException;
 import lombok.AccessLevel;
@@ -30,7 +31,7 @@ class LocalFileSystemImageRepositoryImpl implements ImageRepository {
     public void store(Image.Id imageId, String filename, InputStream data) {
         createStorageDirectory();
 
-        Path path = configuration.getStorageLocationAsPath().resolve(filename).toAbsolutePath();
+        Path path = getImagePath(filename);
         log.debug("Storing image {} to '{}' ...", imageId, path);
 
         try (OutputStream stream = Files.newOutputStream(path, StandardOpenOption.CREATE_NEW)) {
@@ -39,6 +40,26 @@ class LocalFileSystemImageRepositoryImpl implements ImageRepository {
         } catch (IOException e) {
             throw new ImageStorageException(String.format("Failed to storage image %s to '%s'", imageId, path), e);
         }
+    }
+
+    @Override
+    public InputStream loadImage(Image.Id imageId, String filename) throws ImageNotFoundException {
+        log.debug("Loading image {}", imageId);
+
+        Path path = getImagePath(filename);
+        if (!Files.exists(path)) {
+            throw new ImageNotFoundException(imageId);
+        }
+
+        try {
+            return Files.newInputStream(path);
+        } catch (IOException e) {
+            throw new ImageStorageException(String.format("Failed to load image %s from %s", imageId, path), e);
+        }
+    }
+
+    private Path getImagePath(String filename) {
+        return configuration.getStorageLocationAsPath().resolve(filename).toAbsolutePath();
     }
 
     private void createStorageDirectory() {
