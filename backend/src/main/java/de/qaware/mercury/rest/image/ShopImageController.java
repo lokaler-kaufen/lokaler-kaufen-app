@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * This controller manages shop (thumbnail) images.
@@ -38,15 +39,16 @@ public class ShopImageController {
      * @throws LoginException if the caller is not authenticated as a shop owner.
      */
     @PostMapping(path = "/upload")
-    public String uploadImageForShop(@RequestParam("file") MultipartFile file,
-                                     HttpServletRequest servletRequest) throws LoginException, IOException, ShopNotFoundException {
+    public String uploadImageForShop(
+        @RequestParam("file") MultipartFile file, HttpServletRequest servletRequest
+    ) throws LoginException, IOException, ShopNotFoundException {
         Shop shop = authenticationHelper.authenticateShop(servletRequest);
 
-        Image image = imageService.addImage(shop.getId(), file.getInputStream());
-
+        Image image;
+        try (InputStream stream = file.getInputStream()) {
+            image = imageService.addImage(shop.getId(), stream);
+        }
         shopService.addImage(shop.getId(), image.getId());
-
         return image.getId().toString();
     }
-
 }
