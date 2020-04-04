@@ -11,7 +11,9 @@
   </div>
   <div mat-dialog-actions>
     <button mat-raised-button (click)="onNoClick()">Doch nicht</button>
-    <button mat-raised-button type="button" (click)="sendConfirmationMail()" [disabled]="!email.valid">OK</button>
+    <button mat-raised-button type="button" color="primary" (click)="sendConfirmationMail()" [disabled]="!email.valid">
+      OK
+    </button>
   </div>
 </div>
 <div *ngIf="showConfirmDialog">
@@ -19,9 +21,10 @@
   <div mat-dialog-content>
     <p>Wir haben Ihnen eine E-Mail an {{email.value}} geschickt. Bitte bestätigen Sie kurz Ihre E-Mail-Adresse, indem
       Sie auf
-      den Link in der Mail klicken. Sollte die E-Mail nicht angekommen sein, schauen Sie bitte auch in Ihren Spam-Ordner.</p>
+      den Link in der Mail klicken. Sollte die E-Mail nicht angekommen sein, schauen Sie bitte auch in Ihren
+      Spam-Ordner.</p>
   </div>
   <div mat-dialog-actions style="alignment: center">
-    <button mat-raised-button [mat-dialog-close]="" cdkFocusInitial>OK</button>
+    <button mat-raised-button color="primary" [mat-dialog-close]="" cdkFocusInitial>OK</button>
   </div>
 </div>

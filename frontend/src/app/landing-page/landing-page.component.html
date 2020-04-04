@@ -3,8 +3,7 @@
   <section class="padding-vertical"
            [ngClass]="{'margin-horizontal': !isSmallScreen, 'margin-big-bottom': isSmallScreen}">
     <header>
-      <h2>Für Kunden</h2>
-      <p>Haben Sie Lust, Ihre lokalen Läden zu unterstützen?</p>
+      <h2>Haben Sie Lust, Ihre lokalen Läden zu unterstützen?</h2>
     </header>
 
     <form [formGroup]="form">
@@ -19,7 +18,9 @@
                required
                maxlength="5"
                minlength="5"
-               matInput/>
+               matInput
+               autofocus
+        />
         <mat-autocomplete #auto="matAutocomplete" (optionSelected)="start()">
           <mat-option *ngFor="let suggestion of suggestions" [value]="suggestion.zipCode">
             {{suggestion.zipCode}} {{suggestion.placeName}}
@@ -35,27 +36,10 @@
         Los geht's!
       </button>
     </form>
-  </section>
 
-  <mat-divider [vertical]="!isSmallScreen" *ngIf="!isLoggedInShopOwner"></mat-divider>
-
-  <section class="padding-vertical" [ngClass]="{'margin-horizontal': !isSmallScreen}" *ngIf="!isLoggedInShopOwner">
-
-    <header>
-      <h2>Für Ladenbesitzer</h2>
-      <p>Wollen Sie Ihre Kunden per Videochat beraten?</p>
-    </header>
-
-    <div>
-      <a mat-raised-button routerLink="login" class="margin-bottom">
-        Login für Ladenbesitzer
-      </a>
-
-      <button mat-raised-button color="primary" (click)="openRegisterBusinessPopup()">
-        Als Ladenbesitzer registrieren
-      </button>
-    </div>
-
+    <a mat-button routerLink="/login" class="margin-top">
+      Sie sind Ladenbesitzer? Hier geht's lang...
+    </a>
   </section>
 
 </div>

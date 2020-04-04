@@ -6,9 +6,6 @@ import {Router} from '@angular/router';
 import {ZipCodeCacheService} from './zip-code-cache.service';
 import {NotificationsService} from 'angular2-notifications';
 import {LocationSuggestionDto, LocationSuggestionsDto} from '../data/api';
-import {UserContextService} from '../shared/user-context.service';
-import {RegisterBusinessPopupComponent} from '../register-business-popup/register-business-popup.component';
-import {MatDialog} from '@angular/material/dialog';
 import {BreakpointObserver} from '@angular/cdk/layout';
 
 @Component({
@@ -17,11 +14,6 @@ import {BreakpointObserver} from '@angular/cdk/layout';
   styleUrls: ['./landing-page.component.css']
 })
 export class LandingPageComponent implements OnInit {
-
-  /**
-   * Reference to the shop registration dialog.
-   */
-  private dialogRef;
 
   private zipCodeInitialValue: string;
 
@@ -37,8 +29,6 @@ export class LandingPageComponent implements OnInit {
     private router: Router,
     private zipCodeCacheService: ZipCodeCacheService,
     private notificationsService: NotificationsService,
-    private userContextService: UserContextService,
-    private dialog: MatDialog,
     breakpointObserver: BreakpointObserver
   ) {
     // listen to responsive breakpoint changes
@@ -91,25 +81,6 @@ export class LandingPageComponent implements OnInit {
 
   get startDisabled(): boolean {
     return !this.form.valid;
-  }
-
-  get isLoggedInShopOwner(): boolean {
-    return this.userContextService.isLoggedInStoreOwner;
-  }
-
-  openRegisterBusinessPopup(): void {
-    if (!this.dialogRef) {
-      this.dialogRef = this.dialog.open(RegisterBusinessPopupComponent, {
-        width: '500px'
-      });
-
-      this.dialogRef.afterClosed().subscribe(
-        () => {
-          // Reset the dialogRef because the user should be able to open the dialog again.
-          this.dialogRef = null;
-        }
-      );
-    }
   }
 
   start(): void {

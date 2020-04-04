@@ -1,14 +1,3 @@
 :host {
   width: 100%;
 }
-
-.admin-actions {
-  display: flex;
-  justify-content: flex-end;
-}
-
-@media screen and (max-width: 719px) {
-  .admin-actions {
-    padding: 0 16px;
-  }
-}

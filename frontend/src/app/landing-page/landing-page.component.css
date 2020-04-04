@@ -1,15 +1,10 @@
 .landing-page {
-  display: flex;
-  width: 609px; /* found this value at exactly 720px screen width (i.e. smallest "non-small" screen width) */
-}
-
-section {
-  flex: 1 1 50%;
+  /* found this value at exactly 720px screen width (i.e. smallest "non-small" screen width) */
+  width: 609px;
 }
 
 @media screen and (max-width: 719px) {
   .landing-page {
-    display: block;
     width: auto;
   }
 }
@@ -17,14 +12,13 @@ section {
 section {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
 }
 
 form mat-form-field, button, a[mat-raised-button] {
   width: 100%;
 }
 
-h2, p {
+h2 {
   text-align: center;
 }
 

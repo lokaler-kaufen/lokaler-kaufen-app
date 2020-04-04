@@ -48,6 +48,7 @@ import {AdminLayoutComponent} from './layouts/admin-layout/admin-layout.componen
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatToolbarModule} from '@angular/material/toolbar';
 
 @NgModule({
   declarations: [
@@ -100,6 +101,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     MatStepperModule,
     MatTableModule,
     MatTabsModule,
+    MatToolbarModule,
     ReactiveFormsModule,
     SimpleNotificationsModule.forRoot()
   ],

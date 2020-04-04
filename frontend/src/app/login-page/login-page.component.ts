@@ -3,7 +3,9 @@ import {MatDialog} from '@angular/material/dialog';
 import {PasswordResetPopupComponent} from '../password-reset-popup/password-reset-popup.component';
 import {HttpClient} from '@angular/common/http';
 import {NotificationsService} from 'angular2-notifications';
-import {UserContextService} from '../shared/user-context.service';
+import {ShopOwnerService} from '../shared/shop-owner.service';
+import {BreakpointObserver} from '@angular/cdk/layout';
+import {RegisterBusinessPopupComponent} from '../register-business-popup/register-business-popup.component';
 
 @Component({
   selector: 'login-page',
@@ -12,9 +14,21 @@ import {UserContextService} from '../shared/user-context.service';
 })
 export class LoginPageComponent {
 
-  constructor(private matDialog: MatDialog, private client: HttpClient,
-              private notificationsService: NotificationsService,
-              private userContextService: UserContextService) {
+  private dialogRef;
+
+  isSmallScreen: boolean;
+
+  constructor(
+    private matDialog: MatDialog,
+    private client: HttpClient,
+    private notificationsService: NotificationsService,
+    private shopOwnerService: ShopOwnerService,
+    breakpointObserver: BreakpointObserver
+  ) {
+    // listen to responsive breakpoint changes
+    breakpointObserver.observe('(max-width: 719px)').subscribe(
+      result => this.isSmallScreen = result.matches
+    );
   }
 
   passwordReset(): void {
@@ -39,8 +53,12 @@ export class LoginPageComponent {
     });
   }
 
+  signup(): void {
+    this.matDialog.open(RegisterBusinessPopupComponent, {width: '500px'});
+  }
+
   onLoginSuccess(): void {
-    this.userContextService.storeOwnerLoggedIn();
+    this.shopOwnerService.storeOwnerLoggedIn();
   }
 
 }

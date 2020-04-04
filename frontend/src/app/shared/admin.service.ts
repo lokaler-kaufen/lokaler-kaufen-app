@@ -4,13 +4,17 @@ import {ShopAdminDto, ShopsAdminDto} from '../data/api';
 import {UpdateShopData} from '../shop-details-config/shop-details-config.component';
 import {Observable, Subject} from 'rxjs';
 
+const API_LOGIN_ADMIN = '/api/admin/login';
+
 @Injectable({providedIn: 'root'})
 export class AdminService {
 
   private loggedIn = new Subject<boolean>();
 
   constructor(private client: HttpClient) {
-    this.loggedIn.next(false);
+    this.client.get(API_LOGIN_ADMIN).toPromise()
+      .then(() => this.loggedIn.next(true))
+      .catch(() => this.loggedIn.next(false));
   }
 
   getAdminLoginState(): Observable<boolean> {
@@ -22,8 +26,7 @@ export class AdminService {
   }
 
   logout(): Promise<void> {
-    return this.client.delete('/api/admin/login')
-      .toPromise()
+    return this.client.delete(API_LOGIN_ADMIN).toPromise()
       .then(() => console.log('Admin logout successful.'))
       .catch(error => console.error('Admin logout failed.', error))
       .finally(() => this.loggedIn.next(false));

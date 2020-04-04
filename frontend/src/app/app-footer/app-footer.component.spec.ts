@@ -1,13 +1,13 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {AppFooterComponent} from './app-footer.component';
-import {UserContextService} from '../shared/user-context.service';
+import {ShopOwnerService} from '../shared/shop-owner.service';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 describe('AppFooterComponent', () => {
   let component: AppFooterComponent;
   let fixture: ComponentFixture<AppFooterComponent>;
-  let userContextService: UserContextService;
+  let userContextService: ShopOwnerService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -24,7 +24,7 @@ describe('AppFooterComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
 
-    userContextService = TestBed.inject(UserContextService);
+    userContextService = TestBed.inject(ShopOwnerService);
   });
 
   it('should create', () => {
