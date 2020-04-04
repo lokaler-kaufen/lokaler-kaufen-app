@@ -10,9 +10,6 @@
  * Do not edit the class manually.
  */
 
-export interface LocationSuggestionDto { 
-    countryCode?: string;
+export interface ImageDto { 
     id?: string;
-    placeName?: string;
-    zipCode?: string;
 }

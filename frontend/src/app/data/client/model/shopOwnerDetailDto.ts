@@ -17,6 +17,7 @@ export interface ShopOwnerDetailDto {
     contacts?: { [key: string]: string; };
     details?: string;
     id?: string;
+    imageUrl?: string;
     name?: string;
     ownerName?: string;
     slots?: SlotConfigDto;

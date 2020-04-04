@@ -10,9 +10,9 @@
  * Do not edit the class manually.
  */
 
-export interface LocationSuggestionDto { 
-    countryCode?: string;
-    id?: string;
-    placeName?: string;
-    zipCode?: string;
+export interface ClientErrorDto { 
+    body?: string;
+    httpCode?: number;
+    requestedUrl?: string;
+    traceId?: string;
 }

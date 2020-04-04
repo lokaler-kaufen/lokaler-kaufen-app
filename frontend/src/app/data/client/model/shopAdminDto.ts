@@ -20,6 +20,7 @@ export interface ShopAdminDto {
     email?: string;
     enabled?: boolean;
     id?: string;
+    imageUrl?: string;
     name?: string;
     ownerName?: string;
     slots?: SlotConfigDto;

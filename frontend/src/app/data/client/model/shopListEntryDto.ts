@@ -13,6 +13,7 @@
 export interface ShopListEntryDto { 
     distance?: number;
     id?: string;
+    imageUrl?: string;
     name?: string;
     supportedContactTypes?: Array<string>;
 }
