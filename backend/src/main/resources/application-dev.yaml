@@ -5,6 +5,9 @@ spring.datasource:
   password: "password"
 
 mercury:
+  images:
+    publicUrlTemplate: "http://localhost:8080/images/{{ filename }}"
+    storageLocation: "/tmp/mercury-images"
   cookies:
     secure: false
   email:
