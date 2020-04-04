@@ -11,6 +11,8 @@ import de.qaware.mercury.business.shop.ShopCreation;
 import de.qaware.mercury.business.shop.ShopNotFoundException;
 import de.qaware.mercury.business.shop.ShopService;
 import de.qaware.mercury.business.shop.SlotConfig;
+import de.qaware.mercury.image.Image;
+import de.qaware.mercury.image.ImageService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,8 +22,11 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalTime;
 import java.util.Map;
+import java.util.Objects;
 
 @Component
 @Slf4j
@@ -30,6 +35,7 @@ import java.util.Map;
 class DebugPopulateDatabase implements ApplicationRunner {
     private final ShopService shopService;
     private final AdminLoginService adminLoginService;
+    private final ImageService imageService;
 
     @Override
     @Transactional
@@ -51,7 +57,7 @@ class DebugPopulateDatabase implements ApplicationRunner {
         }
     }
 
-    private void createShops() throws ShopNotFoundException, ShopAlreadyExistsException, LocationNotFoundException {
+    private void createShops() throws ShopNotFoundException, ShopAlreadyExistsException, LocationNotFoundException, IOException {
         createShop(new ShopCreation(
             "moe@local.host", "Moe", "Moe's Whiskey", "Lothstr. 64", "85579", "Neubiberg", "", "Bester Whiskey in ganz Neubiberg!",
             "https://www.moes-whiskey.com/", "moe",
@@ -65,23 +71,32 @@ class DebugPopulateDatabase implements ApplicationRunner {
                 .saturday(new DayConfig(LocalTime.of(8, 0), LocalTime.of(17, 0)))
                 .sunday(new DayConfig(LocalTime.of(8, 0), LocalTime.of(17, 0)))
                 .build()
-        ));
+        ), "/dev/shopimages/moe.jpg");
         createShop(new ShopCreation(
             "flo@local.host", "Flo", "Flo's Kaffeeladen", "Aschauer Str. 32", "81549", "München", "", "", null,
             "flo", Map.of(ContactType.GOOGLE_DUO, "@vlow"),
             SlotConfig.builder().timePerSlot(30).timeBetweenSlots(10).build()
-        ));
+        ), "/dev/shopimages/flo.jpg");
         createShop(new ShopCreation(
             "vroni@local.host", "Vroni", "Vroni's Kleiderladen", "Rheinstraße 4C", "55116", "Mainz", "", "", null,
             "vroni", Map.of(ContactType.GOOGLE_DUO, "vroni@local.host", ContactType.SIGNAL, "@vroni"),
             SlotConfig.builder().timePerSlot(60).timeBetweenSlots(15).build()
-        ));
+        ), "/dev/shopimages/vroni.jpg");
     }
 
-    private void createShop(ShopCreation creation) throws ShopNotFoundException, ShopAlreadyExistsException, LocationNotFoundException {
+    private void createShop(ShopCreation creation, String imageResource) throws ShopNotFoundException, ShopAlreadyExistsException, LocationNotFoundException, IOException {
         if (shopService.findByName(creation.getName()).isEmpty()) {
             Shop shop = shopService.create(creation);
             shopService.changeApproved(shop.getId(), true);
+
+            Image image;
+            try (InputStream stream = DebugPopulateDatabase.class.getResourceAsStream(imageResource)) {
+                Objects.requireNonNull(stream, String.format("Can't load resource '%s'", imageResource));
+
+                image = imageService.addImage(shop.getId(), stream);
+            }
+            shopService.setImage(shop.getId(), image.getId());
+
             log.info("Created shop {}", shop);
         }
     }
