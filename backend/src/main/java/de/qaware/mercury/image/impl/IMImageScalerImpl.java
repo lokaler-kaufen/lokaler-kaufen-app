@@ -67,7 +67,7 @@ class IMImageScalerImpl implements ImageScaler {
 
         // We now can delete the input image
         // We can't delete the output image right now, as we need an input stream on it
-        // Files.deleteIfExists(inputImage);
+        Files.deleteIfExists(inputImage);
 
         if (exitCode != EXIT_CODE_SUCCESS) {
             throw new ImageException(String.format("Failed to run process '%s', exit code: %d", commandLine, exitCode));
