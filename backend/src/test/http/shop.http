@@ -7,7 +7,11 @@ Accept: application/json, */*
 
 GET {{ host }}/api/shop/me
 Accept: application/json, */*
-Cookie: mercury-shop=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmOTkzOGI4Yy03OGY0LTQ5Y2YtOTU3Zi03MmQwNjUyYzRjZGUiLCJzaG9wIjoiNjc1NzI4NmMtYTM3Yy00MjYzLThmZWItZTI4MDIyY2ZkMDgwIiwiaXNzIjoibWVyY3VyeS1zaG9wIn0.Im_tkfj231NSoXJrbBSBH_5kBqFOvOqXWIviyle28K0
+
+### List nearby shops
+
+GET {{ host }}/api/shop/nearby?zipCode=15326
+Accept: application/json, */*
 
 ### Create Shop
 
