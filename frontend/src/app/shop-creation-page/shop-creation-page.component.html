@@ -142,6 +142,22 @@
       </div>
     </form>
   </mat-step>
+  <mat-step [optional]="true">
+    <ng-template matStepLabel>Sie haben ein Logo?</ng-template>
+    <p>Bitte beachten Sie die maximale Dateigröße von 5 MB.</p>
+    <input
+      style="display: none"
+      type="file" (change)="onFileChanged($event)"
+      #fileInput>
+    <div *ngIf="this.image">{{this.image.name}}</div>
+    <button (click)="fileInput.click()">Datei auswählen...</button>
+    <mat-error *ngIf="fileIsTooBig">Die Datei ist zu groß. Bitte wählen Sie eine Datei aus, die maximal 2 MB groß ist.
+    </mat-error>
+    <div>
+      <button mat-button matStepperPrevious>Zurück</button>
+      <button mat-button matStepperNext>Weiter</button>
+    </div>
+  </mat-step>
   <mat-step [stepControl]="passwordFormGroup">
     <form [formGroup]="passwordFormGroup">
       <ng-template matStepLabel>Fast fertig!</ng-template>
@@ -212,5 +228,6 @@
       <button mat-button matStepperPrevious>Zurück</button>
       <button mat-button (click)="createShop()">Speichern</button>
     </div>
+    <mat-progress-bar *ngIf="this.progress > 0" [value]="this.progress" style="width: 20%"></mat-progress-bar>
   </mat-step>
 </mat-vertical-stepper>

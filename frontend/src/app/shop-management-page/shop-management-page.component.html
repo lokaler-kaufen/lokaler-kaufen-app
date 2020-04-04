@@ -4,3 +4,4 @@
 <button class="save-button" mat-raised-button color="primary"
         (click)="this.getUpdatedDetails.next(true)">Speichern
 </button>
+<mat-progress-bar *ngIf="this.progress > 0" [value]="this.progress" class="save-button"></mat-progress-bar>

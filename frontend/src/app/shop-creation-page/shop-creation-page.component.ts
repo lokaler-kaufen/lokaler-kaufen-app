@@ -1,13 +1,15 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpEventType} from '@angular/common/http';
 import {ActivatedRoute} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {ShopCreationSuccessPopupComponent} from '../shop-creation-success-popup/shop-creation-success-popup.component';
 import {NotificationsService} from 'angular2-notifications';
-import {CreateShopDto, LocationSuggestionDto, LocationSuggestionsDto, SlotConfigDto} from '../data/api';
+import {CreateShopDto, LocationSuggestionDto, LocationSuggestionsDto, SlotConfigDto, UpdateShopDto} from '../data/api';
 import {ContactTypesEnum} from '../contact-types/available-contact-types';
-import {filter} from 'rxjs/operators';
+import {catchError, filter, map} from 'rxjs/operators';
+import {of} from 'rxjs';
+import {ImageService} from '../shared/image.service';
 
 export class OpeningHours {
   constructor(enabled: boolean = true, from: string = '09:00', to: string = '16:00') {
@@ -56,12 +58,15 @@ export class ShopCreationPageComponent implements OnInit {
   days;
   citySuggestions: LocationSuggestionDto[] = [];
 
+  image: File;
+
   constructor(
     private client: HttpClient,
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private matDialog: MatDialog,
-    private notificationsService: NotificationsService
+    private notificationsService: NotificationsService,
+    private imageService: ImageService
   ) {
     this.days = Array.from(this.businessHours.POSSIBLE_BUSINESS_HOURS.keys());
   }
@@ -152,6 +157,15 @@ export class ShopCreationPageComponent implements OnInit {
 
   createShop() {
     console.log('Create shop');
+    const createShopRequestDto = this.fillFormValues();
+    if (this.image) {
+      this.postImageAndDetails(createShopRequestDto);
+    } else {
+      this.postShopCreation(createShopRequestDto);
+    }
+  }
+
+  private fillFormValues() {
     const createShopRequestDto: CreateShopDto = {};
     createShopRequestDto.ownerName = this.nameFormGroup.get('nameCtrl').value;
     createShopRequestDto.name = this.nameFormGroup.get('businessNameCtrl').value;
@@ -183,6 +197,10 @@ export class ShopCreationPageComponent implements OnInit {
     slots.timePerSlot = this.openingFormGroup.get('defaultCtrl').value;
     createShopRequestDto.slots = slots;
     createShopRequestDto.password = this.passwordFormGroup.get('passwordCtrl').value;
+    return createShopRequestDto;
+  }
+
+  private postShopCreation(createShopRequestDto: CreateShopDto) {
     this.client.post('/api/shop?token=' + this.token, createShopRequestDto).subscribe(() => {
         this.matDialog.open(ShopCreationSuccessPopupComponent, {
           width: '500px',
@@ -192,22 +210,26 @@ export class ShopCreationPageComponent implements OnInit {
           .subscribe();
       },
       error => {
-        console.log('Error creating new shop: ' + error.status + ', ' + error.message + ', ' + error.error.code);
-        if (error.status === 400 && error.error.code === 'LOCATION_NOT_FOUND') {
-          this.notificationsService.error('Ungültige PLZ', 'Diese Postleitzahl kennen wir leider nicht, haben Sie sich vertippt?');
-        }
-        if (error.status === 409 && error.error.code === 'SHOP_ALREADY_EXISTS') {
-          this.notificationsService.error(
-            'Moment mal...',
-            'Sie haben sich bereits registriert. Sie können sich unter Login für Ladenbesitzer anmelden.'
-          );
-        } else {
-          this.notificationsService.error('Tut uns leid!', 'Ihr Laden konnte nicht angelegt werden.');
-        }
+        this.handleError(error);
       });
   }
 
-  // Validation at least one contact type set
+  private handleError(error) {
+    console.log('Error creating new shop: ' + error.status + ', ' + error.message + ', ' + error.error.code);
+    if (error.status === 400 && error.error.code === 'LOCATION_NOT_FOUND') {
+      this.notificationsService.error('Ungültige PLZ', 'Diese Postleitzahl kennen wir leider nicht, haben Sie sich vertippt?');
+    }
+    if (error.status === 409 && error.error.code === 'SHOP_ALREADY_EXISTS') {
+      this.notificationsService.error(
+        'Moment mal...',
+        'Sie haben sich bereits registriert. Sie können sich unter Login für Ladenbesitzer anmelden.'
+      );
+    } else {
+      this.notificationsService.error('Tut uns leid!', 'Ihr Laden konnte nicht angelegt werden.');
+    }
+  }
+
+// Validation at least one contact type set
   private atLeastOneContact = () => {
     return (controlGroup) => {
       const controls = controlGroup.controls;
@@ -223,7 +245,7 @@ export class ShopCreationPageComponent implements OnInit {
       }
       return null;
     };
-  }
+  };
 
   private onZipCodeValid() {
     const zipCode = this.addressFormGroup.get('zipCtrl').value;
@@ -237,6 +259,71 @@ export class ShopCreationPageComponent implements OnInit {
         }
       })
       .catch(error => console.log('Error fetching cities to zip code'));
+  }
+
+  fileIsTooBig: boolean = false;
+
+  onFileChanged(event) {
+    const file = event.target.files[0];
+    // max. size 5 MB
+    if (file.size > 5242880) {
+      this.fileIsTooBig = true;
+      return;
+    }
+    this.image = file;
+    this.fileIsTooBig = false;
+  }
+
+  progress: number = 0;
+
+  private postImageAndDetails(createShopRequestDto: CreateShopDto) {
+    this.client.post('/api/shop?token=' + this.token, createShopRequestDto).subscribe(() => {
+        const uploadData = new FormData();
+        uploadData.append('file', this.image, this.image.name);
+        this.imageService.upload(uploadData).pipe(
+          map(event => {
+            switch (event.type) {
+              case HttpEventType.UploadProgress:
+                this.progress = Math.round(event.loaded * 100 / event.total);
+                break;
+              case HttpEventType.Response:
+                return event;
+            }
+          }),
+          catchError((error: HttpErrorResponse) => {
+            console.log(`${this.image.name} upload failed.`);
+            return of(error);
+          })).subscribe((event: any) => {
+          console.log(event);
+          if (event) {
+            if (event instanceof HttpErrorResponse) {
+              this.handleError(event);
+            } else {
+              this.updateShopWithImage(event, createShopRequestDto);
+            }
+          }
+        });
+      },
+      error => {
+        this.handleError(error);
+      });
+  }
+
+  private updateShopWithImage(event: any, createShopRequestDto: CreateShopDto) {
+    console.log(event.body);
+    let updateShopDto = createShopRequestDto as UpdateShopDto;
+    updateShopDto.imageId = event.body.id;
+    this.client.put('/api/shop', updateShopDto).subscribe(() => {
+        this.matDialog.open(ShopCreationSuccessPopupComponent, {
+          width: '500px',
+          data: createShopRequestDto.name
+        })
+          .afterClosed()
+          .subscribe();
+      },
+      error => {
+        this.handleError(error);
+      });
   }
 }
 

@@ -1,11 +1,13 @@
 import {Component, OnInit} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpEventType} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {NotificationsService} from 'angular2-notifications';
-import {ReplaySubject} from 'rxjs';
+import {of, ReplaySubject} from 'rxjs';
 import {ShopOwnerDetailDto} from '../data/api';
 import {UpdateShopData} from '../shop-details-config/shop-details-config.component';
 import {UserContextService} from '../shared/user-context.service';
+import {catchError, map} from 'rxjs/operators';
+import {ImageService} from '../shared/image.service';
 
 @Component({
   selector: 'shop-management-page',
@@ -23,7 +25,8 @@ export class ShopManagementPageComponent implements OnInit {
   constructor(private client: HttpClient,
               private router: Router,
               private notificationsService: NotificationsService,
-              private userContextService: UserContextService) {
+              private userContextService: UserContextService,
+              private imageService: ImageService) {
   }
 
   ngOnInit() {
@@ -37,9 +40,45 @@ export class ShopManagementPageComponent implements OnInit {
         });
   }
 
+  progress: number = 0;
+
   updateShop($event: UpdateShopData) {
-    this.client.put('/api/shop', $event.updateShopDto).subscribe(() => {
-        this.router.navigate(['shops/' + $event.id]);
+    if ($event.image) {
+      this.updateImageAndDetails($event);
+    } else {
+      this.updateShopDto($event);
+    }
+  }
+
+  private updateImageAndDetails(updateShopData: UpdateShopData) {
+    const image = updateShopData.image;
+    const uploadData = new FormData();
+    uploadData.append('file', image, image.name);
+    this.imageService.upload(uploadData).pipe(
+      map(event => {
+        switch (event.type) {
+          case HttpEventType.UploadProgress:
+            this.progress = Math.round(event.loaded * 100 / event.total);
+            break;
+          case HttpEventType.Response:
+            return event;
+        }
+      }),
+      catchError((error: HttpErrorResponse) => {
+        console.log(`${image.name} upload failed.`);
+        return of(error);
+      })).subscribe((event: any) => {
+      if (typeof (event) === 'object') {
+        console.log(event.body);
+        updateShopData.updateShopDto.imageId = event.body.id;
+        this.updateShopDto(updateShopData);
+      }
+    });
+  }
+
+  private updateShopDto(updateShopData: UpdateShopData) {
+    this.client.put('/api/shop', updateShopData.updateShopDto).subscribe(() => {
+        this.router.navigate(['shops/' + updateShopData.id]);
       },
       error => {
         this.handleError(error, false);
@@ -50,12 +89,12 @@ export class ShopManagementPageComponent implements OnInit {
     const logPrefix: string = wasInitialLoad ? 'Error requesting shop details: ' : 'Error updating shop: ';
     console.log(logPrefix + error.status + ', ' + error.message + ', ' + error.error.code);
 
-    let notificationTitle  = 'Tut uns leid!';
+    let notificationTitle = 'Tut uns leid!';
     let notificationText: string;
 
     if (error.status === 400 && error.error.code === 'LOCATION_NOT_FOUND') {
       notificationTitle = 'Ungültige PLZ';
-      notificationText =  'Diese Postleitzahl kennen wir leider nicht, haben Sie sich vertippt?';
+      notificationText = 'Diese Postleitzahl kennen wir leider nicht, haben Sie sich vertippt?';
     } else if (wasInitialLoad) {
       notificationText = 'Es ist ein Fehler beim Laden der Details aufgetreten.';
     } else if (error.status === 401 || error.status === 403) {

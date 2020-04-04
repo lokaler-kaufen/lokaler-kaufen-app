@@ -142,7 +142,7 @@
   </mat-step>
   <mat-step [optional]="true">
     <ng-template matStepLabel>Sie haben ein Logo?</ng-template>
-    <p>Bitte beachten Sie die maximale Dateigröße von 2 MB.</p>
+    <p>Bitte beachten Sie die maximale Dateigröße von 5 MB.</p>
     <input
       style="display: none"
       type="file" (change)="onFileChanged($event)"
@@ -152,5 +152,3 @@
     <mat-error *ngIf="fileIsTooBig">Die Datei ist zu groß. Bitte wählen Sie eine Datei aus, die maximal 2 MB groß ist.</mat-error>
   </mat-step>
 </mat-vertical-stepper>
-<!-- TODO: Show progress bar on save -->
-<mat-progress-bar *ngIf="this.image.progress > 0" [value]="this.image.progress"></mat-progress-bar>
