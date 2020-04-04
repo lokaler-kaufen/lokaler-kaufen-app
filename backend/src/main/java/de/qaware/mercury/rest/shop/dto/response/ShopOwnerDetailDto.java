@@ -23,6 +23,7 @@ public class ShopOwnerDetailDto {
     private String city;
     private String addressSupplement;
     private String details;
+    private String imageId;
     private String website;
     private Map<String, String> contacts;
     private SlotConfigDto slots;
@@ -37,6 +38,7 @@ public class ShopOwnerDetailDto {
             shop.getCity(),
             shop.getAddressSupplement(),
             shop.getDetails(),
+            Null.map(shop.getImageId(), id -> id.getId().toString()),
             shop.getWebsite(),
             Maps.mapKeys(shop.getContacts(), ContactType::getId),
             Null.map(shop.getSlotConfig(), SlotConfigDto::of)
