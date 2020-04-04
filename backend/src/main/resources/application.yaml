@@ -14,6 +14,12 @@ spring.jpa.hibernate.ddl-auto: validate
 spring.jpa.open-in-view: false
 
 mercury:
+  images:
+    devControllerEnabled: false
+    publicUrlTemplate: ""
+    storageLocation: ""
+    size: 500 # pixel
+    quality: 90
   cookies:
     secure: true
   tokens:
