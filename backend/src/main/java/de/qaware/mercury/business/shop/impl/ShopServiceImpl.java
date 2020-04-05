@@ -4,7 +4,6 @@ import de.qaware.mercury.business.admin.Admin;
 import de.qaware.mercury.business.admin.AdminService;
 import de.qaware.mercury.business.email.EmailService;
 import de.qaware.mercury.business.image.Image;
-import de.qaware.mercury.business.image.ImageNotFoundException;
 import de.qaware.mercury.business.image.ImageService;
 import de.qaware.mercury.business.location.BoundingBox;
 import de.qaware.mercury.business.location.GeoLocation;
@@ -204,19 +203,13 @@ class ShopServiceImpl implements ShopService {
 
     @Override
     @Transactional
-    public Shop setImage(Shop.Id id, Image.Id imageId) throws ShopNotFoundException, ImageNotFoundException {
-        if (!imageService.hasImage(imageId)) {
-            throw new ImageNotFoundException(imageId);
-        }
-
-        Shop shop = findByIdOrThrow(id);
-
-        if (shop.getImageId() != null && !shop.getImageId().equals(imageId)) {
+    public Shop setImage(Shop shop, Image image) {
+        if (shop.getImageId() != null && !shop.getImageId().equals(image.getId())) {
             // Shop had an image which is different from the new image -> delete old image
             imageService.deleteImage(shop.getImageId());
         }
 
-        Shop updatedShop = shop.withImageId(imageId);
+        Shop updatedShop = shop.withImageId(image.getId());
         shopRepository.update(updatedShop);
         return updatedShop;
     }
@@ -255,6 +248,24 @@ class ShopServiceImpl implements ShopService {
         List<Shop> shops = shopRepository.searchActive(query, searchArea);
         List<ShopWithDistance> shopsWithDistance = toShopWithDistance(shops, location);
         return filterByDistance(shopsWithDistance, maxDistance);
+    }
+
+    @Override
+    @Transactional
+    public Shop deleteImage(Shop shop) {
+        if (shop.getImageId() == null) {
+            // Shop has no image, nothing to do here
+            return shop;
+        }
+
+        // Delete image file
+        imageService.deleteImage(shop.getImageId());
+
+        // Unlink image from shop
+        Shop updatedShop = shop.withImageId(null);
+        shopRepository.update(updatedShop);
+
+        return updatedShop;
     }
 
     private List<ShopWithDistance> toShopWithDistance(List<Shop> shops, GeoLocation location) {

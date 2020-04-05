@@ -1,7 +1,6 @@
 package de.qaware.mercury;
 
 import de.qaware.mercury.business.image.Image;
-import de.qaware.mercury.business.image.ImageNotFoundException;
 import de.qaware.mercury.business.image.ImageService;
 import de.qaware.mercury.business.location.impl.LocationNotFoundException;
 import de.qaware.mercury.business.login.AdminEmailSettings;
@@ -58,7 +57,7 @@ class DebugPopulateDatabase implements ApplicationRunner {
         }
     }
 
-    private void createShops() throws ShopNotFoundException, ShopAlreadyExistsException, LocationNotFoundException, IOException, ImageNotFoundException {
+    private void createShops() throws ShopNotFoundException, ShopAlreadyExistsException, LocationNotFoundException, IOException {
         createShop(new ShopCreation(
             "moe@local.host", "Moe", "Moe's Whiskey", "Lothstr. 64", "85579", "Neubiberg", "", "Bester Whiskey in ganz Neubiberg!",
             "https://www.moes-whiskey.com/", "moe",
@@ -85,7 +84,7 @@ class DebugPopulateDatabase implements ApplicationRunner {
         ), "/dev/shopimages/vroni.jpg");
     }
 
-    private void createShop(ShopCreation creation, String imageResource) throws ShopNotFoundException, ShopAlreadyExistsException, LocationNotFoundException, IOException, ImageNotFoundException {
+    private void createShop(ShopCreation creation, String imageResource) throws ShopNotFoundException, ShopAlreadyExistsException, LocationNotFoundException, IOException {
         if (shopService.findByName(creation.getName()).isEmpty()) {
             Shop shop = shopService.create(creation);
             shopService.changeApproved(shop.getId(), true);
@@ -93,10 +92,9 @@ class DebugPopulateDatabase implements ApplicationRunner {
             Image image;
             try (InputStream stream = DebugPopulateDatabase.class.getResourceAsStream(imageResource)) {
                 Objects.requireNonNull(stream, String.format("Can't load resource '%s'", imageResource));
-
                 image = imageService.addImage(shop.getId(), stream);
             }
-            shopService.setImage(shop.getId(), image.getId());
+            shopService.setImage(shop, image);
 
             log.info("Created shop {}", shop);
         }

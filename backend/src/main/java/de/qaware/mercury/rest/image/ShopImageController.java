@@ -1,17 +1,16 @@
 package de.qaware.mercury.rest.image;
 
 import de.qaware.mercury.business.image.Image;
-import de.qaware.mercury.business.image.ImageNotFoundException;
 import de.qaware.mercury.business.image.ImageService;
 import de.qaware.mercury.business.login.LoginException;
 import de.qaware.mercury.business.shop.Shop;
-import de.qaware.mercury.business.shop.ShopNotFoundException;
 import de.qaware.mercury.business.shop.ShopService;
 import de.qaware.mercury.rest.image.response.ImageDto;
 import de.qaware.mercury.rest.plumbing.authentication.AuthenticationHelper;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -37,9 +36,9 @@ public class ShopImageController {
     /**
      * Uploads a image to be used as the shop's preview thumbnail.
      *
-     * @param servletRequest servlet request.
-     * @return the id of the uploaded image.
-     * @throws LoginException if the caller is not authenticated as a shop owner.
+     * @param servletRequest servlet request
+     * @return the id of the uploaded image
+     * @throws LoginException if the caller is not authenticated as a shop owner
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -55,12 +54,20 @@ public class ShopImageController {
         }
 
         // Set the uploaded image as new shop image
-        try {
-            shopService.setImage(shop.getId(), image.getId());
-        } catch (ShopNotFoundException | ImageNotFoundException e) {
-            // This can't happen, as we have verified that the shop exists and have created the image right now
-            throw new AssertionError("Cannot happen", e);
-        }
+        shopService.setImage(shop, image);
         return ImageDto.of(image);
+    }
+
+    /**
+     * Deletes the shop image.
+     *
+     * @param servletRequest http request
+     * @throws LoginException if the caller is not authenticated as a shop owner
+     */
+    @DeleteMapping
+    public void deleteImageFromShop(HttpServletRequest servletRequest) throws LoginException {
+        Shop shop = authenticationHelper.authenticateShop(servletRequest);
+
+        shopService.deleteImage(shop);
     }
 }
