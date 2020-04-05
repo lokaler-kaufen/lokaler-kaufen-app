@@ -1,14 +1,11 @@
 # Mercury backend
 
+## Preconditions
+
+* `docker` or `podman` to run the PostgreSQL database
+* `ImageMagick` to process uploaded images
+
 ## Run it
-
-### With Docker Compose
-
-(assuming you've already built the backend JAR with `./gradlew build`)
-
-```shell script
-docker-compose up
-```
 
 ### With gradle
 
@@ -30,6 +27,14 @@ You also need a running PostgreSQL database, see paragraph above.
 
 Then start the `main()` method of the `de.qaware.mercury.MercuryApplication` class. Make sure you pass `--spring.profiles.active=dev`
 to the application to start in `dev` profile.
+
+### With Docker Compose
+
+(assuming you've already built the backend JAR with `./gradlew build`)
+
+```shell script
+docker-compose up
+```
 
 ## Developing
 
