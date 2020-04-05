@@ -7,8 +7,6 @@ import de.qaware.mercury.business.image.ImageService
 import de.qaware.mercury.business.location.GeoLocation
 import de.qaware.mercury.business.location.LocationService
 import de.qaware.mercury.business.login.ShopLoginService
-import de.qaware.mercury.business.shop.ContactType
-import de.qaware.mercury.business.shop.DayConfig
 import de.qaware.mercury.business.shop.Shop
 import de.qaware.mercury.business.shop.ShopAlreadyExistsException
 import de.qaware.mercury.business.shop.ShopCreation
@@ -16,13 +14,13 @@ import de.qaware.mercury.business.shop.ShopNotFoundException
 import de.qaware.mercury.business.shop.ShopService
 import de.qaware.mercury.business.shop.ShopUpdate
 import de.qaware.mercury.business.shop.ShopWithDistance
-import de.qaware.mercury.business.shop.SlotConfig
 import de.qaware.mercury.business.time.Clock
 import de.qaware.mercury.business.uuid.UUIDFactory
 import de.qaware.mercury.storage.shop.ShopRepository
+import de.qaware.mercury.test.fixtures.ShopFixtures
+import de.qaware.mercury.test.uuid.TestUUIDFactory
 import spock.lang.Specification
 
-import java.time.LocalTime
 import java.time.ZonedDateTime
 
 class ShopServiceImplSpec extends Specification {
@@ -121,7 +119,7 @@ class ShopServiceImplSpec extends Specification {
     def "Find shop by ID"() {
         given:
         Shop.Id id = Shop.Id.of(UUID.randomUUID())
-        Shop shop = new Shop.ShopBuilder().id(id).build()
+        Shop shop = ShopFixtures.create()
 
         when:
         Shop found = shopService.findById(id)
@@ -145,14 +143,13 @@ class ShopServiceImplSpec extends Specification {
 
     def "Find shop by ID (with Exception)"() {
         given:
-        Shop.Id id = Shop.Id.of(UUID.randomUUID())
-        Shop shop = new Shop.ShopBuilder().id(id).build()
+        Shop shop = ShopFixtures.create()
 
         when:
-        Shop found = shopService.findByIdOrThrow(id)
+        Shop found = shopService.findByIdOrThrow(shop.id)
 
         then:
-        1 * shopRepository.findById(id) >> shop
+        1 * shopRepository.findById(shop.id) >> shop
         found == shop
         noExceptionThrown()
     }
@@ -259,11 +256,10 @@ class ShopServiceImplSpec extends Specification {
 
     def "Does nothing if already approved"() {
         given:
-        Shop.Id shopId = Shop.Id.of(UUID.randomUUID())
-        Shop shop = new Shop.ShopBuilder().id(shopId).approved(true).build()
+        Shop shop = ShopFixtures.create()
 
         when:
-        shopService.changeApproved(shopId, true)
+        shopService.changeApproved(shop.id, true)
 
         then:
         1 * shopRepository.findById(_) >> shop
@@ -272,48 +268,34 @@ class ShopServiceImplSpec extends Specification {
 
     def "Disapproval sends email"() {
         given:
-        Shop.Id shopId = Shop.Id.of(UUID.randomUUID())
-        Shop shop = new Shop.ShopBuilder().id(shopId).approved(true).build()
+        Shop shop = ShopFixtures.create()
 
         when:
-        shopService.changeApproved(shopId, false)
+        shopService.changeApproved(shop.id, false)
 
         then:
-        1 * shopRepository.findById(shopId) >> shop
+        1 * shopRepository.findById(shop.id) >> shop
         1 * shopRepository.update({ Shop s -> !s.approved })
         1 * emailService.sendShopApprovalRevoked(shop)
     }
 
     def "Adds image to shop"() {
         setup:
-        Shop.Id shopId = Shop.Id.of(UUID.randomUUID())
-        Image.Id imageId = Image.Id.of(UUID.randomUUID())
-        Shop shop = createShopObject(shopId.getId())
+        TestUUIDFactory testUUIDFactory = new TestUUIDFactory()
+        Image newImage = new Image(Image.Id.random(testUUIDFactory))
+        Image.Id oldImage = Image.Id.random(uuidFactory)
+        Shop shop = ShopFixtures.create(uuidFactory, oldImage, clock)
 
         when:
-        shopService.setImage(shopId, imageId)
+        shopService.setImage(shop, newImage)
 
         then:
-        1 * imageService.hasImage(imageId) >> true
-        1 * shopRepository.findById(shopId) >> shop
+        // Delete old image
+        1 * imageService.deleteImage(oldImage)
+        // Update the shop to the new id
         1 * shopRepository.update(_) >> { Shop updatedShop ->
-            updatedShop.getImageId() == imageId
+            updatedShop.getImageId() == newImage.id
         }
-    }
-
-    def "Throws if shop was not found when trying to add image"() {
-        setup:
-        Shop.Id shopId = Shop.Id.of(UUID.randomUUID())
-        Image.Id imageId = Image.Id.of(UUID.randomUUID())
-
-        when:
-        shopService.setImage(shopId, imageId)
-
-        then:
-        1 * imageService.hasImage(imageId) >> true
-        1 * shopRepository.findById(shopId) >> null
-        0 * shopRepository.update(_)
-        thrown ShopNotFoundException
     }
 
     def "Send create link to email"() {
@@ -327,7 +309,7 @@ class ShopServiceImplSpec extends Specification {
 
     def "Find by name"() {
         given:
-        Shop shop = new Shop.ShopBuilder().build()
+        Shop shop = ShopFixtures.create()
 
         when:
         List<Shop> found = shopService.findByName('Test Shop')
@@ -376,47 +358,5 @@ class ShopServiceImplSpec extends Specification {
 
         // we get the right one back
         results.get(0).shop.name == nameOfShopWithin
-
-    }
-
-    private static Shop createShopObject(UUID id) {
-        return new Shop(
-            Shop.Id.parse(id.toString()),
-            "Name",
-            "Owner Name",
-            "info@example.com",
-            "Street",
-            "23947",
-            "City",
-            "Address Supplement",
-            new HashMap<ContactType, String>(),
-            true,
-            true,
-            null,
-            GeoLocation.of(47, 12),
-            "Details",
-            "www.example.com",
-            createSlotConfig(),
-            createZonedDateTime(),
-            createZonedDateTime()
-        )
-    }
-
-    private static SlotConfig createSlotConfig() {
-        return new SlotConfig(
-            15,
-            15,
-            new DayConfig(LocalTime.parse("10:00"), LocalTime.parse("11:00")),
-            new DayConfig(LocalTime.parse("11:30"), LocalTime.parse("12:30")),
-            new DayConfig(LocalTime.parse("13:00"), LocalTime.parse("14:00")),
-            new DayConfig(LocalTime.parse("14:30"), LocalTime.parse("15:30")),
-            new DayConfig(LocalTime.parse("16:00"), LocalTime.parse("17:00")),
-            new DayConfig(LocalTime.parse("17:30"), LocalTime.parse("18:30")),
-            new DayConfig(LocalTime.parse("19:00"), LocalTime.parse("20:00"))
-        )
-    }
-
-    private static ZonedDateTime createZonedDateTime() {
-        return ZonedDateTime.now()
     }
 }
