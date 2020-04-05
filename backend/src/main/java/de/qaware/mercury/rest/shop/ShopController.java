@@ -16,16 +16,12 @@ import de.qaware.mercury.business.shop.ShopAlreadyExistsException;
 import de.qaware.mercury.business.shop.ShopCreation;
 import de.qaware.mercury.business.shop.ShopNotFoundException;
 import de.qaware.mercury.business.shop.ShopService;
-import de.qaware.mercury.business.shop.ShopUpdate;
-import de.qaware.mercury.rest.plumbing.authentication.AuthenticationHelper;
 import de.qaware.mercury.rest.shop.dto.request.CreateShopDto;
 import de.qaware.mercury.rest.shop.dto.request.ResetPasswordDto;
 import de.qaware.mercury.rest.shop.dto.request.SendCreateLinkDto;
 import de.qaware.mercury.rest.shop.dto.request.SendPasswordResetLinkDto;
-import de.qaware.mercury.rest.shop.dto.request.UpdateShopDto;
 import de.qaware.mercury.rest.shop.dto.response.ShopDetailDto;
 import de.qaware.mercury.rest.shop.dto.response.ShopListDto;
-import de.qaware.mercury.rest.shop.dto.response.ShopOwnerDetailDto;
 import de.qaware.mercury.rest.util.cookie.CookieHelper;
 import de.qaware.mercury.util.Maps;
 import de.qaware.mercury.util.validation.Validation;
@@ -38,13 +34,11 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
@@ -64,7 +58,6 @@ class ShopController {
     private final ShopService shopService;
     private final ImageService imageService;
     private final TokenService tokenService;
-    private final AuthenticationHelper authenticationHelper;
     private final ShopLoginService shopLoginService;
     private final CookieHelper cookieHelper;
 
@@ -83,20 +76,6 @@ class ShopController {
         }
 
         return ShopDetailDto.of(shop, imageService);
-    }
-
-    /**
-     * Retrieves settings of a shop for the owner.
-     *
-     * @param servletRequest an instance of {@link HttpServletRequest}.
-     * @return an instance of {@link ShopOwnerDetailDto}.
-     * @throws LoginException if the caller is not authenticated as a shop owner.
-     */
-    @GetMapping(path = "/me")
-    public ShopOwnerDetailDto getShopSettings(HttpServletRequest servletRequest) throws LoginException {
-        Shop shop = authenticationHelper.authenticateShop(servletRequest);
-
-        return ShopOwnerDetailDto.of(shop, imageService);
     }
 
     /**
@@ -170,34 +149,6 @@ class ShopController {
         cookieHelper.addTokenCookie(SHOP_COOKIE_NAME, loginToken, response);
 
         return ShopDetailDto.of(createdShop, imageService);
-    }
-
-    /**
-     * Updates shop details.
-     *
-     * @param request        the update shop request.
-     * @param servletRequest an instance of {@link HttpServletRequest}.
-     * @return the updated shop as {@link ShopDetailDto}.
-     * @throws LoginException if the caller is not authenticated to modify this shop.
-     */
-    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ShopOwnerDetailDto updateShop(@Valid @RequestBody UpdateShopDto request, HttpServletRequest servletRequest) throws LoginException, LocationNotFoundException {
-        Shop shop = authenticationHelper.authenticateShop(servletRequest);
-
-        Shop updatedShop = shopService.update(shop, new ShopUpdate(
-            request.getName(),
-            request.getOwnerName(),
-            request.getStreet(),
-            request.getZipCode(),
-            request.getCity(),
-            request.getAddressSupplement(),
-            request.getDetails(),
-            request.getWebsite(),
-            Maps.mapKeys(request.getContacts(), ContactType::parse),
-            request.getSlots().toSlots()
-        ));
-
-        return ShopOwnerDetailDto.of(updatedShop, imageService);
     }
 
     /**
