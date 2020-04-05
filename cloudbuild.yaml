@@ -25,7 +25,7 @@ steps:
     waitFor: ["build-image"]
   # Deploy container image to Cloud Run
   - name: 'gcr.io/cloud-builders/gcloud'
-    args: ['beta', 'run', 'deploy', 'lokaler-kaufen-srv', '--image', 'gcr.io/$PROJECT_ID/lokaler.kaufen', '--update-env-vars MERCURY_IMAGES_PUBLICURLTEMPLATE=https://lokaler-kaufen-srv-zko62phk7a-ez.a.run.app/dev/image/{{ filename }},MERCURY_IMAGES_STORAGELOCATION=/tmp/mercury-images', '--region', 'europe-west4', '--platform', 'managed', '--allow-unauthenticated']
+    args: ['beta', 'run', 'deploy', 'lokaler-kaufen-srv', '--image', 'gcr.io/$PROJECT_ID/lokaler.kaufen', '--region', 'europe-west4', '--platform', 'managed', '--allow-unauthenticated']
     waitFor: ["push-image"]
 
 # Increase timeout to 15 minutes 
