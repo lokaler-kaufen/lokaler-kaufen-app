@@ -31,8 +31,13 @@
 }
 
 .shop-logo {
-  max-height: 84px;
+  height: 100%;
   display: block;
+}
+
+.shop-logo-container {
+  float: right;
+  height: 84px;
 }
 
 ::ng-deep.mat-tab-labels {

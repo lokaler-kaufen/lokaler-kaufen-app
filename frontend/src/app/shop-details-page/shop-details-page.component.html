@@ -18,9 +18,9 @@
             <div *ngIf="hasDescription">{{ shop.details }}</div>
           </mat-card-subtitle>
         </div>
-        <div style="float: right">
+        <div class="shop-logo-container">
           <img class="shop-logo" src=
-            "{{shop.imageUrl? shop.imageUrl : 'assets/default-logo.png'}}"
+            "{{shop.imageUrl? shop.imageUrl : '../assets/default-logo.svg'}}"
                alt="Shop logo">
         </div>
       </div>
