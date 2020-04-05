@@ -74,16 +74,6 @@ Content-Type: application/json
     ]
 }
 
-### Update shop (partial)
-
-PATCH {{ host }}/api/shop
-Accept: application/json
-Content-Type: application/json
-
-{
-    "imageId": "fbd52c31-235f-482d-828f-4fa875b1791e"
-}
-
 ### Send creation link
 
 POST {{ host }}/api/shop/send-create-link

@@ -1,6 +1,5 @@
 package de.qaware.mercury.business.shop;
 
-import de.qaware.mercury.business.image.Image;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,7 +19,6 @@ public class ShopUpdate {
     String city;
     String addressSupplement;
     String details;
-    Image.Id imageId;
     @Nullable
     String website;
     // Maps from WHATSAPP -> Telephone number, for example

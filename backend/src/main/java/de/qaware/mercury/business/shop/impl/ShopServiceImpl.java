@@ -163,7 +163,7 @@ class ShopServiceImpl implements ShopService {
             update.getContacts(),
             shop.isEnabled(),
             shop.isApproved(),
-            update.getImageId(),
+            shop.getImageId(),
             geoLocation,
             update.getDetails(),
             update.getWebsite(),

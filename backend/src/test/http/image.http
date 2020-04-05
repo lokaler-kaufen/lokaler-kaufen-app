@@ -1,4 +1,4 @@
-POST {{ host }}/api/image/shop/upload
+POST {{ host }}/api/image/shop
 Content-Type: multipart/form-data; boundary=----boundary
 
 ------boundary

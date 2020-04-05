@@ -1,9 +1,12 @@
 package de.qaware.mercury.rest.image;
 
 import de.qaware.mercury.business.image.Image;
+import de.qaware.mercury.business.image.ImageNotFoundException;
 import de.qaware.mercury.business.image.ImageService;
 import de.qaware.mercury.business.login.LoginException;
 import de.qaware.mercury.business.shop.Shop;
+import de.qaware.mercury.business.shop.ShopNotFoundException;
+import de.qaware.mercury.business.shop.ShopService;
 import de.qaware.mercury.rest.image.response.ImageDto;
 import de.qaware.mercury.rest.plumbing.authentication.AuthenticationHelper;
 import lombok.AccessLevel;
@@ -29,6 +32,7 @@ import java.io.InputStream;
 public class ShopImageController {
     private final AuthenticationHelper authenticationHelper;
     private final ImageService imageService;
+    private final ShopService shopService;
 
     /**
      * Uploads a image to be used as the shop's preview thumbnail.
@@ -37,16 +41,24 @@ public class ShopImageController {
      * @return the id of the uploaded image.
      * @throws LoginException if the caller is not authenticated as a shop owner.
      */
-    @PostMapping(path = "/upload")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ImageDto uploadImageForShop(
         @RequestParam("file") MultipartFile file, HttpServletRequest servletRequest
     ) throws LoginException, IOException {
         Shop shop = authenticationHelper.authenticateShop(servletRequest);
 
+        // Store the image
         Image image;
         try (InputStream stream = file.getInputStream()) {
             image = imageService.addImage(shop.getId(), stream);
+        }
+
+        // Set the uploaded image as new shop image
+        try {
+            shopService.setImage(shop.getId(), image.getId());
+        } catch (ShopNotFoundException | ImageNotFoundException e) {
+            throw new AssertionError("Cannot happen", e);
         }
         return ImageDto.of(image);
     }

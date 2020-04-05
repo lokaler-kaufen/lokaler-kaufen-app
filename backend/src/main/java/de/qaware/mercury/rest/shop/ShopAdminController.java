@@ -1,7 +1,6 @@
 package de.qaware.mercury.rest.shop;
 
 import de.qaware.mercury.business.admin.Admin;
-import de.qaware.mercury.business.image.Image;
 import de.qaware.mercury.business.image.ImageService;
 import de.qaware.mercury.business.location.impl.LocationNotFoundException;
 import de.qaware.mercury.business.login.LoginException;
@@ -97,7 +96,6 @@ class ShopAdminController {
             request.getCity(),
             request.getAddressSupplement(),
             request.getDetails(),
-            Image.Id.parse(request.getImageId()),
             request.getWebsite(),
             Maps.mapKeys(request.getContacts(), ContactType::parse),
             request.getSlots().toSlots()
