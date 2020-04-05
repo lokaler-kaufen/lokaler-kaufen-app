@@ -17,7 +17,9 @@ import de.qaware.mercury.business.shop.ShopWithDistance
 import de.qaware.mercury.business.time.Clock
 import de.qaware.mercury.business.uuid.UUIDFactory
 import de.qaware.mercury.storage.shop.ShopRepository
+import de.qaware.mercury.test.fixtures.ShopCreationFixtures
 import de.qaware.mercury.test.fixtures.ShopFixtures
+import de.qaware.mercury.test.fixtures.ShopUpdateFixtures
 import de.qaware.mercury.test.uuid.TestUUIDFactory
 import spock.lang.Specification
 
@@ -172,19 +174,15 @@ class ShopServiceImplSpec extends Specification {
         UUID uuid = UUID.randomUUID()
         GeoLocation location = GeoLocation.of(0.0, 0.0)
         ZonedDateTime dateTime = ZonedDateTime.now()
-        ShopCreation creation = new ShopCreation.ShopCreationBuilder()
-            .email('test@lokaler.kaufen')
-            .name('Test Shop')
-            .zipCode('83024')
-            .build()
+        ShopCreation creation = ShopCreationFixtures.create()
 
         when:
         Shop shop = shopService.create(creation)
 
         then:
-        1 * shopLoginService.hasLogin('test@lokaler.kaufen') >> false
+        1 * shopLoginService.hasLogin(creation.email) >> false
         1 * uuidFactory.create() >> uuid
-        1 * locationService.lookup('83024') >> location
+        1 * locationService.lookup(creation.zipCode) >> location
         2 * clock.nowZoned() >> dateTime
 
         and:
@@ -200,19 +198,19 @@ class ShopServiceImplSpec extends Specification {
 
     def "Can't create an existing shop"() {
         given:
-        ShopCreation creation = new ShopCreation.ShopCreationBuilder().email('test@lokaler.kaufen').build()
+        ShopCreation creation = ShopCreationFixtures.create()
 
         when:
         shopService.create(creation)
 
         then:
-        1 * shopLoginService.hasLogin('test@lokaler.kaufen') >> true
+        1 * shopLoginService.hasLogin(creation.email) >> true
         thrown ShopAlreadyExistsException
     }
 
     def "Update shop"() {
         given:
-        ShopUpdate update = new ShopUpdate.ShopUpdateBuilder().zipCode('83022').build()
+        ShopUpdate update = ShopUpdateFixtures.create()
         Shop.Id shopId = Shop.Id.of(UUID.randomUUID())
         Shop shop = new Shop.ShopBuilder().id(shopId).zipCode('83024').build()
 

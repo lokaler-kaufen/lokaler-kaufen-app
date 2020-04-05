@@ -18,6 +18,7 @@ import de.qaware.mercury.business.shop.SlotConfig
 import de.qaware.mercury.business.time.Clock
 import de.qaware.mercury.business.uuid.UUIDFactory
 import de.qaware.mercury.storage.reservation.ReservationRepository
+import de.qaware.mercury.test.builder.SlotConfigBuilder
 import de.qaware.mercury.test.fixtures.ShopFixtures
 import org.spockframework.spring.SpringBean
 import org.springframework.beans.factory.annotation.Autowired
@@ -53,7 +54,7 @@ class ReservationServiceImplSpec extends Specification {
         given:
         LocalDate today = LocalDateTime.now().toLocalDate()
         Shop.Id id = Shop.Id.of(UUID.randomUUID())
-        Shop shop = new Shop.ShopBuilder().id(id).slotConfig(SlotConfig.builder().build()).build()
+        Shop shop = new Shop.ShopBuilder().id(id).slotConfig(new SlotConfigBuilder().createSlotConfig()).build()
 
         when:
         Slots slots = reservationService.listSlots(shop, 1)
@@ -70,7 +71,7 @@ class ReservationServiceImplSpec extends Specification {
         LocalDateTime now = LocalDateTime.now()
         Shop.Id shopId = Shop.Id.of(UUID.randomUUID())
         // Slot length is 15 minutes
-        SlotConfig slotConfig = SlotConfig.builder().timePerSlot(15).timeBetweenSlots(5).build()
+        SlotConfig slotConfig = new SlotConfigBuilder().setTimePerSlot(15).setTimeBetweenSlots(5).createSlotConfig()
         // Shop supports WHATSAPP contact
         Shop shop = new Shop.ShopBuilder().id(shopId).slotConfig(slotConfig).contacts([(ContactType.WHATSAPP): "1"]).build()
         Slot.Id slotId = Slot.Id.of(now)

@@ -1,12 +1,10 @@
 package de.qaware.mercury.business.shop;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Value;
 import org.springframework.lang.Nullable;
 
 @Value
-@Builder
 @AllArgsConstructor
 public class SlotConfig {
     int timePerSlot;

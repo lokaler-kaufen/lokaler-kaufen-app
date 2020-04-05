@@ -59,28 +59,30 @@ class DebugPopulateDatabase implements ApplicationRunner {
 
     private void createShops() throws ShopNotFoundException, ShopAlreadyExistsException, LocationNotFoundException, IOException {
         createShop(new ShopCreation(
-            "moe@local.host", "Moe", "Moe's Whiskey", "Lothstr. 64", "85579", "Neubiberg", "", "Bester Whiskey in ganz Neubiberg!",
-            "https://www.moes-whiskey.com/", "moe",
-            Map.of(ContactType.WHATSAPP, "0151/123456789", ContactType.FACETIME, "moe@local.host"),
-            SlotConfig.builder().timePerSlot(15).timeBetweenSlots(5)
-                .monday(new DayConfig(LocalTime.of(8, 0), LocalTime.of(17, 0)))
-                .tuesday(new DayConfig(LocalTime.of(8, 0), LocalTime.of(17, 0)))
-                .wednesday(new DayConfig(LocalTime.of(8, 0), LocalTime.of(17, 0)))
-                .thursday(new DayConfig(LocalTime.of(8, 0), LocalTime.of(17, 0)))
-                .friday(new DayConfig(LocalTime.of(8, 0), LocalTime.of(17, 0)))
-                .saturday(new DayConfig(LocalTime.of(8, 0), LocalTime.of(17, 0)))
-                .sunday(new DayConfig(LocalTime.of(8, 0), LocalTime.of(17, 0)))
-                .build()
-        ), "/dev/shopimages/moe.jpg");
+                "moe@local.host", "Moe", "Moe's Whiskey", "Lothstr. 64", "85579", "Neubiberg", "", "Bester Whiskey in ganz Neubiberg!",
+                "https://www.moes-whiskey.com/", "moe",
+                Map.of(ContactType.WHATSAPP, "0151/123456789", ContactType.FACETIME, "moe@local.host"),
+                new SlotConfig(15, 5,
+                    new DayConfig(LocalTime.of(8, 0), LocalTime.of(17, 0)),
+                    new DayConfig(LocalTime.of(8, 0), LocalTime.of(17, 0)),
+                    new DayConfig(LocalTime.of(8, 0), LocalTime.of(17, 0)),
+                    new DayConfig(LocalTime.of(8, 0), LocalTime.of(17, 0)),
+                    new DayConfig(LocalTime.of(8, 0), LocalTime.of(17, 0)),
+                    new DayConfig(LocalTime.of(8, 0), LocalTime.of(17, 0)),
+                    new DayConfig(LocalTime.of(8, 0), LocalTime.of(17, 0))
+                )),
+            "/dev/shopimages/moe.jpg");
+
         createShop(new ShopCreation(
             "flo@local.host", "Flo", "Flo's Kaffeeladen", "Aschauer Str. 32", "81549", "München", "", "", null,
             "flo", Map.of(ContactType.GOOGLE_DUO, "@vlow"),
-            SlotConfig.builder().timePerSlot(30).timeBetweenSlots(10).build()
+            new SlotConfig(30, 10, null, null, null, null, null, null, null)
         ), "/dev/shopimages/flo.jpg");
+
         createShop(new ShopCreation(
             "vroni@local.host", "Vroni", "Vroni's Kleiderladen", "Rheinstraße 4C", "55116", "Mainz", "", "", null,
             "vroni", Map.of(ContactType.GOOGLE_DUO, "vroni@local.host", ContactType.SIGNAL, "@vroni"),
-            SlotConfig.builder().timePerSlot(60).timeBetweenSlots(15).build()
+            new SlotConfig(60, 15, null, null, null, null, null, null, null)
         ), "/dev/shopimages/vroni.jpg");
     }
 
