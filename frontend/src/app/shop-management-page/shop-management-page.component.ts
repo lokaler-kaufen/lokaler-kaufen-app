@@ -5,9 +5,9 @@ import {NotificationsService} from 'angular2-notifications';
 import {of, ReplaySubject} from 'rxjs';
 import {ShopOwnerDetailDto} from '../data/api';
 import {UpdateShopData} from '../shop-details-config/shop-details-config.component';
-import {UserContextService} from '../shared/user-context.service';
 import {catchError, map} from 'rxjs/operators';
 import {ImageService} from '../shared/image.service';
+import {ShopOwnerService} from '../shared/shop-owner.service';
 
 @Component({
   selector: 'shop-management-page',
@@ -25,7 +25,7 @@ export class ShopManagementPageComponent implements OnInit {
   constructor(private client: HttpClient,
               private router: Router,
               private notificationsService: NotificationsService,
-              private userContextService: UserContextService,
+              private shopOwnerService: ShopOwnerService,
               private imageService: ImageService) {
   }
 
@@ -111,7 +111,7 @@ export class ShopManagementPageComponent implements OnInit {
       notificationTitle = 'Authentifizierungsfehler';
       notificationText = 'Es ist ein Fehler aufgetreten. Bitte melden Sie sich erneut an.';
       // not ideal but it gets the job done
-      this.userContextService.storeOwnerLoggedOut();
+      this.shopOwnerService.storeOwnerLoggedOut();
       this.router.navigate(['login']);
     } else {
       notificationText = 'Ihr Laden konnte leider nicht aktualisiert werden.';

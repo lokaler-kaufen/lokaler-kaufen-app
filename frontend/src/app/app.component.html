@@ -1,6 +1,27 @@
-<div *ngIf="isIEOrEdge" class="not-supported-banner">Wir unterstützen Ihren Browser leider nicht. Wir empfehlen Ihnen
-  Firefox, Chrome oder Safari.
+<mat-toolbar *ngIf="isShopOwner" color="primary">
+  <div>
+    <button mat-stroked-button (click)="manageShop()">Laden bearbeiten</button>
+  </div>
+
+  <div>
+    <button mat-stroked-button (click)="logoutShopOwner()">Logout</button>
+  </div>
+</mat-toolbar>
+
+<mat-toolbar *ngIf="isAdmin" color="accent">
+  <div>
+    <button mat-stroked-button (click)="goToAdminOverview()">Übersicht</button>
+  </div>
+
+  <div>
+    <button mat-stroked-button (click)="logoutAdmin()">Logout</button>
+  </div>
+</mat-toolbar>
+
+<div *ngIf="isIEOrEdge" class="not-supported-banner padding-all">
+  Leider können wir Ihren Browser nicht unterstützen. Wir empfehlen Ihnen Firefox, Chrome oder Safari.
 </div>
+
 <main class="padding-all">
 
   <app-header></app-header>
@@ -8,9 +29,9 @@
   <router-outlet></router-outlet>
 
   <simple-notifications
-    [options]="{timeOut: 10000, preventDuplicates: true, lastOnBottom: false}"></simple-notifications>
+    [options]="{timeOut: 10000, preventDuplicates: true, lastOnBottom: false}"
+  ></simple-notifications>
 
   <app-footer></app-footer>
-
 
 </main>

@@ -49,6 +49,7 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatToolbarModule} from '@angular/material/toolbar';
 
 @NgModule({
   declarations: [
@@ -78,33 +79,34 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
     NormalLayoutComponent,
     AdminLayoutComponent
   ],
-    imports: [
-        AppRoutingModule,
-        BrowserAnimationsModule,
-        BrowserModule,
-        FormsModule,
-        HttpClientModule,
-        MatAutocompleteModule,
-        MatButtonModule,
-        MatCardModule,
-        MatDialogModule,
-        MatDividerModule,
-        MatFormFieldModule,
-        MatIconModule,
-        MatInputModule,
-        MatPasswordStrengthModule,
-        MatProgressSpinnerModule,
-        MatSelectModule,
-        MatSortModule,
-        MatStepperModule,
-        MatTableModule,
-        ReactiveFormsModule,
-        SimpleNotificationsModule.forRoot(),
-        MatTabsModule,
-        MatExpansionModule,
-        MatCheckboxModule,
-        MatProgressBarModule
-    ],
+  imports: [
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    BrowserModule,
+    FormsModule,
+    HttpClientModule,
+    MatAutocompleteModule,
+    MatButtonModule,
+    MatCardModule,
+    MatCheckboxModule,
+    MatDialogModule,
+    MatDividerModule,
+    MatExpansionModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatPasswordStrengthModule,
+    MatProgressBarModule, 
+    MatProgressSpinnerModule,
+    MatSelectModule,
+    MatSortModule,
+    MatStepperModule,
+    MatTableModule,
+    MatTabsModule,
+    MatToolbarModule,
+    ReactiveFormsModule,
+    SimpleNotificationsModule.forRoot()
+  ],
   providers: [
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}},
     {provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher}

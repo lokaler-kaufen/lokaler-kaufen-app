@@ -1,3 +1,7 @@
+mat-toolbar {
+  justify-content: space-between;
+}
+
 main {
   box-sizing: border-box;
   display: flex;
@@ -7,13 +11,12 @@ main {
   min-height: 100%;
 }
 
-.not-supported-banner {
-  width: 100%;
+a.mat-stroked-button {
   color: white;
-  background-color: #673ab7;
-  padding-top: 10px;
+}
+
+.not-supported-banner {
+  background-color: #f44336;
+  color: white;
   text-align: center;
-  font-size: 28px;
-  height: 32px;
-  justify-items: end;
 }

@@ -7,8 +7,6 @@
   * Mac: `https://formulae.brew.sh/formula/graphicsmagick`
   * Linux: `dnf install GraphicsMagick`
 
-## Run it
-
 ### With gradle
 
 First, start a local postgres database. Easiest way to do this is with docker:

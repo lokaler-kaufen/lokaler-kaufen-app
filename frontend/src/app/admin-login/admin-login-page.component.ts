@@ -1,4 +1,5 @@
 import {Component} from '@angular/core';
+import {AdminService} from '../shared/admin.service';
 
 @Component({
   selector: 'admin-login',
@@ -7,7 +8,11 @@ import {Component} from '@angular/core';
 })
 export class AdminLoginPageComponent {
 
-  constructor() {
+  constructor(private adminService: AdminService) {
+  }
+
+  onSuccessfulLogin() {
+    this.adminService.onSuccessfulLogin();
   }
 
 }

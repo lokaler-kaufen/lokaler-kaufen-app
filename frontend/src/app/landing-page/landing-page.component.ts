@@ -6,6 +6,7 @@ import {Router} from '@angular/router';
 import {ZipCodeCacheService} from './zip-code-cache.service';
 import {NotificationsService} from 'angular2-notifications';
 import {LocationSuggestionDto, LocationSuggestionsDto} from '../data/api';
+import {BreakpointObserver} from '@angular/cdk/layout';
 
 @Component({
   selector: 'landing-page',
@@ -13,18 +14,27 @@ import {LocationSuggestionDto, LocationSuggestionsDto} from '../data/api';
   styleUrls: ['./landing-page.component.css']
 })
 export class LandingPageComponent implements OnInit {
-  location: string;
+
   private zipCodeInitialValue: string;
+
   suggestions: LocationSuggestionDto[] = [];
+
   form: FormGroup;
+
+  isSmallScreen: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
     private client: HttpClient,
     private router: Router,
     private zipCodeCacheService: ZipCodeCacheService,
-    private notificationsService: NotificationsService
+    private notificationsService: NotificationsService,
+    breakpointObserver: BreakpointObserver
   ) {
+    // listen to responsive breakpoint changes
+    breakpointObserver.observe('(max-width: 719px)').subscribe(
+      result => this.isSmallScreen = result.matches
+    );
   }
 
   ngOnInit(): void {
@@ -41,13 +51,14 @@ export class LandingPageComponent implements OnInit {
         this.suggestions = [];
       }
     });
+
     this.form.controls.zipCode.valueChanges
       .pipe(
         debounceTime(150),
         switchMap(value => {
           if (value) {
             return this.client.get<LocationSuggestionsDto>('/api/location/suggestion?zipCode=' + value)
-              .pipe(map((response) => response.suggestions));
+              .pipe(map(({suggestions}) => suggestions));
           } else {
             return [];
           }
@@ -69,15 +80,7 @@ export class LandingPageComponent implements OnInit {
   }
 
   get startDisabled(): boolean {
-    return !this.startEnabled;
-  }
-
-  private get startEnabled(): boolean {
-    return this.form.valid;
-  }
-
-  private get zipCodeFromInput(): string {
-    return this.form.controls.zipCode.value;
+    return !this.form.valid;
   }
 
   start(): void {
@@ -97,6 +100,10 @@ export class LandingPageComponent implements OnInit {
         }
       });
 
+  }
+
+  private get zipCodeFromInput(): string {
+    return this.form.controls.zipCode.value;
   }
 
 }

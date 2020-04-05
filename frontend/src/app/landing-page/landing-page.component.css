@@ -1,27 +1,25 @@
 .landing-page {
-  width: 100%;
+  /* found this value at exactly 720px screen width (i.e. smallest "non-small" screen width) */
+  width: 609px;
+}
+
+@media screen and (max-width: 719px) {
+  .landing-page {
+    width: auto;
+  }
+}
+
+section {
   display: flex;
-  justify-content: center;
   flex-direction: column;
-  align-items: center;
+}
+
+form mat-form-field, button, a[mat-raised-button] {
+  width: 100%;
 }
 
 h2 {
-  /* prevent text */
   text-align: center;
-}
-
-form {
-  width: 75%;
-  max-width: 480px;
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
-}
-
-.form-item {
-  width: 100%;
 }
 
 /* Chrome, Safari, Edge, Opera */
