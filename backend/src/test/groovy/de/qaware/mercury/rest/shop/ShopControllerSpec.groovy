@@ -8,22 +8,18 @@ import de.qaware.mercury.business.shop.Shop
 import de.qaware.mercury.business.shop.ShopNotFoundException
 import de.qaware.mercury.business.shop.ShopService
 import de.qaware.mercury.business.shop.ShopWithDistance
-import de.qaware.mercury.rest.plumbing.authentication.AuthenticationHelper
 import de.qaware.mercury.rest.shop.dto.request.CreateShopDto
 import de.qaware.mercury.rest.shop.dto.request.ResetPasswordDto
 import de.qaware.mercury.rest.shop.dto.request.SendCreateLinkDto
 import de.qaware.mercury.rest.shop.dto.request.SendPasswordResetLinkDto
 import de.qaware.mercury.rest.shop.dto.request.SlotConfigDto
-import de.qaware.mercury.rest.shop.dto.request.UpdateShopDto
 import de.qaware.mercury.rest.shop.dto.response.ShopDetailDto
 import de.qaware.mercury.rest.shop.dto.response.ShopListDto
-import de.qaware.mercury.rest.shop.dto.response.ShopOwnerDetailDto
 import de.qaware.mercury.rest.util.cookie.CookieHelper
 import de.qaware.mercury.test.fixtures.ShopFixtures
 import spock.lang.Specification
 import spock.lang.Subject
 
-import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 class ShopControllerSpec extends Specification {
@@ -33,16 +29,14 @@ class ShopControllerSpec extends Specification {
 
     ShopService shopService = Mock(ShopService)
     TokenService tokenService = Mock(TokenService)
-    AuthenticationHelper authenticationHelper = Mock(AuthenticationHelper)
     ShopLoginService shopLoginService = Mock(ShopLoginService)
     ImageService imageService = Mock(ImageService)
 
-    HttpServletRequest httpServletRequest = Mock(HttpServletRequest)
     HttpServletResponse httpServletResponse = Mock(HttpServletResponse)
     CookieHelper cookieHelper = Mock(CookieHelper)
 
     void setup() {
-        controller = new ShopController(shopService, imageService, tokenService, authenticationHelper, shopLoginService, cookieHelper)
+        controller = new ShopController(shopService, imageService, tokenService, shopLoginService, cookieHelper)
     }
 
     def "Retrieve shop details"() {
@@ -73,24 +67,6 @@ class ShopControllerSpec extends Specification {
 
         then:
         thrown ShopNotFoundException
-    }
-
-    def "Retrieve shop settings"() {
-        setup:
-        Shop shop = ShopFixtures.create()
-        String testImageUrl = "http://image.url/path"
-        URI testImageUri = new URI(testImageUrl)
-
-        when:
-        ShopOwnerDetailDto result = controller.getShopSettings(httpServletRequest)
-
-        then:
-        result
-        result.id == shop.id.toString()
-        result.imageUrl == testImageUrl
-
-        1 * authenticationHelper.authenticateShop(httpServletRequest) >> shop
-        1 * imageService.generatePublicUrl(shop.imageId) >> testImageUri
     }
 
     def "sendCreateLink calls shopService"() {
@@ -150,28 +126,6 @@ class ShopControllerSpec extends Specification {
         result.imageUrl == testImageUrl
 
         1 * shopService.create(_) >> shop
-        1 * imageService.generatePublicUrl(shop.imageId) >> testImageUri
-    }
-
-    def "Shop gets updated"() {
-        setup:
-        Shop shop = ShopFixtures.create()
-        SlotConfigDto slots = SlotConfigDto.of(shop.getSlotConfig())
-        UpdateShopDto dto = new UpdateShopDto("name", "ownername", "street", "zipCode", "city", "addressSupplement", "details", "www.example.com", Map.of(), slots)
-
-        String testImageUrl = "http://image.url/path"
-        URI testImageUri = new URI(testImageUrl)
-
-        when:
-        ShopOwnerDetailDto result = controller.updateShop(dto, httpServletRequest)
-
-        then:
-        result
-        result.id == shop.id.toString()
-        result.imageUrl == testImageUrl
-
-        1 * authenticationHelper.authenticateShop(httpServletRequest)
-        1 * shopService.update(_, _) >> shop
         1 * imageService.generatePublicUrl(shop.imageId) >> testImageUri
     }
 
