@@ -263,9 +263,16 @@ export class ShopDetailsConfigComponent implements OnInit {
   }
 
   fileIsTooBig: boolean = false;
+  wrongFileExtension: boolean = false;
 
   onFileChanged(event) {
     const file = event.target.files[0];
+    console.log(file.type);
+    // not supported file type
+    if (!['image/png', 'image/jpeg', 'image/svg+xml'].includes(file.type)) {
+      this.wrongFileExtension = true;
+      return;
+    }
     // max. size 5 MB
     if (file.size > 5242880) {
       this.fileIsTooBig = true;
@@ -273,6 +280,7 @@ export class ShopDetailsConfigComponent implements OnInit {
     }
     this.image.data = file;
     this.fileIsTooBig = false;
+    this.wrongFileExtension = false;
   }
 
   private getRightSlot(day: string, slots: SlotConfigDto): DayDto {

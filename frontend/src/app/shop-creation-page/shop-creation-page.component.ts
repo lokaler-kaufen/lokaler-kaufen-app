@@ -5,7 +5,7 @@ import {ActivatedRoute} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {ShopCreationSuccessPopupComponent} from '../shop-creation-success-popup/shop-creation-success-popup.component';
 import {NotificationsService} from 'angular2-notifications';
-import {CreateShopDto, LocationSuggestionDto, LocationSuggestionsDto, SlotConfigDto, UpdateShopDto} from '../data/api';
+import {CreateShopDto, LocationSuggestionDto, LocationSuggestionsDto, SlotConfigDto} from '../data/api';
 import {ContactTypesEnum} from '../contact-types/available-contact-types';
 import {catchError, filter, map} from 'rxjs/operators';
 import {of} from 'rxjs';
@@ -262,16 +262,24 @@ export class ShopCreationPageComponent implements OnInit {
   }
 
   fileIsTooBig: boolean = false;
+  wrongFileExtension: boolean = false;
 
   onFileChanged(event) {
     const file = event.target.files[0];
+    console.log(file.type);
+    // not supported file type
+    if (!['image/png', 'image/jpeg', 'image/svg+xml'].includes(file.type)) {
+      this.wrongFileExtension = true;
+      return;
+    }
     // max. size 5 MB
     if (file.size > 5242880) {
       this.fileIsTooBig = true;
       return;
     }
-    this.image = file;
+    this.image.data = file;
     this.fileIsTooBig = false;
+    this.wrongFileExtension = false;
   }
 
   progress: number = 0;
@@ -292,14 +300,20 @@ export class ShopCreationPageComponent implements OnInit {
           }),
           catchError((error: HttpErrorResponse) => {
             console.log(`${this.image.name} upload failed.`);
+            this.notificationsService.error('Tut uns leid!', 'Ihr Logo konnte nicht hochgeladen werden.');
             return of(error);
           })).subscribe((event: any) => {
-          console.log(event);
           if (event) {
             if (event instanceof HttpErrorResponse) {
-              this.handleError(event);
+              console.log(event);
+              return;
             } else {
-              this.updateShopWithImage(event, createShopRequestDto);
+              this.matDialog.open(ShopCreationSuccessPopupComponent, {
+                width: '500px',
+                data: createShopRequestDto.name
+              })
+                .afterClosed()
+                .subscribe();
             }
           }
         });
@@ -309,22 +323,6 @@ export class ShopCreationPageComponent implements OnInit {
       });
   }
 
-  private updateShopWithImage(event: any, createShopRequestDto: CreateShopDto) {
-    console.log(event.body);
-    let updateShopDto = createShopRequestDto as UpdateShopDto;
-    updateShopDto.imageId = event.body.id;
-    this.client.put('/api/shop', updateShopDto).subscribe(() => {
-        this.matDialog.open(ShopCreationSuccessPopupComponent, {
-          width: '500px',
-          data: createShopRequestDto.name
-        })
-          .afterClosed()
-          .subscribe();
-      },
-      error => {
-        this.handleError(error);
-      });
-  }
 }
 
 export function setRightSlot(dayString: string, from: string, to: string, slots: SlotConfigDto) {

@@ -11,7 +11,7 @@ export class ImageService {
   constructor(private client: HttpClient) { }
 
   public upload(formData) {
-    return this.client.post<any>(this.BASE_URL + '/upload', formData, {
+    return this.client.post<any>(this.BASE_URL, formData, {
       reportProgress: true,
       observe: 'events'
     });

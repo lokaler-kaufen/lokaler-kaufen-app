@@ -76,9 +76,10 @@
   </mat-step>
   <mat-step [stepControl]="contactFormGroup">
     <form [formGroup]="contactFormGroup">
-      <ng-template matStepLabel>Ihre Kontaktmöglichkeiten. </ng-template>
+      <ng-template matStepLabel>Ihre Kontaktmöglichkeiten.</ng-template>
       <p>Füllen Sie einfach alle Möglichkeiten aus, die Sie bedienen wollen. </p>
-      <small *ngIf="contactFormGroup.hasError('atLeastOneRequired')" style="color: red">{{contactFormGroup.getError('atLeastOneRequired').text}}
+      <small *ngIf="contactFormGroup.hasError('atLeastOneRequired')"
+             style="color: red">{{contactFormGroup.getError('atLeastOneRequired').text}}
       </small>
       <div *ngFor="let contactType of contactTypes.availableContactTypes">
         <p>
@@ -149,6 +150,10 @@
       #fileInput>
     <div *ngIf="this.image.data">{{this.image.data.name}}</div>
     <button (click)="fileInput.click()">Datei auswählen...</button>
-    <mat-error *ngIf="fileIsTooBig">Die Datei ist zu groß. Bitte wählen Sie eine Datei aus, die maximal 2 MB groß ist.</mat-error>
+    <mat-error *ngIf="fileIsTooBig">Die Datei ist zu groß. Bitte wählen Sie eine Datei aus, die maximal 2 MB groß ist.
+    </mat-error>
+    <mat-error *ngIf="wrongFileExtension">Bitte wählen Sie eine Datei mit der Endung '.png', '.jpeg', '.jpg' oder '.svg'
+      aus.
+    </mat-error>
   </mat-step>
 </mat-vertical-stepper>

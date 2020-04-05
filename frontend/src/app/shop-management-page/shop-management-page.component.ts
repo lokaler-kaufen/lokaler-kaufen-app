@@ -66,12 +66,16 @@ export class ShopManagementPageComponent implements OnInit {
       }),
       catchError((error: HttpErrorResponse) => {
         console.log(`${image.name} upload failed.`);
+        this.notificationsService.error('Tut uns leid!', 'Ihr Logo konnte nicht hochgeladen werden.');
         return of(error);
       })).subscribe((event: any) => {
-      if (typeof (event) === 'object') {
-        console.log(event.body);
-        updateShopData.updateShopDto.imageId = event.body.id;
-        this.updateShopDto(updateShopData);
+      if (event) {
+        if (event instanceof HttpErrorResponse) {
+          console.log(event);
+          return;
+        } else {
+          this.router.navigate(['shops/' + updateShopData.id]);
+        }
       }
     });
   }
