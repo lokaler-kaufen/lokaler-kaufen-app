@@ -21,8 +21,23 @@
   justify-content: center;
 }
 
+.shop-header {
+  display: inline;
+  width: 100%;
+}
+
 .shop-details > div {
   box-sizing: border-box;
+}
+
+.shop-logo {
+  height: 100%;
+  display: block;
+}
+
+.shop-logo-container {
+  float: right;
+  height: 84px;
 }
 
 ::ng-deep.mat-tab-labels {

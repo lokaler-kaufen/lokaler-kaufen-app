@@ -15,8 +15,11 @@ import {
 import {ContactTypesEnum} from '../contact-types/available-contact-types';
 import {filter} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
+import {ImageService} from '../shared/image.service';
 
 export interface UpdateShopData {
+  image: File;
+  deleteImage: boolean,
   updateShopDto: UpdateShopDto;
   id: string;
 }
@@ -49,11 +52,13 @@ export class ShopDetailsConfigComponent implements OnInit {
   details: ShopOwnerDetailDto = {};
   citySuggestions: LocationSuggestionDto[] = [];
 
+  image: File;
 
   constructor(private formBuilder: FormBuilder,
               private matDialog: MatDialog,
               private notificationsService: NotificationsService,
-              private client: HttpClient) {
+              private client: HttpClient,
+              private imageService: ImageService) {
     this.days = Array.from(this.businessHours.POSSIBLE_BUSINESS_HOURS.keys());
   }
 
@@ -183,7 +188,7 @@ export class ShopDetailsConfigComponent implements OnInit {
       return;
     }
     console.log('Update shop');
-    const updateShopDto: UpdateShopDto = {};
+    const updateShopDto: UpdateShopDto = this.details as UpdateShopDto;
     updateShopDto.ownerName = this.nameFormGroup.get('nameCtrl').value;
     updateShopDto.name = this.nameFormGroup.get('businessNameCtrl').value;
     updateShopDto.street = this.addressFormGroup.get('streetCtrl').value;
@@ -216,7 +221,9 @@ export class ShopDetailsConfigComponent implements OnInit {
     updateShopDto.slots = slots;
     this.updateShopEvent.next({
       updateShopDto,
-      id: this.details.id
+      id: this.details.id,
+      image: this.image,
+      deleteImage: this.deleteImage
     });
   }
 
@@ -252,6 +259,28 @@ export class ShopDetailsConfigComponent implements OnInit {
       .catch(error => console.log('Error fetching cities to zip code'));
   }
 
+  fileIsTooBig: boolean = false;
+  wrongFileExtension: boolean = false;
+
+  onFileChanged(event) {
+    const file = event.target.files[0];
+    console.log(file.type);
+    // not supported file type
+    if (!['image/png', 'image/jpeg'].includes(file.type)) {
+      this.wrongFileExtension = true;
+      return;
+    }
+    // max. size 5 MB
+    if (file.size > 5242880) {
+      this.fileIsTooBig = true;
+      return;
+    }
+    this.image = file;
+    this.fileIsTooBig = false;
+    this.wrongFileExtension = false;
+    this.deleteImage = false;
+  }
+
   private getRightSlot(day: string, slots: SlotConfigDto): DayDto {
     switch (day) {
       case 'Montag':
@@ -278,4 +307,11 @@ export class ShopDetailsConfigComponent implements OnInit {
     }
   }
 
+  deleteImage: boolean = false;
+
+  onDeleteFile() {
+    this.details.imageUrl = null;
+    this.image = null;
+    this.deleteImage = true;
+  }
 }

@@ -1,6 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {MatTableDataSource} from '@angular/material/table';
-import {MatSort} from '@angular/material/sort';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {NotificationsService} from 'angular2-notifications';
@@ -18,13 +16,9 @@ export class ShopSearchPageComponent implements OnInit {
   lastSearchString: string;
   location: string;
   newLocation: string;
-  dataSource = new MatTableDataSource();
   shops: ShopListEntryDto[] = [];
-  displayedColumns: string[] = ['name', 'distance', 'supportedContactTypes'];
   isSmallScreen: boolean;
   isSearchEmpty = false;
-
-  @ViewChild(MatSort, {static: true}) sort: MatSort;
 
   constructor(
     private route: ActivatedRoute,
@@ -40,9 +34,6 @@ export class ShopSearchPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // prepare default sort
-    this.sort.sort({id: 'distance', start: 'asc', disableClear: false});
-
     // listen to changed query params
     this.route.queryParams.subscribe((params) => {
       this.newLocation = params.location;
@@ -73,18 +64,15 @@ export class ShopSearchPageComponent implements OnInit {
   private handleResponse(response) {
     if (response.shops.length > 0) {
       this.shops = response.shops;
-      this.dataSource = new MatTableDataSource<ShopListEntryDto>(response.shops);
       this.isSearchEmpty = false;
     } else {
       this.shops = [];
-      this.dataSource = new MatTableDataSource<ShopListEntryDto>([]);
       console.log('Keine Läden gefunden.');
       this.isSearchEmpty = true;
     }
     this.lastSearchString = this.searchBusiness;
     this.location = this.newLocation;
     window.history.replaceState({}, '', '/#/shops?location=' + this.location);
-    this.dataSource.sort = this.sort;
   }
 
   private findAllShopsNearby(): void {

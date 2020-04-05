@@ -1,6 +1,7 @@
 package de.qaware.mercury.business.shop;
 
 import de.qaware.mercury.business.location.GeoLocation;
+import de.qaware.mercury.business.image.Image;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Value;
@@ -27,6 +28,9 @@ public class Shop {
     boolean enabled;
     @With
     boolean approved;
+    @With
+    @Nullable
+    Image.Id imageId;
     GeoLocation geoLocation;
     String details;
     @Nullable

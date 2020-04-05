@@ -1,4 +1,5 @@
 <p>Bei Ihnen hat sich etwas geändert? Dann aktualisieren Sie hier einfach Ihre Daten. </p>
+
 <mat-vertical-stepper [linear]="false" #stepper>
   <mat-step [stepControl]="nameFormGroup">
     <form [formGroup]="nameFormGroup">
@@ -75,9 +76,10 @@
   </mat-step>
   <mat-step [stepControl]="contactFormGroup">
     <form [formGroup]="contactFormGroup">
-      <ng-template matStepLabel>Ihre Kontaktmöglichkeiten. </ng-template>
+      <ng-template matStepLabel>Ihre Kontaktmöglichkeiten.</ng-template>
       <p>Füllen Sie einfach alle Möglichkeiten aus, die Sie bedienen wollen. </p>
-      <small *ngIf="contactFormGroup.hasError('atLeastOneRequired')" style="color: red">{{contactFormGroup.getError('atLeastOneRequired').text}}
+      <small *ngIf="contactFormGroup.hasError('atLeastOneRequired')"
+             style="color: red">{{contactFormGroup.getError('atLeastOneRequired').text}}
       </small>
       <div *ngFor="let contactType of contactTypes.availableContactTypes">
         <p>
@@ -138,5 +140,31 @@
         <button mat-button matStepperPrevious>Zurück</button>
       </div>
     </form>
+  </mat-step>
+  <mat-step [optional]="true">
+    <ng-template matStepLabel>Sie haben ein Logo?</ng-template>
+    <div style="display: flex; align-items: flex-end;">
+      <div *ngIf="details.imageUrl" style="display: flex; flex-direction: column; padding-right: 15px; ">
+        <img style="max-width: 80px;" src=
+          "{{details.imageUrl}}"
+             alt="Shop logo">
+        <div>
+          <button (click)="onDeleteFile()">Datei löschen</button>
+        </div>
+      </div>
+      <div>
+      <p>Bitte beachten Sie die maximale Dateigröße von 5 MB.</p>
+      <input
+        style="display: none"
+        type="file" (change)="onFileChanged($event)"
+        #fileInput>
+      <div *ngIf="this.image">{{this.image.name}}</div>
+      <button (click)="fileInput.click()">Datei auswählen...</button>
+      <mat-error *ngIf="fileIsTooBig">Die Datei ist zu groß. Bitte wählen Sie eine Datei aus, die maximal 2 MB groß ist.
+      </mat-error>
+      <mat-error *ngIf="wrongFileExtension">Bitte wählen Sie eine Datei mit der Endung '.png', '.jpeg' oder '.jpg' aus.
+      </mat-error>
+      </div>
+    </div>
   </mat-step>
 </mat-vertical-stepper>

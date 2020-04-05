@@ -1,5 +1,7 @@
 package de.qaware.mercury.rest;
 
+import de.qaware.mercury.business.image.ImageNotFoundException;
+import de.qaware.mercury.business.image.InvalidImageIdException;
 import de.qaware.mercury.business.location.impl.LocationNotFoundException;
 import de.qaware.mercury.business.login.LoginException;
 import de.qaware.mercury.business.login.ShopLoginNotFoundException;
@@ -94,6 +96,20 @@ class RestExceptionHandler extends ResponseEntityExceptionHandler {
         ErrorDto errorDto = ErrorDto.of(uuidFactory, "INVALID_SLOT_ID", exception.getMessage());
         log.debug("Handled InvalidSlotIdException with exception id {}", errorDto.getId(), exception);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDto);
+    }
+
+    @ExceptionHandler(InvalidImageIdException.class)
+    public ResponseEntity<ErrorDto> handleInvalidImageIdException(InvalidImageIdException exception) {
+        ErrorDto errorDto = ErrorDto.of(uuidFactory, "INVALID_IMAGE_ID", exception.getMessage());
+        log.debug("Handled InvalidImageIdException with exception id {}", errorDto.getId(), exception);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDto);
+    }
+
+    @ExceptionHandler(ImageNotFoundException.class)
+    public ResponseEntity<ErrorDto> handleImageNotFoundException(ImageNotFoundException exception) {
+        ErrorDto errorDto = ErrorDto.of(uuidFactory, "IMAGE_NOT_FOUND", exception.getMessage());
+        log.debug("Handled ImageNotFoundException with exception id {}", errorDto.getId(), exception);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorDto);
     }
 
     @ExceptionHandler(InvalidTimeException.class)

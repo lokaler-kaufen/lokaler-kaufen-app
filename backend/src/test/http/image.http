@@ -1,0 +1,12 @@
+POST {{ host }}/api/image/shop
+Content-Type: multipart/form-data; boundary=----boundary
+
+------boundary
+Content-Disposition: form-data; name="file"; filename="myfancyimage.jpg"
+Content-Transfer-Encoding: base64
+Content-Type: application/x-object
+
+< data/example.jpg
+------boundary--
+
+###

@@ -1,6 +1,6 @@
 <div>
   <div class="align-baseline">
-    <mat-form-field class="margin-right search-field">
+    <mat-form-field class="search-field">
       <mat-label>Wonach suchen Sie heute?</mat-label>
       <input
         matInput
@@ -25,64 +25,33 @@
   <div class="text-no-values" style="width: 90vw;"><p *ngIf="isSearchEmpty">Leider haben wir keine Ergebnisse zu Ihrer
     Suche nach '{{lastSearchString}}' gefunden.</p>
   </div>
-
   <div [ngClass]="{'hide': isSearchEmpty}">
-    <mat-table [dataSource]="dataSource" matSort [matSortDisableClear]="true"
-               class="mat-elevation-z1 only-large">
-      <!-- Name Column -->
-      <ng-container matColumnDef="name">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>
-          Name
-        </mat-header-cell>
-
-        <mat-cell *matCellDef="let element">
-          {{ element.name }}
-        </mat-cell>
-      </ng-container>
-
-      <!-- Distance Column -->
-      <ng-container matColumnDef="distance">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>
-          Distanz
-        </mat-header-cell>
-
-        <mat-cell *matCellDef="let element">
-          {{element.distance.toFixed(0)}} km
-        </mat-cell>
-      </ng-container>
-
-      <!-- Supported Contact Types Column -->
-      <ng-container matColumnDef="supportedContactTypes">
-        <mat-header-cell *matHeaderCellDef>
-          Kontaktmöglichkeiten
-        </mat-header-cell>
-
-        <mat-cell *matCellDef="let element">
-          <contact-types [availableContactTypes]="element.supportedContactTypes"></contact-types>
-        </mat-cell>
-      </ng-container>
-
-      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-
-      <mat-row
-        id="business-row"
-        *matRowDef="let row; columns: displayedColumns;"
-        class="clickable highlightable"
-        (click)="showDetailPage(row)">
-      </mat-row>
-    </mat-table>
-
-    <div class="only-small"
-         [ngClass]="{'margin-big-bottom' : !last}"
+    <div class="margin-top"
          *ngFor="let shop of sortShopsForMobile(); last as last"
          (click)="showDetailPage({id: shop.id})">
-      <mat-divider></mat-divider>
-      <div class="padding-vertical">
-        <h3>{{ shop.name }}</h3>
-        <p>Distanz: {{shop.distance.toFixed(0)}} km</p>
-        <p>Kontaktmöglichkeiten:</p>
-        <contact-types [availableContactTypes]="shop.supportedContactTypes"></contact-types>
-      </div>
+      <mat-card class="mat-elevation-z5 clickable highlightable">
+        <mat-card-header>
+          <mat-card-title class="margin-vertical" id="title">
+            <div class="shop-overview">
+              <div class="image-and-shop">
+                <img class="shop-logo" src=
+                  "{{shop.imageUrl? shop.imageUrl : 'assets/default-logo.svg'}}"
+                     alt="Shop logo">
+                <mat-divider [vertical]="true" class="divider"></mat-divider>
+                <div class="shop-text">
+                  <span style="padding-bottom: 10px;">{{ shop.name }}</span>
+                  <mat-card-subtitle>
+                    <span>{{shop.distance.toFixed(0)}} km entfernt</span>
+                  </mat-card-subtitle>
+                </div>
+              </div>
+              <mat-card-content class="shop-contact-types">
+                <contact-types [availableContactTypes]="shop.supportedContactTypes"></contact-types>
+              </mat-card-content>
+            </div>
+          </mat-card-title>
+        </mat-card-header>
+      </mat-card>
     </div>
 
   </div>

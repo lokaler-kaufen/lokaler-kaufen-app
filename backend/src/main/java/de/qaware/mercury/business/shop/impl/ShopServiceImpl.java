@@ -3,6 +3,8 @@ package de.qaware.mercury.business.shop.impl;
 import de.qaware.mercury.business.admin.Admin;
 import de.qaware.mercury.business.admin.AdminService;
 import de.qaware.mercury.business.email.EmailService;
+import de.qaware.mercury.business.image.Image;
+import de.qaware.mercury.business.image.ImageService;
 import de.qaware.mercury.business.location.BoundingBox;
 import de.qaware.mercury.business.location.GeoLocation;
 import de.qaware.mercury.business.location.LocationService;
@@ -45,6 +47,7 @@ class ShopServiceImpl implements ShopService {
     private final Clock clock;
     private final ShopServiceConfigurationProperties config;
     private final AdminService adminService;
+    private final ImageService imageService;
 
     @Override
     @Transactional(readOnly = true)
@@ -60,6 +63,7 @@ class ShopServiceImpl implements ShopService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ShopWithDistance> findActive(String zipCode, int maxDistance) throws LocationNotFoundException {
         GeoLocation location = locationService.lookup(zipCode);
         BoundingBox searchArea = DistanceUtil.boundingBoxOf(location, maxDistance);
@@ -107,9 +111,23 @@ class ShopServiceImpl implements ShopService {
 
         GeoLocation geoLocation = locationService.lookup(creation.getZipCode());
         Shop shop = new Shop(
-            Shop.Id.of(id), creation.getName(), creation.getOwnerName(), creation.getEmail(), creation.getStreet(),
-            creation.getZipCode(), creation.getCity(), creation.getAddressSupplement(), creation.getContacts(),
-            true, config.isApproveShopsOnCreation(), geoLocation, creation.getDetails(), creation.getWebsite(), creation.getSlotConfig(), clock.nowZoned(),
+            Shop.Id.of(id),
+            creation.getName(),
+            creation.getOwnerName(),
+            creation.getEmail(),
+            creation.getStreet(),
+            creation.getZipCode(),
+            creation.getCity(),
+            creation.getAddressSupplement(),
+            creation.getContacts(),
+            true,
+            config.isApproveShopsOnCreation(),
+            null,
+            geoLocation,
+            creation.getDetails(),
+            creation.getWebsite(),
+            creation.getSlotConfig(),
+            clock.nowZoned(),
             clock.nowZoned()
         );
 
@@ -133,10 +151,24 @@ class ShopServiceImpl implements ShopService {
         GeoLocation geoLocation = locationService.lookup(update.getZipCode());
 
         Shop updatedShop = new Shop(
-            shop.getId(), update.getName(), update.getOwnerName(), shop.getEmail(), update.getStreet(), update.getZipCode(),
-            update.getCity(), update.getAddressSupplement(), update.getContacts(),
-            shop.isEnabled(), shop.isApproved(), geoLocation, update.getDetails(), update.getWebsite(), update.getSlotConfig(),
-            shop.getCreated(), clock.nowZoned()
+            shop.getId(),
+            update.getName(),
+            update.getOwnerName(),
+            shop.getEmail(),
+            update.getStreet(),
+            update.getZipCode(),
+            update.getCity(),
+            update.getAddressSupplement(),
+            update.getContacts(),
+            shop.isEnabled(),
+            shop.isApproved(),
+            shop.getImageId(),
+            geoLocation,
+            update.getDetails(),
+            update.getWebsite(),
+            update.getSlotConfig(),
+            shop.getCreated(),
+            clock.nowZoned()
         );
 
         shopRepository.update(updatedShop);
@@ -167,6 +199,19 @@ class ShopServiceImpl implements ShopService {
             log.info("Shop '{}' has been disapproved", shop.getId());
             emailService.sendShopApprovalRevoked(shop);
         }
+    }
+
+    @Override
+    @Transactional
+    public Shop setImage(Shop shop, Image image) {
+        if (shop.getImageId() != null && !shop.getImageId().equals(image.getId())) {
+            // Shop had an image which is different from the new image -> delete old image
+            imageService.deleteImage(shop.getImageId());
+        }
+
+        Shop updatedShop = shop.withImageId(image.getId());
+        shopRepository.update(updatedShop);
+        return updatedShop;
     }
 
     @Override
@@ -203,6 +248,24 @@ class ShopServiceImpl implements ShopService {
         List<Shop> shops = shopRepository.searchActive(query, searchArea);
         List<ShopWithDistance> shopsWithDistance = toShopWithDistance(shops, location);
         return filterByDistance(shopsWithDistance, maxDistance);
+    }
+
+    @Override
+    @Transactional
+    public Shop deleteImage(Shop shop) {
+        if (shop.getImageId() == null) {
+            // Shop has no image, nothing to do here
+            return shop;
+        }
+
+        // Delete image file
+        imageService.deleteImage(shop.getImageId());
+
+        // Unlink image from shop
+        Shop updatedShop = shop.withImageId(null);
+        shopRepository.update(updatedShop);
+
+        return updatedShop;
     }
 
     private List<ShopWithDistance> toShopWithDistance(List<Shop> shops, GeoLocation location) {

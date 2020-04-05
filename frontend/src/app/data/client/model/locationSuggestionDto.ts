@@ -12,6 +12,7 @@
 
 export interface LocationSuggestionDto { 
     countryCode?: string;
+    id?: string;
     placeName?: string;
     zipCode?: string;
 }

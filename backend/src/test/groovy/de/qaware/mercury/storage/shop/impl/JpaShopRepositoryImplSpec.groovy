@@ -2,17 +2,13 @@ package de.qaware.mercury.storage.shop.impl
 
 import de.qaware.mercury.business.location.BoundingBox
 import de.qaware.mercury.business.location.GeoLocation
-import de.qaware.mercury.business.shop.ContactType
-import de.qaware.mercury.business.shop.DayConfig
 import de.qaware.mercury.business.shop.Shop
-import de.qaware.mercury.business.shop.SlotConfig
 import de.qaware.mercury.business.time.Clock
+import de.qaware.mercury.test.fixtures.ShopFixtures
 import spock.lang.Specification
 import spock.lang.Subject
 
-import java.time.LocalTime
 import java.time.ZonedDateTime
-
 
 class JpaShopRepositoryImplSpec extends Specification {
 
@@ -30,8 +26,7 @@ class JpaShopRepositoryImplSpec extends Specification {
 
     def "Returns all shops"() {
         setup:
-        Shop.Id shopId = Shop.Id.of(UUID.randomUUID())
-        Shop shop = createShopObject(shopId)
+        Shop shop = ShopFixtures.create()
         ShopEntity shopEntity = ShopEntity.of(shop)
         List<ShopEntity> entityList = List.of(shopEntity)
         List<Shop> shopList = List.of(shop)
@@ -46,8 +41,7 @@ class JpaShopRepositoryImplSpec extends Specification {
 
     def "New shop gets stored"() {
         setup:
-        Shop.Id shopId = Shop.Id.of(UUID.randomUUID())
-        Shop shop = createShopObject(shopId)
+        Shop shop = ShopFixtures.create()
         ZonedDateTime now = ZonedDateTime.now()
         clock.nowZoned() >> now
 
@@ -63,16 +57,15 @@ class JpaShopRepositoryImplSpec extends Specification {
 
     def "Finds shop by id"() {
         setup:
-        Shop.Id shopId = Shop.Id.of(UUID.randomUUID())
-        Shop shop = createShopObject(shopId)
+        Shop shop = ShopFixtures.create()
         ShopEntity shopEntity = ShopEntity.of(shop)
 
         when:
-        Shop result = repository.findById(shopId)
+        Shop result = repository.findById(shop.id)
 
         then:
         result == shop
-        1 * dataRepository.findById(shopId.getId()) >> Optional.of(shopEntity)
+        1 * dataRepository.findById(shop.id.getId()) >> Optional.of(shopEntity)
     }
 
     def "Returns null if shop was not found"() {
@@ -89,8 +82,7 @@ class JpaShopRepositoryImplSpec extends Specification {
 
     def "Finds active shops"() {
         setup:
-        Shop.Id shopId = Shop.Id.of(UUID.randomUUID())
-        Shop shop = createShopObject(shopId)
+        Shop shop = ShopFixtures.create()
         ShopEntity shopEntity = ShopEntity.of(shop)
         List<ShopEntity> entityList = List.of(shopEntity)
         List<Shop> shopList = List.of(shop)
@@ -105,8 +97,7 @@ class JpaShopRepositoryImplSpec extends Specification {
 
     def "Finds active shops in bounding box"() {
         setup:
-        Shop.Id shopId = Shop.Id.of(UUID.randomUUID())
-        Shop shop = createShopObject(shopId)
+        Shop shop = ShopFixtures.create()
         ShopEntity shopEntity = ShopEntity.of(shop)
         List<ShopEntity> entityList = List.of(shopEntity)
         List<Shop> shopList = List.of(shop)
@@ -125,8 +116,7 @@ class JpaShopRepositoryImplSpec extends Specification {
     def "Searches active shops"() {
         setup:
         String query = "query"
-        Shop.Id shopId = Shop.Id.of(UUID.randomUUID())
-        Shop shop = createShopObject(shopId)
+        Shop shop = ShopFixtures.create()
         ShopEntity shopEntity = ShopEntity.of(shop)
         List<ShopEntity> entityList = List.of(shopEntity)
         List<Shop> shopList = List.of(shop)
@@ -142,8 +132,7 @@ class JpaShopRepositoryImplSpec extends Specification {
     def "Searches active shops in bounding box"() {
         setup:
         String query = "query"
-        Shop.Id shopId = Shop.Id.of(UUID.randomUUID())
-        Shop shop = createShopObject(shopId)
+        Shop shop = ShopFixtures.create()
         ShopEntity shopEntity = ShopEntity.of(shop)
         List<ShopEntity> entityList = List.of(shopEntity)
         List<Shop> shopList = List.of(shop)
@@ -161,8 +150,7 @@ class JpaShopRepositoryImplSpec extends Specification {
 
     def "Updates shop"() {
         setup:
-        Shop.Id shopId = Shop.Id.of(UUID.randomUUID())
-        Shop shop = createShopObject(shopId)
+        Shop shop = ShopFixtures.create()
         ZonedDateTime now = ZonedDateTime.now()
         clock.nowZoned() >> now
 
@@ -190,8 +178,7 @@ class JpaShopRepositoryImplSpec extends Specification {
     def "Find shops by name"() {
         setup:
         String testName = "Test Shopname"
-        Shop.Id shopId = Shop.Id.of(UUID.randomUUID())
-        Shop shop = createShopObject(shopId)
+        Shop shop = ShopFixtures.create()
         List<Shop> shopList = List.of(shop)
         ShopEntity shopEntity = ShopEntity.of(shop)
         List<ShopEntity> entityList = List.of(shopEntity)
@@ -202,45 +189,5 @@ class JpaShopRepositoryImplSpec extends Specification {
         then:
         result == shopList
         1 * dataRepository.findByName(testName) >> entityList
-    }
-
-    private static Shop createShopObject(Shop.Id shopId) {
-        return new Shop(
-            shopId,
-            "Name",
-            "Owner Name",
-            "info@example.com",
-            "Street",
-            "23947",
-            "City",
-            "Address Supplement",
-            new HashMap<ContactType, String>(),
-            true,
-            true,
-            GeoLocation.of(47, 12),
-            "Details",
-            "www.example.com",
-            createSlotConfig(),
-            createZonedDateTime(),
-            createZonedDateTime()
-        )
-    }
-
-    private static SlotConfig createSlotConfig() {
-        return new SlotConfig(
-            15,
-            15,
-            new DayConfig(LocalTime.parse("10:00"), LocalTime.parse("11:00")),
-            new DayConfig(LocalTime.parse("11:30"), LocalTime.parse("12:30")),
-            new DayConfig(LocalTime.parse("13:00"), LocalTime.parse("14:00")),
-            new DayConfig(LocalTime.parse("14:30"), LocalTime.parse("15:30")),
-            new DayConfig(LocalTime.parse("16:00"), LocalTime.parse("17:00")),
-            new DayConfig(LocalTime.parse("17:30"), LocalTime.parse("18:30")),
-            new DayConfig(LocalTime.parse("19:00"), LocalTime.parse("20:00"))
-        )
-    }
-
-    private static ZonedDateTime createZonedDateTime() {
-        return ZonedDateTime.now()
     }
 }

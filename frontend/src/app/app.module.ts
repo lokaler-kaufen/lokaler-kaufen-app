@@ -48,6 +48,7 @@ import {AdminLayoutComponent} from './layouts/admin-layout/admin-layout.componen
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatToolbarModule} from '@angular/material/toolbar';
 
 @NgModule({
@@ -95,6 +96,7 @@ import {MatToolbarModule} from '@angular/material/toolbar';
     MatIconModule,
     MatInputModule,
     MatPasswordStrengthModule,
+    MatProgressBarModule, 
     MatProgressSpinnerModule,
     MatSelectModule,
     MatSortModule,

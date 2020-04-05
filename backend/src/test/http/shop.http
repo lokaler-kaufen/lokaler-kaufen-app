@@ -7,11 +7,15 @@ Accept: application/json, */*
 
 GET {{ host }}/api/shop/me
 Accept: application/json, */*
-Cookie: mercury-shop=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmOTkzOGI4Yy03OGY0LTQ5Y2YtOTU3Zi03MmQwNjUyYzRjZGUiLCJzaG9wIjoiNjc1NzI4NmMtYTM3Yy00MjYzLThmZWItZTI4MDIyY2ZkMDgwIiwiaXNzIjoibWVyY3VyeS1zaG9wIn0.Im_tkfj231NSoXJrbBSBH_5kBqFOvOqXWIviyle28K0
+
+### List nearby shops
+
+GET {{ host }}/api/shop/nearby?zipCode=15326
+Accept: application/json, */*
 
 ### Create Shop
 
-POST {{ host }}/api/shop?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmb29AYmFyLm9yZyIsImlzcyI6Im1lcmN1cnktc2hvcC1jcmVhdGlvbiJ9.WaUsDR89nzQtgqxXhfLZqazjf0PvywMzajQFZfKW9IQ
+POST {{ host }}/api/shop?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmb29AbG9jYWwuaG9zdCIsIm5iZiI6MTU4NjA3NjMzNiwiaXNzIjoibWVyY3VyeS1zaG9wLWNyZWF0aW9uIiwiZXhwIjoxNTg2MjQ5MTM2LCJpYXQiOjE1ODYwNzYzMzZ9.5lL3Y1_JBQpjQtgLTlbciG82v3IBZhLcsZoLpySjLK8
 Accept: application/json
 Content-Type: application/json
 
@@ -21,13 +25,13 @@ Content-Type: application/json
     "ownerName": "Horst",
     "email": "info@example.com",
     "street": "Münchner Straße 13",
-    "zipCode": "83464",
+    "zipCode": "81549",
     "city": "München",
     "addressSupplement": "",
-    "password": "secret",
+    "password": "VerySecretPassword",
     "details": "Beste Burger in ganz München. Vielleicht.",
     "website": "http://www.horsts-burgerladen.muenchen",
-    "contactTypes": {
+    "contacts": {
         "SIGNAL": "Der_Horst",
         "WHATSAPP": "0151/1234567"
     },
@@ -52,9 +56,8 @@ Content-Type: application/json
 ### Update shop
 
 PUT {{ host }}/api/shop
-Accept: application/json, */*
+Accept: application/json
 Content-Type: application/json
-Cookie: mercury-shop=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMWY0YTdlNi1mZDg2LTQ1NTItYWVhMS0wYWZiNDdhMThiYjQiLCJzaG9wIjoiOWQ4Zjg3OTItMDRkMy00M2FhLWI4YTQtOTNmZGUxMTgyNTllIiwiaXNzIjoibWVyY3VyeS1zaG9wIn0.IsMSv6hkJTU6caSCvMlDgNKJTR2AC-JWUzXztdpkdzs
 
 {
     "id": "",

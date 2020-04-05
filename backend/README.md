@@ -1,12 +1,11 @@
 # Mercury backend
 
-## Run it
+## Preconditions
 
-### With Docker Compose
-
-```shell script
-docker-compose up --build
-```
+* `docker` or `podman` to run the PostgreSQL database
+* `GraphicsMagick` to process uploaded images
+  * Mac: `https://formulae.brew.sh/formula/graphicsmagick`
+  * Linux: `dnf install GraphicsMagick`
 
 ### With gradle
 
@@ -28,6 +27,14 @@ You also need a running PostgreSQL database, see paragraph above.
 
 Then start the `main()` method of the `de.qaware.mercury.MercuryApplication` class. Make sure you pass `--spring.profiles.active=dev`
 to the application to start in `dev` profile.
+
+### With Docker Compose
+
+(assuming you've already built the backend JAR with `./gradlew build`)
+
+```shell script
+docker-compose up
+```
 
 ## Developing
 
@@ -157,14 +164,6 @@ If that happens on your server, you have to configure a database, see [the setti
 
 Start the application with the `--add-admin` flag. The application will then prompt for an email and a password,
 creates the admin and shuts down again. This can be done while another instance of the application is running.
-
-### Create a database and a user with limited rights
-
-```sql
-create user mercury with encrypted password '<password>';
-create database mercury;
-grant all privileges on database mercury to mercury;
-```
 
 # Credits
 

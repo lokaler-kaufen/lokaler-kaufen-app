@@ -1,14 +1,25 @@
 package de.qaware.mercury.business.reservation.impl
 
 import de.qaware.mercury.business.email.EmailService
-import de.qaware.mercury.business.location.GeoLocation
 import de.qaware.mercury.business.login.ReservationCancellationToken
 import de.qaware.mercury.business.login.TokenService
-import de.qaware.mercury.business.reservation.*
-import de.qaware.mercury.business.shop.*
+import de.qaware.mercury.business.reservation.Reservation
+import de.qaware.mercury.business.reservation.ReservationCancellation
+import de.qaware.mercury.business.reservation.ReservationCancellationSide
+import de.qaware.mercury.business.reservation.ReservationNotFoundException
+import de.qaware.mercury.business.reservation.ReservationService
+import de.qaware.mercury.business.reservation.Slot
+import de.qaware.mercury.business.reservation.SlotService
+import de.qaware.mercury.business.reservation.Slots
+import de.qaware.mercury.business.shop.ContactType
+import de.qaware.mercury.business.shop.Shop
+import de.qaware.mercury.business.shop.ShopService
+import de.qaware.mercury.business.shop.SlotConfig
 import de.qaware.mercury.business.time.Clock
 import de.qaware.mercury.business.uuid.UUIDFactory
 import de.qaware.mercury.storage.reservation.ReservationRepository
+import de.qaware.mercury.test.builder.SlotConfigBuilder
+import de.qaware.mercury.test.fixtures.ShopFixtures
 import org.spockframework.spring.SpringBean
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
@@ -16,7 +27,6 @@ import spock.lang.Specification
 
 import java.time.LocalDate
 import java.time.LocalDateTime
-import java.time.LocalTime
 import java.time.ZonedDateTime
 
 @ContextConfiguration(classes = ReservationServiceImpl)
@@ -44,7 +54,7 @@ class ReservationServiceImplSpec extends Specification {
         given:
         LocalDate today = LocalDateTime.now().toLocalDate()
         Shop.Id id = Shop.Id.of(UUID.randomUUID())
-        Shop shop = new Shop.ShopBuilder().id(id).slotConfig(SlotConfig.builder().build()).build()
+        Shop shop = new Shop.ShopBuilder().id(id).slotConfig(new SlotConfigBuilder().createSlotConfig()).build()
 
         when:
         Slots slots = reservationService.listSlots(shop, 1)
@@ -61,7 +71,7 @@ class ReservationServiceImplSpec extends Specification {
         LocalDateTime now = LocalDateTime.now()
         Shop.Id shopId = Shop.Id.of(UUID.randomUUID())
         // Slot length is 15 minutes
-        SlotConfig slotConfig = SlotConfig.builder().timePerSlot(15).timeBetweenSlots(5).build()
+        SlotConfig slotConfig = new SlotConfigBuilder().setTimePerSlot(15).setTimeBetweenSlots(5).createSlotConfig()
         // Shop supports WHATSAPP contact
         Shop shop = new Shop.ShopBuilder().id(shopId).slotConfig(slotConfig).contacts([(ContactType.WHATSAPP): "1"]).build()
         Slot.Id slotId = Slot.Id.of(now)
@@ -92,7 +102,7 @@ class ReservationServiceImplSpec extends Specification {
         ReservationCancellationSide cancellationSide = ReservationCancellationSide.SHOP
         ReservationCancellation cancellation = new ReservationCancellation(reservationId, cancellationSide)
         Reservation reservation = createTestReservation(reservationId, shopId)
-        Shop shop = createTestShop(shopId)
+        Shop shop = ShopFixtures.create()
 
         when:
         reservationService.cancelReservation(cancellationToken)
@@ -114,7 +124,7 @@ class ReservationServiceImplSpec extends Specification {
         ReservationCancellationSide cancellationSide = ReservationCancellationSide.CUSTOMER
         ReservationCancellation cancellation = new ReservationCancellation(reservationId, cancellationSide)
         Reservation reservation = createTestReservation(reservationId, shopId)
-        Shop shop = createTestShop(shopId)
+        Shop shop = ShopFixtures.create();
 
         when:
         reservationService.cancelReservation(cancellationToken)
@@ -158,41 +168,5 @@ class ReservationServiceImplSpec extends Specification {
             .created(ZonedDateTime.now())
             .updated(ZonedDateTime.now())
             .build()
-    }
-
-    private Shop createTestShop(Shop.Id shopId) {
-        new Shop.ShopBuilder()
-            .id(shopId)
-            .name("name")
-            .ownerName("owner name")
-            .email("email")
-            .street("street")
-            .zipCode("zip code")
-            .city("city")
-            .addressSupplement("address supplement")
-            .contacts(new HashMap<ContactType, String>())
-            .enabled(true)
-            .approved(true)
-            .geoLocation(new GeoLocation(47, 12))
-            .details("details")
-            .website("https://website.com")
-            .slotConfig(createSlotConfig())
-            .created(ZonedDateTime.now())
-            .updated(ZonedDateTime.now())
-            .build()
-    }
-
-    private static SlotConfig createSlotConfig() {
-        return new SlotConfig(
-            15,
-            15,
-            new DayConfig(LocalTime.parse("10:00"), LocalTime.parse("11:00")),
-            new DayConfig(LocalTime.parse("11:30"), LocalTime.parse("12:30")),
-            new DayConfig(LocalTime.parse("13:00"), LocalTime.parse("14:00")),
-            new DayConfig(LocalTime.parse("14:30"), LocalTime.parse("15:30")),
-            new DayConfig(LocalTime.parse("16:00"), LocalTime.parse("17:00")),
-            new DayConfig(LocalTime.parse("17:30"), LocalTime.parse("18:30")),
-            new DayConfig(LocalTime.parse("19:00"), LocalTime.parse("20:00"))
-        )
     }
 }

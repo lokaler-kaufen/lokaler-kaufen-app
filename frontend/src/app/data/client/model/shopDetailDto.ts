@@ -17,6 +17,7 @@ export interface ShopDetailDto {
     details?: string;
     email?: string;
     id?: string;
+    imageUrl?: string;
     name?: string;
     ownerName?: string;
     street?: string;

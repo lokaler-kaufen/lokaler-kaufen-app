@@ -16,6 +16,7 @@ export interface UpdateShopDto {
     city?: string;
     contacts?: { [key: string]: string; };
     details?: string;
+    imageId?: string;
     name?: string;
     ownerName?: string;
     slots?: SlotConfigDto;

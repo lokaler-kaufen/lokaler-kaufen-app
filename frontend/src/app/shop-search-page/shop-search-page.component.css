@@ -36,11 +36,60 @@ tr:not(.example-expanded-row):hover {
   visibility: hidden;
 }
 
-/* switch footer links to column mode on small devices */
+.shop-logo {
+  max-width: 80px;
+  max-height: 80px;
+  display: block;
+}
+
+.shop-titel {
+  justify-content: start;
+}
+
+.shop-overview {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding-left: 2%;
+}
+
+.image-and-shop {
+  display: flex;
+  align-items: center;
+}
+
+.shop-contact-types {
+  width: 40%;
+  min-width: 350px;
+}
+
+.shop-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  height: 80px;
+  min-width: 250px;
+  margin-left: 12px;
+  margin-right: 24px;
+}
+
+.divider {
+  margin-left: 12px;
+  height: 80px;
+}
+
+.mat-card-actions, .mat-card-subtitle, .mat-card-content {
+  margin-bottom: 0px;
+}
+
+
+/* styles for small devices */
 @media screen and (max-width: 719px) {
   .align-baseline {
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+    width: 90vw;
   }
 
   .zip-code-div {
@@ -53,4 +102,14 @@ tr:not(.example-expanded-row):hover {
     width: 100%;
     order: 2;
   }
+
+  .shop-overview {
+    flex-direction: column;
+    width: 90vw;
+  }
+
+  .shop-text {
+    padding-bottom: 15px;
+  }
+
 }

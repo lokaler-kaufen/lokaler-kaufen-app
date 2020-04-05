@@ -1,0 +1,2 @@
+ALTER TABLE shop
+    ADD COLUMN image_id UUID NULL;

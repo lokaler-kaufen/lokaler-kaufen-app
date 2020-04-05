@@ -6,6 +6,7 @@ import de.qaware.mercury.business.reservation.SlotService
 import de.qaware.mercury.business.shop.DayConfig
 import de.qaware.mercury.business.shop.SlotConfig
 import de.qaware.mercury.business.time.Clock
+import de.qaware.mercury.test.builder.SlotConfigBuilder
 import org.spockframework.spring.SpringBean
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
@@ -18,7 +19,6 @@ import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.temporal.TemporalAdjusters
 
-import static de.qaware.mercury.business.shop.SlotConfig.builder
 import static java.time.LocalDateTime.now
 
 @ContextConfiguration(classes = SlotServiceImpl)
@@ -40,8 +40,8 @@ class SlotServiceSpec extends Specification {
 
         where:
         usecase         | start | end   | config
-        'No Slot time'  | now() | now() | builder().timePerSlot(0).build()
-        'No Day config' | now() | now() | builder().timePerSlot(1).build()
+        'No Slot time'  | now() | now() | new SlotConfigBuilder().setTimePerSlot(0).createSlotConfig()
+        'No Day config' | now() | now() | new SlotConfigBuilder().setTimePerSlot(1).createSlotConfig()
     }
 
     @Unroll
@@ -96,32 +96,32 @@ class SlotServiceSpec extends Specification {
 
     static SlotConfig mondayConfig(int startHour, int endHour) {
         return defaultSlot()
-            .monday(new DayConfig(LocalTime.of(startHour, 0), LocalTime.of(endHour, 0)))
-            .build()
+            .setMonday(new DayConfig(LocalTime.of(startHour, 0), LocalTime.of(endHour, 0)))
+            .createSlotConfig()
     }
 
     static SlotConfig mondayLate() {
-        return builder()
-            .timePerSlot(15)
-            .timeBetweenSlots(5)
-            .monday(new DayConfig(LocalTime.of(9, 00), LocalTime.of(23, 30)))
-            .build()
+        return new SlotConfigBuilder()
+            .setTimePerSlot(15)
+            .setTimeBetweenSlots(5)
+            .setMonday(new DayConfig(LocalTime.of(9, 00), LocalTime.of(23, 30)))
+            .createSlotConfig()
     }
 
     static SlotConfig mondayPauseEndExactlyOnMidnight() {
-        return builder()
-            .timePerSlot(15)
-            .timeBetweenSlots(5)
-            .monday(new DayConfig(LocalTime.of(23, 00), LocalTime.of(23, 55)))
-            .build()
+        return new SlotConfigBuilder()
+            .setTimePerSlot(15)
+            .setTimeBetweenSlots(5)
+            .setMonday(new DayConfig(LocalTime.of(23, 00), LocalTime.of(23, 55)))
+            .createSlotConfig()
     }
 
     static SlotConfig mondayConfigNoPauses(int startHour, int endHour) {
-        return builder()
-            .timePerSlot(30)
-            .timeBetweenSlots(0)
-            .monday(new DayConfig(LocalTime.of(startHour, 0), LocalTime.of(endHour, 0)))
-            .build()
+        return new SlotConfigBuilder()
+            .setTimePerSlot(30)
+            .setTimeBetweenSlots(0)
+            .setMonday(new DayConfig(LocalTime.of(startHour, 0), LocalTime.of(endHour, 0)))
+            .createSlotConfig()
     }
 
     static LocalDate tuesday() {
@@ -131,8 +131,8 @@ class SlotServiceSpec extends Specification {
 
     static SlotConfig tuesdayConfig(int startHour, int endHour) {
         return defaultSlot()
-            .tuesday(new DayConfig(LocalTime.of(startHour, 0), LocalTime.of(endHour, 0)))
-            .build()
+            .setTuesday(new DayConfig(LocalTime.of(startHour, 0), LocalTime.of(endHour, 0)))
+            .createSlotConfig()
     }
 
     static LocalDate wednesday() {
@@ -142,8 +142,8 @@ class SlotServiceSpec extends Specification {
 
     static SlotConfig wednesdayConfig(int startHour, int endHour) {
         return defaultSlot()
-            .wednesday(new DayConfig(LocalTime.of(startHour, 0), LocalTime.of(endHour, 0)))
-            .build()
+            .setWednesday(new DayConfig(LocalTime.of(startHour, 0), LocalTime.of(endHour, 0)))
+            .createSlotConfig()
     }
 
     static LocalDate thursday() {
@@ -153,8 +153,8 @@ class SlotServiceSpec extends Specification {
 
     static SlotConfig thursdayConfig(int startHour, int endHour) {
         return defaultSlot()
-            .thursday(new DayConfig(LocalTime.of(startHour, 0), LocalTime.of(endHour, 0)))
-            .build()
+            .setThursday(new DayConfig(LocalTime.of(startHour, 0), LocalTime.of(endHour, 0)))
+            .createSlotConfig()
     }
 
     static LocalDate friday() {
@@ -164,8 +164,8 @@ class SlotServiceSpec extends Specification {
 
     static SlotConfig fridayConfig(int startHour, int endHour) {
         return defaultSlot()
-            .friday(new DayConfig(LocalTime.of(startHour, 0), LocalTime.of(endHour, 0)))
-            .build()
+            .setFriday(new DayConfig(LocalTime.of(startHour, 0), LocalTime.of(endHour, 0)))
+            .createSlotConfig()
     }
 
     static LocalDate saturday() {
@@ -175,8 +175,8 @@ class SlotServiceSpec extends Specification {
 
     static SlotConfig saturdayConfig(int startHour, int endHour) {
         return defaultSlot()
-            .saturday(new DayConfig(LocalTime.of(startHour, 0), LocalTime.of(endHour, 0)))
-            .build()
+            .setSaturday(new DayConfig(LocalTime.of(startHour, 0), LocalTime.of(endHour, 0)))
+            .createSlotConfig()
     }
 
     static LocalDate sunday() {
@@ -186,21 +186,21 @@ class SlotServiceSpec extends Specification {
 
     static SlotConfig sundayConfig(int startHour, int endHour) {
         return defaultSlot()
-            .sunday(new DayConfig(LocalTime.of(startHour, 0), LocalTime.of(endHour, 0)))
-            .build()
+            .setSunday(new DayConfig(LocalTime.of(startHour, 0), LocalTime.of(endHour, 0)))
+            .createSlotConfig()
     }
 
     static SlotConfig mondayTilWednesday(int startHour, int endHour) {
         return defaultSlot()
-            .monday(new DayConfig(LocalTime.of(startHour, 0), LocalTime.of(endHour, 0)))
-            .tuesday(new DayConfig(LocalTime.of(startHour, 0), LocalTime.of(endHour, 0)))
-            .wednesday(new DayConfig(LocalTime.of(startHour, 0), LocalTime.of(endHour, 0)))
-            .build()
+            .setMonday(new DayConfig(LocalTime.of(startHour, 0), LocalTime.of(endHour, 0)))
+            .setTuesday(new DayConfig(LocalTime.of(startHour, 0), LocalTime.of(endHour, 0)))
+            .setWednesday(new DayConfig(LocalTime.of(startHour, 0), LocalTime.of(endHour, 0)))
+            .createSlotConfig()
     }
 
-    private static SlotConfig.SlotConfigBuilder defaultSlot() {
-        return builder()
-            .timePerSlot(30)
-            .timeBetweenSlots(30)
+    private static SlotConfigBuilder defaultSlot() {
+        return new SlotConfigBuilder()
+            .setTimePerSlot(30)
+            .setTimeBetweenSlots(30)
     }
 }

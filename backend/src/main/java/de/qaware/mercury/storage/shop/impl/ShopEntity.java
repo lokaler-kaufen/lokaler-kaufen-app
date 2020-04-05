@@ -5,6 +5,7 @@ import de.qaware.mercury.business.shop.ContactType;
 import de.qaware.mercury.business.shop.DayConfig;
 import de.qaware.mercury.business.shop.Shop;
 import de.qaware.mercury.business.shop.SlotConfig;
+import de.qaware.mercury.business.image.Image;
 import de.qaware.mercury.util.Null;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -113,6 +114,11 @@ public class ShopEntity {
     private boolean approved;
 
     @Setter
+    @Column
+    @Nullable
+    private UUID imageId;
+
+    @Setter
     @Column(nullable = false)
     private double latitude;
 
@@ -211,6 +217,7 @@ public class ShopEntity {
             shop.getContacts().get(ContactType.VIBER),
             shop.isEnabled(),
             shop.isApproved(),
+            Null.map(shop.getImageId(), Image.Id::getId),
             shop.getGeoLocation().getLatitude(),
             shop.getGeoLocation().getLongitude(),
             shop.getDetails(),
@@ -249,6 +256,7 @@ public class ShopEntity {
             mapContactDetails(),
             enabled,
             approved,
+            Null.map(imageId, Image.Id::of),
             GeoLocation.of(latitude, longitude),
             details,
             website,

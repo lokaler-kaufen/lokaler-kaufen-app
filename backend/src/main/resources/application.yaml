@@ -1,5 +1,7 @@
 # Overriden to include the traceId in the log output
 logging.pattern.console: "%date{yyyy-MM-dd HH:mm:ss.SSSZ} %clr(%5level) [%mdc{traceId:-?}] ${PID:- } --- [%15.15t] %-40.40logger{39} : %message%n%wEx"
+logging.level:
+  de.qaware.mercury: DEBUG
 
 spring.datasource:
   url: "invalid-jdbc-url" # Invalid url is on purpose so that spring breaks when no database is configured
@@ -8,10 +10,18 @@ spring.datasource:
     connection-timeout: 10000 # ms
     maximum-pool-size: 10 # Before fiddling with this value, read this: https://github.com/brettwooldridge/HikariCP/wiki/About-Pool-Sizing
 
-spring.jpa.hibernate.ddl-auto: validate
-spring.jpa.open-in-view: false
+spring.jpa:
+  hibernate.ddl-auto: validate
+  open-in-view: false
+  database-platform: org.hibernate.dialect.PostgreSQL10Dialect
 
 mercury:
+  images:
+    devControllerEnabled: false
+    publicUrlTemplate: ""
+    storageLocation: ""
+    size: 250 # pixel
+    quality: 90
   cookies:
     secure: true
   tokens:
@@ -37,6 +47,13 @@ spring.mail:
   password: ""
   properties:
     mail.smtp.starttls.enable: true
+
+spring.servlet:
+  # Enable multipart uploads
+  multipart:
+    enabled: true
+    max-file-size: 5MB
+    max-request-size: 6MB
 
 variables:
   domain: "http://localhost:4200"

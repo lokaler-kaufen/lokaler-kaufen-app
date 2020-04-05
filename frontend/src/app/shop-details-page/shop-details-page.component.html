@@ -10,18 +10,28 @@
 
   <mat-card class="mat-elevation-z5">
     <mat-card-header>
-      <mat-card-title class="margin-vertical" id="title">{{ shop.name }}</mat-card-title>
-      <mat-card-subtitle>
-        <div *ngIf="!hasDescription">Dieser Laden hat noch keine Beschreibung hinterlegt.</div>
-        <div *ngIf="hasDescription">{{ shop.details }}</div>
-      </mat-card-subtitle>
+      <div class="shop-header">
+        <div style="float: left">
+          <mat-card-title class="margin-vertical" id="title">{{ shop.name }}</mat-card-title>
+          <mat-card-subtitle>
+            <div *ngIf="!hasDescription">Dieser Laden hat noch keine Beschreibung hinterlegt.</div>
+            <div *ngIf="hasDescription">{{ shop.details }}</div>
+          </mat-card-subtitle>
+        </div>
+        <div class="shop-logo-container">
+          <img class="shop-logo" src=
+            "{{shop.imageUrl? shop.imageUrl : '../assets/default-logo.svg'}}"
+               alt="Shop logo">
+        </div>
+      </div>
     </mat-card-header>
 
     <div class="only-large">
       <mat-tab-group>
         <mat-tab *ngFor="let slots of slotsPerDay">
-          <ng-template mat-tab-label><div (click)="activatedSlot = slots"
-                                           [ngClass]="!slots.hasSlots? 'not-open' : ''">{{slots.dayName}}</div>
+          <ng-template mat-tab-label>
+            <div (click)="activatedSlot = slots"
+                 [ngClass]="!slots.hasSlots? 'not-open' : ''">{{slots.dayName}}</div>
           </ng-template>
           <ng-template matTabContent>
             <h3 *ngIf="!slots.hasSlots" class="text-no-values margin-top">

@@ -2,13 +2,25 @@ package de.qaware.mercury.business.shop.impl
 
 import de.qaware.mercury.business.admin.AdminService
 import de.qaware.mercury.business.email.EmailService
+import de.qaware.mercury.business.image.Image
+import de.qaware.mercury.business.image.ImageService
 import de.qaware.mercury.business.location.GeoLocation
 import de.qaware.mercury.business.location.LocationService
 import de.qaware.mercury.business.login.ShopLoginService
-import de.qaware.mercury.business.shop.*
+import de.qaware.mercury.business.shop.Shop
+import de.qaware.mercury.business.shop.ShopAlreadyExistsException
+import de.qaware.mercury.business.shop.ShopCreation
+import de.qaware.mercury.business.shop.ShopNotFoundException
+import de.qaware.mercury.business.shop.ShopService
+import de.qaware.mercury.business.shop.ShopUpdate
+import de.qaware.mercury.business.shop.ShopWithDistance
 import de.qaware.mercury.business.time.Clock
 import de.qaware.mercury.business.uuid.UUIDFactory
 import de.qaware.mercury.storage.shop.ShopRepository
+import de.qaware.mercury.test.fixtures.ShopCreationFixtures
+import de.qaware.mercury.test.fixtures.ShopFixtures
+import de.qaware.mercury.test.fixtures.ShopUpdateFixtures
+import de.qaware.mercury.test.uuid.TestUUIDFactory
 import spock.lang.Specification
 
 import java.time.ZonedDateTime
@@ -25,9 +37,10 @@ class ShopServiceImplSpec extends Specification {
     Clock clock = Mock()
     ShopServiceConfigurationProperties config = Mock()
     AdminService adminService = Mock()
+    ImageService imageService = Mock()
 
     void setup() {
-        shopService = new ShopServiceImpl(uuidFactory, locationService, shopRepository, emailService, shopLoginService, clock, config, adminService)
+        shopService = new ShopServiceImpl(uuidFactory, locationService, shopRepository, emailService, shopLoginService, clock, config, adminService, imageService)
     }
 
     def "List all shops"() {
@@ -35,7 +48,7 @@ class ShopServiceImplSpec extends Specification {
         List<Shop> all = shopService.listAll()
 
         then:
-        1 * shopRepository.listAll() >> [new Shop.ShopBuilder().build()]
+        1 * shopRepository.listAll() >> [ShopFixtures.create()]
         all.size() == 1
     }
 
@@ -88,7 +101,7 @@ class ShopServiceImplSpec extends Specification {
         shopService.delete(id)
 
         then:
-        1 * shopRepository.findById(id) >> new Shop.ShopBuilder().build()
+        1 * shopRepository.findById(id) >> ShopFixtures.create()
         1 * shopRepository.deleteById(id)
         noExceptionThrown()
     }
@@ -108,7 +121,7 @@ class ShopServiceImplSpec extends Specification {
     def "Find shop by ID"() {
         given:
         Shop.Id id = Shop.Id.of(UUID.randomUUID())
-        Shop shop = new Shop.ShopBuilder().id(id).build()
+        Shop shop = ShopFixtures.create()
 
         when:
         Shop found = shopService.findById(id)
@@ -132,14 +145,13 @@ class ShopServiceImplSpec extends Specification {
 
     def "Find shop by ID (with Exception)"() {
         given:
-        Shop.Id id = Shop.Id.of(UUID.randomUUID())
-        Shop shop = new Shop.ShopBuilder().id(id).build()
+        Shop shop = ShopFixtures.create()
 
         when:
-        Shop found = shopService.findByIdOrThrow(id)
+        Shop found = shopService.findByIdOrThrow(shop.id)
 
         then:
-        1 * shopRepository.findById(id) >> shop
+        1 * shopRepository.findById(shop.id) >> shop
         found == shop
         noExceptionThrown()
     }
@@ -162,19 +174,15 @@ class ShopServiceImplSpec extends Specification {
         UUID uuid = UUID.randomUUID()
         GeoLocation location = GeoLocation.of(0.0, 0.0)
         ZonedDateTime dateTime = ZonedDateTime.now()
-        ShopCreation creation = new ShopCreation.ShopCreationBuilder()
-            .email('test@lokaler.kaufen')
-            .name('Test Shop')
-            .zipCode('83024')
-            .build()
+        ShopCreation creation = ShopCreationFixtures.create()
 
         when:
         Shop shop = shopService.create(creation)
 
         then:
-        1 * shopLoginService.hasLogin('test@lokaler.kaufen') >> false
+        1 * shopLoginService.hasLogin(creation.email) >> false
         1 * uuidFactory.create() >> uuid
-        1 * locationService.lookup('83024') >> location
+        1 * locationService.lookup(creation.zipCode) >> location
         2 * clock.nowZoned() >> dateTime
 
         and:
@@ -190,19 +198,19 @@ class ShopServiceImplSpec extends Specification {
 
     def "Can't create an existing shop"() {
         given:
-        ShopCreation creation = new ShopCreation.ShopCreationBuilder().email('test@lokaler.kaufen').build()
+        ShopCreation creation = ShopCreationFixtures.create()
 
         when:
         shopService.create(creation)
 
         then:
-        1 * shopLoginService.hasLogin('test@lokaler.kaufen') >> true
+        1 * shopLoginService.hasLogin(creation.email) >> true
         thrown ShopAlreadyExistsException
     }
 
     def "Update shop"() {
         given:
-        ShopUpdate update = new ShopUpdate.ShopUpdateBuilder().zipCode('83022').build()
+        ShopUpdate update = ShopUpdateFixtures.create()
         Shop.Id shopId = Shop.Id.of(UUID.randomUUID())
         Shop shop = new Shop.ShopBuilder().id(shopId).zipCode('83024').build()
 
@@ -246,11 +254,10 @@ class ShopServiceImplSpec extends Specification {
 
     def "Does nothing if already approved"() {
         given:
-        Shop.Id shopId = Shop.Id.of(UUID.randomUUID())
-        Shop shop = new Shop.ShopBuilder().id(shopId).approved(true).build()
+        Shop shop = ShopFixtures.create()
 
         when:
-        shopService.changeApproved(shopId, true)
+        shopService.changeApproved(shop.id, true)
 
         then:
         1 * shopRepository.findById(_) >> shop
@@ -259,16 +266,34 @@ class ShopServiceImplSpec extends Specification {
 
     def "Disapproval sends email"() {
         given:
-        Shop.Id shopId = Shop.Id.of(UUID.randomUUID())
-        Shop shop = new Shop.ShopBuilder().id(shopId).approved(true).build()
+        Shop shop = ShopFixtures.create()
 
         when:
-        shopService.changeApproved(shopId, false)
+        shopService.changeApproved(shop.id, false)
 
         then:
-        1 * shopRepository.findById(shopId) >> shop
+        1 * shopRepository.findById(shop.id) >> shop
         1 * shopRepository.update({ Shop s -> !s.approved })
         1 * emailService.sendShopApprovalRevoked(shop)
+    }
+
+    def "Adds image to shop"() {
+        setup:
+        TestUUIDFactory testUUIDFactory = new TestUUIDFactory()
+        Image newImage = new Image(Image.Id.random(testUUIDFactory))
+        Image.Id oldImage = Image.Id.random(uuidFactory)
+        Shop shop = ShopFixtures.create(uuidFactory, oldImage, clock)
+
+        when:
+        shopService.setImage(shop, newImage)
+
+        then:
+        // Delete old image
+        1 * imageService.deleteImage(oldImage)
+        // Update the shop to the new id
+        1 * shopRepository.update(_) >> { Shop updatedShop ->
+            updatedShop.getImageId() == newImage.id
+        }
     }
 
     def "Send create link to email"() {
@@ -282,7 +307,7 @@ class ShopServiceImplSpec extends Specification {
 
     def "Find by name"() {
         given:
-        Shop shop = new Shop.ShopBuilder().build()
+        Shop shop = ShopFixtures.create()
 
         when:
         List<Shop> found = shopService.findByName('Test Shop')
@@ -331,6 +356,5 @@ class ShopServiceImplSpec extends Specification {
 
         // we get the right one back
         results.get(0).shop.name == nameOfShopWithin
-
     }
 }
