@@ -9,4 +9,6 @@ public interface ImageRepository {
     void store(Image.Id imageId, String filename, InputStream data);
 
     InputStream loadImage(Image.Id imageId, String filename) throws ImageNotFoundException;
+
+    boolean hasImage(Image.Id imageId, String filename);
 }

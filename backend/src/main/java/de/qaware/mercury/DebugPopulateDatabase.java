@@ -1,5 +1,8 @@
 package de.qaware.mercury;
 
+import de.qaware.mercury.business.image.Image;
+import de.qaware.mercury.business.image.ImageNotFoundException;
+import de.qaware.mercury.business.image.ImageService;
 import de.qaware.mercury.business.location.impl.LocationNotFoundException;
 import de.qaware.mercury.business.login.AdminEmailSettings;
 import de.qaware.mercury.business.login.AdminLoginService;
@@ -11,8 +14,6 @@ import de.qaware.mercury.business.shop.ShopCreation;
 import de.qaware.mercury.business.shop.ShopNotFoundException;
 import de.qaware.mercury.business.shop.ShopService;
 import de.qaware.mercury.business.shop.SlotConfig;
-import de.qaware.mercury.business.image.Image;
-import de.qaware.mercury.business.image.ImageService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -57,7 +58,7 @@ class DebugPopulateDatabase implements ApplicationRunner {
         }
     }
 
-    private void createShops() throws ShopNotFoundException, ShopAlreadyExistsException, LocationNotFoundException, IOException {
+    private void createShops() throws ShopNotFoundException, ShopAlreadyExistsException, LocationNotFoundException, IOException, ImageNotFoundException {
         createShop(new ShopCreation(
             "moe@local.host", "Moe", "Moe's Whiskey", "Lothstr. 64", "85579", "Neubiberg", "", "Bester Whiskey in ganz Neubiberg!",
             "https://www.moes-whiskey.com/", "moe",
@@ -84,7 +85,7 @@ class DebugPopulateDatabase implements ApplicationRunner {
         ), "/dev/shopimages/vroni.jpg");
     }
 
-    private void createShop(ShopCreation creation, String imageResource) throws ShopNotFoundException, ShopAlreadyExistsException, LocationNotFoundException, IOException {
+    private void createShop(ShopCreation creation, String imageResource) throws ShopNotFoundException, ShopAlreadyExistsException, LocationNotFoundException, IOException, ImageNotFoundException {
         if (shopService.findByName(creation.getName()).isEmpty()) {
             Shop shop = shopService.create(creation);
             shopService.changeApproved(shop.getId(), true);

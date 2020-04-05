@@ -56,9 +56,8 @@ Content-Type: application/json
 ### Update shop
 
 PUT {{ host }}/api/shop
-Accept: application/json, */*
+Accept: application/json
 Content-Type: application/json
-Cookie: mercury-shop=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMWY0YTdlNi1mZDg2LTQ1NTItYWVhMS0wYWZiNDdhMThiYjQiLCJzaG9wIjoiOWQ4Zjg3OTItMDRkMy00M2FhLWI4YTQtOTNmZGUxMTgyNTllIiwiaXNzIjoibWVyY3VyeS1zaG9wIn0.IsMSv6hkJTU6caSCvMlDgNKJTR2AC-JWUzXztdpkdzs
 
 {
     "id": "",
@@ -73,6 +72,16 @@ Cookie: mercury-shop=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzMWY0YTdlNi
         "FACEBOOK_MESSENGER",
         "WHATSAPP"
     ]
+}
+
+### Update shop (partial)
+
+PATCH {{ host }}/api/shop
+Accept: application/json
+Content-Type: application/json
+
+{
+    "imageId": "fbd52c31-235f-482d-828f-4fa875b1791e"
 }
 
 ### Send creation link

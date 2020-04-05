@@ -1,6 +1,7 @@
 package de.qaware.mercury.rest.shop;
 
 import de.qaware.mercury.business.image.Image;
+import de.qaware.mercury.business.image.ImageNotFoundException;
 import de.qaware.mercury.business.image.ImageService;
 import de.qaware.mercury.business.location.impl.LocationNotFoundException;
 import de.qaware.mercury.business.login.LoginException;
@@ -24,6 +25,7 @@ import de.qaware.mercury.rest.shop.dto.request.ResetPasswordDto;
 import de.qaware.mercury.rest.shop.dto.request.SendCreateLinkDto;
 import de.qaware.mercury.rest.shop.dto.request.SendPasswordResetLinkDto;
 import de.qaware.mercury.rest.shop.dto.request.UpdateShopDto;
+import de.qaware.mercury.rest.shop.dto.request.UpdateShopPartialDto;
 import de.qaware.mercury.rest.shop.dto.response.ShopDetailDto;
 import de.qaware.mercury.rest.shop.dto.response.ShopListDto;
 import de.qaware.mercury.rest.shop.dto.response.ShopOwnerDetailDto;
@@ -37,6 +39,7 @@ import org.springframework.http.MediaType;
 import org.springframework.lang.Nullable;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -182,7 +185,7 @@ class ShopController {
      * @throws LoginException if the caller is not authenticated to modify this shop.
      */
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ShopDetailDto updateShop(@Valid @RequestBody UpdateShopDto request, HttpServletRequest servletRequest) throws LoginException, LocationNotFoundException {
+    public ShopOwnerDetailDto updateShop(@Valid @RequestBody UpdateShopDto request, HttpServletRequest servletRequest) throws LoginException, LocationNotFoundException {
         Shop shop = authenticationHelper.authenticateShop(servletRequest);
 
         Shop updatedShop = shopService.update(shop, new ShopUpdate(
@@ -199,7 +202,18 @@ class ShopController {
             request.getSlots().toSlots()
         ));
 
-        return ShopDetailDto.of(updatedShop, imageService);
+        return ShopOwnerDetailDto.of(updatedShop, imageService);
+    }
+
+    @PatchMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ShopOwnerDetailDto updateShopPartial(@Valid @RequestBody UpdateShopPartialDto request, HttpServletRequest servletRequest) throws LoginException, ShopNotFoundException, ImageNotFoundException {
+        Shop shop = authenticationHelper.authenticateShop(servletRequest);
+
+        if (request.getImageId() != null) {
+            shop = shopService.setImage(shop.getId(), Image.Id.parse(request.getImageId()));
+        }
+
+        return ShopOwnerDetailDto.of(shop, imageService);
     }
 
     /**

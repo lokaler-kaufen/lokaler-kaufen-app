@@ -60,10 +60,6 @@ class ImageServiceImpl implements ImageService {
         return IMAGE_FORMAT;
     }
 
-    private String generateFilename(Image.Id imageId) {
-        return imageId.getId() + IMAGE_FORMAT.getExtension();
-    }
-
     @Override
     @Nullable
     public URI generatePublicUrl(@Nullable Image.Id imageId) {
@@ -73,5 +69,14 @@ class ImageServiceImpl implements ImageService {
         return URI.create(
             configuration.getPublicUrlTemplate().replace("{{ filename }}", generateFilename(imageId))
         );
+    }
+
+    @Override
+    public boolean hasImage(Image.Id imageId) {
+        return imageRepository.hasImage(imageId, generateFilename(imageId));
+    }
+
+    private String generateFilename(Image.Id imageId) {
+        return imageId.getId() + IMAGE_FORMAT.getExtension();
     }
 }

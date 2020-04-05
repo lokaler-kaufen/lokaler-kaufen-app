@@ -15,4 +15,6 @@ public interface ImageService {
     InputStream loadImage(Image.Id imageId) throws ImageNotFoundException;
 
     ImageFormat getImageFormat();
+
+    boolean hasImage(Image.Id imageId);
 }

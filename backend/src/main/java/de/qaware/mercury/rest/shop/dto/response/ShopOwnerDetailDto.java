@@ -27,6 +27,8 @@ public class ShopOwnerDetailDto {
     String addressSupplement;
     String details;
     @Nullable
+    String imageId;
+    @Nullable
     String imageUrl;
     @Nullable
     String website;
@@ -44,6 +46,7 @@ public class ShopOwnerDetailDto {
             shop.getCity(),
             shop.getAddressSupplement(),
             shop.getDetails(),
+            Null.map(shop.getImageId(), id -> id.getId().toString()),
             Null.map(imageUrl, URI::toString),
             shop.getWebsite(),
             Maps.mapKeys(shop.getContacts(), ContactType::getId),

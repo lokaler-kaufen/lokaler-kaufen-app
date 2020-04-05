@@ -58,6 +58,12 @@ class LocalFileSystemImageRepositoryImpl implements ImageRepository {
         }
     }
 
+    @Override
+    public boolean hasImage(Image.Id imageId, String filename) {
+        Path path = getImagePath(filename);
+        return Files.exists(path);
+    }
+
     private Path getImagePath(String filename) {
         return configuration.getStorageLocationAsPath().resolve(filename).toAbsolutePath();
     }

@@ -3,6 +3,9 @@ package de.qaware.mercury.business.shop.impl;
 import de.qaware.mercury.business.admin.Admin;
 import de.qaware.mercury.business.admin.AdminService;
 import de.qaware.mercury.business.email.EmailService;
+import de.qaware.mercury.business.image.Image;
+import de.qaware.mercury.business.image.ImageNotFoundException;
+import de.qaware.mercury.business.image.ImageService;
 import de.qaware.mercury.business.location.BoundingBox;
 import de.qaware.mercury.business.location.GeoLocation;
 import de.qaware.mercury.business.location.LocationService;
@@ -18,7 +21,6 @@ import de.qaware.mercury.business.shop.ShopUpdate;
 import de.qaware.mercury.business.shop.ShopWithDistance;
 import de.qaware.mercury.business.time.Clock;
 import de.qaware.mercury.business.uuid.UUIDFactory;
-import de.qaware.mercury.business.image.Image;
 import de.qaware.mercury.storage.shop.ShopRepository;
 import de.qaware.mercury.util.Lists;
 import lombok.AccessLevel;
@@ -46,6 +48,7 @@ class ShopServiceImpl implements ShopService {
     private final Clock clock;
     private final ShopServiceConfigurationProperties config;
     private final AdminService adminService;
+    private final ImageService imageService;
 
     @Override
     @Transactional(readOnly = true)
@@ -61,6 +64,7 @@ class ShopServiceImpl implements ShopService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ShopWithDistance> findActive(String zipCode, int maxDistance) throws LocationNotFoundException {
         GeoLocation location = locationService.lookup(zipCode);
         BoundingBox searchArea = DistanceUtil.boundingBoxOf(location, maxDistance);
@@ -198,12 +202,17 @@ class ShopServiceImpl implements ShopService {
         }
     }
 
-
     @Override
-    public void setImage(Shop.Id id, Image.Id imageId) throws ShopNotFoundException {
+    @Transactional
+    public Shop setImage(Shop.Id id, Image.Id imageId) throws ShopNotFoundException, ImageNotFoundException {
+        if (!imageService.hasImage(imageId)) {
+            throw new ImageNotFoundException(imageId);
+        }
+
         Shop shop = findByIdOrThrow(id);
         Shop updatedShop = shop.withImageId(imageId);
         shopRepository.update(updatedShop);
+        return updatedShop;
     }
 
     @Override
