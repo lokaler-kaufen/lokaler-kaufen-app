@@ -6,17 +6,30 @@ import de.qaware.mercury.business.location.GeoLocation
 import de.qaware.mercury.business.login.PasswordResetToken
 import de.qaware.mercury.business.login.ShopLoginService
 import de.qaware.mercury.business.login.TokenService
-import de.qaware.mercury.business.shop.*
+import de.qaware.mercury.business.shop.ContactType
+import de.qaware.mercury.business.shop.DayConfig
+import de.qaware.mercury.business.shop.Shop
+import de.qaware.mercury.business.shop.ShopNotFoundException
+import de.qaware.mercury.business.shop.ShopService
+import de.qaware.mercury.business.shop.ShopWithDistance
+import de.qaware.mercury.business.shop.SlotConfig
 import de.qaware.mercury.rest.plumbing.authentication.AuthenticationHelper
-import de.qaware.mercury.rest.shop.dto.request.*
+import de.qaware.mercury.rest.shop.dto.request.CreateShopDto
+import de.qaware.mercury.rest.shop.dto.request.ResetPasswordDto
+import de.qaware.mercury.rest.shop.dto.request.SendCreateLinkDto
+import de.qaware.mercury.rest.shop.dto.request.SendPasswordResetLinkDto
+import de.qaware.mercury.rest.shop.dto.request.SlotConfigDto
+import de.qaware.mercury.rest.shop.dto.request.UpdateShopDto
 import de.qaware.mercury.rest.shop.dto.response.ShopDetailDto
 import de.qaware.mercury.rest.shop.dto.response.ShopListDto
 import de.qaware.mercury.rest.shop.dto.response.ShopOwnerDetailDto
+import de.qaware.mercury.rest.util.cookie.CookieHelper
 import de.qaware.mercury.util.Null
 import spock.lang.Specification
 import spock.lang.Subject
 
 import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
 import java.time.LocalTime
 import java.time.ZonedDateTime
 
@@ -32,9 +45,11 @@ class ShopControllerSpec extends Specification {
     ImageService imageService = Mock(ImageService)
 
     HttpServletRequest httpServletRequest = Mock(HttpServletRequest)
+    HttpServletResponse httpServletResponse = Mock(HttpServletResponse)
+    CookieHelper cookieHelper = Mock(CookieHelper)
 
     void setup() {
-        controller = new ShopController(shopService, imageService, tokenService, authenticationHelper, shopLoginService)
+        controller = new ShopController(shopService, imageService, tokenService, authenticationHelper, shopLoginService, cookieHelper)
     }
 
     def "Retrieve shop details"() {
@@ -140,7 +155,7 @@ class ShopControllerSpec extends Specification {
         URI testImageUri = new URI(testImageUrl)
 
         when:
-        ShopDetailDto result = controller.createShop(dto, token)
+        ShopDetailDto result = controller.createShop(dto, token, httpServletResponse)
 
         then:
         result
@@ -154,14 +169,14 @@ class ShopControllerSpec extends Specification {
     def "Shop gets updated"() {
         setup:
         UUID id = UUID.randomUUID()
-        UpdateShopDto dto = new UpdateShopDto("name", "ownername", "street", "zipCode", "city", "addressSupplement", "details", "61910c7c-46ec-4b13-b7df-f5761a4dbaa0", "www.example.com", new HashMap<String, String>(), Null.map(createSlotConfig(), { slotConfig -> SlotConfigDto.of(slotConfig) }))
+        UpdateShopDto dto = new UpdateShopDto("name", "ownername", "street", "zipCode", "city", "addressSupplement", "details", "www.example.com", new HashMap<String, String>(), Null.map(createSlotConfig(), { slotConfig -> SlotConfigDto.of(slotConfig) }))
         Image.Id imageId = Image.Id.of(UUID.randomUUID())
         Shop shop = createShopObject(id, imageId.getId())
         String testImageUrl = "http://image.url/path"
         URI testImageUri = new URI(testImageUrl)
 
         when:
-        ShopDetailDto result = controller.updateShop(dto, httpServletRequest)
+        ShopOwnerDetailDto result = controller.updateShop(dto, httpServletRequest)
 
         then:
         result

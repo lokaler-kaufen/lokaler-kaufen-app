@@ -3,6 +3,7 @@ package de.qaware.mercury.business.shop.impl
 import de.qaware.mercury.business.admin.AdminService
 import de.qaware.mercury.business.email.EmailService
 import de.qaware.mercury.business.image.Image
+import de.qaware.mercury.business.image.ImageService
 import de.qaware.mercury.business.location.GeoLocation
 import de.qaware.mercury.business.location.LocationService
 import de.qaware.mercury.business.login.ShopLoginService
@@ -36,9 +37,10 @@ class ShopServiceImplSpec extends Specification {
     Clock clock = Mock()
     ShopServiceConfigurationProperties config = Mock()
     AdminService adminService = Mock()
+    ImageService imageService = Mock()
 
     void setup() {
-        shopService = new ShopServiceImpl(uuidFactory, locationService, shopRepository, emailService, shopLoginService, clock, config, adminService)
+        shopService = new ShopServiceImpl(uuidFactory, locationService, shopRepository, emailService, shopLoginService, clock, config, adminService, imageService)
     }
 
     def "List all shops"() {
@@ -292,6 +294,7 @@ class ShopServiceImplSpec extends Specification {
         shopService.setImage(shopId, imageId)
 
         then:
+        1 * imageService.hasImage(imageId) >> true
         1 * shopRepository.findById(shopId) >> shop
         1 * shopRepository.update(_) >> { Shop updatedShop ->
             updatedShop.getImageId() == imageId
@@ -307,6 +310,7 @@ class ShopServiceImplSpec extends Specification {
         shopService.setImage(shopId, imageId)
 
         then:
+        1 * imageService.hasImage(imageId) >> true
         1 * shopRepository.findById(shopId) >> null
         0 * shopRepository.update(_)
         thrown ShopNotFoundException
