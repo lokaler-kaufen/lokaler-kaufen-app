@@ -35,7 +35,8 @@ RUN gradle --no-daemon build -x test
 ##############################
 FROM openjdk:11-jre-slim AS runtime-build
 
-RUN apt-get update; apt-get install -y --no-install-recommends wget; rm -rf /var/lib/apt/lists/*
+# Install wget and graphicsmagick
+RUN apt-get update && apt-get install -y --no-install-recommends wget graphicsmagick && apt-get clean
 RUN wget https://repo1.maven.org/maven2/co/elastic/apm/elastic-apm-agent/1.15.0/elastic-apm-agent-1.15.0.jar
 
 COPY --from=backend-build /workspace/backend/build/libs/mercury.jar app.jar
