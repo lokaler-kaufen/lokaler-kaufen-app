@@ -20,7 +20,11 @@ public final class ShopFixtures {
     }
 
     public static Shop create() {
-        return create(new TestUUIDFactory(), null, new WallClock());
+        return create(new TestUUIDFactory(), ImageIdFixture.create(), new WallClock());
+    }
+
+    public static Shop create(Image.Id imageId) {
+        return create(new TestUUIDFactory(), imageId, new WallClock());
     }
 
     public static Shop create(UUIDFactory uuidFactory, @Nullable Image.Id imageId, Clock clock) {
