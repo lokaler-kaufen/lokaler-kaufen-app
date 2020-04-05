@@ -58,6 +58,7 @@ public class ShopImageController {
         try {
             shopService.setImage(shop.getId(), image.getId());
         } catch (ShopNotFoundException | ImageNotFoundException e) {
+            // This can't happen, as we have verified that the shop exists and have created the image right now
             throw new AssertionError("Cannot happen", e);
         }
         return ImageDto.of(image);
