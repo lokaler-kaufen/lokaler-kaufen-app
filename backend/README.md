@@ -33,7 +33,7 @@ to the application to start in `dev` profile.
 (assuming you've already built the backend JAR with `./gradlew build`)
 
 ```shell script
-docker-compose up
+docker-compose up --build
 ```
 
 ## Developing
