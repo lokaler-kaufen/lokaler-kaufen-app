@@ -19,14 +19,14 @@ steps:
     args: ["build", "-t", "gcr.io/$PROJECT_ID/lokaler.kaufen", "."]
     waitFor: ["-"]
   # Push the container image to Container Registry
-  - name: "gcr.io/cloud-builders/docker"
-    id: "push-image"
-    args: ["push", "gcr.io/$PROJECT_ID/lokaler.kaufen"]
-    waitFor: ["build-image"]
-  # Deploy container image to Cloud Run
-  - name: 'gcr.io/cloud-builders/gcloud'
-    args: ['beta', 'run', 'deploy', 'lokaler-kaufen-srv', '--image', 'gcr.io/$PROJECT_ID/lokaler.kaufen', '--region', 'europe-west4', '--platform', 'managed', '--allow-unauthenticated']
-    waitFor: ["push-image"]
+#  - name: "gcr.io/cloud-builders/docker"
+#    id: "push-image"
+#    args: ["push", "gcr.io/$PROJECT_ID/lokaler.kaufen"]
+#    waitFor: ["build-image"]
+#  # Deploy container image to Cloud Run
+#  - name: 'gcr.io/cloud-builders/gcloud'
+#    args: ['beta', 'run', 'deploy', 'lokaler-kaufen-srv', '--image', 'gcr.io/$PROJECT_ID/lokaler.kaufen', '--region', 'europe-west4', '--platform', 'managed', '--allow-unauthenticated']
+#    waitFor: ["push-image"]
 
 # Increase timeout to 15 minutes 
 timeout: 900s
