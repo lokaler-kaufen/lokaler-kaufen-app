@@ -14,6 +14,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -64,7 +65,8 @@ class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public URI generatePublicUrl(Image.Id imageId) {
+    @Nullable
+    public URI generatePublicUrl(@Nullable Image.Id imageId) {
         if (imageId == null) {
             return null;
         }

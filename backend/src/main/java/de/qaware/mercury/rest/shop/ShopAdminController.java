@@ -33,7 +33,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
-import java.net.URI;
 
 @RestController
 @RequestMapping(value = "/api/admin/shop", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -60,12 +59,6 @@ class ShopAdminController {
         Shop shop = shopService.findById(Shop.Id.parse(id));
         if (shop == null) {
             throw new ShopNotFoundException(Shop.Id.parse(id));
-        }
-
-        String imageUrl = null;
-        if (shop.getImageId() != null) {
-            URI url = imageService.generatePublicUrl(shop.getImageId());
-            imageUrl = url.toString();
         }
 
         return ShopAdminDto.of(shop, imageService);

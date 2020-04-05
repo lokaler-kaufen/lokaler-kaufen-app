@@ -7,6 +7,7 @@ import de.qaware.mercury.util.Lists;
 import de.qaware.mercury.util.Null;
 import de.qaware.mercury.util.Sets;
 import lombok.Value;
+import org.springframework.lang.Nullable;
 
 import java.net.URI;
 import java.util.List;
@@ -25,6 +26,7 @@ public class ShopListDto {
         String id;
         String name;
         double distance;
+        @Nullable
         String imageUrl;
         Set<String> supportedContactTypes;
 
