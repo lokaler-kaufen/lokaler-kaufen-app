@@ -210,6 +210,12 @@ class ShopServiceImpl implements ShopService {
         }
 
         Shop shop = findByIdOrThrow(id);
+
+        if (shop.getImageId() != null && !shop.getImageId().equals(imageId)) {
+            // Shop had an image which is different from the new image -> delete old image
+            imageService.deleteImage(shop.getImageId());
+        }
+
         Shop updatedShop = shop.withImageId(imageId);
         shopRepository.update(updatedShop);
         return updatedShop;

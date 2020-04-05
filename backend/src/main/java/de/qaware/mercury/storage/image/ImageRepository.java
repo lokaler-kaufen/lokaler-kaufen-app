@@ -11,4 +11,6 @@ public interface ImageRepository {
     InputStream loadImage(Image.Id imageId, String filename) throws ImageNotFoundException;
 
     boolean hasImage(Image.Id imageId, String filename);
+
+    void deleteImage(Image.Id imageId, String filename);
 }

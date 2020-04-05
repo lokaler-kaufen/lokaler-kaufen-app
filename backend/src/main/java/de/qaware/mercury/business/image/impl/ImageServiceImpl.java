@@ -76,6 +76,13 @@ class ImageServiceImpl implements ImageService {
         return imageRepository.hasImage(imageId, generateFilename(imageId));
     }
 
+    @Override
+    public void deleteImage(Image.Id imageId) {
+        log.info("Deleting image {}", imageId);
+
+        imageRepository.deleteImage(imageId, generateFilename(imageId));
+    }
+
     private String generateFilename(Image.Id imageId) {
         return imageId.getId() + IMAGE_FORMAT.getExtension();
     }

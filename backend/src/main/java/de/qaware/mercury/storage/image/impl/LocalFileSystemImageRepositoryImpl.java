@@ -64,6 +64,17 @@ class LocalFileSystemImageRepositoryImpl implements ImageRepository {
         return Files.exists(path);
     }
 
+    @Override
+    public void deleteImage(Image.Id imageId, String filename) {
+        Path path = getImagePath(filename);
+        log.debug("Deleting image {} in file {}", imageId, path);
+        try {
+            Files.deleteIfExists(path);
+        } catch (IOException e) {
+            throw new ImageStorageException(String.format("Failed to delete image %s from %s", imageId, path), e);
+        }
+    }
+
     private Path getImagePath(String filename) {
         return configuration.getStorageLocationAsPath().resolve(filename).toAbsolutePath();
     }

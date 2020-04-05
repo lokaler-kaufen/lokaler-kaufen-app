@@ -17,4 +17,6 @@ public interface ImageService {
     ImageFormat getImageFormat();
 
     boolean hasImage(Image.Id imageId);
+
+    void deleteImage(Image.Id imageId);
 }
