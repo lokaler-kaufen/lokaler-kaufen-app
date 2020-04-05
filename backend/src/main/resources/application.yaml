@@ -18,7 +18,7 @@ mercury:
     devControllerEnabled: false
     publicUrlTemplate: ""
     storageLocation: ""
-    size: 500 # pixel
+    size: 250 # pixel
     quality: 90
   cookies:
     secure: true

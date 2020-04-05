@@ -6,11 +6,9 @@ spring.datasource:
 
 mercury:
   images:
+    devControllerEnabled: true
     publicUrlTemplate: "http://localhost:8080/dev/image/{{ filename }}"
     storageLocation: "/tmp/mercury-images"
-    devControllerEnabled: true
-    size: 500 # pixel
-    quality: 90
   cookies:
     secure: false
   email:
