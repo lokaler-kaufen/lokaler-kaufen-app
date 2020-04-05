@@ -46,7 +46,7 @@ class ShopServiceImplSpec extends Specification {
         List<Shop> all = shopService.listAll()
 
         then:
-        1 * shopRepository.listAll() >> [new Shop.ShopBuilder().build()]
+        1 * shopRepository.listAll() >> [ShopFixtures.create()]
         all.size() == 1
     }
 
@@ -99,7 +99,7 @@ class ShopServiceImplSpec extends Specification {
         shopService.delete(id)
 
         then:
-        1 * shopRepository.findById(id) >> new Shop.ShopBuilder().build()
+        1 * shopRepository.findById(id) >> ShopFixtures.create()
         1 * shopRepository.deleteById(id)
         noExceptionThrown()
     }
