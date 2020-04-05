@@ -268,7 +268,7 @@ export class ShopCreationPageComponent implements OnInit {
     const file = event.target.files[0];
     console.log(file.type);
     // not supported file type
-    if (!['image/png', 'image/jpeg', 'image/svg+xml'].includes(file.type)) {
+    if (!['image/png', 'image/jpeg'].includes(file.type)) {
       this.wrongFileExtension = true;
       return;
     }

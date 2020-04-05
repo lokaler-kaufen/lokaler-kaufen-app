@@ -153,8 +153,7 @@
     <button (click)="fileInput.click()">Datei auswählen...</button>
     <mat-error *ngIf="fileIsTooBig">Die Datei ist zu groß. Bitte wählen Sie eine Datei aus, die maximal 2 MB groß ist.
     </mat-error>
-    <mat-error *ngIf="wrongFileExtension">Bitte wählen Sie eine Datei mit der Endung '.png', '.jpeg', '.jpg' oder '.svg'
-      aus.
+    <mat-error *ngIf="wrongFileExtension">Bitte wählen Sie eine Datei mit der Endung '.png', '.jpeg' oder '.jpg' aus.
     </mat-error>
     <div>
       <button mat-button matStepperPrevious>Zurück</button>
