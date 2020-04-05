@@ -35,9 +35,10 @@ class GMImageScalerImpl implements ImageScaler {
     private InputStream scaleImpl(InputStream data, int maxSize, ImageFormat format, int quality) throws IOException, InterruptedException {
         Path outputImage = Files.createTempFile("mercury-image-", format.getExtension()).toAbsolutePath();
 
-        // gm convert [input] -resize WxH -quality [quality] [output]
+        // See http://www.graphicsmagick.org/convert.html
+        String resolution = String.format("%dx%d", maxSize, maxSize);
         String[] args = {
-            "gm", "convert", "-", "-resize", String.format("%dx%d", maxSize, maxSize), "-quality", Integer.toString(quality), outputImage.toString()
+            "gm", "convert", "-size", resolution, "-", "-resize", resolution, "-quality", Integer.toString(quality), "+profile", "*", outputImage.toString()
         };
 
         // Start GraphicsMagick
