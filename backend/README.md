@@ -3,7 +3,9 @@
 ## Preconditions
 
 * `docker` or `podman` to run the PostgreSQL database
-* `ImageMagick` to process uploaded images
+* `GraphicsMagick` to process uploaded images
+  * Mac: `https://formulae.brew.sh/formula/graphicsmagick`
+  * Linux: `dnf install GraphicsMagick`
 
 ## Run it
 

@@ -13,11 +13,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 /**
- * Uses ImageMagick to resize and convert the images.
+ * Uses GraphicsMagick to resize and convert the images.
  */
 @Service
 @Slf4j
-class IMImageScalerImpl implements ImageScaler {
+class GMImageScalerImpl implements ImageScaler {
     private static final int EXIT_CODE_SUCCESS = 0;
 
     @Override
@@ -35,27 +35,27 @@ class IMImageScalerImpl implements ImageScaler {
     private InputStream scaleImpl(InputStream data, int maxSize, ImageFormat format, int quality) throws IOException, InterruptedException {
         Path outputImage = Files.createTempFile("mercury-image-", format.getExtension()).toAbsolutePath();
 
-        // convert [input] -resize WxH -quality [quality] [output]
+        // gm convert [input] -resize WxH -quality [quality] [output]
         String[] args = {
-            "convert", "-", "-resize", String.format("%dx%d", maxSize, maxSize), "-quality", Integer.toString(quality), outputImage.toString()
+            "gm", "convert", "-", "-resize", String.format("%dx%d", maxSize, maxSize), "-quality", Integer.toString(quality), outputImage.toString()
         };
 
-        // Start ImageMagick
+        // Start GraphicsMagick
         String commandLine = String.join(" ", args);
         log.debug("Starting process '{}'", commandLine);
         Process process = new ProcessBuilder(args).start();
 
-        // We pipe the data stream directly into the stdin of ImageMagick
-        log.debug("Piping image to ImageMagick ...");
+        // We pipe the data stream directly into the stdin of GraphicsMagick
+        log.debug("Piping image to GraphicsMagick ...");
         // process.getOutputStream() returns the stdin of the process, wtf
         long transferred = data.transferTo(process.getOutputStream());
         process.getOutputStream().close();
         log.debug("Done, piped {} bytes", transferred);
 
-        // Now wait for ImageMagick to quit
-        log.debug("Waiting for ImageMagick to exit ...");
+        // Now wait for GraphicsMagick to quit
+        log.debug("Waiting for GraphicsMagick to exit ...");
         int exitCode = process.waitFor();
-        log.debug("ImageMagick exited with code {}", exitCode);
+        log.debug("GraphicsMagick exited with code {}", exitCode);
 
         if (exitCode != EXIT_CODE_SUCCESS) {
             Files.deleteIfExists(outputImage);
