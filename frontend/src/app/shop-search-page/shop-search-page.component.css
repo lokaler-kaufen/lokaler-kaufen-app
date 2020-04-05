@@ -42,6 +42,10 @@ tr:not(.example-expanded-row):hover {
   display: block;
 }
 
+.default-logo {
+  height: 80px;
+}
+
 .shop-titel {
   justify-content: start;
 }
