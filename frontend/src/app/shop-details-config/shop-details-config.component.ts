@@ -19,13 +19,9 @@ import {ImageService} from '../shared/image.service';
 
 export interface UpdateShopData {
   image: File;
+  deleteImage: boolean,
   updateShopDto: UpdateShopDto;
   id: string;
-}
-
-export interface ShopImage {
-  data: File,
-  progress: number
 }
 
 @Component({
@@ -56,7 +52,7 @@ export class ShopDetailsConfigComponent implements OnInit {
   details: ShopOwnerDetailDto = {};
   citySuggestions: LocationSuggestionDto[] = [];
 
-  image: ShopImage = {data: null, progress: 0};
+  image: File;
 
   constructor(private formBuilder: FormBuilder,
               private matDialog: MatDialog,
@@ -192,7 +188,7 @@ export class ShopDetailsConfigComponent implements OnInit {
       return;
     }
     console.log('Update shop');
-    const updateShopDto: UpdateShopDto = {};
+    const updateShopDto: UpdateShopDto = this.details as UpdateShopDto;
     updateShopDto.ownerName = this.nameFormGroup.get('nameCtrl').value;
     updateShopDto.name = this.nameFormGroup.get('businessNameCtrl').value;
     updateShopDto.street = this.addressFormGroup.get('streetCtrl').value;
@@ -226,7 +222,8 @@ export class ShopDetailsConfigComponent implements OnInit {
     this.updateShopEvent.next({
       updateShopDto,
       id: this.details.id,
-      image: this.image.data
+      image: this.image,
+      deleteImage: this.deleteImage
     });
   }
 
@@ -278,9 +275,10 @@ export class ShopDetailsConfigComponent implements OnInit {
       this.fileIsTooBig = true;
       return;
     }
-    this.image.data = file;
+    this.image = file;
     this.fileIsTooBig = false;
     this.wrongFileExtension = false;
+    this.deleteImage = false;
   }
 
   private getRightSlot(day: string, slots: SlotConfigDto): DayDto {
@@ -309,4 +307,11 @@ export class ShopDetailsConfigComponent implements OnInit {
     }
   }
 
+  deleteImage: boolean = false;
+
+  onDeleteFile() {
+    this.details.imageUrl = null;
+    this.image = null;
+    this.deleteImage = true;
+  }
 }

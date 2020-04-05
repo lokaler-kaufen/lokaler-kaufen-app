@@ -46,6 +46,12 @@ export class ShopManagementPageComponent implements OnInit {
     if ($event.image) {
       this.updateImageAndDetails($event);
     } else {
+      if ($event.deleteImage) {
+        this.imageService.delete().toPromise().then(() => console.log('Image deleted.')).catch(error => {
+          console.log('Could not delete image.');
+          this.notificationsService.error('Tut uns Leid!', 'Wir konnten dein Bild leider nicht löschen.');
+        });
+      }
       this.updateShopDto($event);
     }
   }

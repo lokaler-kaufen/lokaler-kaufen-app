@@ -143,16 +143,28 @@
   </mat-step>
   <mat-step [optional]="true">
     <ng-template matStepLabel>Sie haben ein Logo?</ng-template>
-    <p>Bitte beachten Sie die maximale Dateigröße von 5 MB.</p>
-    <input
-      style="display: none"
-      type="file" (change)="onFileChanged($event)"
-      #fileInput>
-    <div *ngIf="this.image.data">{{this.image.data.name}}</div>
-    <button (click)="fileInput.click()">Datei auswählen...</button>
-    <mat-error *ngIf="fileIsTooBig">Die Datei ist zu groß. Bitte wählen Sie eine Datei aus, die maximal 2 MB groß ist.
-    </mat-error>
-    <mat-error *ngIf="wrongFileExtension">Bitte wählen Sie eine Datei mit der Endung '.png', '.jpeg' oder '.jpg' aus.
-    </mat-error>
+    <div style="display: flex; align-items: flex-end;">
+      <div *ngIf="details.imageUrl" style="display: flex; flex-direction: column; padding-right: 15px; ">
+        <img style="max-width: 80px;" src=
+          "{{details.imageUrl}}"
+             alt="Shop logo">
+        <div>
+          <button (click)="onDeleteFile()">Datei löschen</button>
+        </div>
+      </div>
+      <div>
+      <p>Bitte beachten Sie die maximale Dateigröße von 5 MB.</p>
+      <input
+        style="display: none"
+        type="file" (change)="onFileChanged($event)"
+        #fileInput>
+      <div *ngIf="this.image">{{this.image.name}}</div>
+      <button (click)="fileInput.click()">Datei auswählen...</button>
+      <mat-error *ngIf="fileIsTooBig">Die Datei ist zu groß. Bitte wählen Sie eine Datei aus, die maximal 2 MB groß ist.
+      </mat-error>
+      <mat-error *ngIf="wrongFileExtension">Bitte wählen Sie eine Datei mit der Endung '.png', '.jpeg' oder '.jpg' aus.
+      </mat-error>
+      </div>
+    </div>
   </mat-step>
 </mat-vertical-stepper>

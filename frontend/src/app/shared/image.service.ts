@@ -17,4 +17,7 @@ export class ImageService {
     });
   }
 
+  delete() {
+    return this.client.delete<any>(this.BASE_URL);
+  }
 }
