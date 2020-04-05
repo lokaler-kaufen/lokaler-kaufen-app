@@ -277,7 +277,7 @@ export class ShopCreationPageComponent implements OnInit {
       this.fileIsTooBig = true;
       return;
     }
-    this.image.data = file;
+    this.image = file;
     this.fileIsTooBig = false;
     this.wrongFileExtension = false;
   }
