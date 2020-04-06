@@ -77,6 +77,6 @@ public class LocationServiceImpl implements LocationService {
     @Value(staticConstructor = "of")
     static class LocationKey {
         String zipCode;
-        String Name;
+        String name;
     }
 }
