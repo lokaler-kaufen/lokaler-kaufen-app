@@ -1,6 +1,6 @@
 Hallo {{ ownerName }},
 
-{{ name }} möchte am {{ date }} zwischen {{ start }} Uhr und {{ end }} Uhr kontaktiert werden.
+{{ customerName }} möchte am {{ date }} zwischen {{ start }} Uhr und {{ end }} Uhr kontaktiert werden.
 Sie erreichen {{ name }} mittels {{ contactType }} unter {{ contact }}.
 
 Um die Reservierung abzusagen, klicken Sie einfach auf diesen Link:

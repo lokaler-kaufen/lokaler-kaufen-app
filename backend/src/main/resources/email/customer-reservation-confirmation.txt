@@ -1,4 +1,4 @@
-Hallo {{ name }},
+Hallo {{ customerName }},
 
 {{ shopName }} ruft Sie per {{ contactType }} am {{ date }} zwischen {{ start }} Uhr und {{ end }} Uhr unter {{ contact }} an.
 Bitte beachten Sie, dass es zu Stoßzeiten zu Verzögerungen kommen kann.

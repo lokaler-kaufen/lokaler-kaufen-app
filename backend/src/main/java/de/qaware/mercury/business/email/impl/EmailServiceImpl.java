@@ -53,48 +53,48 @@ class EmailServiceImpl implements EmailService {
         ShopCreationToken token = tokenService.createShopCreationToken(email);
 
         String creationLink = config.getCreationLinkTemplate()
-            .replace("{{ token }}", token.getToken());
+            .replace(EmailTemplateConstants.TOKEN, token.getToken());
         String body = loadTemplate("/email/shop-creation.txt")
-            .replace("{{ link }}", creationLink);
+            .replace(EmailTemplateConstants.SHOP_CREATION_LINK, creationLink);
 
         emailSender.sendEmail(email, SHOP_CREATION_SUBJECT, body);
     }
 
     @Override
-    public void sendCustomerReservationConfirmation(Shop shop, String email, String name, LocalDateTime slotStart, LocalDateTime slotEnd, ContactType contactType, String contact, Reservation.Id reservationId) {
+    public void sendCustomerReservationConfirmation(Shop shop, String email, String customerName, LocalDateTime slotStart, LocalDateTime slotEnd, ContactType contactType, String contact, Reservation.Id reservationId) {
         ReservationCancellationToken token = tokenService.createReservationCancellationToken(reservationId, ReservationCancellationSide.CUSTOMER, slotStart);
         String cancelReservationLink = config.getReservationCancellationLinkTemplate()
-            .replace("{{ token }}", token.getToken());
+            .replace(EmailTemplateConstants.TOKEN, token.getToken());
 
         String body = loadTemplate("/email/customer-reservation-confirmation.txt")
-            .replace("{{ name }}", name)
-            .replace("{{ shopName }}", shop.getName())
-            .replace("{{ ownerName }}", shop.getOwnerName())
-            .replace("{{ contactType }}", contactType.getHumanReadable())
-            .replace("{{ date }}", dateTimeI18nService.formatDate(slotStart))
-            .replace("{{ start }}", dateTimeI18nService.formatTime(slotStart))
-            .replace("{{ end }}", dateTimeI18nService.formatTime(slotEnd))
-            .replace("{{ contact }}", contact)
-            .replace("{{ cancelReservationLink }}", cancelReservationLink);
+            .replace(EmailTemplateConstants.CUSTOMER_NAME, customerName)
+            .replace(EmailTemplateConstants.SHOP_NAME, shop.getName())
+            .replace(EmailTemplateConstants.OWNER_NAME, shop.getOwnerName())
+            .replace(EmailTemplateConstants.CONTACT_TYPE, contactType.getHumanReadable())
+            .replace(EmailTemplateConstants.SLOT_DATE, dateTimeI18nService.formatDate(slotStart))
+            .replace(EmailTemplateConstants.SLOT_START_TIME, dateTimeI18nService.formatTime(slotStart))
+            .replace(EmailTemplateConstants.SLOT_END_TIME, dateTimeI18nService.formatTime(slotEnd))
+            .replace(EmailTemplateConstants.CONTACT, contact)
+            .replace(EmailTemplateConstants.CANCEL_RESERVATION_LINK, cancelReservationLink);
 
         emailSender.sendEmail(email, CUSTOMER_RESERVATION_CONFIRMATION_SUBJECT, body);
     }
 
     @Override
-    public void sendShopNewReservation(Shop shop, String name, LocalDateTime slotStart, LocalDateTime slotEnd, ContactType contactType, String contact, Reservation.Id reservationId) {
+    public void sendShopNewReservation(Shop shop, String customerName, LocalDateTime slotStart, LocalDateTime slotEnd, ContactType contactType, String contact, Reservation.Id reservationId) {
         ReservationCancellationToken token = tokenService.createReservationCancellationToken(reservationId, ReservationCancellationSide.SHOP, slotStart);
         String cancelReservationLink = config.getReservationCancellationLinkTemplate()
-            .replace("{{ token }}", token.getToken());
+            .replace(EmailTemplateConstants.TOKEN, token.getToken());
 
         String body = loadTemplate("/email/shop-new-reservation.txt")
-            .replace("{{ name }}", name)
-            .replace("{{ ownerName }}", shop.getOwnerName())
-            .replace("{{ contactType }}", contactType.getHumanReadable())
-            .replace("{{ date }}", dateTimeI18nService.formatDate(slotStart))
-            .replace("{{ start }}", dateTimeI18nService.formatTime(slotStart))
-            .replace("{{ end }}", dateTimeI18nService.formatTime(slotEnd))
-            .replace("{{ contact }}", contact)
-            .replace("{{ cancelReservationLink }}", cancelReservationLink);
+            .replace(EmailTemplateConstants.CUSTOMER_NAME, customerName)
+            .replace(EmailTemplateConstants.OWNER_NAME, shop.getOwnerName())
+            .replace(EmailTemplateConstants.CONTACT_TYPE, contactType.getHumanReadable())
+            .replace(EmailTemplateConstants.SLOT_DATE, dateTimeI18nService.formatDate(slotStart))
+            .replace(EmailTemplateConstants.SLOT_START_TIME, dateTimeI18nService.formatTime(slotStart))
+            .replace(EmailTemplateConstants.SLOT_END_TIME, dateTimeI18nService.formatTime(slotEnd))
+            .replace(EmailTemplateConstants.CONTACT, contact)
+            .replace(EmailTemplateConstants.CANCEL_RESERVATION_LINK, cancelReservationLink);
 
         emailSender.sendEmail(shop.getEmail(), SHOP_NEW_RESERVATION_SUBJECT, body);
     }
@@ -102,10 +102,10 @@ class EmailServiceImpl implements EmailService {
     @Override
     public void sendShopPasswordResetEmail(String email, PasswordResetToken token) {
         String resetLink = config.getShopPasswordResetLinkTemplate()
-            .replace("{{ token }}", token.getToken());
+            .replace(EmailTemplateConstants.TOKEN, token.getToken());
 
         String body = loadTemplate("/email/shop-passwort-reset.txt")
-            .replace("{{ link }}", resetLink);
+            .replace(EmailTemplateConstants.PASSWORD_RESET_LINK, resetLink);
 
         emailSender.sendEmail(email, SHOP_RESET_PASSWORD_SUBJECT, body);
     }
@@ -113,10 +113,10 @@ class EmailServiceImpl implements EmailService {
     @Override
     public void sendReservationCancellationToCustomer(Shop shop, Reservation reservation) {
         String body = loadTemplate("/email/reservation-cancellation-to-customer.txt")
-            .replace("{{ shopName }}", shop.getName())
-            .replace("{{ customerName }}", reservation.getName())
-            .replace("{{ date }}", dateTimeI18nService.formatDate(reservation.getStart()))
-            .replace("{{ start }}", dateTimeI18nService.formatTime(reservation.getStart()));
+            .replace(EmailTemplateConstants.SHOP_NAME, shop.getName())
+            .replace(EmailTemplateConstants.CUSTOMER_NAME, reservation.getName())
+            .replace(EmailTemplateConstants.SLOT_DATE, dateTimeI18nService.formatDate(reservation.getStart()))
+            .replace(EmailTemplateConstants.SLOT_END_TIME, dateTimeI18nService.formatTime(reservation.getStart()));
 
         emailSender.sendEmail(reservation.getEmail(), RESERVATION_CANCELLATION_SUBJECT, body);
     }
@@ -124,10 +124,10 @@ class EmailServiceImpl implements EmailService {
     @Override
     public void sendReservationCancellationToShop(Shop shop, Reservation reservation) {
         String body = loadTemplate("/email/reservation-cancellation-to-shop.txt")
-            .replace("{{ shopName }}", shop.getName())
-            .replace("{{ customerName }}", reservation.getName())
-            .replace("{{ date }}", dateTimeI18nService.formatDate(reservation.getStart()))
-            .replace("{{ start }}", dateTimeI18nService.formatTime(reservation.getStart()));
+            .replace(EmailTemplateConstants.SHOP_NAME, shop.getName())
+            .replace(EmailTemplateConstants.CUSTOMER_NAME, reservation.getName())
+            .replace(EmailTemplateConstants.SLOT_DATE, dateTimeI18nService.formatDate(reservation.getStart()))
+            .replace(EmailTemplateConstants.SLOT_START_TIME, dateTimeI18nService.formatTime(reservation.getStart()));
 
         emailSender.sendEmail(shop.getEmail(), RESERVATION_CANCELLATION_SUBJECT, body);
     }
@@ -135,8 +135,8 @@ class EmailServiceImpl implements EmailService {
     @Override
     public void sendReservationCancellationConfirmation(String email, Reservation reservation) {
         String body = loadTemplate("/email/reservation-cancellation-confirmation.txt")
-            .replace("{{ date }}", dateTimeI18nService.formatDate(reservation.getStart()))
-            .replace("{{ start }}", dateTimeI18nService.formatTime(reservation.getStart()));
+            .replace(EmailTemplateConstants.SLOT_DATE, dateTimeI18nService.formatDate(reservation.getStart()))
+            .replace(EmailTemplateConstants.SLOT_START_TIME, dateTimeI18nService.formatTime(reservation.getStart()));
 
         emailSender.sendEmail(email, RESERVATION_CANCELLATION_CONFIRMATION_SUBJECT, body);
     }
@@ -144,7 +144,7 @@ class EmailServiceImpl implements EmailService {
     @Override
     public void sendShopCreatedApprovalNeeded(Shop shop) {
         String body = loadTemplate("/email/shop-created-approval-needed.txt")
-            .replace("{{ ownerName }}", shop.getOwnerName());
+            .replace(EmailTemplateConstants.OWNER_NAME, shop.getOwnerName());
 
         emailSender.sendEmail(shop.getEmail(), SHOP_CREATED_APPROVAL_NEEDED_SUBJECT, body);
     }
@@ -152,7 +152,7 @@ class EmailServiceImpl implements EmailService {
     @Override
     public void sendShopApproved(Shop shop) {
         String body = loadTemplate("/email/shop-approved.txt")
-            .replace("{{ ownerName }}", shop.getOwnerName());
+            .replace(EmailTemplateConstants.OWNER_NAME, shop.getOwnerName());
 
         emailSender.sendEmail(shop.getEmail(), SHOP_APPROVED_SUBJECT, body);
     }
@@ -160,7 +160,7 @@ class EmailServiceImpl implements EmailService {
     @Override
     public void sendShopApprovalRevoked(Shop shop) {
         String body = loadTemplate("/email/shop-disapproved.txt")
-            .replace("{{ ownerName }}", shop.getOwnerName());
+            .replace(EmailTemplateConstants.OWNER_NAME, shop.getOwnerName());
 
         emailSender.sendEmail(shop.getEmail(), SHOP_DISAPPROVED_SUBJECT, body);
     }
@@ -173,16 +173,16 @@ class EmailServiceImpl implements EmailService {
         }
 
         String body = loadTemplate("/email/admin-shop-approval-needed.txt")
-            .replace("{{ shopName }}", shop.getName())
-            .replace("{{ ownerName }}", shop.getOwnerName())
-            .replace("{{ email }}", shop.getEmail())
-            .replace("{{ street }}", shop.getStreet())
-            .replace("{{ zipCode }}", shop.getZipCode())
-            .replace("{{ city }}", shop.getCity())
-            .replace("{{ addressSupplement }}", shop.getAddressSupplement())
-            .replace("{{ website }}", Null.or(shop.getWebsite(), ""))
-            .replace("{{ details }}", shop.getDetails())
-            .replace("{{ adminUiLink }}", config.getAdminUiLink());
+            .replace(EmailTemplateConstants.SHOP_NAME, shop.getName())
+            .replace(EmailTemplateConstants.OWNER_NAME, shop.getOwnerName())
+            .replace(EmailTemplateConstants.SHOP_EMAIL_ADDRESS, shop.getEmail())
+            .replace(EmailTemplateConstants.SHOP_STREET, shop.getStreet())
+            .replace(EmailTemplateConstants.SHOP_ZIP_CODE, shop.getZipCode())
+            .replace(EmailTemplateConstants.SHOP_CITY, shop.getCity())
+            .replace(EmailTemplateConstants.SHOP_ADDRESS_SUPPLEMENT, shop.getAddressSupplement())
+            .replace(EmailTemplateConstants.SHOP_WEBSITE, Null.or(shop.getWebsite(), ""))
+            .replace(EmailTemplateConstants.SHOP_DETAILS, shop.getDetails())
+            .replace(EmailTemplateConstants.ADMIN_UI_LINK, config.getAdminUiLink());
 
         emailSender.sendEmails(Lists.map(admins, Admin::getEmail), ADMIN_SHOP_APPROVAL_NEEDED, body);
     }
