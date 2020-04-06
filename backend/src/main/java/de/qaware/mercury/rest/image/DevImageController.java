@@ -38,7 +38,7 @@ public class DevImageController {
     private final ImageService imageService;
 
     @GetMapping("/{filename}")
-    ResponseEntity<byte[]> loadImage(@PathVariable String filename) throws ImageNotFoundException, IOException {
+    public ResponseEntity<byte[]> loadImage(@PathVariable String filename) throws ImageNotFoundException, IOException {
         int dot = filename.lastIndexOf('.');
         Image.Id imageId;
         if (dot == -1) {
