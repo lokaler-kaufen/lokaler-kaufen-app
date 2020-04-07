@@ -1,1 +1,2 @@
-*.ts linguist-language=TypeScript
+# The large zip code file makes SQL the predominant language in the project
+*.sql linguist-detectable=false
