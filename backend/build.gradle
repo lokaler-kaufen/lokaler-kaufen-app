@@ -4,9 +4,13 @@ plugins {
     id 'java'
     id 'groovy'
     id 'jacoco'
+    id 'idea'
     id "org.sonarqube" version "2.8"
     // Writes git.properties with commit hash, etc.
     id "com.gorylenko.gradle-git-properties" version "2.2.2"
+
+    id "com.github.erdi.webdriver-binaries" version "2.2"
+    id "com.github.erdi.idea-base" version "2.2"
 }
 
 group = 'de.qaware.mercury'
@@ -18,10 +22,24 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
+
+    e2eTestCompile.extendsFrom testImplementation
+    e2eTestRuntime.extendsFrom testRuntime
 }
 
 repositories {
     mavenCentral()
+}
+
+ext {
+    drivers = ["firefox", "chrome", "chromeHeadless"]
+
+    ext {
+        gebVersion = '3.4'
+        seleniumVersion = '3.14.0'
+        chromeDriverVersion = '79.0.3945.36'
+        geckoDriverVersion = '0.26.0'
+    }
 }
 
 dependencies {
@@ -66,6 +84,10 @@ dependencies {
 
     testRuntimeOnly "net.bytebuddy:byte-buddy:1.9.3"
     testRuntimeOnly "org.objenesis:objenesis:2.6"
+
+    e2eTestCompile "org.gebish:geb-spock:$gebVersion"
+    e2eTestCompile "org.seleniumhq.selenium:selenium-chrome-driver:$seleniumVersion"
+    e2eTestCompile "org.seleniumhq.selenium:selenium-firefox-driver:$seleniumVersion"
 }
 
 test {
@@ -113,3 +135,57 @@ bootJar {
 
 // have some fun ./gradlew kick ass
 task kick(dependsOn: clean) {}
+
+sourceSets {
+    e2eTest {
+        groovy {
+            compileClasspath += sourceSets.main.output + configurations.e2eTestCompile
+            runtimeClasspath += output + compileClasspath + configurations.e2eTestRuntime
+            srcDir file('src/e2e/groovy')
+        }
+        resources.srcDir file('src/e2e/resources')
+    }
+}
+
+idea {
+    module {
+        testSourceDirs += sourceSets.e2eTest.groovy.srcDirs
+        testResourceDirs += sourceSets.e2eTest.resources.srcDirs
+        scopes.TEST.plus += [ configurations.e2eTestCompile, configurations.testCompile ]
+    }
+}
+
+webdriverBinaries {
+    chromedriver {
+        version = chromeDriverVersion
+        fallbackTo32Bit = true
+    }
+    geckodriver {
+        version = geckoDriverVersion
+    }
+}
+
+drivers.each { driver ->
+    task "${driver}Test"(type: Test) {
+        group JavaBasePlugin.VERIFICATION_GROUP
+
+        useJUnitPlatform()
+
+        testClassesDirs = sourceSets.e2eTest.output
+        classpath = sourceSets.e2eTest.runtimeClasspath
+
+        testLogging {
+            events "passed", "skipped", "failed"
+        }
+
+        reports {
+            html.enabled = true
+        }
+
+        outputs.upToDateWhen { false }
+
+        systemProperty "geb.build.baseUrl", System.getProperty("baseUrl", "http://localhost:4200")
+        systemProperty "geb.build.reportsDir", reporting.file("geb/$name")
+        systemProperty "geb.env", driver
+    }
+}
