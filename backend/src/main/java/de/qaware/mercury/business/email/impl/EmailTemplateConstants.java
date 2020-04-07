@@ -3,8 +3,7 @@ package de.qaware.mercury.business.email.impl;
 /**
  * Contains all placeholders for e-mail texts.
  */
-public class EmailTemplateConstants {
-
+public final class EmailTemplateConstants {
     private EmailTemplateConstants() {
         // hide constructor; no instances needed.
     }
@@ -31,5 +30,4 @@ public class EmailTemplateConstants {
     public static final String SHOP_DETAILS = "{{ details }}";
 
     public static final String ADMIN_UI_LINK = "{{ adminUiLink}}";
-
 }
