@@ -26,8 +26,8 @@ public final class EmailTemplateConstants {
     public static final String SHOP_ZIP_CODE = "{{ zipCode }}";
     public static final String SHOP_CITY = "{{ city }}";
     public static final String SHOP_ADDRESS_SUPPLEMENT = "{{ addressSupplement }}";
-    public static final String SHOP_WEBSITE = "{{ addressSupplement }}";
+    public static final String SHOP_WEBSITE = "{{ website }}";
     public static final String SHOP_DETAILS = "{{ details }}";
 
-    public static final String ADMIN_UI_LINK = "{{ adminUiLink}}";
+    public static final String ADMIN_UI_LINK = "{{ adminUiLink }}";
 }
