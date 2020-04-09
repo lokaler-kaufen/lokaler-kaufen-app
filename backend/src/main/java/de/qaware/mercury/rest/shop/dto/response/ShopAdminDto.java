@@ -18,23 +18,23 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ShopAdminDto {
-    String id;
-    String name;
-    String ownerName;
-    String email;
-    String street;
-    String zipCode;
-    String city;
-    String addressSupplement;
-    Map<String, String> contacts;
-    boolean enabled;
-    boolean approved;
-    String details;
+    private String id;
+    private String name;
+    private String ownerName;
+    private String email;
+    private String street;
+    private String zipCode;
+    private String city;
+    private String addressSupplement;
+    private Map<String, String> contacts;
+    private boolean enabled;
+    private boolean approved;
+    private String details;
     @Nullable
-    String imageUrl;
+    private String imageUrl;
     @Nullable
-    String website;
-    SlotConfigDto slots;
+    private String website;
+    private SlotConfigDto slots;
 
     public static ShopAdminDto of(Shop shop, ImageService imageService) {
         URI imageUrl = imageService.generatePublicUrl(shop.getImageId());
