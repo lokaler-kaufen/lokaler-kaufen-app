@@ -5,7 +5,10 @@ import de.qaware.mercury.business.login.AdminLoginService;
 import de.qaware.mercury.business.login.AdminToken;
 import de.qaware.mercury.business.login.LoginException;
 import de.qaware.mercury.business.login.TokenWithExpiry;
+import de.qaware.mercury.business.login.VerifiedToken;
+import de.qaware.mercury.business.time.Clock;
 import de.qaware.mercury.rest.login.dto.request.LoginDto;
+import de.qaware.mercury.rest.login.dto.response.TokenInfoDto;
 import de.qaware.mercury.rest.login.dto.response.WhoAmIDto;
 import de.qaware.mercury.rest.plumbing.authentication.AuthenticationHelper;
 import de.qaware.mercury.rest.util.cookie.CookieHelper;
@@ -34,6 +37,7 @@ class AdminLoginController {
     private final AuthenticationHelper authenticationHelper;
     private final AdminLoginService adminLoginService;
     private final CookieHelper cookieHelper;
+    private final Clock clock;
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public void login(@Valid @RequestBody LoginDto request, HttpServletResponse response) throws LoginException {
@@ -51,5 +55,15 @@ class AdminLoginController {
     public WhoAmIDto whoami(HttpServletRequest request) throws LoginException {
         Admin admin = authenticationHelper.authenticateAdmin(request);
         return new WhoAmIDto(admin.getEmail());
+    }
+
+    @GetMapping("/token-info")
+    public TokenInfoDto tokenInfo(HttpServletRequest request) {
+        VerifiedToken<Admin.Id> token = authenticationHelper.getAdminTokenInfo(request);
+        if (token == null) {
+            return TokenInfoDto.notLoggedIn();
+        } else {
+            return TokenInfoDto.loggedIn(token, clock.nowZoned());
+        }
     }
 }

@@ -8,6 +8,7 @@ import de.qaware.mercury.business.login.LoginException
 import de.qaware.mercury.business.login.PasswordHasher
 import de.qaware.mercury.business.login.TokenService
 import de.qaware.mercury.business.login.TokenWithExpiry
+import de.qaware.mercury.business.login.VerifiedToken
 import de.qaware.mercury.business.time.Clock
 import de.qaware.mercury.business.uuid.UUIDFactory
 import de.qaware.mercury.storage.admin.AdminRepository
@@ -17,6 +18,7 @@ import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
 import spock.lang.Unroll
 
+import java.time.Instant
 import java.time.ZonedDateTime
 
 @ContextConfiguration(classes = AdminLoginServiceImpl)
@@ -100,7 +102,7 @@ class AdminLoginServiceImplSpec extends Specification {
         Admin verified = loginService.verify(token)
 
         then:
-        1 * tokenService.verifyAdminToken(token) >> id
+        1 * tokenService.verifyAdminToken(token) >> new VerifiedToken<>(id, Instant.now())
         1 * adminRepository.findById(id) >> admin
         verified == admin
     }
@@ -114,7 +116,7 @@ class AdminLoginServiceImplSpec extends Specification {
         loginService.verify(token)
 
         then:
-        1 * tokenService.verifyAdminToken(token) >> id
+        1 * tokenService.verifyAdminToken(token) >> new VerifiedToken<>(id, Instant.now())
         1 * adminRepository.findById(id) >> null
         thrown LoginException
     }

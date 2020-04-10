@@ -1,7 +1,13 @@
 package de.qaware.mercury.rest.plumbing.authentication;
 
 import de.qaware.mercury.business.admin.Admin;
-import de.qaware.mercury.business.login.*;
+import de.qaware.mercury.business.login.AdminLoginService;
+import de.qaware.mercury.business.login.AdminToken;
+import de.qaware.mercury.business.login.LoginException;
+import de.qaware.mercury.business.login.ShopLogin;
+import de.qaware.mercury.business.login.ShopLoginService;
+import de.qaware.mercury.business.login.ShopToken;
+import de.qaware.mercury.business.login.VerifiedToken;
 import de.qaware.mercury.business.shop.Shop;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -53,12 +59,48 @@ public class AuthenticationHelper {
 
         if (cookie != null) {
             log.debug("Token found in cookie");
-                return shopLoginService.verify(ShopToken.of(cookie.getValue()));
+            return shopLoginService.verify(ShopToken.of(cookie.getValue()));
         }
 
         // Neither cookie nor header set
         log.debug("Neither cookie nor Authorization header contain token");
         throw LoginException.noCredentialsFound();
+    }
+
+    @Nullable
+    public VerifiedToken<Admin.Id> getAdminTokenInfo(HttpServletRequest request) {
+        Cookie cookie = findCookie(request, ADMIN_COOKIE_NAME);
+        String authorizationHeader = findAuthorizationHeader(request);
+
+        if (authorizationHeader != null) {
+            log.debug("Token found in Authorization header");
+            return adminLoginService.getTokenInfo(AdminToken.of(authorizationHeader));
+        }
+
+        if (cookie != null) {
+            log.debug("Token found in cookie");
+            return adminLoginService.getTokenInfo(AdminToken.of(cookie.getValue()));
+        }
+
+        return null;
+    }
+
+    @Nullable
+    public VerifiedToken<ShopLogin.Id> getShopTokenInfo(HttpServletRequest request) {
+        Cookie cookie = findCookie(request, SHOP_COOKIE_NAME);
+        String authorizationHeader = findAuthorizationHeader(request);
+
+        if (authorizationHeader != null) {
+            log.debug("Token found in Authorization header");
+            return shopLoginService.getTokenInfo(ShopToken.of(authorizationHeader));
+        }
+
+        if (cookie != null) {
+            log.debug("Token found in cookie");
+            return shopLoginService.getTokenInfo(ShopToken.of(cookie.getValue()));
+        }
+
+        return null;
     }
 
     @Nullable

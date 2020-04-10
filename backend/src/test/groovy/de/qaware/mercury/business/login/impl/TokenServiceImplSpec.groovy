@@ -9,6 +9,7 @@ import de.qaware.mercury.business.login.ShopLogin
 import de.qaware.mercury.business.login.ShopToken
 import de.qaware.mercury.business.login.TokenService
 import de.qaware.mercury.business.login.TokenWithExpiry
+import de.qaware.mercury.business.login.VerifiedToken
 import de.qaware.mercury.business.shop.Shop
 import de.qaware.mercury.business.time.impl.WallClock
 import spock.lang.Specification
@@ -29,10 +30,10 @@ class TokenServiceImplSpec extends Specification {
         TokenWithExpiry<AdminToken> token = tokenService.createAdminToken(id)
 
         when:
-        Admin.Id idFromToken = tokenService.verifyAdminToken(token.getToken())
+        VerifiedToken<Admin.Id> idFromToken = tokenService.verifyAdminToken(token.getToken())
 
         then:
-        idFromToken == id
+        idFromToken.id == id
     }
 
     def "Create and Verify Shop Token"() {
@@ -43,10 +44,10 @@ class TokenServiceImplSpec extends Specification {
         TokenWithExpiry<ShopToken> token = tokenService.createShopToken(shopLoginId, shopId)
 
         when:
-        ShopLogin.Id idFromToken = tokenService.verifyShopToken(token.getToken())
+        VerifiedToken<ShopLogin.Id> idFromToken = tokenService.verifyShopToken(token.getToken())
 
         then:
-        idFromToken == shopLoginId
+        idFromToken.id == shopLoginId
     }
 
     def "Create and Verify Shop Creation Token"() {

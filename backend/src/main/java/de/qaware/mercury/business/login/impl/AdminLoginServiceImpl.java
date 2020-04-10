@@ -8,6 +8,7 @@ import de.qaware.mercury.business.login.LoginException;
 import de.qaware.mercury.business.login.PasswordHasher;
 import de.qaware.mercury.business.login.TokenService;
 import de.qaware.mercury.business.login.TokenWithExpiry;
+import de.qaware.mercury.business.login.VerifiedToken;
 import de.qaware.mercury.business.time.Clock;
 import de.qaware.mercury.business.uuid.UUIDFactory;
 import de.qaware.mercury.storage.admin.AdminRepository;
@@ -61,11 +62,11 @@ class AdminLoginServiceImpl implements AdminLoginService {
     @Override
     @Transactional(readOnly = true)
     public Admin verify(AdminToken token) throws LoginException {
-        Admin.Id adminId = tokenService.verifyAdminToken(token);
+        VerifiedToken<Admin.Id> verifiedToken = tokenService.verifyAdminToken(token);
 
-        Admin admin = adminRepository.findById(adminId);
+        Admin admin = adminRepository.findById(verifiedToken.getId());
         if (admin == null) {
-            log.warn("Token is valid, but admin with id '{}' not found", adminId);
+            log.warn("Token is valid, but admin with id '{}' not found", verifiedToken);
             throw LoginException.forAdminToken(token);
         }
 
@@ -77,5 +78,16 @@ class AdminLoginServiceImpl implements AdminLoginService {
     @Nullable
     public Admin findByEmail(String email) {
         return adminRepository.findByEmail(email);
+    }
+
+    @Override
+    @Nullable
+    public VerifiedToken<Admin.Id> getTokenInfo(AdminToken token) {
+        try {
+            return tokenService.verifyAdminToken(token);
+        } catch (LoginException e) {
+            log.debug("Failed to verify admin token for getTokenInfo()", e);
+            return null;
+        }
     }
 }

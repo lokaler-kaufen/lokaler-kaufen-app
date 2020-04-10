@@ -10,6 +10,7 @@ import de.qaware.mercury.business.login.ShopLoginService
 import de.qaware.mercury.business.login.ShopToken
 import de.qaware.mercury.business.login.TokenService
 import de.qaware.mercury.business.login.TokenWithExpiry
+import de.qaware.mercury.business.login.VerifiedToken
 import de.qaware.mercury.business.shop.Shop
 import de.qaware.mercury.business.time.Clock
 import de.qaware.mercury.business.uuid.UUIDFactory
@@ -21,6 +22,7 @@ import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
 import spock.lang.Unroll
 
+import java.time.Instant
 import java.time.ZonedDateTime
 
 @ContextConfiguration(classes = ShopLoginServiceImpl)
@@ -93,7 +95,7 @@ class ShopLoginServiceImplSpec extends Specification {
         loginService.verify(token)
 
         then:
-        1 * tokenService.verifyShopToken(token) >> shopLoginId
+        1 * tokenService.verifyShopToken(token) >> new VerifiedToken<>(shopLoginId, Instant.now())
         1 * shopLoginRepository.findById(shopLoginId) >> null
         0 * _
         thrown LoginException
@@ -110,7 +112,7 @@ class ShopLoginServiceImplSpec extends Specification {
         loginService.verify(token)
 
         then:
-        1 * tokenService.verifyShopToken(token) >> shopLoginId
+        1 * tokenService.verifyShopToken(token) >> new VerifiedToken<>(shopLoginId, Instant.now())
         1 * shopLoginRepository.findById(shopLoginId) >> shopLogin
         1 * shopRepository.findById(shopId) >> null
         0 * _
@@ -129,7 +131,7 @@ class ShopLoginServiceImplSpec extends Specification {
         Shop verify = loginService.verify(token)
 
         then:
-        1 * tokenService.verifyShopToken(token) >> shopLoginId
+        1 * tokenService.verifyShopToken(token) >> new VerifiedToken<>(shopLoginId, Instant.now())
         1 * shopLoginRepository.findById(shopLoginId) >> shopLogin
         1 * shopRepository.findById(shopId) >> shop
         0 * _

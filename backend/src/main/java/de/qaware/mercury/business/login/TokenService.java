@@ -11,11 +11,11 @@ import java.time.LocalDateTime;
 public interface TokenService {
     TokenWithExpiry<AdminToken> createAdminToken(Admin.Id adminId);
 
-    Admin.Id verifyAdminToken(AdminToken token) throws LoginException;
+    VerifiedToken<Admin.Id> verifyAdminToken(AdminToken token) throws LoginException;
 
     TokenWithExpiry<ShopToken> createShopToken(ShopLogin.Id shopLoginId, Shop.Id shopId);
 
-    ShopLogin.Id verifyShopToken(ShopToken token) throws LoginException;
+    VerifiedToken<ShopLogin.Id> verifyShopToken(ShopToken token) throws LoginException;
 
     ShopCreationToken createShopCreationToken(String email);
 

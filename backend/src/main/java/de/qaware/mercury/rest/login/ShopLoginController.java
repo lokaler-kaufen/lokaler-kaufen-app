@@ -1,11 +1,15 @@
 package de.qaware.mercury.rest.login;
 
 import de.qaware.mercury.business.login.LoginException;
+import de.qaware.mercury.business.login.ShopLogin;
 import de.qaware.mercury.business.login.ShopLoginService;
 import de.qaware.mercury.business.login.ShopToken;
 import de.qaware.mercury.business.login.TokenWithExpiry;
+import de.qaware.mercury.business.login.VerifiedToken;
 import de.qaware.mercury.business.shop.Shop;
+import de.qaware.mercury.business.time.Clock;
 import de.qaware.mercury.rest.login.dto.request.LoginDto;
+import de.qaware.mercury.rest.login.dto.response.TokenInfoDto;
 import de.qaware.mercury.rest.login.dto.response.WhoAmIDto;
 import de.qaware.mercury.rest.plumbing.authentication.AuthenticationHelper;
 import de.qaware.mercury.rest.util.cookie.CookieHelper;
@@ -34,6 +38,7 @@ class ShopLoginController {
     private final ShopLoginService shopLoginService;
     private final AuthenticationHelper authenticationHelper;
     private final CookieHelper cookieHelper;
+    private final Clock clock;
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public void login(@Valid @RequestBody LoginDto request, HttpServletResponse response) throws LoginException {
@@ -51,5 +56,15 @@ class ShopLoginController {
     public WhoAmIDto whoami(HttpServletRequest request) throws LoginException {
         Shop shop = authenticationHelper.authenticateShop(request);
         return new WhoAmIDto(shop.getEmail());
+    }
+
+    @GetMapping("/token-info")
+    public TokenInfoDto tokenInfo(HttpServletRequest request) {
+        VerifiedToken<ShopLogin.Id> token = authenticationHelper.getShopTokenInfo(request);
+        if (token == null) {
+            return TokenInfoDto.notLoggedIn();
+        } else {
+            return TokenInfoDto.loggedIn(token, clock.nowZoned());
+        }
     }
 }

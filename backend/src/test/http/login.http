@@ -13,6 +13,10 @@ Accept: application/json, */*
 
 GET {{ host }}/api/admin/login
 
+### Admin token info
+
+GET {{ host }}/api/admin/login/token-info
+
 ### Logout as admin
 
 DELETE {{ host }}/api/admin/login
@@ -31,6 +35,10 @@ Accept: application/json, */*
 ### Check shop login
 
 GET {{ host }}/api/shop/login
+
+### Shop token info
+
+GET {{ host }}/api/shop/login/token-info
 
 ### Logout as shop
 

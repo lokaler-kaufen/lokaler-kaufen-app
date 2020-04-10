@@ -10,6 +10,7 @@ import de.qaware.mercury.business.login.ShopLoginService;
 import de.qaware.mercury.business.login.ShopToken;
 import de.qaware.mercury.business.login.TokenService;
 import de.qaware.mercury.business.login.TokenWithExpiry;
+import de.qaware.mercury.business.login.VerifiedToken;
 import de.qaware.mercury.business.shop.Shop;
 import de.qaware.mercury.business.time.Clock;
 import de.qaware.mercury.business.uuid.UUIDFactory;
@@ -18,6 +19,7 @@ import de.qaware.mercury.storage.shop.ShopRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -65,11 +67,11 @@ class ShopLoginServiceImpl implements ShopLoginService {
     @Override
     @Transactional(readOnly = true)
     public Shop verify(ShopToken token) throws LoginException {
-        ShopLogin.Id shopLoginId = tokenService.verifyShopToken(token);
+        VerifiedToken<ShopLogin.Id> verifiedToken = tokenService.verifyShopToken(token);
 
-        ShopLogin shopLogin = shopLoginRepository.findById(shopLoginId);
+        ShopLogin shopLogin = shopLoginRepository.findById(verifiedToken.getId());
         if (shopLogin == null) {
-            log.warn("Token is valid, but shop login with id '{}' not found", shopLoginId);
+            log.warn("Token is valid, but shop login with id '{}' not found", verifiedToken);
             throw LoginException.forShopToken(token);
         }
 
@@ -113,5 +115,16 @@ class ShopLoginServiceImpl implements ShopLoginService {
     @Transactional(readOnly = true)
     public boolean hasLogin(String email) {
         return shopLoginRepository.findByEmail(email) != null;
+    }
+
+    @Override
+    @Nullable
+    public VerifiedToken<ShopLogin.Id> getTokenInfo(ShopToken token) {
+        try {
+            return tokenService.verifyShopToken(token);
+        } catch (LoginException e) {
+            log.debug("Failed to verify shop token for getTokenInfo()", e);
+            return null;
+        }
     }
 }

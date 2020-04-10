@@ -12,4 +12,7 @@ public interface AdminLoginService {
 
     @Nullable
     Admin findByEmail(String email);
+
+    @Nullable
+    VerifiedToken<Admin.Id> getTokenInfo(AdminToken token);
 }
