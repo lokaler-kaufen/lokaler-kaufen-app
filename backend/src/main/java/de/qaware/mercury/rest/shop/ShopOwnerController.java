@@ -7,6 +7,7 @@ import de.qaware.mercury.business.shop.ContactType;
 import de.qaware.mercury.business.shop.Shop;
 import de.qaware.mercury.business.shop.ShopService;
 import de.qaware.mercury.business.shop.ShopUpdate;
+import de.qaware.mercury.business.shop.SocialLinks;
 import de.qaware.mercury.rest.plumbing.authentication.AuthenticationHelper;
 import de.qaware.mercury.rest.shop.dto.request.UpdateShopDto;
 import de.qaware.mercury.rest.shop.dto.response.ShopDetailDto;
@@ -72,7 +73,8 @@ public class ShopOwnerController {
             request.getDetails(),
             request.getWebsite(),
             Maps.mapKeys(request.getContacts(), ContactType::parse),
-            request.getSlots().toSlots()
+            request.getSlots().toSlots(),
+            request.getSocialLinks() == null ? SocialLinks.none() : request.getSocialLinks().toSocialLinks()
         ));
 
         return ShopOwnerDetailDto.of(updatedShop, imageService);

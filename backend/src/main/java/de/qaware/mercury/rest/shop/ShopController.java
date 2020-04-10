@@ -16,6 +16,7 @@ import de.qaware.mercury.business.shop.ShopAlreadyExistsException;
 import de.qaware.mercury.business.shop.ShopCreation;
 import de.qaware.mercury.business.shop.ShopNotFoundException;
 import de.qaware.mercury.business.shop.ShopService;
+import de.qaware.mercury.business.shop.SocialLinks;
 import de.qaware.mercury.rest.shop.dto.request.CreateShopDto;
 import de.qaware.mercury.rest.shop.dto.request.ResetPasswordDto;
 import de.qaware.mercury.rest.shop.dto.request.SendCreateLinkDto;
@@ -141,7 +142,8 @@ class ShopController {
             request.getWebsite(),
             request.getPassword(),
             Maps.mapKeys(request.getContacts(), ContactType::parse),
-            request.getSlots().toSlots()
+            request.getSlots().toSlots(),
+            request.getSocialLinks() == null ? SocialLinks.none() : request.getSocialLinks().toSocialLinks()
         ));
 
         // When the shop is created, the client is automatically logged in

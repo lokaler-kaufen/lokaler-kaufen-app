@@ -1,7 +1,7 @@
 package de.qaware.mercury.business.shop;
 
-import de.qaware.mercury.business.location.GeoLocation;
 import de.qaware.mercury.business.image.Image;
+import de.qaware.mercury.business.location.GeoLocation;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Value;
@@ -36,6 +36,7 @@ public class Shop {
     @Nullable
     String website;
     SlotConfig slotConfig;
+    SocialLinks socialLinks;
     @With
     ZonedDateTime created;
     @With

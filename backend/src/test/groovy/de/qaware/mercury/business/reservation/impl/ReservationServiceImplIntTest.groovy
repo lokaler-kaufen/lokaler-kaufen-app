@@ -4,13 +4,12 @@ import de.qaware.mercury.business.reservation.Reservation
 import de.qaware.mercury.business.reservation.ReservationService
 import de.qaware.mercury.business.shop.ContactType
 import de.qaware.mercury.business.shop.Shop
-import de.qaware.mercury.business.shop.ShopCreation
 import de.qaware.mercury.business.shop.ShopService
-import de.qaware.mercury.business.shop.SlotConfig
 import de.qaware.mercury.business.time.Clock
 import de.qaware.mercury.business.uuid.UUIDFactory
 import de.qaware.mercury.storage.reservation.ReservationRepository
 import de.qaware.mercury.test.IntegrationTestSpecification
+import de.qaware.mercury.test.fixtures.ShopCreationFixtures
 import org.springframework.beans.factory.annotation.Autowired
 
 import javax.persistence.EntityManager
@@ -36,10 +35,8 @@ class ReservationServiceImplIntTest extends IntegrationTestSpecification {
 
     def "anonymized expired reservations"() {
         given: "a shop"
-        Shop shop = shopService.create(new ShopCreation(
-            "foo@local.host", "owner", "name", "street", "81549", "city", "", "details", "", "SuperSecret1111",
-            [(ContactType.WHATSAPP): "1"], new SlotConfig(15, 5, null, null, null, null, null, null, null)
-        ))
+        Shop shop = shopService.create(ShopCreationFixtures.create())
+
         and: "a reservation made 2 days ago"
         Reservation.Id reservationIdToAnonymize = Reservation.Id.random(uuidFactory)
         reservationRepository.insert(new Reservation(

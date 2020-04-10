@@ -4,6 +4,7 @@ import de.qaware.mercury.business.image.ImageService;
 import de.qaware.mercury.business.shop.ContactType;
 import de.qaware.mercury.business.shop.Shop;
 import de.qaware.mercury.rest.shop.dto.request.SlotConfigDto;
+import de.qaware.mercury.rest.shop.dto.requestresponse.SocialLinksDto;
 import de.qaware.mercury.util.Maps;
 import de.qaware.mercury.util.Null;
 import lombok.AllArgsConstructor;
@@ -35,6 +36,7 @@ public class ShopAdminDto {
     @Nullable
     private String website;
     private SlotConfigDto slots;
+    private SocialLinksDto socialLinks;
 
     public static ShopAdminDto of(Shop shop, ImageService imageService) {
         URI imageUrl = imageService.generatePublicUrl(shop.getImageId());
@@ -53,7 +55,8 @@ public class ShopAdminDto {
             shop.getDetails(),
             Null.map(imageUrl, URI::toString),
             shop.getWebsite(),
-            Null.map(shop.getSlotConfig(), SlotConfigDto::of)
+            Null.map(shop.getSlotConfig(), SlotConfigDto::of),
+            SocialLinksDto.of(shop.getSocialLinks())
         );
     }
 }

@@ -1,7 +1,5 @@
 package de.qaware.mercury.business.reservation;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Value;
 
 import java.time.LocalDateTime;
@@ -15,7 +13,6 @@ public class Slot {
     boolean available;
 
     @Value
-    @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public static class Id {
         String id;
 

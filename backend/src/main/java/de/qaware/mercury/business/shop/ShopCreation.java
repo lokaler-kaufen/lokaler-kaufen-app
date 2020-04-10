@@ -1,13 +1,11 @@
 package de.qaware.mercury.business.shop;
 
-import lombok.AllArgsConstructor;
 import lombok.Value;
 import org.springframework.lang.Nullable;
 
 import java.util.Map;
 
 @Value
-@AllArgsConstructor
 public class ShopCreation {
     String email;
     String ownerName;
@@ -23,4 +21,5 @@ public class ShopCreation {
     // Maps from WHATSAPP -> Telephone number, for example
     Map<ContactType, String> contacts;
     SlotConfig slotConfig;
+    SocialLinks socialLinks;
 }

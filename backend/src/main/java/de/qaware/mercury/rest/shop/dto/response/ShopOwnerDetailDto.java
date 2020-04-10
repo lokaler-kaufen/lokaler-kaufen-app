@@ -4,6 +4,7 @@ import de.qaware.mercury.business.image.ImageService;
 import de.qaware.mercury.business.shop.ContactType;
 import de.qaware.mercury.business.shop.Shop;
 import de.qaware.mercury.rest.shop.dto.request.SlotConfigDto;
+import de.qaware.mercury.rest.shop.dto.requestresponse.SocialLinksDto;
 import de.qaware.mercury.util.Maps;
 import de.qaware.mercury.util.Null;
 import lombok.AllArgsConstructor;
@@ -18,20 +19,21 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ShopOwnerDetailDto {
-    String id;
-    String name;
-    String ownerName;
-    String street;
-    String zipCode;
-    String city;
-    String addressSupplement;
-    String details;
+    private String id;
+    private String name;
+    private String ownerName;
+    private String street;
+    private String zipCode;
+    private String city;
+    private String addressSupplement;
+    private String details;
     @Nullable
-    String imageUrl;
+    private String imageUrl;
     @Nullable
-    String website;
-    Map<String, String> contacts;
-    SlotConfigDto slots;
+    private String website;
+    private Map<String, String> contacts;
+    private SlotConfigDto slots;
+    private SocialLinksDto socialLinks;
 
     public static ShopOwnerDetailDto of(Shop shop, ImageService imageService) {
         URI imageUrl = imageService.generatePublicUrl(shop.getImageId());
@@ -47,7 +49,8 @@ public class ShopOwnerDetailDto {
             Null.map(imageUrl, URI::toString),
             shop.getWebsite(),
             Maps.mapKeys(shop.getContacts(), ContactType::getId),
-            Null.map(shop.getSlotConfig(), SlotConfigDto::of)
+            Null.map(shop.getSlotConfig(), SlotConfigDto::of),
+            SocialLinksDto.of(shop.getSocialLinks())
         );
     }
 }

@@ -13,6 +13,7 @@ import de.qaware.mercury.rest.shop.dto.request.ResetPasswordDto
 import de.qaware.mercury.rest.shop.dto.request.SendCreateLinkDto
 import de.qaware.mercury.rest.shop.dto.request.SendPasswordResetLinkDto
 import de.qaware.mercury.rest.shop.dto.request.SlotConfigDto
+import de.qaware.mercury.rest.shop.dto.requestresponse.SocialLinksDto
 import de.qaware.mercury.rest.shop.dto.response.ShopDetailDto
 import de.qaware.mercury.rest.shop.dto.response.ShopListDto
 import de.qaware.mercury.rest.util.cookie.CookieHelper
@@ -112,7 +113,7 @@ class ShopControllerSpec extends Specification {
         setup:
         Shop shop = ShopFixtures.create()
         SlotConfigDto slots = SlotConfigDto.of(shop.getSlotConfig())
-        CreateShopDto dto = new CreateShopDto("name", "ownername", "street", "zipCode", "city", "addressSupplement", "details", "www.example.com", "password", Map.of(), slots)
+        CreateShopDto dto = new CreateShopDto("name", "ownername", "street", "zipCode", "city", "addressSupplement", "details", "www.example.com", "password", Map.of(), slots, new SocialLinksDto("instagram", "facebook", "twitter"))
         String token = "test-token"
         String testImageUrl = "http://image.url/path"
         URI testImageUri = new URI(testImageUrl)

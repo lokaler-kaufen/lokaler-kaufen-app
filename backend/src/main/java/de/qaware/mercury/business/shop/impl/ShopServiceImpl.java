@@ -127,6 +127,7 @@ class ShopServiceImpl implements ShopService {
             creation.getDetails(),
             creation.getWebsite(),
             creation.getSlotConfig(),
+            creation.getSocialLinks(),
             clock.nowZoned(),
             clock.nowZoned()
         );
@@ -167,6 +168,7 @@ class ShopServiceImpl implements ShopService {
             update.getDetails(),
             update.getWebsite(),
             update.getSlotConfig(),
+            update.getSocialLinks(),
             shop.getCreated(),
             clock.nowZoned()
         );

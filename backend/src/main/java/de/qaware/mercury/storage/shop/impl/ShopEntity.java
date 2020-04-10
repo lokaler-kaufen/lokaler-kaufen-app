@@ -1,11 +1,12 @@
 package de.qaware.mercury.storage.shop.impl;
 
+import de.qaware.mercury.business.image.Image;
 import de.qaware.mercury.business.location.GeoLocation;
 import de.qaware.mercury.business.shop.ContactType;
 import de.qaware.mercury.business.shop.DayConfig;
 import de.qaware.mercury.business.shop.Shop;
 import de.qaware.mercury.business.shop.SlotConfig;
-import de.qaware.mercury.business.image.Image;
+import de.qaware.mercury.business.shop.SocialLinks;
 import de.qaware.mercury.util.Null;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -145,52 +146,81 @@ public class ShopEntity {
 
     @Setter
     @Column(nullable = true, columnDefinition = "varchar")
+    @Nullable
     private LocalTime mondayStart;
     @Setter
     @Column(nullable = true, columnDefinition = "varchar")
+    @Nullable
     private LocalTime mondayEnd;
 
     @Setter
     @Column(nullable = true, columnDefinition = "varchar")
+    @Nullable
     private LocalTime tuesdayStart;
     @Setter
     @Column(nullable = true, columnDefinition = "varchar")
+    @Nullable
     private LocalTime tuesdayEnd;
 
     @Setter
     @Column(nullable = true, columnDefinition = "varchar")
+    @Nullable
     private LocalTime wednesdayStart;
     @Setter
     @Column(nullable = true, columnDefinition = "varchar")
+    @Nullable
     private LocalTime wednesdayEnd;
 
     @Setter
     @Column(nullable = true, columnDefinition = "varchar")
+    @Nullable
     private LocalTime thursdayStart;
     @Setter
     @Column(nullable = true, columnDefinition = "varchar")
+    @Nullable
     private LocalTime thursdayEnd;
 
     @Setter
     @Column(nullable = true, columnDefinition = "varchar")
+    @Nullable
     private LocalTime fridayStart;
     @Setter
     @Column(nullable = true, columnDefinition = "varchar")
+    @Nullable
     private LocalTime fridayEnd;
 
     @Setter
     @Column(nullable = true, columnDefinition = "varchar")
+    @Nullable
     private LocalTime saturdayStart;
     @Setter
     @Column(nullable = true, columnDefinition = "varchar")
+    @Nullable
     private LocalTime saturdayEnd;
 
     @Setter
     @Column(nullable = true, columnDefinition = "varchar")
+    @Nullable
     private LocalTime sundayStart;
     @Setter
     @Column(nullable = true, columnDefinition = "varchar")
+    @Nullable
     private LocalTime sundayEnd;
+
+    @Setter
+    @Column(nullable = true, columnDefinition = "varchar")
+    @Nullable
+    private String instagram;
+
+    @Setter
+    @Column(nullable = true, columnDefinition = "varchar")
+    @Nullable
+    private String facebook;
+
+    @Setter
+    @Column(nullable = true, columnDefinition = "varchar")
+    @Nullable
+    private String twitter;
 
     @Column(nullable = false)
     private ZonedDateTime created;
@@ -238,6 +268,9 @@ public class ShopEntity {
             Null.map(shop.getSlotConfig().getSaturday(), DayConfig::getEnd),
             Null.map(shop.getSlotConfig().getSunday(), DayConfig::getStart),
             Null.map(shop.getSlotConfig().getSunday(), DayConfig::getEnd),
+            shop.getSocialLinks().getInstagram(),
+            shop.getSocialLinks().getFacebook(),
+            shop.getSocialLinks().getTwitter(),
             shop.getCreated(),
             shop.getUpdated()
         );
@@ -270,6 +303,7 @@ public class ShopEntity {
                 loadSlot(this::getSaturdayStart, this::getSaturdayEnd),
                 loadSlot(this::getSundayStart, this::getSundayEnd)
             ),
+            new SocialLinks(instagram, facebook, twitter),
             created,
             updated
         );

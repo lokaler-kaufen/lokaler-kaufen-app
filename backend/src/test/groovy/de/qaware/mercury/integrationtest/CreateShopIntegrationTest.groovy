@@ -87,6 +87,11 @@ class CreateShopIntegrationTest extends IntegrationTestSpecification {
               "slots": {
                 "timePerSlot": 15,
                 "timeBetweenSlots": 5
+              },
+              "social": {
+                "instagram": "insta.gram",
+                "facebook": "face.book",
+                "twitter": "@twitter"
               }
             }
             """

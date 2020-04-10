@@ -13,6 +13,7 @@ import de.qaware.mercury.business.shop.ShopCreation;
 import de.qaware.mercury.business.shop.ShopNotFoundException;
 import de.qaware.mercury.business.shop.ShopService;
 import de.qaware.mercury.business.shop.SlotConfig;
+import de.qaware.mercury.business.shop.SocialLinks;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -59,30 +60,32 @@ class DebugPopulateDatabase implements ApplicationRunner {
 
     private void createShops() throws ShopNotFoundException, ShopAlreadyExistsException, LocationNotFoundException, IOException {
         createShop(new ShopCreation(
-                "moe@local.host", "Moe", "Moe's Whiskey", "Lothstr. 64", "85579", "Neubiberg", "", "Bester Whiskey in ganz Neubiberg!",
-                "https://www.moes-whiskey.com/", "moe",
-                Map.of(ContactType.WHATSAPP, "0151/123456789", ContactType.FACETIME, "moe@local.host"),
-                new SlotConfig(15, 5,
-                    new DayConfig(LocalTime.of(8, 0), LocalTime.of(17, 0)),
-                    new DayConfig(LocalTime.of(8, 0), LocalTime.of(17, 0)),
-                    new DayConfig(LocalTime.of(8, 0), LocalTime.of(17, 0)),
-                    new DayConfig(LocalTime.of(8, 0), LocalTime.of(17, 0)),
-                    new DayConfig(LocalTime.of(8, 0), LocalTime.of(17, 0)),
-                    new DayConfig(LocalTime.of(8, 0), LocalTime.of(17, 0)),
-                    new DayConfig(LocalTime.of(8, 0), LocalTime.of(17, 0))
-                )),
-            "/dev/shopimages/moe.jpg");
+            "moe@local.host", "Moe", "Moe's Whiskey", "Lothstr. 64", "85579", "Neubiberg", "", "Bester Whiskey in ganz Neubiberg!",
+            "https://www.moes-whiskey.com/", "moe",
+            Map.of(ContactType.WHATSAPP, "0151/123456789", ContactType.FACETIME, "moe@local.host"),
+            new SlotConfig(15, 5,
+                new DayConfig(LocalTime.of(8, 0), LocalTime.of(17, 0)),
+                new DayConfig(LocalTime.of(8, 0), LocalTime.of(17, 0)),
+                new DayConfig(LocalTime.of(8, 0), LocalTime.of(17, 0)),
+                new DayConfig(LocalTime.of(8, 0), LocalTime.of(17, 0)),
+                new DayConfig(LocalTime.of(8, 0), LocalTime.of(17, 0)),
+                new DayConfig(LocalTime.of(8, 0), LocalTime.of(17, 0)),
+                new DayConfig(LocalTime.of(8, 0), LocalTime.of(17, 0))
+            ), new SocialLinks("dermoe", "der.moe", "@dermoe")
+        ), "/dev/shopimages/moe.jpg");
 
         createShop(new ShopCreation(
-            "flo@local.host", "Flo", "Flo's Kaffeeladen", "Aschauer Str. 32", "81549", "München", "", "", null,
+            "flo@local.host", "Flo", "Flo's Kaffeeladen", "Aschauer Str. 32", "81549", "München", "", "Hier gibts jede Art von Kaffee!", null,
             "flo", Map.of(ContactType.GOOGLE_DUO, "@vlow"),
-            new SlotConfig(30, 10, null, null, null, null, null, null, null)
+            new SlotConfig(30, 10, null, null, null, null, null, null, null),
+            new SocialLinks("derflo", "der.flo", "@derflo")
         ), "/dev/shopimages/flo.jpg");
 
         createShop(new ShopCreation(
-            "vroni@local.host", "Vroni", "Vroni's Kleiderladen", "Rheinstraße 4C", "55116", "Mainz", "", "", null,
+            "vroni@local.host", "Vroni", "Vroni's Kleiderladen", "Rheinstraße 4C", "55116", "Mainz", "", "Kleider, Kleider, Kleider!", null,
             "vroni", Map.of(ContactType.GOOGLE_DUO, "vroni@local.host", ContactType.SIGNAL, "@vroni"),
-            new SlotConfig(60, 15, null, null, null, null, null, null, null)
+            new SlotConfig(60, 15, null, null, null, null, null, null, null),
+            new SocialLinks("dievroni", "die.vroni", "@dievroni")
         ), "/dev/shopimages/vroni.jpg");
     }
 

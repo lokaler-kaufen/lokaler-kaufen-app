@@ -9,6 +9,7 @@ import de.qaware.mercury.business.shop.Shop;
 import de.qaware.mercury.business.shop.ShopNotFoundException;
 import de.qaware.mercury.business.shop.ShopService;
 import de.qaware.mercury.business.shop.ShopUpdate;
+import de.qaware.mercury.business.shop.SocialLinks;
 import de.qaware.mercury.rest.plumbing.authentication.AuthenticationHelper;
 import de.qaware.mercury.rest.shop.dto.request.UpdateShopDto;
 import de.qaware.mercury.rest.shop.dto.response.ShopAdminDto;
@@ -98,7 +99,8 @@ class ShopAdminController {
             request.getDetails(),
             request.getWebsite(),
             Maps.mapKeys(request.getContacts(), ContactType::parse),
-            request.getSlots().toSlots()
+            request.getSlots().toSlots(),
+            request.getSocialLinks() == null ? SocialLinks.none() : request.getSocialLinks().toSocialLinks()
         ));
         log.info("Admin {} updated shop '{}'", admin.getEmail(), shop.getName());
         return ShopAdminDto.of(updatedShop, imageService);

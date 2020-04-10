@@ -1,5 +1,6 @@
 package de.qaware.mercury.rest.shop.dto.request;
 
+import de.qaware.mercury.rest.shop.dto.requestresponse.SocialLinksDto;
 import de.qaware.mercury.rest.validation.ValidationConstants;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -49,4 +50,6 @@ public class CreateShopDto {
     private Map<String, String> contacts;
     @Valid
     private SlotConfigDto slots;
+    @Valid
+    private SocialLinksDto socialLinks;
 }
