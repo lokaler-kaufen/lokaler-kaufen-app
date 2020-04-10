@@ -23,7 +23,7 @@ public class TokenInfoDto {
         return new TokenInfoDto("NOT_LOGGED_IN", null, null);
     }
 
-    public static TokenInfoDto loggedIn(VerifiedToken<?> token, ZonedDateTime now) {
+    public static TokenInfoDto loggedIn(VerifiedToken<?, ?> token, ZonedDateTime now) {
         return new TokenInfoDto("LOGGED_IN", token.expiryInSeconds(now), token.getExpiry().toString());
     }
 }

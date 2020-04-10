@@ -4,7 +4,6 @@ import de.qaware.mercury.business.login.LoginException;
 import de.qaware.mercury.business.login.ShopLogin;
 import de.qaware.mercury.business.login.ShopLoginService;
 import de.qaware.mercury.business.login.ShopToken;
-import de.qaware.mercury.business.login.TokenWithExpiry;
 import de.qaware.mercury.business.login.VerifiedToken;
 import de.qaware.mercury.business.shop.Shop;
 import de.qaware.mercury.business.time.Clock;
@@ -42,7 +41,7 @@ class ShopLoginController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public void login(@Valid @RequestBody LoginDto request, HttpServletResponse response) throws LoginException {
-        TokenWithExpiry<ShopToken> token = shopLoginService.login(request.getEmail(), request.getPassword());
+        VerifiedToken<ShopLogin.Id, ShopToken> token = shopLoginService.login(request.getEmail(), request.getPassword());
 
         cookieHelper.addTokenCookie(SHOP_COOKIE_NAME, token, response);
     }
@@ -60,7 +59,7 @@ class ShopLoginController {
 
     @GetMapping("/token-info")
     public TokenInfoDto tokenInfo(HttpServletRequest request) {
-        VerifiedToken<ShopLogin.Id> token = authenticationHelper.getShopTokenInfo(request);
+        VerifiedToken<ShopLogin.Id, ShopToken> token = authenticationHelper.getShopTokenInfo(request);
         if (token == null) {
             return TokenInfoDto.notLoggedIn();
         } else {

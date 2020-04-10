@@ -8,7 +8,6 @@ import de.qaware.mercury.business.login.ShopCreationToken
 import de.qaware.mercury.business.login.ShopLogin
 import de.qaware.mercury.business.login.ShopToken
 import de.qaware.mercury.business.login.TokenService
-import de.qaware.mercury.business.login.TokenWithExpiry
 import de.qaware.mercury.business.login.VerifiedToken
 import de.qaware.mercury.business.shop.Shop
 import de.qaware.mercury.business.time.impl.WallClock
@@ -27,10 +26,10 @@ class TokenServiceImplSpec extends Specification {
         given:
         keyProvider.getAdminJwtSecret() >> "admin-secret"
         Admin.Id id = Admin.Id.of(UUID.randomUUID())
-        TokenWithExpiry<AdminToken> token = tokenService.createAdminToken(id)
+        VerifiedToken<Admin.Id, AdminToken> token = tokenService.createAdminToken(id)
 
         when:
-        VerifiedToken<Admin.Id> idFromToken = tokenService.verifyAdminToken(token.getToken())
+        VerifiedToken<Admin.Id, AdminToken> idFromToken = tokenService.verifyAdminToken(token.getToken())
 
         then:
         idFromToken.id == id
@@ -41,10 +40,10 @@ class TokenServiceImplSpec extends Specification {
         keyProvider.getShopJwtSecret() >> "shop"
         ShopLogin.Id shopLoginId = ShopLogin.Id.of(UUID.randomUUID())
         Shop.Id shopId = Shop.Id.of(UUID.randomUUID())
-        TokenWithExpiry<ShopToken> token = tokenService.createShopToken(shopLoginId, shopId)
+        VerifiedToken<ShopLogin.Id, ShopToken> token = tokenService.createShopToken(shopLoginId, shopId)
 
         when:
-        VerifiedToken<ShopLogin.Id> idFromToken = tokenService.verifyShopToken(token.getToken())
+        VerifiedToken<ShopLogin.Id, ShopToken> idFromToken = tokenService.verifyShopToken(token.getToken())
 
         then:
         idFromToken.id == shopLoginId

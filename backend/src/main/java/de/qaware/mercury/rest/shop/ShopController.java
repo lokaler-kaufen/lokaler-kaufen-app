@@ -5,11 +5,12 @@ import de.qaware.mercury.business.location.impl.LocationNotFoundException;
 import de.qaware.mercury.business.login.LoginException;
 import de.qaware.mercury.business.login.PasswordResetToken;
 import de.qaware.mercury.business.login.ShopCreationToken;
+import de.qaware.mercury.business.login.ShopLogin;
 import de.qaware.mercury.business.login.ShopLoginNotFoundException;
 import de.qaware.mercury.business.login.ShopLoginService;
 import de.qaware.mercury.business.login.ShopToken;
 import de.qaware.mercury.business.login.TokenService;
-import de.qaware.mercury.business.login.TokenWithExpiry;
+import de.qaware.mercury.business.login.VerifiedToken;
 import de.qaware.mercury.business.shop.ContactType;
 import de.qaware.mercury.business.shop.Shop;
 import de.qaware.mercury.business.shop.ShopAlreadyExistsException;
@@ -147,7 +148,7 @@ class ShopController {
         ));
 
         // When the shop is created, the client is automatically logged in
-        TokenWithExpiry<ShopToken> loginToken = shopLoginService.login(email, request.getPassword());
+        VerifiedToken<ShopLogin.Id, ShopToken> loginToken = shopLoginService.login(email, request.getPassword());
         cookieHelper.addTokenCookie(SHOP_COOKIE_NAME, loginToken, response);
 
         return ShopDetailDto.of(createdShop, imageService);

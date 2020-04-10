@@ -4,7 +4,6 @@ import de.qaware.mercury.business.admin.Admin;
 import de.qaware.mercury.business.login.AdminLoginService;
 import de.qaware.mercury.business.login.AdminToken;
 import de.qaware.mercury.business.login.LoginException;
-import de.qaware.mercury.business.login.TokenWithExpiry;
 import de.qaware.mercury.business.login.VerifiedToken;
 import de.qaware.mercury.business.time.Clock;
 import de.qaware.mercury.rest.login.dto.request.LoginDto;
@@ -41,7 +40,7 @@ class AdminLoginController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public void login(@Valid @RequestBody LoginDto request, HttpServletResponse response) throws LoginException {
-        TokenWithExpiry<AdminToken> token = adminLoginService.login(request.getEmail(), request.getPassword());
+        VerifiedToken<Admin.Id, AdminToken> token = adminLoginService.login(request.getEmail(), request.getPassword());
 
         cookieHelper.addTokenCookie(ADMIN_COOKIE_NAME, token, response);
     }
@@ -59,7 +58,7 @@ class AdminLoginController {
 
     @GetMapping("/token-info")
     public TokenInfoDto tokenInfo(HttpServletRequest request) {
-        VerifiedToken<Admin.Id> token = authenticationHelper.getAdminTokenInfo(request);
+        VerifiedToken<Admin.Id, AdminToken> token = authenticationHelper.getAdminTokenInfo(request);
         if (token == null) {
             return TokenInfoDto.notLoggedIn();
         } else {

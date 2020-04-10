@@ -17,7 +17,6 @@ import de.qaware.mercury.business.login.ShopLogin;
 import de.qaware.mercury.business.login.ShopToken;
 import de.qaware.mercury.business.login.TokenService;
 import de.qaware.mercury.business.login.TokenTechnicalException;
-import de.qaware.mercury.business.login.TokenWithExpiry;
 import de.qaware.mercury.business.login.VerifiedToken;
 import de.qaware.mercury.business.reservation.Reservation;
 import de.qaware.mercury.business.reservation.ReservationCancellation;
@@ -55,7 +54,7 @@ class TokenServiceImpl implements TokenService {
     private final Clock clock;
 
     @Override
-    public TokenWithExpiry<AdminToken> createAdminToken(Admin.Id adminId) {
+    public VerifiedToken<Admin.Id, AdminToken> createAdminToken(Admin.Id adminId) {
         try {
             Algorithm algorithm = getAlgorithm(keyProvider.getAdminJwtSecret());
             ZonedDateTime expiry = clock.nowZoned().plus(ADMIN_TOKEN_EXPIRY);
@@ -68,14 +67,14 @@ class TokenServiceImpl implements TokenService {
                 .withSubject(adminId.toString())
                 .sign(algorithm);
 
-            return new TokenWithExpiry<>(AdminToken.of(token), expiry);
+            return new VerifiedToken<>(adminId, AdminToken.of(token), expiry.toInstant());
         } catch (JWTCreationException exception) {
             throw new TokenTechnicalException("Failed to create admin token for " + adminId, exception);
         }
     }
 
     @Override
-    public VerifiedToken<Admin.Id> verifyAdminToken(AdminToken token) throws LoginException {
+    public VerifiedToken<Admin.Id, AdminToken> verifyAdminToken(AdminToken token) throws LoginException {
         try {
             Algorithm algorithm = getAlgorithm(keyProvider.getAdminJwtSecret());
             JWTVerifier verifier = JWT.require(algorithm)
@@ -86,7 +85,7 @@ class TokenServiceImpl implements TokenService {
             Admin.Id adminId = Admin.Id.parse(jwt.getSubject());
             log.debug("Verified token for admin {}", adminId);
 
-            return new VerifiedToken<>(adminId, jwt.getExpiresAt().toInstant());
+            return new VerifiedToken<>(adminId, token, jwt.getExpiresAt().toInstant());
         } catch (JWTVerificationException e) {
             log.warn("Admin token verification failed for token '{}'", token, e);
             throw LoginException.forAdminToken(token);
@@ -94,7 +93,7 @@ class TokenServiceImpl implements TokenService {
     }
 
     @Override
-    public TokenWithExpiry<ShopToken> createShopToken(ShopLogin.Id shopLoginId, Shop.Id shopId) {
+    public VerifiedToken<ShopLogin.Id, ShopToken> createShopToken(ShopLogin.Id shopLoginId, Shop.Id shopId) {
         try {
             Algorithm algorithm = getAlgorithm(keyProvider.getShopJwtSecret());
             ZonedDateTime expiry = clock.nowZoned().plus(SHOP_TOKEN_EXPIRY);
@@ -108,14 +107,14 @@ class TokenServiceImpl implements TokenService {
                 .withClaim("shop", shopId.toString())
                 .sign(algorithm);
 
-            return new TokenWithExpiry<>(ShopToken.of(token), expiry);
+            return new VerifiedToken<>(shopLoginId, ShopToken.of(token), expiry.toInstant());
         } catch (JWTCreationException exception) {
             throw new TokenTechnicalException(String.format("Failed to create shop token for login %s, shop %s", shopLoginId, shopId), exception);
         }
     }
 
     @Override
-    public VerifiedToken<ShopLogin.Id> verifyShopToken(ShopToken token) throws LoginException {
+    public VerifiedToken<ShopLogin.Id, ShopToken> verifyShopToken(ShopToken token) throws LoginException {
         try {
             Algorithm algorithm = getAlgorithm(keyProvider.getShopJwtSecret());
             JWTVerifier verifier = JWT.require(algorithm)
@@ -127,7 +126,7 @@ class TokenServiceImpl implements TokenService {
             Shop.Id shopId = Shop.Id.parse(jwt.getClaim("shop").asString());
 
             log.debug("Verified token for shop login {}, shop {}", shopLoginId, shopId);
-            return new VerifiedToken<>(shopLoginId, jwt.getExpiresAt().toInstant());
+            return new VerifiedToken<>(shopLoginId, token, jwt.getExpiresAt().toInstant());
         } catch (JWTVerificationException e) {
             log.warn("Shop token verification failed for token '{}'", token, e);
             throw LoginException.forShopToken(token);

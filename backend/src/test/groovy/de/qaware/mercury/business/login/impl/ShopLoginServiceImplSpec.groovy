@@ -9,7 +9,6 @@ import de.qaware.mercury.business.login.ShopLoginNotFoundException
 import de.qaware.mercury.business.login.ShopLoginService
 import de.qaware.mercury.business.login.ShopToken
 import de.qaware.mercury.business.login.TokenService
-import de.qaware.mercury.business.login.TokenWithExpiry
 import de.qaware.mercury.business.login.VerifiedToken
 import de.qaware.mercury.business.shop.Shop
 import de.qaware.mercury.business.time.Clock
@@ -23,7 +22,6 @@ import spock.lang.Specification
 import spock.lang.Unroll
 
 import java.time.Instant
-import java.time.ZonedDateTime
 
 @ContextConfiguration(classes = ShopLoginServiceImpl)
 class ShopLoginServiceImplSpec extends Specification {
@@ -77,12 +75,12 @@ class ShopLoginServiceImplSpec extends Specification {
         ShopLogin shopLogin = new ShopLogin(shopLoginId, shopId, 'email', 'hash', null, null)
 
         when:
-        TokenWithExpiry<ShopToken> verify = loginService.login('test@lokaler.kaufen', 'geheim')
+        VerifiedToken<ShopLogin.Id, ShopToken> verify = loginService.login('test@lokaler.kaufen', 'geheim')
 
         then:
         1 * shopLoginRepository.findByEmail('test@lokaler.kaufen') >> shopLogin
         1 * passwordHasher.verify('geheim', 'hash') >> true
-        1 * tokenService.createShopToken(shopLoginId, shopId) >> new TokenWithExpiry(shopToken, ZonedDateTime.now())
+        1 * tokenService.createShopToken(shopLoginId, shopId) >> new VerifiedToken<>(shopLogin, shopToken, Instant.now())
         verify.getToken() == shopToken
     }
 
@@ -95,7 +93,7 @@ class ShopLoginServiceImplSpec extends Specification {
         loginService.verify(token)
 
         then:
-        1 * tokenService.verifyShopToken(token) >> new VerifiedToken<>(shopLoginId, Instant.now())
+        1 * tokenService.verifyShopToken(token) >> new VerifiedToken<>(shopLoginId, token, Instant.now())
         1 * shopLoginRepository.findById(shopLoginId) >> null
         0 * _
         thrown LoginException
@@ -112,7 +110,7 @@ class ShopLoginServiceImplSpec extends Specification {
         loginService.verify(token)
 
         then:
-        1 * tokenService.verifyShopToken(token) >> new VerifiedToken<>(shopLoginId, Instant.now())
+        1 * tokenService.verifyShopToken(token) >> new VerifiedToken<>(shopLoginId, token, Instant.now())
         1 * shopLoginRepository.findById(shopLoginId) >> shopLogin
         1 * shopRepository.findById(shopId) >> null
         0 * _
@@ -131,7 +129,7 @@ class ShopLoginServiceImplSpec extends Specification {
         Shop verify = loginService.verify(token)
 
         then:
-        1 * tokenService.verifyShopToken(token) >> new VerifiedToken<>(shopLoginId, Instant.now())
+        1 * tokenService.verifyShopToken(token) >> new VerifiedToken<>(shopLoginId, token, Instant.now())
         1 * shopLoginRepository.findById(shopLoginId) >> shopLogin
         1 * shopRepository.findById(shopId) >> shop
         0 * _

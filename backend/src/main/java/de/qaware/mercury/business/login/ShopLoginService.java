@@ -6,7 +6,7 @@ import org.springframework.lang.Nullable;
 public interface ShopLoginService {
     ShopLogin createLogin(Shop shop, String email, String password);
 
-    TokenWithExpiry<ShopToken> login(String email, String password) throws LoginException;
+    VerifiedToken<ShopLogin.Id, ShopToken> login(String email, String password) throws LoginException;
 
     Shop verify(ShopToken token) throws LoginException;
 
@@ -17,5 +17,5 @@ public interface ShopLoginService {
     boolean hasLogin(String email);
 
     @Nullable
-    VerifiedToken<ShopLogin.Id> getTokenInfo(ShopToken token);
+    VerifiedToken<ShopLogin.Id, ShopToken> getTokenInfo(ShopToken token);
 }

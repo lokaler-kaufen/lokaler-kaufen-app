@@ -68,7 +68,7 @@ public class AuthenticationHelper {
     }
 
     @Nullable
-    public VerifiedToken<Admin.Id> getAdminTokenInfo(HttpServletRequest request) {
+    public VerifiedToken<Admin.Id, AdminToken> getAdminTokenInfo(HttpServletRequest request) {
         Cookie cookie = findCookie(request, ADMIN_COOKIE_NAME);
         String authorizationHeader = findAuthorizationHeader(request);
 
@@ -86,7 +86,7 @@ public class AuthenticationHelper {
     }
 
     @Nullable
-    public VerifiedToken<ShopLogin.Id> getShopTokenInfo(HttpServletRequest request) {
+    public VerifiedToken<ShopLogin.Id, ShopToken> getShopTokenInfo(HttpServletRequest request) {
         Cookie cookie = findCookie(request, SHOP_COOKIE_NAME);
         String authorizationHeader = findAuthorizationHeader(request);
 

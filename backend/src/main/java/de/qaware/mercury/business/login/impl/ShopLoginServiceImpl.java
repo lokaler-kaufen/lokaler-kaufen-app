@@ -9,7 +9,6 @@ import de.qaware.mercury.business.login.ShopLoginNotFoundException;
 import de.qaware.mercury.business.login.ShopLoginService;
 import de.qaware.mercury.business.login.ShopToken;
 import de.qaware.mercury.business.login.TokenService;
-import de.qaware.mercury.business.login.TokenWithExpiry;
 import de.qaware.mercury.business.login.VerifiedToken;
 import de.qaware.mercury.business.shop.Shop;
 import de.qaware.mercury.business.time.Clock;
@@ -48,7 +47,7 @@ class ShopLoginServiceImpl implements ShopLoginService {
 
     @Override
     @Transactional(readOnly = true)
-    public TokenWithExpiry<ShopToken> login(String email, String password) throws LoginException {
+    public VerifiedToken<ShopLogin.Id, ShopToken> login(String email, String password) throws LoginException {
         ShopLogin shopLogin = shopLoginRepository.findByEmail(email);
         if (shopLogin == null) {
             log.warn("Shop login '{}' not found", email);
@@ -67,7 +66,7 @@ class ShopLoginServiceImpl implements ShopLoginService {
     @Override
     @Transactional(readOnly = true)
     public Shop verify(ShopToken token) throws LoginException {
-        VerifiedToken<ShopLogin.Id> verifiedToken = tokenService.verifyShopToken(token);
+        VerifiedToken<ShopLogin.Id, ShopToken> verifiedToken = tokenService.verifyShopToken(token);
 
         ShopLogin shopLogin = shopLoginRepository.findById(verifiedToken.getId());
         if (shopLogin == null) {
@@ -119,7 +118,7 @@ class ShopLoginServiceImpl implements ShopLoginService {
 
     @Override
     @Nullable
-    public VerifiedToken<ShopLogin.Id> getTokenInfo(ShopToken token) {
+    public VerifiedToken<ShopLogin.Id, ShopToken> getTokenInfo(ShopToken token) {
         try {
             return tokenService.verifyShopToken(token);
         } catch (LoginException e) {

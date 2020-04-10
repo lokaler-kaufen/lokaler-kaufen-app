@@ -9,13 +9,13 @@ import de.qaware.mercury.business.shop.Shop;
 import java.time.LocalDateTime;
 
 public interface TokenService {
-    TokenWithExpiry<AdminToken> createAdminToken(Admin.Id adminId);
+    VerifiedToken<Admin.Id, AdminToken> createAdminToken(Admin.Id adminId);
 
-    VerifiedToken<Admin.Id> verifyAdminToken(AdminToken token) throws LoginException;
+    VerifiedToken<Admin.Id, AdminToken> verifyAdminToken(AdminToken token) throws LoginException;
 
-    TokenWithExpiry<ShopToken> createShopToken(ShopLogin.Id shopLoginId, Shop.Id shopId);
+    VerifiedToken<ShopLogin.Id, ShopToken> createShopToken(ShopLogin.Id shopLoginId, Shop.Id shopId);
 
-    VerifiedToken<ShopLogin.Id> verifyShopToken(ShopToken token) throws LoginException;
+    VerifiedToken<ShopLogin.Id, ShopToken> verifyShopToken(ShopToken token) throws LoginException;
 
     ShopCreationToken createShopCreationToken(String email);
 

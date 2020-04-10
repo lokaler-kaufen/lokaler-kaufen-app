@@ -7,8 +7,9 @@ import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 
 @Value
-public class VerifiedToken<T> {
-    T id;
+public class VerifiedToken<I, T extends Token> {
+    I id;
+    T token;
     Instant expiry;
 
     public long expiryInSeconds(ZonedDateTime now) {

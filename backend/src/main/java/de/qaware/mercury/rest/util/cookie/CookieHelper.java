@@ -1,6 +1,6 @@
 package de.qaware.mercury.rest.util.cookie;
 
-import de.qaware.mercury.business.login.TokenWithExpiry;
+import de.qaware.mercury.business.login.VerifiedToken;
 import de.qaware.mercury.business.time.Clock;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ public class CookieHelper {
     private final Clock clock;
     private final CookieConfigurationProperties cookieConfig;
 
-    public void addTokenCookie(String name, TokenWithExpiry<?> token, HttpServletResponse response) {
+    public void addTokenCookie(String name, VerifiedToken<?, ?> token, HttpServletResponse response) {
         // Java doesn't support setting the SameSite attribute on cookies, so we have
         // to build the header ourself
         StringBuilder cookie = new StringBuilder();

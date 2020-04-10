@@ -7,7 +7,6 @@ import de.qaware.mercury.business.login.AdminToken
 import de.qaware.mercury.business.login.LoginException
 import de.qaware.mercury.business.login.PasswordHasher
 import de.qaware.mercury.business.login.TokenService
-import de.qaware.mercury.business.login.TokenWithExpiry
 import de.qaware.mercury.business.login.VerifiedToken
 import de.qaware.mercury.business.time.Clock
 import de.qaware.mercury.business.uuid.UUIDFactory
@@ -66,12 +65,12 @@ class AdminLoginServiceImplSpec extends Specification {
         AdminToken token = AdminToken.of('token')
 
         when:
-        TokenWithExpiry<AdminToken> adminToken = loginService.login('test@lokaler.kaufen', 'supersecret')
+        VerifiedToken<Admin.Id, AdminToken> adminToken = loginService.login('test@lokaler.kaufen', 'supersecret')
 
         then:
         1 * adminRepository.findByEmail('test@lokaler.kaufen') >> admin
         1 * passwordHasher.verify('supersecret', '4711') >> true
-        1 * tokenService.createAdminToken(id) >> new TokenWithExpiry(token, ZonedDateTime.now())
+        1 * tokenService.createAdminToken(id) >> new VerifiedToken<>(id, token, Instant.now())
 
         adminToken.getToken() == token
     }
@@ -102,7 +101,7 @@ class AdminLoginServiceImplSpec extends Specification {
         Admin verified = loginService.verify(token)
 
         then:
-        1 * tokenService.verifyAdminToken(token) >> new VerifiedToken<>(id, Instant.now())
+        1 * tokenService.verifyAdminToken(token) >> new VerifiedToken<>(id, token, Instant.now())
         1 * adminRepository.findById(id) >> admin
         verified == admin
     }
@@ -116,7 +115,7 @@ class AdminLoginServiceImplSpec extends Specification {
         loginService.verify(token)
 
         then:
-        1 * tokenService.verifyAdminToken(token) >> new VerifiedToken<>(id, Instant.now())
+        1 * tokenService.verifyAdminToken(token) >> new VerifiedToken<>(id, token, Instant.now())
         1 * adminRepository.findById(id) >> null
         thrown LoginException
     }
