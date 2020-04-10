@@ -116,7 +116,7 @@ class EmailServiceImpl implements EmailService {
             .replace(EmailTemplateConstants.SHOP_NAME, shop.getName())
             .replace(EmailTemplateConstants.CUSTOMER_NAME, reservation.getName())
             .replace(EmailTemplateConstants.SLOT_DATE, dateTimeI18nService.formatDate(reservation.getStart()))
-            .replace(EmailTemplateConstants.SLOT_END_TIME, dateTimeI18nService.formatTime(reservation.getStart()));
+            .replace(EmailTemplateConstants.SLOT_START_TIME, dateTimeI18nService.formatTime(reservation.getStart()));
 
         emailSender.sendEmail(reservation.getEmail(), RESERVATION_CANCELLATION_SUBJECT, body);
     }
