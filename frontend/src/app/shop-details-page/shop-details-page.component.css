@@ -78,6 +78,25 @@
   .text-no-values {
     font-size: small;
   }
+
+  .shop-details-header {
+    width: 100%;
+  }
+
+  .shop-logo {
+    max-width: 120px;
+    max-height: 120px;
+    padding-bottom: 20px;
+  }
+
+  .shop-logo-svg {
+    height: 100px;
+  }
+
+  .shop-logo-container {
+    height: auto;
+    float: left;
+  }
 }
 
 
