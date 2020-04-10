@@ -71,7 +71,7 @@ class SlotServiceImpl implements SlotService {
         List<Slot> slots = new ArrayList<>();
 
         LocalTime currentStart = dayConfig.getStart();
-        LocalDateTime now = clock.now();
+        LocalDateTime firstSlotTime = clock.now().plusMinutes(slotConfig.getDelayForFirstSlot());
         // while slot end <= end of opening hours && end of day
         while (isBeforeOrEqual(currentStart.plusMinutes(slotConfig.getTimePerSlot()), dayConfig.getEnd()) &&
             isBeforeMidnight(currentStart, slotConfig.getTimePerSlot())) {
@@ -79,7 +79,7 @@ class SlotServiceImpl implements SlotService {
             LocalTime slotEnd = currentStart.plusMinutes(slotConfig.getTimePerSlot());
             Interval slot = Interval.of(date.atTime(currentStart), date.atTime(slotEnd));
 
-            if (slot.getStart().isAfter(now)) {
+            if (slot.getStart().isAfter(firstSlotTime)) {
                 boolean available = checkAvailability(slot, existingReservations);
                 slots.add(new Slot(Slot.Id.of(slot.getStart()), slot.getStart(), slot.getEnd(), available));
             }

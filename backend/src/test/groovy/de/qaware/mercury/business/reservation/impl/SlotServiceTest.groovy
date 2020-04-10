@@ -22,7 +22,7 @@ import java.time.temporal.TemporalAdjusters
 import static java.time.LocalDateTime.now
 
 @ContextConfiguration(classes = SlotServiceImpl)
-class SlotServiceSpec extends Specification {
+class SlotServiceTest extends Specification {
 
     @Autowired
     SlotService slotService
