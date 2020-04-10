@@ -14,8 +14,8 @@ public final class EmailTemplateConstants {
     public static final String OWNER_NAME = "{{ ownerName }}";
     public static final String CONTACT_TYPE = "{{ contactType }}";
     public static final String SLOT_DATE = "{{ date }}";
-    public static final String SLOT_START_TIME = "{{ slotStart }}";
-    public static final String SLOT_END_TIME = "{{ slotEndTime }}";
+    public static final String SLOT_START_TIME = "{{ start }}";
+    public static final String SLOT_END_TIME = "{{ end }}";
     public static final String CONTACT = "{{ contact }}";
     public static final String SHOP_CREATION_LINK = "{{ link }}";
     public static final String CANCEL_RESERVATION_LINK = "{{ cancelReservationLink }}";
