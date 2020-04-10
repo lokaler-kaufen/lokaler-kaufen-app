@@ -11,7 +11,7 @@
   <mat-card class="mat-elevation-z5">
     <mat-card-header>
       <div class="shop-header">
-        <div style="float: left">
+        <div class="shop-details-header">
           <mat-card-title class="margin-vertical" id="title">{{ shop.name }}</mat-card-title>
           <mat-card-subtitle>
             <div *ngIf="!hasDescription">Dieser Laden hat noch keine Beschreibung hinterlegt.</div>
@@ -19,7 +19,7 @@
           </mat-card-subtitle>
         </div>
         <div class="shop-logo-container">
-          <img class="shop-logo" src=
+          <img [ngClass]="shop.imageUrl? 'shop-logo' : 'shop-logo-svg'" src=
             "{{shop.imageUrl? shop.imageUrl : '../assets/default-logo.svg'}}"
                alt="Shop logo">
         </div>
