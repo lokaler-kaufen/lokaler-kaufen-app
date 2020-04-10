@@ -19,6 +19,8 @@ export * from './shopsAdminDto';
 export * from './slotConfigDto';
 export * from './slotDto';
 export * from './slotsDto';
+export * from './socialLinksDto';
+export * from './tokenInfoDto';
 export * from './updateShopDto';
 export * from './versionDto';
 export * from './view';

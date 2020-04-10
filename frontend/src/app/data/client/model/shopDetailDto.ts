@@ -9,6 +9,7 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { SocialLinksDto } from './socialLinksDto';
 
 export interface ShopDetailDto { 
     addressSupplement?: string;
@@ -20,6 +21,7 @@ export interface ShopDetailDto {
     imageUrl?: string;
     name?: string;
     ownerName?: string;
+    socialLinks?: SocialLinksDto;
     street?: string;
     website?: string;
     zipCode?: string;

@@ -9,8 +9,9 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { SlotDto } from './slotDto';
 
-export interface SlotsDto { 
-    slots?: { [key: string]: Array<SlotDto>; };
+export interface TokenInfoDto { 
+    expiry?: string;
+    expiryInSeconds?: number;
+    status?: string;
 }
