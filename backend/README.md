@@ -165,6 +165,11 @@ If that happens on your server, you have to configure a database, see [the setti
 Start the application with the `--add-admin` flag. The application will then prompt for an email and a password,
 creates the admin and shuts down again. This can be done while another instance of the application is running.
 
+### Where's the documentation for Spock?
+
+As we use a milestone release of Spock 2.0 to get support for JUnit 5, the documentation is somewhat hard to find.
+It's [here](http://spockframework.org/spock/docs/2.0-M2/all_in_one.html).
+
 # Credits
 
 For geolocation lookups we are using data from [GeoNames](https://download.geonames.org/export/zip/)
