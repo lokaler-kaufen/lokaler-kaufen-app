@@ -51,5 +51,6 @@ public class CreateShopDto {
     @Valid
     private SlotConfigDto slots;
     @Valid
+    @Nullable
     private SocialLinksDto socialLinks;
 }

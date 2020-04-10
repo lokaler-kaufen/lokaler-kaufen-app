@@ -45,5 +45,6 @@ public class UpdateShopDto {
     @Valid
     private SlotConfigDto slots;
     @Valid
+    @Nullable
     private SocialLinksDto socialLinks;
 }
