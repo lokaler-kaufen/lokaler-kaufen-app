@@ -7,6 +7,7 @@ import org.springframework.lang.Nullable;
 public class SlotConfig {
     int timePerSlot;
     int timeBetweenSlots;
+    int delayForFirstSlot;
 
     @Nullable
     DayConfig monday;

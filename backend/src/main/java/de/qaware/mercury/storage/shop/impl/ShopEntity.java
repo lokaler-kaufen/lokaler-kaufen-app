@@ -145,6 +145,10 @@ public class ShopEntity {
     private int timeBetweenSlots;
 
     @Setter
+    @Column(nullable = false)
+    private int delayForFirstSlot;
+
+    @Setter
     @Column(nullable = true, columnDefinition = "varchar")
     @Nullable
     private LocalTime mondayStart;
@@ -254,6 +258,7 @@ public class ShopEntity {
             shop.getWebsite(),
             shop.getSlotConfig().getTimePerSlot(),
             shop.getSlotConfig().getTimeBetweenSlots(),
+            shop.getSlotConfig().getDelayForFirstSlot(),
             Null.map(shop.getSlotConfig().getMonday(), DayConfig::getStart),
             Null.map(shop.getSlotConfig().getMonday(), DayConfig::getEnd),
             Null.map(shop.getSlotConfig().getTuesday(), DayConfig::getStart),
@@ -294,7 +299,7 @@ public class ShopEntity {
             details,
             website,
             new SlotConfig(
-                timePerSlot, timeBetweenSlots,
+                timePerSlot, timeBetweenSlots, delayForFirstSlot,
                 loadSlot(this::getMondayStart, this::getMondayEnd),
                 loadSlot(this::getTuesdayStart, this::getTuesdayEnd),
                 loadSlot(this::getWednesdayStart, this::getWednesdayEnd),

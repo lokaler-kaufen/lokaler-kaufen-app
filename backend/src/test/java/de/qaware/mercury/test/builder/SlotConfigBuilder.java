@@ -9,6 +9,7 @@ import de.qaware.mercury.business.shop.SlotConfig;
 public class SlotConfigBuilder {
     private int timePerSlot;
     private int timeBetweenSlots;
+    private int delayForFirstSlot;
     private DayConfig monday;
     private DayConfig tuesday;
     private DayConfig wednesday;
@@ -24,6 +25,11 @@ public class SlotConfigBuilder {
 
     public SlotConfigBuilder setTimeBetweenSlots(int timeBetweenSlots) {
         this.timeBetweenSlots = timeBetweenSlots;
+        return this;
+    }
+
+    public SlotConfigBuilder setDelayForFirstSlot(int delayForFirstSlot) {
+        this.delayForFirstSlot = delayForFirstSlot;
         return this;
     }
 
@@ -63,6 +69,6 @@ public class SlotConfigBuilder {
     }
 
     public SlotConfig createSlotConfig() {
-        return new SlotConfig(timePerSlot, timeBetweenSlots, monday, tuesday, wednesday, thursday, friday, saturday, sunday);
+        return new SlotConfig(timePerSlot, timeBetweenSlots, delayForFirstSlot, monday, tuesday, wednesday, thursday, friday, saturday, sunday);
     }
 }

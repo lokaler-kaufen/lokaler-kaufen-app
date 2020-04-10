@@ -34,6 +34,7 @@ public final class ShopEntityFixtures {
             "website",
             15,
             5,
+            60,
             LocalTime.of(7, 0),
             LocalTime.of(15, 0),
             LocalTime.of(8, 0),

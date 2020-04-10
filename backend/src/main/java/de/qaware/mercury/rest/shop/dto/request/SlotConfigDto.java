@@ -14,11 +14,21 @@ import javax.validation.constraints.Min;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SlotConfigDto {
+    /**
+     * Slot time in minutes.
+     */
     @Min(1)
     private int timePerSlot;
+    /**
+     * Break time between slots in minutes.
+     */
     @Min(0)
     private int timeBetweenSlots;
-
+    /**
+     * Delay for first slot in minutes.
+     */
+    @Min(0)
+    private int delayForFirstSlot;
     @Nullable
     @Valid
     private DayDto monday;
@@ -45,6 +55,7 @@ public class SlotConfigDto {
         return new SlotConfigDto(
             slotConfig.getTimePerSlot(),
             slotConfig.getTimeBetweenSlots(),
+            slotConfig.getDelayForFirstSlot(),
             Null.map(slotConfig.getMonday(), DayDto::of),
             Null.map(slotConfig.getTuesday(), DayDto::of),
             Null.map(slotConfig.getWednesday(), DayDto::of),
@@ -57,9 +68,10 @@ public class SlotConfigDto {
 
     public SlotConfig toSlots() {
         return new SlotConfig(
-            timePerSlot, timeBetweenSlots, Null.map(monday, DayDto::toSlot), Null.map(tuesday, DayDto::toSlot),
-            Null.map(wednesday, DayDto::toSlot), Null.map(thursday, DayDto::toSlot), Null.map(friday, DayDto::toSlot),
-            Null.map(saturday, DayDto::toSlot), Null.map(sunday, DayDto::toSlot)
+            timePerSlot, timeBetweenSlots, delayForFirstSlot,
+            Null.map(monday, DayDto::toSlot), Null.map(tuesday, DayDto::toSlot), Null.map(wednesday, DayDto::toSlot),
+            Null.map(thursday, DayDto::toSlot), Null.map(friday, DayDto::toSlot), Null.map(saturday, DayDto::toSlot),
+            Null.map(sunday, DayDto::toSlot)
         );
     }
 }
