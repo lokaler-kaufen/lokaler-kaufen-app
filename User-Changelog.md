@@ -1,6 +1,11 @@
 # Änderungshistorie
 
-## - (1.1.0)
+## 10.04.2020 (1.1.1)
+
+* Behebt einen Bug, der unvollständig ausgefüllte E-Mails zur Folge hatte.
+* Setzt bei E-Mail-Textfeldern den Typ korrekt, wodurch automatisch angefügte Leerzeichen bei der Autocompletion mit manchen Android-Tastaturen vermieden werden.
+
+## 07.04.2020 (1.1.0)
 
 * Läden können nun ein Bild hochladen. Dieses Bild wird in der Liste als auch auf der Detail-Seite des Ladens angezeigt.
 * Design der Ladenliste überarbeitet
