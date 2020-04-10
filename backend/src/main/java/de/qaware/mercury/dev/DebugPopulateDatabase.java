@@ -1,4 +1,4 @@
-package de.qaware.mercury;
+package de.qaware.mercury.dev;
 
 import de.qaware.mercury.business.image.Image;
 import de.qaware.mercury.business.image.ImageService;
