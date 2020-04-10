@@ -5,7 +5,7 @@
       lassen Sie sich von unserem Assistenten durch die Laden-Erstellung begleiten. Ganz einfach, versprochen!</p>
     <mat-form-field>
       <mat-label>E-Mail</mat-label>
-      <input matInput pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$" required [formControl]="email"
+      <input matInput pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$" required [formControl]="email" type="email"
              (keyup.enter)="sendConfirmationMail()">
     </mat-form-field>
   </div>
