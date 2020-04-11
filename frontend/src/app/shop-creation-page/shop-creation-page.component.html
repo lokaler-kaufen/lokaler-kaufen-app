@@ -163,6 +163,14 @@
         Minuten
       </div>
       <div>
+        Wie viel Vorlaufzeit benötigen Sie? Ein Kunde kann beispielsweise den nächsten Termin erst zur jetzigen Uhrzeit
+        + 45 Minuten buchen.
+        <mat-form-field style="width: 30px; padding-left: 8px;">
+          <input formControlName="delayCtrl" matInput type="number">
+        </mat-form-field>
+        Minuten
+      </div>
+      <div>
         <button mat-button matStepperPrevious>Zurück</button>
         <button mat-button matStepperNext>Weiter</button>
       </div>

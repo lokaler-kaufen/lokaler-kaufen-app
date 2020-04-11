@@ -111,11 +111,13 @@ export class ShopCreationPageComponent implements OnInit {
       this.openingFormGroup.addControl(toCtrl, new FormControl('', Validators.required));
       this.openingFormGroup.controls[fromCtrl].setValue('09:00');
       this.openingFormGroup.controls[toCtrl].setValue('16:00');
-      this.openingFormGroup.addControl('defaultCtrl', new FormControl(''));
-      this.openingFormGroup.addControl('pauseCtrl', new FormControl(''));
-      this.openingFormGroup.controls.defaultCtrl.setValue(15);
-      this.openingFormGroup.controls.pauseCtrl.setValue(5);
     });
+    this.openingFormGroup.addControl('defaultCtrl', new FormControl(''));
+    this.openingFormGroup.addControl('pauseCtrl', new FormControl(''));
+    this.openingFormGroup.controls.defaultCtrl.setValue(15);
+    this.openingFormGroup.controls.pauseCtrl.setValue(5);
+    this.openingFormGroup.addControl('delayCtrl', new FormControl(''));
+    this.openingFormGroup.controls.delayCtrl.setValue(15);
     // disable default disabled saturday and sunday controls
     this.openingFormGroup.controls.SamstagFromCtrl.disable();
     this.openingFormGroup.controls.SonntagFromCtrl.disable();
@@ -203,6 +205,7 @@ export class ShopCreationPageComponent implements OnInit {
     });
     slots.timeBetweenSlots = this.openingFormGroup.get('pauseCtrl').value;
     slots.timePerSlot = this.openingFormGroup.get('defaultCtrl').value;
+    slots.delayForFirstSlot = this.openingFormGroup.get('delayCtrl').value;
     createShopRequestDto.slots = slots;
     createShopRequestDto.password = this.passwordFormGroup.get('passwordCtrl').value;
     return createShopRequestDto;
