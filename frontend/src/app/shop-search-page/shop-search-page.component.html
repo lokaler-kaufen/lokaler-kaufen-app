@@ -2,49 +2,66 @@
   <div class="align-baseline">
     <mat-form-field class="search-field">
       <mat-label>Wonach suchen Sie heute?</mat-label>
+
       <input
         matInput
         placeholder="Suchen Sie nach Ihrem Lieblingsgeschäft oder nach Begriffen wie Kaffee, Optiker, ..."
         [(ngModel)]="searchBusiness"
-        (keyup)="handleKeyEvent($event)"/>
+        (keyup)="handleKeyEvent($event)"
+      />
+
       <a (click)="performSearch()" matSuffix>
         <mat-icon>search</mat-icon>
       </a>
     </mat-form-field>
+
     <div class="zip-code-div">
       Läden in der Nähe von
       <mat-form-field class="zip-code-field">
-        <input matInput type="text"
-               (keyup)="checkZipCodeInput($event)" maxlength="5" minlength="5"
+        <input type="text"
+               minlength="5"
+               maxlength="5"
+               matInput
+               (keyup)="checkZipCodeInput($event)"
                [(ngModel)]="newLocation"
                (click)="selectAll($event)"
-               (keyup)="handleKeyEvent($event)"/></mat-form-field>
+               (keyup)="handleKeyEvent($event)"
+        />
+      </mat-form-field>
     </div>
   </div>
 
-  <div class="text-no-values" style="width: 90vw;"><p *ngIf="isSearchEmpty">Leider haben wir keine Ergebnisse zu Ihrer
-    Suche nach '{{lastSearchString}}' gefunden.</p>
+  <div class="text-no-values" style="width: 90vw;" *ngIf="isSearchEmpty">
+    <p>
+      Leider haben wir keine Ergebnisse zu Ihrer Suche nach '{{ lastSearchString }}' gefunden.
+    </p>
   </div>
+
   <div [ngClass]="{'hide': isSearchEmpty}">
     <div class="margin-top"
-         *ngFor="let shop of sortShopsForMobile(); last as last"
+         *ngFor="let shop of sortShopsForMobile()"
          (click)="showDetailPage({id: shop.id})">
+
       <mat-card class="mat-elevation-z5 clickable highlightable">
         <mat-card-header>
-          <mat-card-title class="margin-vertical" id="title">
+          <mat-card-title class="margin-vertical">
             <div class="shop-overview">
               <div class="image-and-shop">
-                <img [ngClass]="{'shop-logo' : shop.imageUrl, 'default-logo': !shop.imageUrl}" src=
-                  "{{shop.imageUrl? shop.imageUrl : 'assets/default-logo.svg'}}"
+                <img [ngClass]="{'shop-logo' : shop.imageUrl, 'default-logo': !shop.imageUrl}"
+                     src="{{ shop.imageUrl? shop.imageUrl : 'assets/default-logo.svg' }}"
                      alt="Shop logo">
+
                 <mat-divider [vertical]="true" class="divider"></mat-divider>
+
                 <div class="shop-text">
                   <span style="padding-bottom: 10px;">{{ shop.name }}</span>
+
                   <mat-card-subtitle>
                     <span>{{shop.distance.toFixed(0)}} km entfernt</span>
                   </mat-card-subtitle>
                 </div>
               </div>
+
               <mat-card-content class="shop-contact-types">
                 <contact-types [availableContactTypes]="shop.supportedContactTypes"></contact-types>
               </mat-card-content>
@@ -52,8 +69,8 @@
           </mat-card-title>
         </mat-card-header>
       </mat-card>
-    </div>
 
+    </div>
   </div>
 
 </div>
