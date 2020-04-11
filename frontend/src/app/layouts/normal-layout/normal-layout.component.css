@@ -1,3 +1,9 @@
 .app-content {
   max-width: 960px;
 }
+
+@media screen and (max-width: 719px) {
+  .app-content {
+    max-width: 100vw;
+  }
+}
