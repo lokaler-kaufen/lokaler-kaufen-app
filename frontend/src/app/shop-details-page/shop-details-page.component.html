@@ -16,6 +16,32 @@
           <mat-card-subtitle>
             <div *ngIf="!hasDescription">Dieser Laden hat noch keine Beschreibung hinterlegt.</div>
             <div *ngIf="hasDescription">{{ shop.details }}</div>
+            <div style="display: flex; justify-content: flex-start; align-items: flex-end; padding-top: 10px;">
+              <div *ngIf="shop.website" class="social-links">
+                <a href="{{returnValidLink(shop.website)}}" target="_blank" class="social-links"
+                   style="padding-left: 5px;">
+                  <img src="../assets/web.png" class="social-links-logo">
+                  {{shop.website}}</a>
+              </div>
+              <div *ngIf="shop.socialLinks.facebook" class="social-links">
+                <a href="{{returnValidFacebookLink(shop.socialLinks.facebook)}}" target="_blank" class="social-links"
+                   style="padding-left: 5px;">
+                  <img src="../assets/facebook.png" class="social-links-logo">
+                  {{shop.socialLinks.facebook}}</a>
+              </div>
+              <div *ngIf="shop.socialLinks.instagram" class="social-links">
+                <a href="{{returnValidInstagramLink(shop.socialLinks.instagram)}}" target="_blank" class="social-links"
+                   style="padding-left: 5px;">
+                  <img src="../assets/instagram.png" class="social-links-logo">
+                  {{shop.socialLinks.instagram}}</a>
+              </div>
+              <div *ngIf="shop.socialLinks.twitter" class="social-links">
+                <a href="{{returnValidTwitterLink(shop.socialLinks.twitter)}}" target="_blank" class="social-links"
+                   style="padding-left: 5px;">
+                  <img src="../assets/twitter.png" class="social-links-logo">
+                  {{shop.socialLinks.twitter}}</a>
+              </div>
+            </div>
           </mat-card-subtitle>
         </div>
         <div class="shop-logo-container">
@@ -119,7 +145,6 @@
         <div>{{shop.street}} {{shop.addressSupplement}}</div>
         <div>{{shop.zipCode}}</div>
         <div>{{shop.city}}</div>
-        <div><a href="{{returnValidLink(shop.website)}}" target="_blank">{{shop.website}}</a></div>
         <div><a href="mailto:{{shop.email}}">{{shop.email}}</a></div>
       </div>
 

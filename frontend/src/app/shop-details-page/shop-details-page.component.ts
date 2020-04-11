@@ -152,4 +152,16 @@ export class ShopDetailsPageComponent implements OnInit {
   public back(): void {
     window.history.back();
   }
+
+  returnValidFacebookLink(handle: string) {
+    return `https://www.facebook.com/${handle}/`;
+  }
+
+  returnValidInstagramLink(handle: string) {
+    return `https://www.instagram.com/${handle}/`;
+  }
+
+  returnValidTwitterLink(handle: string) {
+    return `https://www.twitter.com/${handle}/`;
+  }
 }
