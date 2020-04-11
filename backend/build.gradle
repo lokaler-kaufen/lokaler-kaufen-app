@@ -60,6 +60,9 @@ dependencies {
     // JWT for the auth tokens
     implementation 'com.auth0:java-jwt:3.10.1'
 
+    // Jollyday for holiday detection
+    implementation 'de.jollyday:jollyday:0.5.10'
+
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
