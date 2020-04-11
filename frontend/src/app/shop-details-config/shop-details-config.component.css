@@ -20,6 +20,22 @@
   color: lightgrey;
 }
 
+.social-links {
+  padding-right: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.social-links mat-form-field {
+  margin-left: 5px;
+}
+
+.social-links-logo {
+  padding-right: 5px;
+  height: 25px;
+  width: 25px;
+}
+
 @media (max-width: 719px) {
 
   ::ng-deep .mat-vertical-stepper .mat-step-header {

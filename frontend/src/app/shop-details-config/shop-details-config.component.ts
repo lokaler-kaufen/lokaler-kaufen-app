@@ -15,11 +15,10 @@ import {
 import {ContactTypesEnum} from '../contact-types/available-contact-types';
 import {filter} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
-import {ImageService} from '../shared/image.service';
 
 export interface UpdateShopData {
   image: File;
-  deleteImage: boolean,
+  deleteImage: boolean;
   updateShopDto: UpdateShopDto;
   id: string;
 }
@@ -30,6 +29,13 @@ export interface UpdateShopData {
   styleUrls: ['./shop-details-config.component.css']
 })
 export class ShopDetailsConfigComponent implements OnInit {
+
+  constructor(private formBuilder: FormBuilder,
+              private matDialog: MatDialog,
+              private notificationsService: NotificationsService,
+              private client: HttpClient) {
+    this.days = Array.from(this.businessHours.POSSIBLE_BUSINESS_HOURS.keys());
+  }
 
   @Input()
   detailsObservable: Observable<ShopOwnerDetailDto>;
@@ -54,13 +60,10 @@ export class ShopDetailsConfigComponent implements OnInit {
 
   image: File;
 
-  constructor(private formBuilder: FormBuilder,
-              private matDialog: MatDialog,
-              private notificationsService: NotificationsService,
-              private client: HttpClient,
-              private imageService: ImageService) {
-    this.days = Array.from(this.businessHours.POSSIBLE_BUSINESS_HOURS.keys());
-  }
+  fileIsTooBig = false;
+  wrongFileExtension = false;
+
+  deleteImage = false;
 
   ngOnInit() {
     this.configureFormControls();
@@ -97,6 +100,10 @@ export class ShopDetailsConfigComponent implements OnInit {
       .subscribe(() => this.onZipCodeValid());
     this.descriptionFormGroup.controls.descriptionCtrl.setValue(this.details.details);
     this.descriptionFormGroup.controls.urlCtrl.setValue(this.details.website);
+    this.descriptionFormGroup.controls.facebookCtrl.setValue(this.details.socialLinks.facebook);
+    this.descriptionFormGroup.controls.instagramCtrl.setValue(this.details.socialLinks.instagram);
+    this.descriptionFormGroup.controls.twitterCtrl.setValue(this.details.socialLinks.twitter);
+
     this.contactTypes.availableContactTypes.forEach(contact => {
       const contactCtrl = contact.toLowerCase() + 'Ctrl';
       if (this.details.contacts[contact]) {
@@ -139,7 +146,10 @@ export class ShopDetailsConfigComponent implements OnInit {
     });
     this.descriptionFormGroup = this.formBuilder.group({
       descriptionCtrl: ['', Validators.required],
-      urlCtrl: ['', [Validators.pattern('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]]
+      urlCtrl: ['', [Validators.pattern('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]],
+      facebookCtrl: ['', Validators.pattern('^(?!.*\\/).*$')],
+      instagramCtrl: ['', Validators.pattern('^(?!.*\\/).*$')],
+      twitterCtrl: ['', Validators.pattern('^(?!.*\\/).*$')],
     });
     this.contactTypes.availableContactTypes.forEach(type => {
       const ctrl = type.toLowerCase() + 'Ctrl';
@@ -197,6 +207,11 @@ export class ShopDetailsConfigComponent implements OnInit {
     updateShopDto.addressSupplement = this.addressFormGroup.get('suffixCtrl').value;
     updateShopDto.details = this.descriptionFormGroup.get('descriptionCtrl').value;
     updateShopDto.website = this.descriptionFormGroup.get('urlCtrl').value;
+    updateShopDto.socialLinks = {
+      twitter: this.descriptionFormGroup.get('twitterCtrl').value,
+      instagram: this.descriptionFormGroup.get('instagramCtrl').value,
+      facebook: this.descriptionFormGroup.get('facebookCtrl').value
+    };
     const availableContactTypes: { [key: string]: string; } = {};
     this.contactTypes.availableContactTypes.forEach(contact => {
       const contactCtrl = contact.toLowerCase() + 'Ctrl';
@@ -243,7 +258,7 @@ export class ShopDetailsConfigComponent implements OnInit {
       }
       return null;
     };
-  }
+  };
 
   private onZipCodeValid() {
     const zipCode = this.addressFormGroup.get('zipCtrl').value;
@@ -258,9 +273,6 @@ export class ShopDetailsConfigComponent implements OnInit {
       })
       .catch(error => console.log('Error fetching cities to zip code'));
   }
-
-  fileIsTooBig: boolean = false;
-  wrongFileExtension: boolean = false;
 
   onFileChanged(event) {
     const file = event.target.files[0];
@@ -306,8 +318,6 @@ export class ShopDetailsConfigComponent implements OnInit {
         break;
     }
   }
-
-  deleteImage: boolean = false;
 
   onDeleteFile() {
     this.details.imageUrl = null;
