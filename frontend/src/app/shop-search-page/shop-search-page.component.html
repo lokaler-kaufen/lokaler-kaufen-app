@@ -31,46 +31,36 @@
     </div>
   </div>
 
-  <div class="text-no-values" style="width: 90vw;" *ngIf="isSearchEmpty">
-    <p>
-      Leider haben wir keine Ergebnisse zu Ihrer Suche nach '{{ lastSearchString }}' gefunden.
-    </p>
+  <div class="text-no-values padding-horizontal" *ngIf="isSearchEmpty">
+    Leider haben wir keine Ergebnisse zu Ihrer Suche nach '{{ lastSearchString }}' gefunden.
   </div>
 
-  <div [ngClass]="{'hide': isSearchEmpty}">
-    <div class="margin-top"
-         *ngFor="let shop of sortShopsForMobile()"
-         (click)="showDetailPage({id: shop.id})">
+  <div *ngIf="!isSearchEmpty">
 
-      <mat-card class="mat-elevation-z5 clickable highlightable">
-        <mat-card-header>
-          <mat-card-title class="margin-vertical">
-            <div class="shop-overview">
-              <div class="image-and-shop">
-                <img [ngClass]="{'shop-logo' : shop.imageUrl, 'default-logo': !shop.imageUrl}"
-                     src="{{ shop.imageUrl? shop.imageUrl : 'assets/default-logo.svg' }}"
-                     alt="Shop logo">
-
-                <mat-divider [vertical]="true" class="divider"></mat-divider>
-
-                <div class="shop-text">
-                  <span style="padding-bottom: 10px;">{{ shop.name }}</span>
-
-                  <mat-card-subtitle>
-                    <span>{{shop.distance.toFixed(0)}} km entfernt</span>
-                  </mat-card-subtitle>
-                </div>
-              </div>
-
-              <mat-card-content class="shop-contact-types">
-                <contact-types [availableContactTypes]="shop.supportedContactTypes"></contact-types>
-              </mat-card-content>
+    <mat-card class="mat-elevation-z5 clickable highlightable margin-top"
+              *ngFor="let shop of shops" (click)="showDetailPage({id: shop.id})">
+      <mat-card-content>
+        <div class="shop">
+          <div class="meta" [class.margin-bottom]="isSmallScreen">
+            <div class="shop-logo-container" [class.padding-horizontal]="!isSmallScreen">
+              <shop-logo [imageUrl]="shop.imageUrl"></shop-logo>
             </div>
-          </mat-card-title>
-        </mat-card-header>
-      </mat-card>
 
-    </div>
+            <mat-divider [vertical]="true" class="divider" *ngIf="!isSmallScreen"></mat-divider>
+
+            <div class="shop-text" [class.padding-horizontal]="!isSmallScreen" [class.padding-left]="isSmallScreen">
+              <div class="mat-card-title">{{ shop.name }}</div>
+              <div class="mat-card-subtitle">{{ shop.distance.toFixed(0) }} km entfernt</div>
+            </div>
+          </div>
+
+          <div class="shop-contact-types" [class.margin-bottom]="isSmallScreen">
+            <contact-types [availableContactTypes]="shop.supportedContactTypes"></contact-types>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
   </div>
 
 </div>
