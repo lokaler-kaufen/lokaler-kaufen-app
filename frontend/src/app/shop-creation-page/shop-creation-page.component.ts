@@ -94,7 +94,10 @@ export class ShopCreationPageComponent implements OnInit {
       .subscribe(() => this.onZipCodeValid());
     this.descriptionFormGroup = this.formBuilder.group({
       descriptionCtrl: ['', Validators.required],
-      urlCtrl: ['', [Validators.pattern('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]]
+      urlCtrl: ['', [Validators.pattern('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]],
+      facebookCtrl: ['', Validators.pattern('^(?!.*\\/).*$')],
+      instagramCtrl: ['', Validators.pattern('^(?!.*\\/).*$')],
+      twitterCtrl: ['', Validators.pattern('^(?!.*\\/).*$')],
     });
     this.contactTypes.availableContactTypes.forEach(type => {
       const ctrl = type.toLowerCase() + 'Ctrl';
@@ -175,6 +178,11 @@ export class ShopCreationPageComponent implements OnInit {
     createShopRequestDto.addressSupplement = this.addressFormGroup.get('suffixCtrl').value;
     createShopRequestDto.details = this.descriptionFormGroup.get('descriptionCtrl').value;
     createShopRequestDto.website = this.descriptionFormGroup.get('urlCtrl').value;
+    createShopRequestDto.socialLinks = {
+      twitter: this.descriptionFormGroup.get('twitterCtrl').value,
+      instagram: this.descriptionFormGroup.get('instagramCtrl').value,
+      facebook: this.descriptionFormGroup.get('facebookCtrl').value
+    };
     const availableContactTypes: { [key: string]: string; } = {};
     this.contactTypes.availableContactTypes.forEach(contact => {
       const contactCtrl = contact.toLowerCase() + 'Ctrl';

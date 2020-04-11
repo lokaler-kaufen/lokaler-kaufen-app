@@ -63,10 +63,36 @@
       <div>
         <p>Falls Sie eine Webseite haben, können Sie diese anzeigen lassen und Ihren Kunden dort weitere Details zu
           Ihrem Laden zur Verfügung stellen.</p>
-        <mat-form-field>
-          <mat-label>Website Link</mat-label>
-          <input matInput formControlName="urlCtrl" placeholder="https://mywebsite.de">
-        </mat-form-field>
+        <div class="social-links">
+          <img src="../assets/web.png" class="social-links-logo">
+          <mat-form-field>
+            <mat-label>Ihre Webseite</mat-label>
+            <input matInput formControlName="urlCtrl" placeholder="https://mywebsite.de">
+          </mat-form-field>
+        </div>
+        <p>Sie können zusätzlich Auftritte in sozialen Medien hinzufügen. Bitte geben Sie bei sozialen Medien nur Ihren
+          Namen an und keine kompletten URLs (z. B. 'lokalerkaufen' statt 'https://www.facebook.com/lokalerkaufen/')</p>
+        <div class="social-links">
+          <img src="../assets/facebook.png" class="social-links-logo">
+          <mat-form-field>
+            <mat-label>Ihr Facebook Name</mat-label>
+            <input matInput formControlName="facebookCtrl" placeholder="MeinLaden">
+          </mat-form-field>
+        </div>
+        <div class="social-links">
+          <img src="../assets/instagram.png" class="social-links-logo">
+          <mat-form-field>
+            <mat-label>Ihr Instagram Name</mat-label>
+            <input matInput formControlName="instagramCtrl" placeholder="MeineInstagramSeite">
+          </mat-form-field>
+        </div>
+        <div class="social-links">
+          <img src="../assets/twitter.png" class="social-links-logo">
+          <mat-form-field>
+            <mat-label>Ihr Twitter Name</mat-label>
+            <input matInput formControlName="twitterCtrl" placeholder="Zwitscher">
+          </mat-form-field>
+        </div>
       </div>
       <div>
         <button mat-button matStepperPrevious>Zurück</button>
