@@ -51,7 +51,7 @@ class FrontendCacheFilter extends OncePerRequestFilter {
     }
 
     @Nullable
-    String getCacheControlHeader(@Nullable String extension) {
+    private String getCacheControlHeader(@Nullable String extension) {
         if (extension == null) {
             return null;
         }
