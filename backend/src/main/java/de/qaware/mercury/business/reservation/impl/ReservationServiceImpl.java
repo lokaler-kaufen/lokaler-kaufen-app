@@ -5,6 +5,7 @@ import de.qaware.mercury.business.login.LoginException;
 import de.qaware.mercury.business.login.ReservationCancellationToken;
 import de.qaware.mercury.business.login.TokenService;
 import de.qaware.mercury.business.reservation.Interval;
+import de.qaware.mercury.business.reservation.InvalidSlotIdException;
 import de.qaware.mercury.business.reservation.Reservation;
 import de.qaware.mercury.business.reservation.ReservationCancellation;
 import de.qaware.mercury.business.reservation.ReservationFailedException;
@@ -13,6 +14,7 @@ import de.qaware.mercury.business.reservation.ReservationService;
 import de.qaware.mercury.business.reservation.Slot;
 import de.qaware.mercury.business.reservation.SlotService;
 import de.qaware.mercury.business.reservation.Slots;
+import de.qaware.mercury.business.shop.Breaks;
 import de.qaware.mercury.business.shop.ContactType;
 import de.qaware.mercury.business.shop.Shop;
 import de.qaware.mercury.business.shop.ShopNotFoundException;
@@ -33,7 +35,11 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
@@ -142,12 +148,46 @@ class ReservationServiceImpl implements ReservationService {
 
     @Override
     public Slots previewSlots(SlotConfig slotConfig) {
-        // Calculate dates of next monday and next sunday
-        LocalDate monday = clock.now().toLocalDate().with(TemporalAdjusters.next(DayOfWeek.MONDAY));
-        LocalDate sunday = monday.with(TemporalAdjusters.next(DayOfWeek.SUNDAY));
+        LocalDate monday = getNextMonday();
+        LocalDate sunday = getNextSunday(monday);
 
         // Monday to sunday are always 7 days
         return new Slots(7, monday, slotService.generateSlots(monday, sunday, slotConfig, List.of()));
+    }
+
+    @Override
+    public Breaks resolveBreaks(Set<String> slotIds, SlotConfig slotConfig) {
+        Map<DayOfWeek, List<Breaks.Break>> breaks = new HashMap<>();
+
+        for (String slotId : slotIds) {
+            LocalDateTime start = Slot.Id.parse(slotId).toLocalDateTime();
+            LocalDateTime end = start.plusMinutes(slotConfig.getTimePerSlot());
+
+            if (!slotService.isValidSlot(start, end, slotConfig)) {
+                throw new InvalidSlotIdException(slotId);
+            }
+
+            // Put the slot start and end as break to the corresponding weekday
+            breaks.computeIfAbsent(start.getDayOfWeek(), ignored -> new ArrayList<>()).add(new Breaks.Break(start, end));
+        }
+
+        return new Breaks(
+            breaks.getOrDefault(DayOfWeek.MONDAY, List.of()),
+            breaks.getOrDefault(DayOfWeek.TUESDAY, List.of()),
+            breaks.getOrDefault(DayOfWeek.WEDNESDAY, List.of()),
+            breaks.getOrDefault(DayOfWeek.THURSDAY, List.of()),
+            breaks.getOrDefault(DayOfWeek.FRIDAY, List.of()),
+            breaks.getOrDefault(DayOfWeek.SATURDAY, List.of()),
+            breaks.getOrDefault(DayOfWeek.SUNDAY, List.of())
+        );
+    }
+
+    private LocalDate getNextSunday(LocalDate monday) {
+        return monday.with(TemporalAdjusters.next(DayOfWeek.SUNDAY));
+    }
+
+    private LocalDate getNextMonday() {
+        return clock.now().toLocalDate().with(TemporalAdjusters.next(DayOfWeek.MONDAY));
     }
 
     private List<Interval> mapReservations(List<Reservation> reservations) {

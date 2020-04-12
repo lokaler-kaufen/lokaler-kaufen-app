@@ -4,6 +4,7 @@ import de.qaware.mercury.business.image.Image
 import de.qaware.mercury.business.image.ImageService
 import de.qaware.mercury.business.login.ShopLoginService
 import de.qaware.mercury.business.login.TokenService
+import de.qaware.mercury.business.reservation.ReservationService
 import de.qaware.mercury.business.shop.Shop
 import de.qaware.mercury.business.shop.ShopNotFoundException
 import de.qaware.mercury.business.shop.ShopService
@@ -35,9 +36,10 @@ class ShopControllerSpec extends Specification {
 
     HttpServletResponse httpServletResponse = Mock(HttpServletResponse)
     CookieHelper cookieHelper = Mock(CookieHelper)
+    ReservationService reservationService = Mock(ReservationService)
 
     void setup() {
-        controller = new ShopController(shopService, imageService, tokenService, shopLoginService, cookieHelper)
+        controller = new ShopController(shopService, imageService, tokenService, shopLoginService, cookieHelper, reservationService)
     }
 
     def "Retrieve shop details"() {
@@ -113,7 +115,7 @@ class ShopControllerSpec extends Specification {
         setup:
         Shop shop = ShopFixtures.create()
         SlotConfigDto slots = SlotConfigDto.of(shop.getSlotConfig())
-        CreateShopDto dto = new CreateShopDto("name", "ownername", "street", "zipCode", "city", "addressSupplement", "details", "www.example.com", "password", Map.of(), slots, new SocialLinksDto("instagram", "facebook", "twitter"))
+        CreateShopDto dto = new CreateShopDto("name", "ownername", "street", "zipCode", "city", "addressSupplement", "details", "www.example.com", "password", Map.of(), slots, new SocialLinksDto("instagram", "facebook", "twitter"), null)
         String token = "test-token"
         String testImageUrl = "http://image.url/path"
         URI testImageUri = new URI(testImageUrl)

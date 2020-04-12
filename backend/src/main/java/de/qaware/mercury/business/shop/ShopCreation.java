@@ -22,4 +22,5 @@ public class ShopCreation {
     Map<ContactType, String> contacts;
     SlotConfig slotConfig;
     SocialLinks socialLinks;
+    Breaks breaks;
 }

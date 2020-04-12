@@ -53,4 +53,7 @@ public class CreateShopDto {
     @Valid
     @Nullable
     private SocialLinksDto socialLinks;
+    @Valid
+    @Nullable
+    private BreaksDto breaks;
 }

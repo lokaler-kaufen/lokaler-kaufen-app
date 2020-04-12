@@ -11,12 +11,15 @@ import de.qaware.mercury.business.login.ShopLoginService;
 import de.qaware.mercury.business.login.ShopToken;
 import de.qaware.mercury.business.login.TokenService;
 import de.qaware.mercury.business.login.VerifiedToken;
+import de.qaware.mercury.business.reservation.ReservationService;
+import de.qaware.mercury.business.shop.Breaks;
 import de.qaware.mercury.business.shop.ContactType;
 import de.qaware.mercury.business.shop.Shop;
 import de.qaware.mercury.business.shop.ShopAlreadyExistsException;
 import de.qaware.mercury.business.shop.ShopCreation;
 import de.qaware.mercury.business.shop.ShopNotFoundException;
 import de.qaware.mercury.business.shop.ShopService;
+import de.qaware.mercury.business.shop.SlotConfig;
 import de.qaware.mercury.business.shop.SocialLinks;
 import de.qaware.mercury.rest.shop.dto.request.CreateShopDto;
 import de.qaware.mercury.rest.shop.dto.request.ResetPasswordDto;
@@ -62,6 +65,7 @@ class ShopController {
     private final TokenService tokenService;
     private final ShopLoginService shopLoginService;
     private final CookieHelper cookieHelper;
+    private final ReservationService reservationService;
 
     /**
      * Retrieves details of a shop for users.
@@ -131,6 +135,7 @@ class ShopController {
         // It contains the email address, and is used to verify that the user really has access to this email address
         String email = tokenService.verifyShopCreationToken(ShopCreationToken.of(token));
 
+        SlotConfig slotConfig = request.getSlots().toSlots();
         Shop createdShop = shopService.create(new ShopCreation(
             email,
             request.getOwnerName(),
@@ -143,8 +148,9 @@ class ShopController {
             request.getWebsite(),
             request.getPassword(),
             Maps.mapKeys(request.getContacts(), ContactType::parse),
-            request.getSlots().toSlots(),
-            request.getSocialLinks() == null ? SocialLinks.none() : request.getSocialLinks().toSocialLinks()
+            slotConfig,
+            request.getSocialLinks() == null ? SocialLinks.none() : request.getSocialLinks().toSocialLinks(),
+            request.getBreaks() == null ? Breaks.none() : reservationService.resolveBreaks(request.getBreaks().getSlotIds(), slotConfig)
         ));
 
         // When the shop is created, the client is automatically logged in
