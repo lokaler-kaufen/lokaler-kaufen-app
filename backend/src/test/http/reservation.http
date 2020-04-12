@@ -18,4 +18,25 @@ Content-Type: application/json
 ### Cancel reservation
 DELETE {{ host }}/api/reservation?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhMWE2ZDZlZS0wNzU1LTQ1YWUtYmViMy1mMzkzNzIzMDBiZDYiLCJzaWRlIjoic2hvcCIsImlzcyI6Im1lcmN1cnktcmVzZXJ2YXRpb24tY2FuY2VsbGF0aW9uIn0.PfQcSxa_43oao_I6XZ7TVyTZpnwE5mIB3m6XR-6ubvk
 
+### Preview slots
+POST {{ host }}/api/reservation/preview
+Content-Type: application/json
+
+{
+    "timePerSlot": 15,
+    "timeBetweenSlots": 5,
+    "monday": {
+        "start": "10:00",
+        "end": "17:00"
+    },
+    "tuesday": {
+        "start": "08:00",
+        "end": "18:00"
+    },
+    "wednesday": {
+        "start": "15:00",
+        "end": "22:30"
+    }
+}
+
 ###

@@ -13,6 +13,7 @@ import de.qaware.mercury.business.shop.ShopNotFoundException;
 import de.qaware.mercury.business.shop.ShopService;
 import de.qaware.mercury.rest.reservation.dto.request.CreateReservationDto;
 import de.qaware.mercury.rest.reservation.dto.response.SlotsDto;
+import de.qaware.mercury.rest.shop.dto.request.SlotConfigDto;
 import de.qaware.mercury.util.validation.Validation;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -64,6 +65,12 @@ public class ReservationController {
         Shop shop = shopService.findByIdOrThrow(Shop.Id.parse(shopId));
         Slots slots = reservationService.listSlots(shop, days);
 
+        return SlotsDto.of(slots);
+    }
+
+    @PostMapping(path = "/preview", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public SlotsDto previewSlots(@Valid @RequestBody SlotConfigDto request) {
+        Slots slots = reservationService.previewSlots(request.toSlots());
         return SlotsDto.of(slots);
     }
 }

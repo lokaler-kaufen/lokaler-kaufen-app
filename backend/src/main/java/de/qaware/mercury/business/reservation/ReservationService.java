@@ -5,6 +5,7 @@ import de.qaware.mercury.business.login.ReservationCancellationToken;
 import de.qaware.mercury.business.shop.ContactType;
 import de.qaware.mercury.business.shop.Shop;
 import de.qaware.mercury.business.shop.ShopNotFoundException;
+import de.qaware.mercury.business.shop.SlotConfig;
 
 public interface ReservationService {
     Slots listSlots(Shop shop, int days);
@@ -19,4 +20,6 @@ public interface ReservationService {
     void createReservation(Shop shop, Slot.Id slotId, ContactType contactType, String contact, String name, String email) throws ReservationFailedException;
 
     void cancelReservation(ReservationCancellationToken token) throws ReservationNotFoundException, LoginException, ShopNotFoundException;
+
+    Slots previewSlots(SlotConfig slotConfig);
 }

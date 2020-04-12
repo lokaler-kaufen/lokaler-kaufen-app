@@ -17,6 +17,7 @@ import de.qaware.mercury.business.shop.ContactType;
 import de.qaware.mercury.business.shop.Shop;
 import de.qaware.mercury.business.shop.ShopNotFoundException;
 import de.qaware.mercury.business.shop.ShopService;
+import de.qaware.mercury.business.shop.SlotConfig;
 import de.qaware.mercury.business.time.Clock;
 import de.qaware.mercury.business.uuid.UUIDFactory;
 import de.qaware.mercury.storage.reservation.ReservationRepository;
@@ -27,9 +28,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
+import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 
 @Service
@@ -135,6 +138,16 @@ class ReservationServiceImpl implements ReservationService {
             default:
                 throw new IllegalStateException("Unexpected value: " + cancellation.getSide());
         }
+    }
+
+    @Override
+    public Slots previewSlots(SlotConfig slotConfig) {
+        // Calculate dates of next monday and next sunday
+        LocalDate monday = clock.now().toLocalDate().with(TemporalAdjusters.next(DayOfWeek.MONDAY));
+        LocalDate sunday = monday.with(TemporalAdjusters.next(DayOfWeek.SUNDAY));
+
+        // Monday to sunday are always 7 days
+        return new Slots(7, monday, slotService.generateSlots(monday, sunday, slotConfig, List.of()));
     }
 
     private List<Interval> mapReservations(List<Reservation> reservations) {
