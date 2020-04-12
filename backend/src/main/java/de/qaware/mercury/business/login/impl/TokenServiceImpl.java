@@ -47,7 +47,7 @@ class TokenServiceImpl implements TokenService {
 
     private static final Duration ADMIN_TOKEN_EXPIRY = Duration.ofDays(1);
     private static final Duration SHOP_TOKEN_EXPIRY = Duration.ofDays(1);
-    private static final Duration SHOP_CREATION_TOKEN_EXPIRY = Duration.ofDays(2);
+    private static final Duration SHOP_CREATION_TOKEN_EXPIRY = Duration.ofDays(7);
     private static final Duration PASSWORD_RESET_TOKEN_EXPIRY = Duration.ofDays(2);
 
     private final KeyProvider keyProvider;
