@@ -4,7 +4,7 @@ import de.qaware.mercury.business.image.Image
 import de.qaware.mercury.business.image.ImageService
 import de.qaware.mercury.business.login.ShopLoginService
 import de.qaware.mercury.business.login.TokenService
-import de.qaware.mercury.business.reservation.ReservationService
+import de.qaware.mercury.business.reservation.SlotService
 import de.qaware.mercury.business.shop.Shop
 import de.qaware.mercury.business.shop.ShopNotFoundException
 import de.qaware.mercury.business.shop.ShopService
@@ -36,10 +36,10 @@ class ShopControllerSpec extends Specification {
 
     HttpServletResponse httpServletResponse = Mock(HttpServletResponse)
     CookieHelper cookieHelper = Mock(CookieHelper)
-    ReservationService reservationService = Mock(ReservationService)
+    SlotService slotService = Mock(SlotService)
 
     void setup() {
-        controller = new ShopController(shopService, imageService, tokenService, shopLoginService, cookieHelper, reservationService)
+        controller = new ShopController(shopService, imageService, tokenService, shopLoginService, cookieHelper, slotService)
     }
 
     def "Retrieve shop details"() {

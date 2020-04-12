@@ -6,6 +6,7 @@ import de.qaware.mercury.business.reservation.ReservationFailedException;
 import de.qaware.mercury.business.reservation.ReservationNotFoundException;
 import de.qaware.mercury.business.reservation.ReservationService;
 import de.qaware.mercury.business.reservation.Slot;
+import de.qaware.mercury.business.reservation.SlotService;
 import de.qaware.mercury.business.reservation.Slots;
 import de.qaware.mercury.business.shop.ContactType;
 import de.qaware.mercury.business.shop.Shop;
@@ -42,6 +43,7 @@ import javax.validation.constraints.Pattern;
 public class ReservationController {
     private final ReservationService reservationService;
     private final ShopService shopService;
+    private final SlotService slotService;
 
     @PostMapping(path = "/{shopId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void createReservation(@PathVariable("shopId") @Pattern(regexp = Validation.SHOP_ID) String shopId, @Valid @RequestBody CreateReservationDto request) throws ShopNotFoundException, ReservationFailedException {
@@ -70,7 +72,7 @@ public class ReservationController {
 
     @PostMapping(path = "/preview", consumes = MediaType.APPLICATION_JSON_VALUE)
     public SlotsDto previewSlots(@Valid @RequestBody SlotConfigDto request) {
-        Slots slots = reservationService.previewSlots(request.toSlots());
+        Slots slots = slotService.previewSlots(request.toSlots());
         return SlotsDto.of(slots);
     }
 }

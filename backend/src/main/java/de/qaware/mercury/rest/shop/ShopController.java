@@ -11,7 +11,7 @@ import de.qaware.mercury.business.login.ShopLoginService;
 import de.qaware.mercury.business.login.ShopToken;
 import de.qaware.mercury.business.login.TokenService;
 import de.qaware.mercury.business.login.VerifiedToken;
-import de.qaware.mercury.business.reservation.ReservationService;
+import de.qaware.mercury.business.reservation.SlotService;
 import de.qaware.mercury.business.shop.Breaks;
 import de.qaware.mercury.business.shop.ContactType;
 import de.qaware.mercury.business.shop.Shop;
@@ -65,7 +65,7 @@ class ShopController {
     private final TokenService tokenService;
     private final ShopLoginService shopLoginService;
     private final CookieHelper cookieHelper;
-    private final ReservationService reservationService;
+    private final SlotService slotService;
 
     /**
      * Retrieves details of a shop for users.
@@ -150,7 +150,7 @@ class ShopController {
             Maps.mapKeys(request.getContacts(), ContactType::parse),
             slotConfig,
             request.getSocialLinks() == null ? SocialLinks.none() : request.getSocialLinks().toSocialLinks(),
-            request.getBreaks() == null ? Breaks.none() : reservationService.resolveBreaks(request.getBreaks().getSlotIds(), slotConfig)
+            request.getBreaks() == null ? Breaks.none() : slotService.resolveBreaks(request.getBreaks().getSlotIds(), slotConfig)
         ));
 
         // When the shop is created, the client is automatically logged in
