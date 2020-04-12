@@ -23,8 +23,8 @@ class FrontendCacheFilter extends OncePerRequestFilter {
      * See https://developer.mozilla.org/en-US/docs/Web/HTTP/Caching
      */
     private static final Map<String, String> CACHE_SETTINGS = Map.of(
-        ".css", "public, max-age=604800, immutable",
-        ".js", "public, max-age=604800, immutable"
+        ".css", "public, max-age=31536000, immutable",
+        ".js", "public, max-age=31536000, immutable"
     );
 
     public FrontendCacheFilter() {
