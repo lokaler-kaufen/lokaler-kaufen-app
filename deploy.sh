@@ -44,17 +44,15 @@ SERVICE_NAME="mercury-$ENV"
 HOST="lokaler.kaufen"
 
 NPM="npm"
-ANGULAR="ng"
 GRADLE="./gradlew"
 
 # Angular Build
 (
     printf "Building Angular project ..."
     cd "${FRONTEND_DIR}"
-    "${NPM}" install
-    "${ANGULAR}" --prod build
+    "${NPM}" ci
+    "${NPM}" run build-prod
     echo "  done."
-
 )
 
 # Copy Angular dist files to Spring Boot static files directory
