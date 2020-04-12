@@ -10,6 +10,7 @@ import de.qaware.mercury.business.reservation.Reservation
 import de.qaware.mercury.business.reservation.ReservationCancellationSide
 import de.qaware.mercury.business.shop.ContactType
 import de.qaware.mercury.business.shop.Shop
+import org.springframework.context.MessageSource
 import spock.lang.Specification
 
 import java.time.LocalDateTime
@@ -22,14 +23,16 @@ class EmailServiceImplSpec extends Specification {
     EmailConfigurationProperties properties
     TokenService tokenService
     DateTimeI18nService i18nService
+    MessageSource messageSource
 
     void setup() {
         emailSender = Mock(EmailSender)
         properties = Mock(EmailConfigurationProperties)
         tokenService = Mock(TokenService)
         i18nService = Mock(DateTimeI18nService)
+        messageSource = Mock(MessageSource)
 
-        emailService = new EmailServiceImpl(emailSender, properties, tokenService, i18nService)
+        emailService = new EmailServiceImpl(emailSender, properties, tokenService, i18nService, messageSource)
     }
 
     def "Send Shop creation link"() {
@@ -39,7 +42,8 @@ class EmailServiceImplSpec extends Specification {
         then:
         1 * tokenService.createShopCreationToken(EMAIL) >> ShopCreationToken.of("test")
         1 * properties.getCreationLinkTemplate() >> '{{ token }}'
-        1 * emailSender.sendEmail(EMAIL, EmailServiceImpl.SHOP_CREATION_SUBJECT, { it != null })
+        1 * emailSender.sendEmail(EMAIL, _, { it != null })
+        1 * messageSource.getMessage({ it != null }, _, { it != null })
     }
 
     def "Send customer reservation confirmation"() {
@@ -56,6 +60,7 @@ class EmailServiceImplSpec extends Specification {
         2 * i18nService.formatTime(_) >> '00:00:00'
         1 * properties.getReservationCancellationLinkTemplate() >> '{{ token }}'
         1 * tokenService.createReservationCancellationToken(reservationId, ReservationCancellationSide.CUSTOMER, slot) >> new ReservationCancellationToken("test")
+        1 * messageSource.getMessage({ it != null }, _, { it != null })
         noExceptionThrown()
     }
 
@@ -68,6 +73,7 @@ class EmailServiceImplSpec extends Specification {
 
         then:
         1 * properties.getShopPasswordResetLinkTemplate() >> '{{ token }}'
+        1 * messageSource.getMessage({ it != null }, _, { it != null })
         noExceptionThrown()
     }
 
@@ -85,6 +91,7 @@ class EmailServiceImplSpec extends Specification {
         2 * i18nService.formatTime(_) >> '00:00:00'
         1 * properties.getReservationCancellationLinkTemplate() >> '{{ token }}'
         1 * tokenService.createReservationCancellationToken(reservationId, ReservationCancellationSide.SHOP, slot) >> new ReservationCancellationToken("test")
+        1 * messageSource.getMessage({ it != null }, _, { it != null })
         noExceptionThrown()
     }
 }

@@ -19,6 +19,8 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -32,22 +34,24 @@ import java.util.List;
 @EnableConfigurationProperties(EmailConfigurationProperties.class)
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 class EmailServiceImpl implements EmailService {
-    static final String SHOP_CREATION_SUBJECT = "Ihr Laden auf lokaler.kaufen";
-    private static final String CUSTOMER_RESERVATION_CONFIRMATION_SUBJECT = "Reservierungsbestätigung auf lokaler.kaufen";
-    private static final String SHOP_NEW_RESERVATION_SUBJECT = "Es gibt eine neue Reservierung auf lokaler.kaufen";
+    private static final String SHOP_CREATION_SUBJECT = "shop.creation.subject";
+    private static final String CUSTOMER_RESERVATION_CONFIRMATION_SUBJECT = "customer.reservation.confirmation.subject";
+    private static final String SHOP_NEW_RESERVATION_SUBJECT = "shop.new.reservation.subject";
+    // todo @phxql brauchen wir das hier noch?
     @SuppressWarnings("java:S2068") // Shut up SonarQube :/
-    private static final String SHOP_RESET_PASSWORD_SUBJECT = "Passwort auf lokaler.kaufen zurücksetzen";
-    private static final String RESERVATION_CANCELLATION_SUBJECT = "Ihr Termin auf lokaler.kaufen wurde leider abgesagt";
-    private static final String RESERVATION_CANCELLATION_CONFIRMATION_SUBJECT = "Absagebestätigung von lokaler.kaufen";
-    private static final String SHOP_CREATED_APPROVAL_NEEDED_SUBJECT = "Gleich kann's auf lokaler.kaufen losgehen!";
-    private static final String SHOP_APPROVED_SUBJECT = "Es kann auf lokaler.kaufen losgehen!";
-    private static final String SHOP_DISAPPROVED_SUBJECT = "Ihr Laden auf lokaler.kaufen wurde deaktiviert";
-    private static final String ADMIN_SHOP_APPROVAL_NEEDED = "Ein Laden auf lokaler.kaufen wartet auf Freischaltung";
+    private static final String SHOP_RESET_PASSWORD_SUBJECT = "shop.reset.password.subject";
+    private static final String RESERVATION_CANCELLATION_SUBJECT = "reservation.cancellation.subject";
+    private static final String RESERVATION_CANCELLATION_CONFIRMATION_SUBJECT = "reservation.cancellation.confirmation.subject";
+    private static final String SHOP_CREATED_APPROVAL_NEEDED_SUBJECT = "shop.created.approval.needed.subject";
+    private static final String SHOP_APPROVED_SUBJECT = "shop.approved.subject";
+    private static final String SHOP_DISAPPROVED_SUBJECT = "shop.disapproved.subject";
+    private static final String ADMIN_SHOP_APPROVAL_NEEDED = "admin.shop.approval.needed";
 
     private final EmailSender emailSender;
     private final EmailConfigurationProperties config;
     private final TokenService tokenService;
     private final DateTimeI18nService dateTimeI18nService;
+    private final MessageSource messageSource;
 
     @Override
     public void sendShopCreationLink(String email) {
@@ -58,7 +62,7 @@ class EmailServiceImpl implements EmailService {
         String body = loadTemplate("/email/shop-creation.txt")
             .replace(EmailTemplateConstants.SHOP_CREATION_LINK, creationLink);
 
-        emailSender.sendEmail(email, SHOP_CREATION_SUBJECT, body);
+        emailSender.sendEmail(email, getTranslation(SHOP_CREATION_SUBJECT), body);
     }
 
     @Override
@@ -78,7 +82,7 @@ class EmailServiceImpl implements EmailService {
             .replace(EmailTemplateConstants.CONTACT, contact)
             .replace(EmailTemplateConstants.CANCEL_RESERVATION_LINK, cancelReservationLink);
 
-        emailSender.sendEmail(email, CUSTOMER_RESERVATION_CONFIRMATION_SUBJECT, body);
+        emailSender.sendEmail(email, getTranslation(CUSTOMER_RESERVATION_CONFIRMATION_SUBJECT), body);
     }
 
     @Override
@@ -97,7 +101,7 @@ class EmailServiceImpl implements EmailService {
             .replace(EmailTemplateConstants.CONTACT, contact)
             .replace(EmailTemplateConstants.CANCEL_RESERVATION_LINK, cancelReservationLink);
 
-        emailSender.sendEmail(shop.getEmail(), SHOP_NEW_RESERVATION_SUBJECT, body);
+        emailSender.sendEmail(shop.getEmail(), getTranslation(SHOP_NEW_RESERVATION_SUBJECT), body);
     }
 
     @Override
@@ -108,7 +112,7 @@ class EmailServiceImpl implements EmailService {
         String body = loadTemplate("/email/shop-passwort-reset.txt")
             .replace(EmailTemplateConstants.PASSWORD_RESET_LINK, resetLink);
 
-        emailSender.sendEmail(email, SHOP_RESET_PASSWORD_SUBJECT, body);
+        emailSender.sendEmail(email, getTranslation(SHOP_RESET_PASSWORD_SUBJECT), body);
     }
 
     @Override
@@ -119,7 +123,7 @@ class EmailServiceImpl implements EmailService {
             .replace(EmailTemplateConstants.SLOT_DATE, dateTimeI18nService.formatDate(reservation.getStart()))
             .replace(EmailTemplateConstants.SLOT_START_TIME, dateTimeI18nService.formatTime(reservation.getStart()));
 
-        emailSender.sendEmail(reservation.getEmail(), RESERVATION_CANCELLATION_SUBJECT, body);
+        emailSender.sendEmail(reservation.getEmail(), getTranslation(RESERVATION_CANCELLATION_SUBJECT), body);
     }
 
     @Override
@@ -130,7 +134,7 @@ class EmailServiceImpl implements EmailService {
             .replace(EmailTemplateConstants.SLOT_DATE, dateTimeI18nService.formatDate(reservation.getStart()))
             .replace(EmailTemplateConstants.SLOT_START_TIME, dateTimeI18nService.formatTime(reservation.getStart()));
 
-        emailSender.sendEmail(shop.getEmail(), RESERVATION_CANCELLATION_SUBJECT, body);
+        emailSender.sendEmail(shop.getEmail(), getTranslation(RESERVATION_CANCELLATION_SUBJECT), body);
     }
 
     @Override
@@ -139,7 +143,7 @@ class EmailServiceImpl implements EmailService {
             .replace(EmailTemplateConstants.SLOT_DATE, dateTimeI18nService.formatDate(reservation.getStart()))
             .replace(EmailTemplateConstants.SLOT_START_TIME, dateTimeI18nService.formatTime(reservation.getStart()));
 
-        emailSender.sendEmail(email, RESERVATION_CANCELLATION_CONFIRMATION_SUBJECT, body);
+        emailSender.sendEmail(email, getTranslation(RESERVATION_CANCELLATION_CONFIRMATION_SUBJECT), body);
     }
 
     @Override
@@ -147,7 +151,7 @@ class EmailServiceImpl implements EmailService {
         String body = loadTemplate("/email/shop-created-approval-needed.txt")
             .replace(EmailTemplateConstants.OWNER_NAME, shop.getOwnerName());
 
-        emailSender.sendEmail(shop.getEmail(), SHOP_CREATED_APPROVAL_NEEDED_SUBJECT, body);
+        emailSender.sendEmail(shop.getEmail(), getTranslation(SHOP_CREATED_APPROVAL_NEEDED_SUBJECT), body);
     }
 
     @Override
@@ -155,7 +159,7 @@ class EmailServiceImpl implements EmailService {
         String body = loadTemplate("/email/shop-approved.txt")
             .replace(EmailTemplateConstants.OWNER_NAME, shop.getOwnerName());
 
-        emailSender.sendEmail(shop.getEmail(), SHOP_APPROVED_SUBJECT, body);
+        emailSender.sendEmail(shop.getEmail(), getTranslation(SHOP_APPROVED_SUBJECT), body);
     }
 
     @Override
@@ -163,7 +167,7 @@ class EmailServiceImpl implements EmailService {
         String body = loadTemplate("/email/shop-disapproved.txt")
             .replace(EmailTemplateConstants.OWNER_NAME, shop.getOwnerName());
 
-        emailSender.sendEmail(shop.getEmail(), SHOP_DISAPPROVED_SUBJECT, body);
+        emailSender.sendEmail(shop.getEmail(), getTranslation(SHOP_DISAPPROVED_SUBJECT), body);
     }
 
     @Override
@@ -185,7 +189,7 @@ class EmailServiceImpl implements EmailService {
             .replace(EmailTemplateConstants.SHOP_DETAILS, shop.getDetails())
             .replace(EmailTemplateConstants.ADMIN_UI_LINK, config.getAdminUiLink());
 
-        emailSender.sendEmails(Lists.map(admins, Admin::getEmail), ADMIN_SHOP_APPROVAL_NEEDED, body);
+        emailSender.sendEmails(Lists.map(admins, Admin::getEmail), getTranslation(ADMIN_SHOP_APPROVAL_NEEDED), body);
     }
 
     private String loadTemplate(String location) {
@@ -194,5 +198,9 @@ class EmailServiceImpl implements EmailService {
         } catch (IOException e) {
             throw new SendEmailException(String.format("Failed to read resource '%s'", location), e);
         }
+    }
+
+    private String getTranslation(String messageKey) {
+        return messageSource.getMessage(messageKey, null, LocaleContextHolder.getLocale());
     }
 }
