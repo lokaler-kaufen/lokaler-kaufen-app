@@ -20,4 +20,5 @@ public class ShopUpdate {
     Map<ContactType, String> contacts;
     SlotConfig slotConfig;
     SocialLinks socialLinks;
+    Breaks breaks;
 }

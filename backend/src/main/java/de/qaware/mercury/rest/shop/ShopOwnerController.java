@@ -3,10 +3,13 @@ package de.qaware.mercury.rest.shop;
 import de.qaware.mercury.business.image.ImageService;
 import de.qaware.mercury.business.location.impl.LocationNotFoundException;
 import de.qaware.mercury.business.login.LoginException;
+import de.qaware.mercury.business.reservation.SlotService;
+import de.qaware.mercury.business.shop.Breaks;
 import de.qaware.mercury.business.shop.ContactType;
 import de.qaware.mercury.business.shop.Shop;
 import de.qaware.mercury.business.shop.ShopService;
 import de.qaware.mercury.business.shop.ShopUpdate;
+import de.qaware.mercury.business.shop.SlotConfig;
 import de.qaware.mercury.business.shop.SocialLinks;
 import de.qaware.mercury.rest.plumbing.authentication.AuthenticationHelper;
 import de.qaware.mercury.rest.shop.dto.request.UpdateShopDto;
@@ -36,6 +39,7 @@ public class ShopOwnerController {
     private final AuthenticationHelper authenticationHelper;
     private final ImageService imageService;
     private final ShopService shopService;
+    private final SlotService slotService;
 
     /**
      * Retrieves settings of a shop for the owner.
@@ -63,6 +67,7 @@ public class ShopOwnerController {
     public ShopOwnerDetailDto updateShop(@Valid @RequestBody UpdateShopDto request, HttpServletRequest servletRequest) throws LoginException, LocationNotFoundException {
         Shop shop = authenticationHelper.authenticateShop(servletRequest);
 
+        SlotConfig slotConfig = request.getSlots().toSlots();
         Shop updatedShop = shopService.update(shop, new ShopUpdate(
             request.getName(),
             request.getOwnerName(),
@@ -73,8 +78,9 @@ public class ShopOwnerController {
             request.getDetails(),
             request.getWebsite(),
             Maps.mapKeys(request.getContacts(), ContactType::parse),
-            request.getSlots().toSlots(),
-            request.getSocialLinks() == null ? SocialLinks.none() : request.getSocialLinks().toSocialLinks()
+            slotConfig,
+            request.getSocialLinks() == null ? SocialLinks.none() : request.getSocialLinks().toSocialLinks(),
+            request.getBreaks() == null ? Breaks.none() : slotService.resolveBreaks(request.getBreaks().getSlotIds(), slotConfig)
         ));
 
         return ShopOwnerDetailDto.of(updatedShop, imageService);

@@ -1,6 +1,7 @@
 package de.qaware.mercury.rest.shop
 
 import de.qaware.mercury.business.image.ImageService
+import de.qaware.mercury.business.reservation.SlotService
 import de.qaware.mercury.business.shop.Shop
 import de.qaware.mercury.business.shop.ShopService
 import de.qaware.mercury.rest.plumbing.authentication.AuthenticationHelper
@@ -21,10 +22,11 @@ class ShopOwnerControllerTest extends Specification {
     AuthenticationHelper authenticationHelper = Mock(AuthenticationHelper)
     ImageService imageService = Mock(ImageService)
     ShopService shopService = Mock(ShopService)
+    SlotService slotService = Mock(SlotService)
     HttpServletRequest httpServletRequest = Mock(HttpServletRequest)
 
     void setup() {
-        controller = new ShopOwnerController(authenticationHelper, imageService, shopService)
+        controller = new ShopOwnerController(authenticationHelper, imageService, shopService, slotService)
     }
 
     def "Retrieve shop settings"() {
@@ -49,7 +51,7 @@ class ShopOwnerControllerTest extends Specification {
         setup:
         Shop shop = ShopFixtures.create()
         SlotConfigDto slots = SlotConfigDto.of(shop.getSlotConfig())
-        UpdateShopDto dto = new UpdateShopDto("name", "ownername", "street", "zipCode", "city", "addressSupplement", "details", "www.example.com", Map.of(), slots, new SocialLinksDto("instagram", "facebook", "twitter"))
+        UpdateShopDto dto = new UpdateShopDto("name", "ownername", "street", "zipCode", "city", "addressSupplement", "details", "www.example.com", Map.of(), slots, new SocialLinksDto("instagram", "facebook", "twitter"), null)
 
         String testImageUrl = "http://image.url/path"
         URI testImageUri = new URI(testImageUrl)

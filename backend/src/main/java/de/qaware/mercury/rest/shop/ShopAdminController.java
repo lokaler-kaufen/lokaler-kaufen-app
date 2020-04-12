@@ -4,11 +4,14 @@ import de.qaware.mercury.business.admin.Admin;
 import de.qaware.mercury.business.image.ImageService;
 import de.qaware.mercury.business.location.impl.LocationNotFoundException;
 import de.qaware.mercury.business.login.LoginException;
+import de.qaware.mercury.business.reservation.SlotService;
+import de.qaware.mercury.business.shop.Breaks;
 import de.qaware.mercury.business.shop.ContactType;
 import de.qaware.mercury.business.shop.Shop;
 import de.qaware.mercury.business.shop.ShopNotFoundException;
 import de.qaware.mercury.business.shop.ShopService;
 import de.qaware.mercury.business.shop.ShopUpdate;
+import de.qaware.mercury.business.shop.SlotConfig;
 import de.qaware.mercury.business.shop.SocialLinks;
 import de.qaware.mercury.rest.plumbing.authentication.AuthenticationHelper;
 import de.qaware.mercury.rest.shop.dto.request.UpdateShopDto;
@@ -43,6 +46,7 @@ class ShopAdminController {
     private final ShopService shopService;
     private final ImageService imageService;
     private final AuthenticationHelper authenticationHelper;
+    private final SlotService slotService;
 
     /**
      * Retrieves settings for a shop.
@@ -89,6 +93,7 @@ class ShopAdminController {
             throw new ShopNotFoundException(shopId);
         }
 
+        SlotConfig slotConfig = request.getSlots().toSlots();
         Shop updatedShop = shopService.update(shop, new ShopUpdate(
             request.getName(),
             request.getOwnerName(),
@@ -99,8 +104,9 @@ class ShopAdminController {
             request.getDetails(),
             request.getWebsite(),
             Maps.mapKeys(request.getContacts(), ContactType::parse),
-            request.getSlots().toSlots(),
-            request.getSocialLinks() == null ? SocialLinks.none() : request.getSocialLinks().toSocialLinks()
+            slotConfig,
+            request.getSocialLinks() == null ? SocialLinks.none() : request.getSocialLinks().toSocialLinks(),
+            request.getBreaks() == null ? Breaks.none() : slotService.resolveBreaks(request.getBreaks().getSlotIds(), slotConfig)
         ));
         log.info("Admin {} updated shop '{}'", admin.getEmail(), shop.getName());
         return ShopAdminDto.of(updatedShop, imageService);
