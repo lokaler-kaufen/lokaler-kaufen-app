@@ -16,6 +16,8 @@ spring.jpa:
   database-platform: org.hibernate.dialect.PostgreSQL10Dialect
 
 mercury:
+  frontend:
+    enable-caching: true
   images:
     devControllerEnabled: false
     publicUrlTemplate: ""
