@@ -22,6 +22,7 @@ import java.time.LocalTime;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -80,7 +81,7 @@ class SlotServiceImpl implements SlotService {
 
     @Override
     public Breaks resolveBreaks(Set<String> slotIds, SlotConfig slotConfig) {
-        Map<DayOfWeek, List<Breaks.Break>> breaks = new HashMap<>();
+        Map<DayOfWeek, Set<Breaks.Break>> breaks = new HashMap<>();
 
         for (String slotId : slotIds) {
             LocalDateTime start = Slot.Id.parse(slotId).toLocalDateTime();
@@ -91,17 +92,17 @@ class SlotServiceImpl implements SlotService {
             }
 
             // Put the slot start and end as break to the corresponding weekday
-            breaks.computeIfAbsent(start.getDayOfWeek(), ignored -> new ArrayList<>()).add(new Breaks.Break(start, end));
+            breaks.computeIfAbsent(start.getDayOfWeek(), ignored -> new HashSet<>()).add(new Breaks.Break(start, end));
         }
 
         return new Breaks(
-            breaks.getOrDefault(DayOfWeek.MONDAY, List.of()),
-            breaks.getOrDefault(DayOfWeek.TUESDAY, List.of()),
-            breaks.getOrDefault(DayOfWeek.WEDNESDAY, List.of()),
-            breaks.getOrDefault(DayOfWeek.THURSDAY, List.of()),
-            breaks.getOrDefault(DayOfWeek.FRIDAY, List.of()),
-            breaks.getOrDefault(DayOfWeek.SATURDAY, List.of()),
-            breaks.getOrDefault(DayOfWeek.SUNDAY, List.of())
+            breaks.getOrDefault(DayOfWeek.MONDAY, Set.of()),
+            breaks.getOrDefault(DayOfWeek.TUESDAY, Set.of()),
+            breaks.getOrDefault(DayOfWeek.WEDNESDAY, Set.of()),
+            breaks.getOrDefault(DayOfWeek.THURSDAY, Set.of()),
+            breaks.getOrDefault(DayOfWeek.FRIDAY, Set.of()),
+            breaks.getOrDefault(DayOfWeek.SATURDAY, Set.of()),
+            breaks.getOrDefault(DayOfWeek.SUNDAY, Set.of())
         );
     }
 

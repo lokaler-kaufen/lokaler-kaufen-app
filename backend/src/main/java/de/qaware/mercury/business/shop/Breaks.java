@@ -3,17 +3,17 @@ package de.qaware.mercury.business.shop;
 import lombok.Value;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 
 @Value
 public class Breaks {
-    List<Break> monday;
-    List<Break> tuesday;
-    List<Break> wednesday;
-    List<Break> thursday;
-    List<Break> friday;
-    List<Break> saturday;
-    List<Break> sunday;
+    Set<Break> monday;
+    Set<Break> tuesday;
+    Set<Break> wednesday;
+    Set<Break> thursday;
+    Set<Break> friday;
+    Set<Break> saturday;
+    Set<Break> sunday;
 
     @Value
     public static class Break {
@@ -22,6 +22,6 @@ public class Breaks {
     }
 
     public static Breaks none() {
-        return new Breaks(List.of(), List.of(), List.of(), List.of(), List.of(), List.of(), List.of());
+        return new Breaks(Set.of(), Set.of(), Set.of(), Set.of(), Set.of(), Set.of(), Set.of());
     }
 }
