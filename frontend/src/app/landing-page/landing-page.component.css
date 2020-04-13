@@ -3,7 +3,7 @@
 }
 
 .form-section {
-  width: 500px;
+  max-width: 500px;
   margin: auto;
 }
 
@@ -53,17 +53,32 @@ h2, h3 {
   font-weight: bold;
 }
 
-.explanation-card-container {
+.explanation-card-container-horizontal {
   display: flex;
   flex-direction: row;
 }
 
-.explanation-card {
+.explanation-card-container-vertical {
+  display: flex;
+  flex-direction: column;
+}
+
+
+.explanation-card-horizontal {
   padding: 10px;
   flex-direction: column;
   width: 33%;
   text-align: center
 }
+
+.explanation-card-vertical {
+  padding: 10px;
+  flex-direction: column;
+  width: 90%;
+  margin: auto;
+  text-align: center
+}
+
 
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,

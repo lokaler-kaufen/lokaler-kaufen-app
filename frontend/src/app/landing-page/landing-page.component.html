@@ -47,8 +47,9 @@
     <div class="triangle"></div>
     <div class="explanation-area">
       <h2>So leicht geht's</h2>
-      <div class="explanation-card-container">
-        <div class="explanation-card">
+      <div
+        [ngClass]="{'explanation-card-container-horizontal': !isSmallScreen, 'explanation-card-container-vertical': isSmallScreen}">
+        <div [ngClass]="{'explanation-card-horizontal': !isSmallScreen, 'explanation-card-vertical': isSmallScreen}">
           <div>
             <img src="assets/choose_shop_symbol_white.svg" width="60"
                  height="60"/>
@@ -60,7 +61,7 @@
             <p>Durchstöbern Sie alle Läden in Ihrer Nähe und wählen Sie Ihren Wunschladen aus.</p>
           </div>
         </div>
-        <div class="explanation-card" style="flex-direction: column; width: 33%; text-align: center">
+        <div [ngClass]="{'explanation-card-horizontal': !isSmallScreen, 'explanation-card-vertical': isSmallScreen}">
           <div>
             <img src="assets/calendar_symbol_white.svg" width="60"
                  height="60"/>
@@ -72,7 +73,7 @@
             <p>Wählen Sie den nächsten passenden Termin für Ihren Video-Besuch aus.</p>
           </div>
         </div>
-        <div class="explanation-card" style="flex-direction: column; width: 33%; text-align: center">
+        <div [ngClass]="{'explanation-card-horizontal': !isSmallScreen, 'explanation-card-vertical': isSmallScreen}">
           <div>
             <img src="assets/video_shop_symbol_white.svg" width="60"
                  height="60"/></div>
