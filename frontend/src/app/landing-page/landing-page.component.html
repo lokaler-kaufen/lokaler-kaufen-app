@@ -43,48 +43,39 @@
       Sie sind Ladenbesitzer? Hier geht's lang...
     </a>
   </section>
-  <section id="bottom">
-    <div class="triangle"></div>
-    <div class="explanation-area">
-      <h2>So leicht geht's</h2>
-      <div
-        [ngClass]="{'explanation-card-container-horizontal': !isSmallScreen, 'explanation-card-container-vertical': isSmallScreen}">
-        <div [ngClass]="{'explanation-card-horizontal': !isSmallScreen, 'explanation-card-vertical': isSmallScreen}">
-          <div>
-            <img src="assets/choose_shop_symbol_white.svg" width="60"
-                 height="60"/>
-          </div>
-          <div>
-            <h3>
-              1. Laden aussuchen
-            </h3>
-            <p>Durchstöbern Sie alle Läden in Ihrer Nähe und wählen Sie Ihren Wunschladen aus.</p>
-          </div>
+
+  <section class="explanation-area padding-all">
+    <h2>So leicht geht's</h2>
+
+    <div class="explanation-card-container">
+      <div class="explanation-card padding-all">
+        <div>
+          <img src="assets/choose_shop_symbol_white.svg" width="60" height="60" alt="Laden aussuchen"/>
         </div>
-        <div [ngClass]="{'explanation-card-horizontal': !isSmallScreen, 'explanation-card-vertical': isSmallScreen}">
-          <div>
-            <img src="assets/calendar_symbol_white.svg" width="60"
-                 height="60"/>
-          </div>
-          <div>
-            <h3>
-              2. Termin vereinbaren
-            </h3>
-            <p>Wählen Sie den nächsten passenden Termin für Ihren Video-Besuch aus.</p>
-          </div>
+        <div>
+          <h3>1. Laden aussuchen</h3>
+          <p>Durchstöbern Sie alle Läden in Ihrer Nähe und wählen Sie Ihren Wunschladen aus.</p>
         </div>
-        <div [ngClass]="{'explanation-card-horizontal': !isSmallScreen, 'explanation-card-vertical': isSmallScreen}">
-          <div>
-            <img src="assets/video_shop_symbol_white.svg" width="60"
-                 height="60"/></div>
-          <div>
-            <h3>
-              3. Einkaufen wie vor Ort
-            </h3>
-            <p>Der Laden ruft Sie ganz bequem zurück - ohne Warteschleife und wann es Ihnen passt.</p>
-          </div>
+      </div>
+      <div class="explanation-card padding-all">
+        <div>
+          <img src="assets/calendar_symbol_white.svg" width="60" height="60" alt="Termin vereinbaren"/>
+        </div>
+        <div>
+          <h3>2. Termin vereinbaren</h3>
+          <p>Wählen Sie den nächsten passenden Termin für Ihren Video-Besuch aus.</p>
+        </div>
+      </div>
+      <div class="explanation-card padding-all">
+        <div>
+          <img src="assets/video_shop_symbol_white.svg" width="60" height="60" alt="Einkaufen wie vor Ort"/>
+        </div>
+        <div>
+          <h3>3. Einkaufen wie vor Ort</h3>
+          <p>Der Laden ruft Sie ganz bequem zurück - ohne Warteschleife und wann es Ihnen passt.</p>
         </div>
       </div>
     </div>
   </section>
+
 </div>
