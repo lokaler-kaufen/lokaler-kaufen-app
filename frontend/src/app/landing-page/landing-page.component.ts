@@ -4,9 +4,9 @@ import {debounceTime, map, switchMap} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {ZipCodeCacheService} from './zip-code-cache.service';
-import {NotificationsService} from 'angular2-notifications';
 import {LocationSuggestionDto, LocationSuggestionsDto} from '../data/api';
 import {BreakpointObserver} from '@angular/cdk/layout';
+import {AsyncNotificationService} from '../i18n/async-notification.service';
 
 @Component({
   selector: 'landing-page',
@@ -28,8 +28,8 @@ export class LandingPageComponent implements OnInit {
     private client: HttpClient,
     private router: Router,
     private zipCodeCacheService: ZipCodeCacheService,
-    private notificationsService: NotificationsService,
-    breakpointObserver: BreakpointObserver
+    breakpointObserver: BreakpointObserver,
+    private asyncNS: AsyncNotificationService
   ) {
     // listen to responsive breakpoint changes
     breakpointObserver.observe('(max-width: 719px)').subscribe(
@@ -94,9 +94,10 @@ export class LandingPageComponent implements OnInit {
       },
       error => {
         if (error.status === 404) {
-          this.notificationsService.error('Ungültige PLZ', 'Diese Postleitzahl kennen wir leider nicht, haben Sie sich vertippt?');
+          this.asyncNS.error('landing.invalidZip.title', 'landing.invalidZip.content');
+
         } else {
-          this.notificationsService.error('Tut uns Leid!', 'Wir können diese Postleitzahl gerade nicht verarbeiten.');
+          this.asyncNS.error('landing.locationApiError.title', 'landing.locationApiError.content');
         }
       });
 

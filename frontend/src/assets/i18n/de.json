@@ -6,9 +6,33 @@
             "approve": "Laden bestätigen",
             "revoke": "Bestätigung zurückziehen",
             "delete": "Laden löschen",
-            "error": {
+            "shopDetailsError": {
                 "title": "Tut uns leid!",
-                "message": "Es ist ein Fehler beim Laden der Details aufgetreten."
+                "content": "Es ist ein Fehler beim Laden der Details aufgetreten."
+            },
+            "shopUpdateSuccess": {
+                "title": "Alles klar!",
+                "content": "Ihr Laden wurde aktualisiert."
+            },
+            "shopUpdateError": {
+                "title": "Tut uns leid!",
+                "content": "Ihr Laden konnte leider nicht aktualisiert werden."
+            },
+            "shopDeleteSuccess": {
+                "title": "Alles klar!",
+                "content": "Ihr Laden wurde gelöscht."
+            },
+            "shopDeleteError": {
+                "title": "Tut uns leid!",
+                "content": "Ihr Laden konnte leider nicht gelöscht werden."
+            },
+            "shopApprovalSuccess": {
+                "title": "Alles klar!",
+                "content": "Das approved flag wurde auf {{nextValue}} gesetzt."
+            },
+            "shopApprovalError": {
+                "title": "Tut uns leid!",
+                "content": "Die Aktivierung Ihres Ladens konnte nicht geändert werden."
             }
         },
         "login": {
@@ -70,7 +94,15 @@
         "subtitle": "Wo möchten Sie einkaufen?",
         "shop.owner": "Sie sind Ladenbesitzer? Hier geht's lang...",
         "submit": "Los geht's!",
-        "zipcode": "Ihre Postleitzahl"
+        "zipcode": "Ihre Postleitzahl",
+        "invalidZip": {
+            "title": "Ungültige PLZ",
+            "content": "Diese Postleitzahl kennen wir leider nicht, haben Sie sich vertippt?"
+        },
+        "locationApiError": {
+            "title": "Tut uns Leid!",
+            "content": "Wir können diese Postleitzahl gerade nicht verarbeiten."
+        }
     },
     "login": {
         "description": "Login für Ladenbesitzer",
