@@ -1,7 +1,7 @@
 #############################
 # STAGE 1: Frontend build   #
 #############################
-FROM node:12.16.1-stretch AS frontend-build
+FROM gcr.io/theta-mile-271809/lokaler.kaufen.build-container AS frontend-build
 
 # First: Copy only npm stuff so that we don't download the whole internet on every build
 COPY frontend/package.json /workspace/frontend/package.json
@@ -15,7 +15,7 @@ RUN npm ci
 COPY . /workspace
 
 # Build app
-RUN npm run build-prod
+RUN npm run build-prod --source-map=false --build-optimizer=false
 
 #############################
 # STAGE 2: Backend build    #
