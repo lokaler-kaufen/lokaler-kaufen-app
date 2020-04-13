@@ -44,7 +44,7 @@ class ReservationServiceImplTest extends Specification {
         given:
         LocalDate today = LocalDateTime.now().toLocalDate()
         Shop.Id id = Shop.Id.of(UUID.randomUUID())
-        Shop shop = new Shop.ShopBuilder().id(id).slotConfig(new SlotConfigBuilder().createSlotConfig()).build()
+        Shop shop = new Shop.ShopBuilder().id(id).slotConfig(new SlotConfigBuilder().build()).build()
 
         when:
         Slots slots = reservationService.listSlots(shop, 1)
@@ -62,7 +62,7 @@ class ReservationServiceImplTest extends Specification {
         LocalDateTime now = LocalDateTime.now()
         Shop.Id shopId = Shop.Id.of(UUID.randomUUID())
         // Slot length is 15 minutes
-        SlotConfig slotConfig = new SlotConfigBuilder().setTimePerSlot(15).setTimeBetweenSlots(5).createSlotConfig()
+        SlotConfig slotConfig = new SlotConfigBuilder().setTimePerSlot(15).setTimeBetweenSlots(5).build()
         // Shop supports WHATSAPP contact
         Shop shop = new Shop.ShopBuilder().id(shopId).slotConfig(slotConfig).contacts([(ContactType.WHATSAPP): "1"]).build()
         Slot.Id slotId = Slot.Id.of(now)

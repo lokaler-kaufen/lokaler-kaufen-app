@@ -68,7 +68,7 @@ public class SlotConfigBuilder {
         return this;
     }
 
-    public SlotConfig createSlotConfig() {
+    public SlotConfig build() {
         return new SlotConfig(timePerSlot, timeBetweenSlots, delayForFirstSlot, monday, tuesday, wednesday, thursday, friday, saturday, sunday);
     }
 }
