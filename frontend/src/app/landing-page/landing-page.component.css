@@ -7,6 +7,10 @@
   margin: auto;
 }
 
+.zip-code-input {
+  text-align: center;
+}
+
 @media screen and (max-width: 719px) {
   .landing-page {
     width: auto;
