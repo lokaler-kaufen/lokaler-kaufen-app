@@ -1,7 +1,7 @@
 #############################
 # STAGE 1: Frontend build   #
 #############################
-FROM gcr.io/theta-mile-271809/lokaler.kaufen.build-container AS frontend-build
+FROM node:12.16.1-stretch AS frontend-build
 
 # First: Copy only npm stuff so that we don't download the whole internet on every build
 COPY frontend/package.json /workspace/frontend/package.json
@@ -22,13 +22,15 @@ RUN npm run build-prod
 #############################
 FROM gcr.io/theta-mile-271809/lokaler.kaufen.build-container AS backend-build
 
+USER gradle:gradle
+
 # prepare workspace
 COPY . /workspace
 COPY --from=frontend-build /workspace/frontend/dist/mercury-ui/. /workspace/backend/src/main/resources/static
 WORKDIR /workspace/backend
 
 # Build backend, don't run tests (they are ran in the cloudbuild.yaml anyway)
-RUN gradle -i --no-daemon --build-cache build -x test
+RUN gradle -i --no-daemon --gradle-user-home /gradle-cache build -x test
 
 ##############################
 # STAGE 3: App package build #
