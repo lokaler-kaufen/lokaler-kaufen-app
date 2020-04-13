@@ -14,7 +14,12 @@ type Text = string | KeyWithParams;
 /**
  * Convenience wrapper around the {@link NotificationsService} with i18n support.
  *
- * It will attempt to translate all given {@code title} and {@code content} strings.
+ * It will attempt to translate all given {@code title} and {@code content} Texts. If no translation can be found,
+ * the original given string will be used instead.
+ *
+ * The Texts can either be flat strings or an object where "key" contains the text ID (string) and "params" contains
+ * all values to be interpolated into the string. Take a look at "admin.details.shopApprovalSuccess.content" for an
+ * example.
  */
 @Injectable({providedIn: 'root'})
 export class AsyncNotificationService {
