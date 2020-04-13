@@ -1,17 +1,16 @@
-package de.qaware.mercury.business.i18n
+package de.qaware.mercury.business.i18n.impl
 
+import de.qaware.mercury.business.i18n.DateTimeI18nService
 import de.qaware.mercury.business.i18n.impl.DateTimeI18nServiceImpl
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
+import spock.lang.Subject
 
 import java.time.LocalDateTime
 
-@ContextConfiguration(classes = DateTimeI18nServiceImpl)
-class DateTimeI18nServiceSpec extends Specification {
+class DateTimeI18nServiceImplTest extends Specification {
 
-    @Autowired
-    DateTimeI18nService dateTimeService
+    @Subject
+    DateTimeI18nService dateTimeService = new DateTimeI18nServiceImpl()
 
     LocalDateTime localDateTime
 

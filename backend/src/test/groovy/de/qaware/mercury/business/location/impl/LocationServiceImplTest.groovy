@@ -4,19 +4,14 @@ import de.qaware.mercury.business.location.GeoLocation
 import de.qaware.mercury.business.location.LocationService
 import de.qaware.mercury.business.location.LocationSuggestion
 import de.qaware.mercury.storage.location.LocationRepository
-import org.spockframework.spring.SpringBean
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
+import spock.lang.Subject
 
-@ContextConfiguration(classes = LocationServiceImpl)
-class LocationServiceImplSpec extends Specification {
-
-    @Autowired
-    LocationService locationService
-
-    @SpringBean
+class LocationServiceImplTest extends Specification {
     LocationRepository repository = Mock()
+
+    @Subject
+    LocationService locationService = new LocationServiceImpl(repository)
 
     def "Lookup Location by unknown Zipcode"() {
         when:

@@ -1,19 +1,19 @@
-package de.qaware.mercury.business.time
+package de.qaware.mercury.business.time.impl
 
+
+import de.qaware.mercury.business.time.Clock
 import de.qaware.mercury.business.time.impl.WallClock
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
+import spock.lang.Subject
 
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZonedDateTime
 
-@ContextConfiguration(classes = WallClock)
-class ClockSpec extends Specification {
+class ClockImplTest extends Specification {
 
-    @Autowired
-    Clock clock
+    @Subject
+    Clock clock = new WallClock()
 
     def "Check Now Zoned"() {
         given:

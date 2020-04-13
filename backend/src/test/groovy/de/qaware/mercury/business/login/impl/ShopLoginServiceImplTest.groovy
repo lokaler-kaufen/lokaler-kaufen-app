@@ -15,34 +15,24 @@ import de.qaware.mercury.business.time.Clock
 import de.qaware.mercury.business.uuid.UUIDFactory
 import de.qaware.mercury.storage.login.ShopLoginRepository
 import de.qaware.mercury.storage.shop.ShopRepository
-import org.spockframework.spring.SpringBean
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
+import spock.lang.Subject
 import spock.lang.Unroll
 
 import java.time.Instant
 
-@ContextConfiguration(classes = ShopLoginServiceImpl)
-class ShopLoginServiceImplSpec extends Specification {
+class ShopLoginServiceImplTest extends Specification {
 
-    @Autowired
-    ShopLoginService loginService
-
-    @SpringBean
     ShopLoginRepository shopLoginRepository = Mock()
-    @SpringBean
     PasswordHasher passwordHasher = Mock()
-    @SpringBean
     TokenService tokenService = Mock()
-    @SpringBean
     UUIDFactory uuidFactory = Mock()
-    @SpringBean
     ShopRepository shopRepository = Mock()
-    @SpringBean
     Clock clock = Mock()
-    @SpringBean
     EmailService emailService = Mock()
+
+    @Subject
+    ShopLoginService loginService = new ShopLoginServiceImpl(shopLoginRepository, passwordHasher, tokenService, uuidFactory, shopRepository, clock, emailService)
 
     def "Create new Login for shop"() {
         given:

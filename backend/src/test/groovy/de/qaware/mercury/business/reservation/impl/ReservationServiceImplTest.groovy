@@ -21,35 +21,24 @@ import de.qaware.mercury.business.uuid.UUIDFactory
 import de.qaware.mercury.storage.reservation.ReservationRepository
 import de.qaware.mercury.test.builder.SlotConfigBuilder
 import de.qaware.mercury.test.fixtures.ShopFixtures
-import org.spockframework.spring.SpringBean
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
+import spock.lang.Subject
 
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZonedDateTime
 
-@ContextConfiguration(classes = ReservationServiceImpl)
-class ReservationServiceImplSpec extends Specification {
-
-    @Autowired
-    ReservationService reservationService
-
-    @SpringBean
+class ReservationServiceImplTest extends Specification {
     SlotService slotService = Mock()
-    @SpringBean
     ReservationRepository reservationRepository = Mock()
-    @SpringBean
     Clock clock = Mock()
-    @SpringBean
     UUIDFactory uuidFactory = Mock()
-    @SpringBean
     EmailService emailService = Mock()
-    @SpringBean
     TokenService tokenService = Mock()
-    @SpringBean
     ShopService shopService = Mock()
+
+    @Subject
+    ReservationService reservationService = new ReservationServiceImpl(slotService, reservationRepository, clock, uuidFactory, emailService, tokenService, shopService)
 
     def "List available slots for shop"() {
         given:

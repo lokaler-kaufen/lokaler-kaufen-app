@@ -11,31 +11,25 @@ import de.qaware.mercury.business.login.VerifiedToken
 import de.qaware.mercury.business.time.Clock
 import de.qaware.mercury.business.uuid.UUIDFactory
 import de.qaware.mercury.storage.admin.AdminRepository
-import org.spockframework.spring.SpringBean
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
+import spock.lang.Subject
 import spock.lang.Unroll
 
 import java.time.Instant
 import java.time.ZonedDateTime
 
-@ContextConfiguration(classes = AdminLoginServiceImpl)
-class AdminLoginServiceImplSpec extends Specification {
+class AdminLoginServiceImplTest extends Specification {
 
-    @Autowired
-    AdminLoginService loginService
-
-    @SpringBean
     AdminRepository adminRepository = Mock()
-    @SpringBean
     PasswordHasher passwordHasher = Mock()
-    @SpringBean
     TokenService tokenService = Mock()
-    @SpringBean
     UUIDFactory uuidFactory = Mock()
-    @SpringBean
     Clock clock = Mock()
+
+
+    @Subject
+    AdminLoginService loginService = new AdminLoginServiceImpl(adminRepository, passwordHasher, tokenService, uuidFactory, clock)
+
 
     def "Create Login for Admin"() {
         given:
