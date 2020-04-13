@@ -80,15 +80,15 @@ class SlotServiceImpl implements SlotService {
     }
 
     @Override
-    public Breaks resolveBreaks(Set<String> slotIds, SlotConfig slotConfig) {
+    public Breaks resolveBreaks(Set<Slot.Id> slotIds, SlotConfig slotConfig) {
         Map<DayOfWeek, Set<Breaks.Break>> breaks = new HashMap<>();
 
-        for (String slotId : slotIds) {
-            LocalDateTime start = Slot.Id.parse(slotId).toLocalDateTime();
+        for (Slot.Id slotId : slotIds) {
+            LocalDateTime start = slotId.toLocalDateTime();
             LocalDateTime end = start.plusMinutes(slotConfig.getTimePerSlot());
 
             if (!isValidSlot(start, end, slotConfig)) {
-                throw new InvalidSlotIdException(slotId);
+                throw new InvalidSlotIdException(slotId.getId());
             }
 
             // Put the slot start and end as break to the corresponding weekday

@@ -17,6 +17,10 @@ public class BreaksDto {
     @NotNull
     private Set<String> slotIds;
 
+    public Set<Slot.Id> toSlotIds() {
+        return Sets.map(slotIds, Slot.Id::parse);
+    }
+
     public static BreaksDto fromSlots(List<Slot> slots) {
         return new BreaksDto(Sets.map(slots, s -> s.getId().getId()));
     }

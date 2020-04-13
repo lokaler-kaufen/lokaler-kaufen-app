@@ -72,7 +72,7 @@ public class ShopOwnerController {
         Shop shop = authenticationHelper.authenticateShop(servletRequest);
 
         SlotConfig slotConfig = request.getSlots().toSlots();
-        Breaks breaks = request.getBreaks() == null ? Breaks.none() : slotService.resolveBreaks(request.getBreaks().getSlotIds(), slotConfig);
+        Breaks breaks = request.getBreaks() == null ? Breaks.none() : slotService.resolveBreaks(request.getBreaks().toSlotIds(), slotConfig);
         Shop updatedShop = shopService.update(shop, new ShopUpdate(
             request.getName(),
             request.getOwnerName(),
