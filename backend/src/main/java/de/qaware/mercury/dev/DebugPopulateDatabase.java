@@ -72,21 +72,21 @@ class DebugPopulateDatabase implements ApplicationRunner {
                 new DayConfig(LocalTime.of(8, 0), LocalTime.of(17, 0)),
                 new DayConfig(LocalTime.of(8, 0), LocalTime.of(17, 0)),
                 new DayConfig(LocalTime.of(8, 0), LocalTime.of(17, 0))
-            ), new SocialLinks("dermoe", "der.moe", "@dermoe"), Breaks.none()
+            ), new SocialLinks("dermoe", "der.moe", "@dermoe"), Breaks.everyday(LocalTime.of(12, 0), LocalTime.of(13, 0))
         ), "/dev/shopimages/moe.jpg");
 
         createShop(new ShopCreation(
             "flo@local.host", "Flo", "Flo's Kaffeeladen", "Aschauer Str. 32", "81549", "München", "", "Hier gibts jede Art von Kaffee!", null,
             "flo", Map.of(ContactType.GOOGLE_DUO, "@vlow"),
             new SlotConfig(30, 10, 45, null, null, null, null, null, null, null),
-            new SocialLinks("derflo", "der.flo", "@derflo"), Breaks.none()
+            new SocialLinks("derflo", "der.flo", "@derflo"), Breaks.everyday(LocalTime.of(11, 30), LocalTime.of(12, 0))
         ), "/dev/shopimages/flo.jpg");
 
         createShop(new ShopCreation(
             "vroni@local.host", "Vroni", "Vroni's Kleiderladen", "Rheinstraße 4C", "55116", "Mainz", "", "Kleider, Kleider, Kleider!", null,
             "vroni", Map.of(ContactType.GOOGLE_DUO, "vroni@local.host", ContactType.SIGNAL, "@vroni"),
             new SlotConfig(60, 15, 120, null, null, null, null, null, null, null),
-            new SocialLinks("dievroni", "die.vroni", "@dievroni"), Breaks.none()
+            new SocialLinks("dievroni", "die.vroni", "@dievroni"), Breaks.everyday(LocalTime.of(12, 0), LocalTime.of(14, 0))
         ), "/dev/shopimages/vroni.jpg");
     }
 

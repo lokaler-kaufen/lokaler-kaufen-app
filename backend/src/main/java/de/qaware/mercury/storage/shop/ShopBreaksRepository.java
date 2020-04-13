@@ -5,4 +5,6 @@ import de.qaware.mercury.business.shop.Shop;
 
 public interface ShopBreaksRepository {
     void insert(Shop.Id shopId, Breaks breaks);
+
+    void update(Shop.Id shopId, Breaks breaks);
 }

@@ -16,6 +16,7 @@ import de.qaware.mercury.business.shop.ShopUpdate
 import de.qaware.mercury.business.shop.ShopWithDistance
 import de.qaware.mercury.business.time.Clock
 import de.qaware.mercury.business.uuid.UUIDFactory
+import de.qaware.mercury.storage.shop.ShopBreaksRepository
 import de.qaware.mercury.storage.shop.ShopRepository
 import de.qaware.mercury.test.fixtures.ShopCreationFixtures
 import de.qaware.mercury.test.fixtures.ShopFixtures
@@ -38,9 +39,10 @@ class ShopServiceImplSpec extends Specification {
     ShopServiceConfigurationProperties config = Mock()
     AdminService adminService = Mock()
     ImageService imageService = Mock()
+    ShopBreaksRepository shopBreaksRepository = Mock()
 
     void setup() {
-        shopService = new ShopServiceImpl(uuidFactory, locationService, shopRepository, emailService, shopLoginService, clock, config, adminService, imageService)
+        shopService = new ShopServiceImpl(uuidFactory, locationService, shopRepository, emailService, shopLoginService, clock, config, adminService, imageService, shopBreaksRepository)
     }
 
     def "List all shops"() {

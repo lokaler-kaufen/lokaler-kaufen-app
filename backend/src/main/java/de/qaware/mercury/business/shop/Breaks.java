@@ -18,7 +18,7 @@ public class Breaks {
     Set<Break> saturday;
     Set<Break> sunday;
 
-    @Value
+    @Value(staticConstructor = "of")
     public static class Break {
         LocalTime start;
         LocalTime end;
@@ -40,5 +40,13 @@ public class Breaks {
 
     public static Breaks none() {
         return new Breaks(Set.of(), Set.of(), Set.of(), Set.of(), Set.of(), Set.of(), Set.of());
+    }
+
+    public static Breaks everyday(LocalTime start, LocalTime end) {
+        Break aBreak = Break.of(start, end);
+
+        return new Breaks(
+            Set.of(aBreak), Set.of(aBreak), Set.of(aBreak), Set.of(aBreak), Set.of(aBreak), Set.of(aBreak), Set.of(aBreak)
+        );
     }
 }

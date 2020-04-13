@@ -20,6 +20,7 @@ import de.qaware.mercury.business.shop.ShopUpdate;
 import de.qaware.mercury.business.shop.ShopWithDistance;
 import de.qaware.mercury.business.time.Clock;
 import de.qaware.mercury.business.uuid.UUIDFactory;
+import de.qaware.mercury.storage.shop.ShopBreaksRepository;
 import de.qaware.mercury.storage.shop.ShopRepository;
 import de.qaware.mercury.util.Lists;
 import lombok.AccessLevel;
@@ -48,6 +49,7 @@ class ShopServiceImpl implements ShopService {
     private final ShopServiceConfigurationProperties config;
     private final AdminService adminService;
     private final ImageService imageService;
+    private final ShopBreaksRepository shopBreaksRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -134,6 +136,7 @@ class ShopServiceImpl implements ShopService {
 
         shopRepository.insert(shop);
         shopLoginService.createLogin(shop, creation.getEmail(), creation.getPassword());
+        shopBreaksRepository.insert(shop.getId(), creation.getBreaks());
 
         if (!shop.isApproved()) {
             // If the shop needs approval, send an email to the shop
@@ -174,6 +177,7 @@ class ShopServiceImpl implements ShopService {
         );
 
         shopRepository.update(updatedShop);
+        shopBreaksRepository.update(shop.getId(), update.getBreaks());
         return updatedShop;
     }
 

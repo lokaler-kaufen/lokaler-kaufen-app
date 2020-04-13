@@ -21,8 +21,9 @@ class JpaShopBreaksRepositoryImpl implements ShopBreaksRepository {
 
     @Override
     public void insert(Shop.Id shopId, Breaks breaks) {
-        List<ShopBreakEntity> entities = new ArrayList<>();
+        log.debug("Inserting breaks {} for shop {}", breaks, shopId);
 
+        List<ShopBreakEntity> entities = new ArrayList<>();
         for (var entry : breaks.groupedByDayOfWeek().entrySet()) {
             int dayOfWeek = entry.getKey().getValue();
 
@@ -32,5 +33,16 @@ class JpaShopBreaksRepositoryImpl implements ShopBreaksRepository {
         }
 
         shopBreakDataRepository.saveAll(entities);
+    }
+
+    @Override
+    public void update(Shop.Id shopId, Breaks breaks) {
+        log.debug("Updating breaks to {} for shop {}", breaks, shopId);
+
+        // We are lazy, therefore we just delete all breaks for the shop and insert them again
+        List<ShopBreakEntity> existingBreaks = shopBreakDataRepository.findAllByShopId(shopId.getId());
+        shopBreakDataRepository.deleteInBatch(existingBreaks);
+
+        insert(shopId, breaks);
     }
 }
