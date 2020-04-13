@@ -20,7 +20,7 @@ RUN npm run build-prod
 #############################
 # STAGE 2: Backend  build   #
 #############################
-FROM gradle:jdk11 AS backend-build
+FROM gcr.io/theta-mile-271809/lokaler.kaufen.build-container AS backend-build
 
 # prepare workspace
 COPY . /workspace
