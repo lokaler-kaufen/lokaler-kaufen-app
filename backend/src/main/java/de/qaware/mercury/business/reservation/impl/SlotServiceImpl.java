@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -81,7 +81,7 @@ class SlotServiceImpl implements SlotService {
 
     @Override
     public Breaks resolveBreaks(Set<Slot.Id> slotIds, SlotConfig slotConfig) {
-        Map<DayOfWeek, Set<Breaks.Break>> breaks = new HashMap<>();
+        Map<DayOfWeek, Set<Breaks.Break>> breaks = new EnumMap<>(DayOfWeek.class);
 
         for (Slot.Id slotId : slotIds) {
             LocalDateTime start = slotId.toLocalDateTime();
