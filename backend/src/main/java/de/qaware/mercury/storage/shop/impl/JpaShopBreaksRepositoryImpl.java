@@ -4,13 +4,19 @@ import de.qaware.mercury.business.shop.Breaks;
 import de.qaware.mercury.business.shop.Shop;
 import de.qaware.mercury.business.uuid.UUIDFactory;
 import de.qaware.mercury.storage.shop.ShopBreaksRepository;
+import de.qaware.mercury.util.Sets;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
+import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -44,5 +50,32 @@ class JpaShopBreaksRepositoryImpl implements ShopBreaksRepository {
         shopBreakDataRepository.deleteInBatch(existingBreaks);
 
         insert(shopId, breaks);
+    }
+
+    @Override
+    public Breaks findByShopId(Shop.Id shopId) {
+        List<ShopBreakEntity> breaks = shopBreakDataRepository.findAllByShopId(shopId.getId());
+
+        Map<DayOfWeek, Set<ShopBreakEntity>> groupedByDayOfWeek = breaks.stream().collect(
+            Collectors.groupingBy(e -> DayOfWeek.of(e.getDayOfWeek()), Collectors.toSet())
+        );
+
+        return new Breaks(
+            toBreaks(groupedByDayOfWeek.get(DayOfWeek.MONDAY)),
+            toBreaks(groupedByDayOfWeek.get(DayOfWeek.TUESDAY)),
+            toBreaks(groupedByDayOfWeek.get(DayOfWeek.WEDNESDAY)),
+            toBreaks(groupedByDayOfWeek.get(DayOfWeek.THURSDAY)),
+            toBreaks(groupedByDayOfWeek.get(DayOfWeek.FRIDAY)),
+            toBreaks(groupedByDayOfWeek.get(DayOfWeek.SATURDAY)),
+            toBreaks(groupedByDayOfWeek.get(DayOfWeek.SUNDAY))
+        );
+    }
+
+    private Set<Breaks.Break> toBreaks(@Nullable Set<ShopBreakEntity> entities) {
+        if (entities == null) {
+            return Set.of();
+        }
+
+        return Sets.map(entities, ShopBreakEntity::toBreak);
     }
 }

@@ -11,6 +11,7 @@ import de.qaware.mercury.business.location.LocationService;
 import de.qaware.mercury.business.location.impl.DistanceUtil;
 import de.qaware.mercury.business.location.impl.LocationNotFoundException;
 import de.qaware.mercury.business.login.ShopLoginService;
+import de.qaware.mercury.business.shop.Breaks;
 import de.qaware.mercury.business.shop.Shop;
 import de.qaware.mercury.business.shop.ShopAlreadyExistsException;
 import de.qaware.mercury.business.shop.ShopCreation;
@@ -90,6 +91,17 @@ class ShopServiceImpl implements ShopService {
     @Transactional(readOnly = true)
     public Shop findById(Shop.Id id) {
         return shopRepository.findById(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Breaks findBreaks(Shop shop) {
+        Breaks breaks = shopBreaksRepository.findByShopId(shop.getId());
+        if (breaks == null) {
+            return Breaks.none();
+        }
+
+        return breaks;
     }
 
     @Override

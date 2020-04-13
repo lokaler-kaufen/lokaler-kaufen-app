@@ -1,5 +1,6 @@
 package de.qaware.mercury.storage.shop.impl;
 
+import de.qaware.mercury.business.shop.Breaks;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -43,4 +44,8 @@ public class ShopBreakEntity {
     @Setter
     @Column(name = "break_end", nullable = false, columnDefinition = "varchar")
     private LocalTime breakEnd;
+
+    public Breaks.Break toBreak() {
+        return Breaks.Break.of(breakStart, breakEnd);
+    }
 }

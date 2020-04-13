@@ -48,6 +48,8 @@ public interface ShopService {
     @Nullable
     Shop findById(Shop.Id id);
 
+    Breaks findBreaks(Shop shop);
+
     Shop findByIdOrThrow(Shop.Id id) throws ShopNotFoundException;
 
     /**
