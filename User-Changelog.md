@@ -1,5 +1,12 @@
 # Änderungshistorie
 
+## - (-)
+
+* Läden können nun eine Vorlaufzeit zu dem ersten angebotenen Termin angeben.
+* Läden können nun Mittagspausen definieren. Zu diesen Zeiten wird dann kein Reservierungsslot angeboten.
+* Der Link, der beim Erstellen eines Ladens geschickt wird, ist nun 7 statt 2 Tagen gültig.
+* Läden können nun ihren Instagram-, Facebook- und Twitter-Account verlinken
+
 ## 10.04.2020 (1.1.1)
 
 * Behebt einen Bug, der unvollständig ausgefüllte E-Mails zur Folge hatte.
