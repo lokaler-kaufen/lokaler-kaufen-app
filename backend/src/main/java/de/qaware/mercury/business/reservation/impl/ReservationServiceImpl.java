@@ -55,7 +55,7 @@ class ReservationServiceImpl implements ReservationService {
         LocalDate begin = clock.today();
         // if passed day = 1, you'll only get today
         // if passed day = 2, you'll get today and tomorrow
-        LocalDate end = begin.plusDays(days - 1);
+        LocalDate end = begin.plusDays(days - 1L);
 
         // Find all reservations in the time range
         List<Reservation> reservations = reservationRepository.findReservationsForShop(shop.getId(), begin.atTime(0, 0), end.atTime(23, 59));
