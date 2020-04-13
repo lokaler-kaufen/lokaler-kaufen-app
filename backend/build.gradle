@@ -22,6 +22,11 @@ configurations {
     testCompileOnly {
         extendsFrom testAnnotationProcessor
     }
+
+    developmentOnly
+    runtimeClasspath {
+        extendsFrom developmentOnly
+    }
 }
 
 repositories {
@@ -78,6 +83,9 @@ dependencies {
 
     testRuntimeOnly "net.bytebuddy:byte-buddy:1.9.3"
     testRuntimeOnly "org.objenesis:objenesis:2.6"
+
+    // Spring Dev Tools for faster reload
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
 }
 
 test {
