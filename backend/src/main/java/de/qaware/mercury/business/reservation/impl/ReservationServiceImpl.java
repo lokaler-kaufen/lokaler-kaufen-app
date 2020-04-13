@@ -13,6 +13,7 @@ import de.qaware.mercury.business.reservation.ReservationService;
 import de.qaware.mercury.business.reservation.Slot;
 import de.qaware.mercury.business.reservation.SlotService;
 import de.qaware.mercury.business.reservation.Slots;
+import de.qaware.mercury.business.shop.Breaks;
 import de.qaware.mercury.business.shop.ContactType;
 import de.qaware.mercury.business.shop.Shop;
 import de.qaware.mercury.business.shop.ShopNotFoundException;
@@ -20,7 +21,6 @@ import de.qaware.mercury.business.shop.ShopService;
 import de.qaware.mercury.business.time.Clock;
 import de.qaware.mercury.business.uuid.UUIDFactory;
 import de.qaware.mercury.storage.reservation.ReservationRepository;
-import de.qaware.mercury.util.Lists;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -54,15 +55,20 @@ class ReservationServiceImpl implements ReservationService {
         LocalDate begin = clock.today();
         // if passed day = 1, you'll only get today
         // if passed day = 2, you'll get today and tomorrow
-        LocalDate end = begin.plusDays(days - 1L);
+        LocalDate end = begin.plusDays(days - 1);
 
         // Find all reservations in the time range
         List<Reservation> reservations = reservationRepository.findReservationsForShop(shop.getId(), begin.atTime(0, 0), end.atTime(23, 59));
-        // Now generate slots. The time ranges which also have reservations are marked as unavailable
+        // Find all breaks in the time range
+        Breaks breaks = shopService.findBreaks(shop);
+
+        List<Interval> blockedSlots = blockSlots(begin, end, reservations, breaks);
+
+        // Now generate slots. The time ranges which are blocked are marked as unavailable
         return new Slots(
             days,
             begin,
-            slotService.generateSlots(begin, end, shop.getSlotConfig(), mapReservations(reservations))
+            slotService.generateSlots(begin, end, shop.getSlotConfig(), blockedSlots)
         );
     }
 
@@ -137,7 +143,35 @@ class ReservationServiceImpl implements ReservationService {
         }
     }
 
-    private List<Interval> mapReservations(List<Reservation> reservations) {
-        return Lists.map(reservations, r -> Interval.of(r.getStart(), r.getEnd()));
+    /**
+     * Takes a list of reservations and a list of breaks and generates the list of blocked slots.
+     *
+     * @param begin        start of the slots
+     * @param end          end of the slots
+     * @param reservations existing reservations
+     * @param breaks       shop breaks
+     * @return list of blocked slots
+     */
+    private List<Interval> blockSlots(LocalDate begin, LocalDate end, List<Reservation> reservations, Breaks breaks) {
+        List<Interval> result = new ArrayList<>();
+
+        // Mark all reservations as blocked
+        for (Reservation reservation : reservations) {
+            result.add(Interval.of(reservation.getStart(), reservation.getEnd()));
+        }
+
+        // Iterate through all days, find the breaks for that day and mark them as blocked
+        LocalDate currentDate = begin;
+        while (!currentDate.isAfter(end)) {
+            for (Breaks.Break aBreak : breaks.at(currentDate.getDayOfWeek())) {
+                result.add(Interval.of(
+                    currentDate.atTime(aBreak.getStart()), currentDate.atTime(aBreak.getEnd())
+                ));
+            }
+
+            currentDate = currentDate.plusDays(1);
+        }
+
+        return result;
     }
 }

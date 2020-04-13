@@ -38,6 +38,27 @@ public class Breaks {
         return result;
     }
 
+    public Set<Break> at(DayOfWeek dayOfWeek) {
+        switch (dayOfWeek) {
+            case MONDAY:
+                return monday;
+            case TUESDAY:
+                return tuesday;
+            case WEDNESDAY:
+                return wednesday;
+            case THURSDAY:
+                return thursday;
+            case FRIDAY:
+                return friday;
+            case SATURDAY:
+                return saturday;
+            case SUNDAY:
+                return sunday;
+            default:
+                throw new IllegalStateException("Unexpected value: " + dayOfWeek);
+        }
+    }
+
     public static Breaks none() {
         return new Breaks(Set.of(), Set.of(), Set.of(), Set.of(), Set.of(), Set.of(), Set.of());
     }

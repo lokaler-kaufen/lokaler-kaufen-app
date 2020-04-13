@@ -34,9 +34,9 @@ class SlotServiceImpl implements SlotService {
     private final Clock clock;
 
     @Override
-    public List<Slot> generateSlots(LocalDate start, LocalDate end, SlotConfig slotConfig, List<Interval> existingReservations) {
+    public List<Slot> generateSlots(LocalDate start, LocalDate end, SlotConfig slotConfig, List<Interval> blockedSlots) {
         if (end.isBefore(start)) {
-            throw new IllegalArgumentException("Start date must be before or same end date.");
+            throw new IllegalArgumentException("Start date must be before or same end date");
         }
         // Safeguard against endless loops
         if (slotConfig.getTimePerSlot() < 1) {
@@ -48,7 +48,7 @@ class SlotServiceImpl implements SlotService {
         List<Slot> result = new ArrayList<>();
 
         while (!current.isAfter(end)) {
-            result.addAll(generateSlotsForDay(current, slotConfig, existingReservations));
+            result.addAll(generateSlotsForDay(current, slotConfig, blockedSlots));
             current = current.plusDays(1);
         }
 
