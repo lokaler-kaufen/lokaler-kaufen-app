@@ -1,4 +1,4 @@
-import {Component, Injector, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {MatIconRegistry} from '@angular/material/icon';
 import {DomSanitizer} from '@angular/platform-browser';
 import {AdminService} from './shared/admin.service';
@@ -6,7 +6,6 @@ import {HttpClient} from '@angular/common/http';
 import {ShopOwnerService} from './shared/shop-owner.service';
 import {Router} from '@angular/router';
 import {NotificationsService} from 'angular2-notifications';
-import {BaseComponent} from './shared/base.component';
 import {TranslateService} from '@ngx-translate/core';
 
 const additionalIcons: Array<{ id: string, asset: string; }> = [
