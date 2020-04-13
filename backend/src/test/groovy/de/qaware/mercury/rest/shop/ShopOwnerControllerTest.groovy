@@ -2,6 +2,7 @@ package de.qaware.mercury.rest.shop
 
 import de.qaware.mercury.business.image.ImageService
 import de.qaware.mercury.business.reservation.SlotService
+import de.qaware.mercury.business.shop.Breaks
 import de.qaware.mercury.business.shop.Shop
 import de.qaware.mercury.business.shop.ShopService
 import de.qaware.mercury.rest.plumbing.authentication.AuthenticationHelper
@@ -45,6 +46,8 @@ class ShopOwnerControllerTest extends Specification {
 
         1 * authenticationHelper.authenticateShop(httpServletRequest) >> shop
         1 * imageService.generatePublicUrl(shop.imageId) >> testImageUri
+        shopService.findBreaks(shop) >> Breaks.none()
+        slotService.convertBreaksToSlots(_) >> List.of()
     }
 
     def "Shop gets updated"() {
@@ -67,5 +70,7 @@ class ShopOwnerControllerTest extends Specification {
         1 * authenticationHelper.authenticateShop(httpServletRequest)
         1 * shopService.update(_, _) >> shop
         1 * imageService.generatePublicUrl(shop.imageId) >> testImageUri
+        shopService.findBreaks(shop) >> Breaks.none()
+        slotService.convertBreaksToSlots(_) >> List.of()
     }
 }
