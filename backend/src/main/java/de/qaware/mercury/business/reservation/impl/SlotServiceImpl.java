@@ -106,6 +106,25 @@ class SlotServiceImpl implements SlotService {
         );
     }
 
+    @Override
+    public List<Slot> convertBreaksToSlots(Breaks breaks) {
+        LocalDate monday = getNextMonday();
+
+        List<Slot> result = new ArrayList<>();
+        for (var entry : breaks.groupedByDayOfWeek().entrySet()) {
+            DayOfWeek dayOfWeek = entry.getKey();
+
+            for (Breaks.Break aBreak : entry.getValue()) {
+                LocalDateTime breakStart = monday.with(TemporalAdjusters.nextOrSame(dayOfWeek)).atTime(aBreak.getStart());
+                LocalDateTime breakEnd = LocalDateTime.of(breakStart.toLocalDate(), aBreak.getEnd());
+
+                result.add(new Slot(Slot.Id.of(breakStart), breakStart, breakEnd, false));
+            }
+        }
+
+        return result;
+    }
+
     private LocalDate getNextSunday(LocalDate monday) {
         return monday.with(TemporalAdjusters.next(DayOfWeek.SUNDAY));
     }

@@ -3,6 +3,7 @@ package de.qaware.mercury.rest.shop.dto.response;
 import de.qaware.mercury.business.image.ImageService;
 import de.qaware.mercury.business.shop.ContactType;
 import de.qaware.mercury.business.shop.Shop;
+import de.qaware.mercury.rest.shop.dto.request.BreaksDto;
 import de.qaware.mercury.rest.shop.dto.request.SlotConfigDto;
 import de.qaware.mercury.rest.shop.dto.requestresponse.SocialLinksDto;
 import de.qaware.mercury.util.Maps;
@@ -34,8 +35,9 @@ public class ShopOwnerDetailDto {
     private Map<String, String> contacts;
     private SlotConfigDto slots;
     private SocialLinksDto socialLinks;
+    private BreaksDto breaks;
 
-    public static ShopOwnerDetailDto of(Shop shop, ImageService imageService) {
+    public static ShopOwnerDetailDto of(Shop shop, BreaksDto breaks, ImageService imageService) {
         URI imageUrl = imageService.generatePublicUrl(shop.getImageId());
         return new ShopOwnerDetailDto(
             shop.getId().getId().toString(),
@@ -50,7 +52,8 @@ public class ShopOwnerDetailDto {
             shop.getWebsite(),
             Maps.mapKeys(shop.getContacts(), ContactType::getId),
             Null.map(shop.getSlotConfig(), SlotConfigDto::of),
-            SocialLinksDto.of(shop.getSocialLinks())
+            SocialLinksDto.of(shop.getSocialLinks()),
+            breaks
         );
     }
 }

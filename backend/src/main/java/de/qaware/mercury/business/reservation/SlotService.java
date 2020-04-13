@@ -35,4 +35,6 @@ public interface SlotService {
     Slots previewSlots(SlotConfig slotConfig);
 
     Breaks resolveBreaks(Set<String> slotIds, SlotConfig slotConfig);
+
+    List<Slot> convertBreaksToSlots(Breaks breaks);
 }
