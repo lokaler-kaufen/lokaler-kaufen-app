@@ -1,6 +1,10 @@
 .landing-page {
-  /* found this value at exactly 720px screen width (i.e. smallest "non-small" screen width) */
-  width: 609px;
+  width: 720px;
+}
+
+.form-section {
+  width: 500px;
+  margin: auto;
 }
 
 @media screen and (max-width: 719px) {
@@ -20,6 +24,41 @@ form mat-form-field, button, a[mat-raised-button] {
 
 h2, h3 {
   text-align: center;
+}
+
+.triangle {
+  width: 100%;
+  height: 100px;
+  background-color: #673ab7;
+
+  /* The points are: centered top, left bottom, right bottom */
+  clip-path: polygon(100% 0, 0 100%, 100% 100%);
+}
+
+.explanation-area {
+  padding: 20px;
+  background-color: #673ab7;
+}
+
+.explanation-area h2, h3, p {
+  color: #fafafa;
+  text-align: center;
+}
+
+.explanation-area h3 {
+  font-weight: bold;
+}
+
+.explanation-card-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.explanation-card {
+  padding: 10px;
+  flex-direction: column;
+  width: 33%;
+  text-align: center
 }
 
 /* Chrome, Safari, Edge, Opera */
