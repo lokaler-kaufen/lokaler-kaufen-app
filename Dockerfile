@@ -22,8 +22,6 @@ RUN npm run build-prod
 #############################
 FROM gcr.io/theta-mile-271809/lokaler.kaufen.build-container AS backend-build
 
-USER gradle:gradle
-
 # prepare workspace
 COPY . /workspace
 COPY --from=frontend-build /workspace/frontend/dist/mercury-ui/. /workspace/backend/src/main/resources/static
