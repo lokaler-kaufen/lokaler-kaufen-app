@@ -21,7 +21,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import {MatTableModule} from '@angular/material/table';
-import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/http';
 import {MatSortModule} from '@angular/material/sort';
 import {BookingPopupComponent} from './booking-popup/booking-popup.component';
 import {MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule} from '@angular/material/dialog';
@@ -55,7 +55,15 @@ import {MatGridListModule} from '@angular/material/grid-list';
 import {PageFooterComponent} from './page-footer/page-footer.component';
 import {ShopLogoComponent} from './shop-logo/shop-logo.component';
 import {LogoutInterceptor} from './data/logout.interceptor';
-import { SlotsComponent } from './slots/slots.component';
+import {SlotsComponent} from './slots/slots.component';
+import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+import {BookingSuccessPopupComponent} from './booking-success-popup/booking-success-popup.component';
+
+// AoT requires an exported function for factories
+export function HttpLoaderFactory(httpClient: HttpClient) {
+  return new TranslateHttpLoader(httpClient, './assets/i18n/', '.json');
+}
 
 @NgModule({
   declarations: [
@@ -67,6 +75,7 @@ import { SlotsComponent } from './slots/slots.component';
     AppFooterComponent,
     AppHeaderComponent,
     BookingPopupComponent,
+    BookingSuccessPopupComponent,
     CancelReservationComponent,
     ContactTypesComponent,
     ImprintPageComponent,
@@ -116,7 +125,14 @@ import { SlotsComponent } from './slots/slots.component';
     MatTabsModule,
     MatToolbarModule,
     ReactiveFormsModule,
-    SimpleNotificationsModule.forRoot()
+    SimpleNotificationsModule.forRoot(),
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    })
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: LogoutInterceptor, multi: true},

@@ -1,10 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Injector, OnInit} from '@angular/core';
 import {ReplaySubject} from 'rxjs';
 import {ActivatedRoute} from '@angular/router';
 import {AdminService} from '../shared/admin.service';
 import {NotificationsService} from 'angular2-notifications';
 import {UpdateShopData} from '../shop-details-config/shop-details-config.component';
 import {ShopAdminDto, ShopOwnerDetailDto} from '../data/api';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'admin-details-page',
@@ -22,7 +23,8 @@ export class AdminDetailsPageComponent implements OnInit {
 
   constructor(private adminService: AdminService,
               private route: ActivatedRoute,
-              private notificationsService: NotificationsService) {
+              private notificationsService: NotificationsService,
+              private translateService: TranslateService) {
   }
 
   ngOnInit() {
@@ -35,7 +37,7 @@ export class AdminDetailsPageComponent implements OnInit {
       })
       .catch(error => {
         console.log('Error requesting shop details: ' + error.status + ', ' + error.message);
-        this.notificationsService.error('Tut uns leid!', 'Es ist ein Fehler beim Laden der Details aufgetreten.');
+        this.notificationsService.error('admin.details.error.title', 'Es ist ein Fehler beim Laden der Details aufgetreten.');
       });
   }
 
@@ -44,7 +46,7 @@ export class AdminDetailsPageComponent implements OnInit {
       .then(() => this.notificationsService.success('Alles klar!', 'Ihr Laden wurde aktualisiert.'))
       .catch(error => {
         console.log('Error updating shop: ' + error.status + ', ' + error.message);
-        this.notificationsService.error('Tut uns leid!', 'Ihr Laden konnte leider nicht aktualisiert werden.');
+        this.notificationsService.error('admin.details.error.title', 'Ihr Laden konnte leider nicht aktualisiert werden.');
       });
   }
 
@@ -53,7 +55,7 @@ export class AdminDetailsPageComponent implements OnInit {
       .then(() => this.notificationsService.success('Alles klar!', 'Ihr Laden wurde gelöscht.'))
       .catch(error => {
         console.log('Error updating shop: ' + error.status + ', ' + error.message);
-        this.notificationsService.error('Tut uns leid!', 'Ihr Laden konnte leider nicht gelöscht werden.');
+        this.notificationsService.error('admin.details.error.title', 'Ihr Laden konnte leider nicht gelöscht werden.');
       });
   }
 
@@ -64,7 +66,7 @@ export class AdminDetailsPageComponent implements OnInit {
       .then(() => this.notificationsService.success('Alles klar!', `Das approved flag wurde auf ${nextValue} gesetzt.`))
       .catch(error => {
         console.log('Error updating shop: ' + error.status + ', ' + error.message);
-        this.notificationsService.error('Tut uns leid!', 'Die Aktivierung Ihres Ladens konnte nicht geändert werden.');
+        this.notificationsService.error('admin.details.error.title', 'Die Aktivierung Ihres Ladens konnte nicht geändert werden.');
       })
       .finally(() => this.shopDetails.approved = nextValue);
   }

@@ -2,42 +2,42 @@
   <h2>Shop Overview</h2>
   <mat-table [dataSource]="dataSource" class="mat-elevation-z1" style="width: 100%;">
     <ng-container matColumnDef="id">
-      <mat-header-cell *matHeaderCellDef="let header">ID</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef="let header" translate>admin.overview.header.id</mat-header-cell>
       <mat-cell *matCellDef="let element">{{element.id}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="name">
-      <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef translate>admin.overview.header.name</mat-header-cell>
       <mat-cell *matCellDef="let element">{{element.name}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="ownerName">
-      <mat-header-cell *matHeaderCellDef>Inhaber</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef translate>admin.overview.header.owner</mat-header-cell>
       <mat-cell *matCellDef="let element">{{element.ownerName}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="street">
-      <mat-header-cell *matHeaderCellDef>Straße</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef translate>admin.overview.header.street</mat-header-cell>
       <mat-cell *matCellDef="let element">{{element.street}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="zipCode">
-      <mat-header-cell *matHeaderCellDef>PLZ</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef translate>admin.overview.header.zipcode</mat-header-cell>
       <mat-cell *matCellDef="let element">{{element.zipCode}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="city">
-      <mat-header-cell *matHeaderCellDef>Stadt</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef translate>admin.overview.header.city</mat-header-cell>
       <mat-cell *matCellDef="let element">{{element.city}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="approved">
-      <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
-      <mat-cell *matCellDef="let element">{{element.approved ? 'Bestätigt' : 'Nicht bestätigt'}}</mat-cell>
+      <mat-header-cell *matHeaderCellDef translate>admin.overview.header.status</mat-header-cell>
+      <mat-cell *matCellDef="let element" translate>{{element.approved ? 'admin.overview.approved' : 'admin.overview.not.approved'}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="email">
-      <mat-header-cell *matHeaderCellDef>E-Mail</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef translate>admin.overview.header.email</mat-header-cell>
       <mat-cell *matCellDef="let element">{{element.email}}</mat-cell>
     </ng-container>
 

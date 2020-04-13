@@ -4,7 +4,7 @@
            [ngClass]="{'margin-horizontal': !isSmallScreen, 'margin-big-bottom': isSmallScreen}">
 
     <header>
-      <h2>Login für Ladenbesitzer</h2>
+      <h2 translate>login.description</h2>
     </header>
 
     <login-form
@@ -15,8 +15,12 @@
     ></login-form>
 
     <div class="buttons margin-big-top">
-      <a mat-button color="primary" (click)="signup()">Jetzt registrieren</a>
-      <a mat-button color="primary" (click)="passwordReset()">Passwort vergessen?</a>
+      <a mat-button color="primary" (click)="signup()">
+        <span translate>login.register</span>
+      </a>
+      <a mat-button color="primary" (click)="passwordReset()">
+        <span translate>login.password.forgotten</span>
+      </a>
     </div>
 
   </section>

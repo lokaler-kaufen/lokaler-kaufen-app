@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Injector, OnInit} from '@angular/core';
 import {MatIconRegistry} from '@angular/material/icon';
 import {DomSanitizer} from '@angular/platform-browser';
 import {AdminService} from './shared/admin.service';
@@ -6,6 +6,8 @@ import {HttpClient} from '@angular/common/http';
 import {ShopOwnerService} from './shared/shop-owner.service';
 import {Router} from '@angular/router';
 import {NotificationsService} from 'angular2-notifications';
+import {BaseComponent} from './shared/base.component';
+import {TranslateService} from '@ngx-translate/core';
 
 const additionalIcons: Array<{ id: string, asset: string; }> = [
   {id: 'WHATSAPP', asset: '../assets/whatsapp.svg'},
@@ -36,8 +38,12 @@ export class AppComponent implements OnInit {
     private client: HttpClient,
     private shopOwnerService: ShopOwnerService,
     private router: Router,
-    private notificationsService: NotificationsService
+    private notificationsService: NotificationsService,
+    private translateService: TranslateService,
   ) {
+    this.translateService.setDefaultLang('de');
+    this.translateService.addLangs(['de']);
+
     additionalIcons.forEach(({asset, id}) => {
       this.matIconRegistry.addSvgIcon(id, this.domSanitizer.bypassSecurityTrustResourceUrl(asset));
     });

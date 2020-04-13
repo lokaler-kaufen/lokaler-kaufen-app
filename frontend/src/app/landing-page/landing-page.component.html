@@ -3,13 +3,13 @@
   <section class="form-section padding-big-vertical padding-horizontal"
            [ngClass]="{'margin-horizontal': !isSmallScreen, 'margin-big-bottom': isSmallScreen}">
     <header>
-      <h2>Einkaufen per Videochat - bei Läden in Ihrer Umgebung</h2>
-      <h3>Wo möchten Sie einkaufen?</h3>
+      <h2 translate>landing.title</h2>
+      <h3 translate>landing.subtitle</h3>
     </header>
 
     <form [formGroup]="form">
       <mat-form-field>
-        <mat-label>Ihre Postleitzahl</mat-label>
+        <mat-label translate>landing.zipcode</mat-label>
         <input [matAutocomplete]="auto"
                class="zip-code-input"
                formControlName="zipCode"
@@ -35,12 +35,12 @@
               (click)="start()"
               mat-raised-button
               color="primary">
-        Los geht's!
+        <span translate>landing.submit</span>
       </button>
     </form>
 
     <a mat-button routerLink="/login" class="margin-top">
-      Sie sind Ladenbesitzer? Hier geht's lang...
+      <span translate>landing.shop.owner</span>
     </a>
   </section>
 

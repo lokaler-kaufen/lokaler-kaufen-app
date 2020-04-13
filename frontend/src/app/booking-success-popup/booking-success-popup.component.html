@@ -1,19 +1,14 @@
-<h1 mat-dialog-title>Super!</h1>
+<h1 mat-dialog-title><span translate>booking.success.popup.heading</span></h1>
 <div mat-dialog-content>
   <form>
     <div>
-      <p>Ihre Buchung wurde erfolgreich abgeschlossen.
-        {{data.owner}} ruft Sie per {{data.contactType}} am {{getDate()}} zwischen {{data.start}}
-        und {{data.end}} Uhr
-        auf der {{data.contactNumber}} an. Bitte beachten Sie, dass es zu Stoßzeiten ab und zu zu Verzögerungen kommen kann.
-      </p>
-      <p>
-        Wir haben Ihnen eine Bestätigungsmail gesendet in der Sie auch einen Link finden,
-        mit dem Sie den Termin absagen können. Sollte die Mail nicht angekommen sein, schauen Sie bitte auch in Ihren Spam-Ordner.
-      </p>
+      <p>{{ 'booking.success.popup.description.1' | translate: { data: uiData } }}</p>
+      <p>{{ 'booking.success.popup.description.2' | translate }}</p>
     </div>
     <div mat-dialog-actions>
-      <button mat-button class="mat-raised-button" (click)="onClick()">Verstanden</button>
+      <button mat-button class="mat-raised-button" (click)="onClick()">
+        <span translate>booking.success.popup.accept</span>
+      </button>
     </div>
   </form>
 </div>

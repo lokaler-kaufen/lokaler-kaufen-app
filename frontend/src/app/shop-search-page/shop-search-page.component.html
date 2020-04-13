@@ -1,11 +1,11 @@
 <div>
   <div class="align-baseline">
     <mat-form-field class="search-field">
-      <mat-label>Wonach suchen Sie heute?</mat-label>
+      <mat-label translate>shop.search.heading</mat-label>
 
       <input
         matInput
-        placeholder="Suchen Sie nach Ihrem Lieblingsgeschäft oder nach Begriffen wie Kaffee, Optiker, ..."
+        placeholder="{{ 'shop.search.placeholder' | translate }}"
         [(ngModel)]="searchBusiness"
         (keyup)="handleKeyEvent($event)"
       />
@@ -16,7 +16,8 @@
     </mat-form-field>
 
     <div class="zip-code-div">
-      Läden in der Nähe von
+      <span translate>shop.search.nearby</span>
+      &nbsp;
       <mat-form-field class="zip-code-field">
         <input type="text"
                minlength="5"
@@ -32,7 +33,7 @@
   </div>
 
   <div class="text-no-values padding-horizontal" *ngIf="isSearchEmpty">
-    Leider haben wir keine Ergebnisse zu Ihrer Suche nach '{{ lastSearchString }}' gefunden.
+    {{ 'shop.search.empty' | translate: { lastSearchString: lastSearchString } }}
   </div>
 
   <div *ngIf="!isSearchEmpty">
@@ -50,7 +51,7 @@
 
             <div class="shop-text" [class.padding-horizontal]="!isSmallScreen" [class.padding-left]="isSmallScreen">
               <div class="mat-card-title shop-title">{{ shop.name }}</div>
-              <div class="mat-card-subtitle">{{ shop.distance.toFixed(0) }} km entfernt</div>
+              <div class="mat-card-subtitle">{{ 'shop.search.distance' | translate: { distance: shop.distance.toFixed(0) } }}</div>
             </div>
           </div>
 

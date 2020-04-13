@@ -1,10 +1,10 @@
 <div>
-  <h1 mat-dialog-title>Buchen</h1>
+  <h1 mat-dialog-title translate>booking.popup.heading</h1>
   <div mat-dialog-content>
     <form [formGroup]="bookingGroup" (ngSubmit)="onSubmit()">
       <div class="booking-popup-form-label">
         <mat-form-field style="width: 38%; padding-right: 2%">
-          <mat-label>Kontaktmöglichkeit</mat-label>
+          <mat-label translate>booking.popup.contact.type</mat-label>
           <mat-select required formControlName="option"
                       [value]="contactTypes.getDisplayName(data.supportedContactTypes[0])">
             <mat-option *ngFor="let option of data.supportedContactTypes" [value]="contactTypes.getDisplayName(option)">
@@ -14,25 +14,25 @@
           </mat-select>
         </mat-form-field>
         <mat-form-field style="width: 60%">
-          <mat-label>Ihre Kontaktdaten</mat-label>
+          <mat-label translate>booking.popup.contact.data</mat-label>
           <input required matInput formControlName="phoneNumber">
         </mat-form-field>
       </div>
 
       <div>
         <mat-form-field class="booking-popup-form-label">
-          <mat-label>Ihr Name</mat-label>
+          <mat-label translate>booking.popup.contact.name</mat-label>
           <input required matInput formControlName="name">
         </mat-form-field>
       </div>
 
       <div>
         <mat-form-field class="booking-popup-form-label">
-          <mat-label>Ihre E-Mail-Adresse</mat-label>
+          <mat-label translate>booking.popup.contact.email</mat-label>
           <input (keyup.enter)="onSubmit()" required matInput formControlName="email" type="email"
                  pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$">
-          <mat-error *ngIf="bookingGroup.hasError('email') && !bookingGroup.hasError('required')">
-            Bitte geben Sie eine valide E-Mail-Adresse ein!
+          <mat-error *ngIf="bookingGroup.hasError('email') && !bookingGroup.hasError('required')" translate>
+            booking.popup.validation.error.email
           </mat-error>
         </mat-form-field>
       </div>
@@ -40,14 +40,16 @@
   </div>
   <div mat-dialog-actions>
     <button mat-button
-            (click)="onNoClick()">Abbrechen
+            (click)="onNoClick()" translate>
+      <span translate>booking.popup.cancel</span>
     </button>
 
     <button mat-button
             disabled="{{!bookingGroup.valid}}"
             type="submit"
             (click)="onSubmit()"
-            color="primary">Buchen!
+            color="primary">
+      <span translate>booking.popup.submit</span>
     </button>
   </div>
 </div>

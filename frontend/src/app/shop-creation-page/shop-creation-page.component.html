@@ -1,110 +1,134 @@
-<p>Hallo und herzlich willkommen! Toll, dass Sie einen Laden auf lokaler.kaufen anlegen wollen! Dafür brauchen wir noch
-  ein paar Informationen von Ihnen. </p>
+<p translate>shop.creation.heading</p>
 
 <mat-vertical-stepper [linear]="true" #stepper (selectionChange)="previewSlots($event)">
   <mat-step [stepControl]="nameFormGroup">
     <form [formGroup]="nameFormGroup">
-      <ng-template matStepLabel>Starten wir ganz einfach</ng-template>
+      <ng-template matStepLabel>
+        <span translate>shop.creation.start.heading</span>
+      </ng-template>
       <mat-form-field>
-        <mat-label>Wie ist Ihr Name?</mat-label>
-        <input matInput placeholder="Max Mustermann" formControlName="nameCtrl" required>
+        <mat-label translate>shop.creation.start.name</mat-label>
+        <input matInput placeholder="{{ 'shop.creation.start.name.placeholder' | translate }}"
+               formControlName="nameCtrl" required>
       </mat-form-field>
       <mat-form-field>
-        <mat-label>Und wie heißt Ihr Laden?</mat-label>
-        <input matInput placeholder="Maxis Modeladen" formControlName="businessNameCtrl" required>
+        <mat-label>shop.creation.start.shop.name</mat-label>
+        <input matInput placeholder="{{ 'shop.creation.start.shop.name.placeholder' | translate}}"
+               formControlName="businessNameCtrl" required>
       </mat-form-field>
       <div>
-        <button mat-button matStepperNext>Weiter</button>
+        <button mat-button matStepperNext>
+          <span translate>shop.creation.proceed</span>
+        </button>
       </div>
     </form>
   </mat-step>
   <mat-step [stepControl]="addressFormGroup">
     <form [formGroup]="addressFormGroup">
-      <ng-template matStepLabel>Wo befindet sich Ihr Laden?</ng-template>
+      <ng-template matStepLabel><span translate>
+        shop.creation.address.heading</span>
+      </ng-template>
       <mat-form-field>
-        <mat-label>Straße</mat-label>
-        <input matInput formControlName="streetCtrl" placeholder="Hauptstr. 11"
+        <mat-label translate>shop.creation.address.street</mat-label>
+        <input matInput formControlName="streetCtrl"
+               placeholder="{{ 'shop.creation.address.street.placeholder' | translate }}"
                required>
       </mat-form-field>
       <mat-form-field>
-        <mat-label>PLZ</mat-label>
-        <input matInput formControlName="zipCtrl" placeholder="12345" type="text"
+        <mat-label translate>shop.creation.address.zipcode</mat-label>
+        <input matInput formControlName="zipCtrl"
+               placeholder="{{ 'shop.creation.address.zipcode.placeholder' | translate }" type="text"
                oninput="javascript: this.value=this.value.replace(new RegExp(/[^\d]/g), ''); if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
                maxlength="5" minlength="5"
                required>
       </mat-form-field>
       <mat-form-field>
-        <mat-label>Stadt</mat-label>
+        <mat-label translate>shop.creation.address.city</mat-label>
         <mat-select formControlName="cityCtrl" style="width: 100%" required>
           <mat-option *ngFor="let city of citySuggestions" [value]="city.placeName">{{city.placeName}}</mat-option>
         </mat-select>
       </mat-form-field>
       <mat-form-field>
-        <mat-label>Adresszusatz</mat-label>
-        <input matInput formControlName="suffixCtrl" placeholder="Hinterhof">
+        <mat-label translate>shop.creation.address.supplement</mat-label>
+        <input matInput formControlName="suffixCtrl"
+               placeholder="{{ 'shop.creation.address.supplement.placeholder' | translate }}">
       </mat-form-field>
       <div>
-        <button mat-button matStepperPrevious>Zurück</button>
-        <button mat-button matStepperNext>Weiter</button>
+        <button mat-button matStepperPrevious>
+          <span translate>shop.creation.back</span>
+        </button>
+        <button mat-button matStepperNext>
+          <span translate>shop.creation.proceed</span>
+        </button>
       </div>
     </form>
   </mat-step>
   <mat-step [stepControl]="descriptionFormGroup">
     <form [formGroup]="descriptionFormGroup">
-      <ng-template matStepLabel>Beschreibe Sie ihren Laden.</ng-template>
+      <ng-template matStepLabel>
+        <span translate>shop.creation.description.heading</span>
+      </ng-template>
       <div style="width: 100%">
-        <p>Was verkaufen Sie, was zeichnet Ihren Laden aus und wobei können Sie Ihre Kunden am besten beraten?</p>
+        <p translate>shop.creation.description.description</p>
         <mat-form-field style="width: 100%">
-          <mat-label>Beschreibung</mat-label>
+          <mat-label translate>shop.creation.description.label</mat-label>
           <textarea matInput formControlName="descriptionCtrl"
-                    placeholder="Hier gibt es vegane Kleidung und Schuhe. "
+                    placeholder="{{ 'shop.creation.description.placeholder' | translate }}"
                     required></textarea>
         </mat-form-field>
       </div>
       <div>
-        <p>Falls Sie eine Webseite haben, können Sie diese anzeigen lassen und Ihren Kunden dort weitere Details zu
-          Ihrem Laden zur Verfügung stellen.</p>
+        <p translate>shop.creation.details.heading</p>
         <div class="social-links">
           <img src="../assets/web.png" class="social-links-logo">
           <mat-form-field>
-            <mat-label>Ihre Webseite</mat-label>
-            <input matInput formControlName="urlCtrl" placeholder="https://mywebsite.de">
+            <mat-label translate>shop.creation.details.website</mat-label>
+            <input matInput formControlName="urlCtrl"
+                   placeholder="{{ 'shop.creation.details.website.placeholder' | translate }}">
           </mat-form-field>
         </div>
-        <p>Sie können zusätzlich Auftritte in sozialen Medien hinzufügen. Bitte geben Sie bei sozialen Medien nur Ihren
-          Namen an und keine kompletten URLs (z. B. 'lokalerkaufen' statt 'https://www.facebook.com/lokalerkaufen/')</p>
+        <p translate>shop.creation.details.social.description</p>
         <div class="social-links">
           <img src="../assets/facebook.png" class="social-links-logo">
           <mat-form-field>
-            <mat-label>Ihr Facebook Name</mat-label>
-            <input matInput formControlName="facebookCtrl" placeholder="MeinLaden">
+            <mat-label translate>shop.creation.details.social.facebook</mat-label>
+            <input matInput formControlName="facebookCtrl"
+                   placeholder="{{ 'shop.creation.details.social.facebook.placeholder' | translate }}">
           </mat-form-field>
         </div>
         <div class="social-links">
           <img src="../assets/instagram.png" class="social-links-logo">
           <mat-form-field>
-            <mat-label>Ihr Instagram Name</mat-label>
-            <input matInput formControlName="instagramCtrl" placeholder="MeineInstagramSeite">
+            <mat-label translate>shop.creation.details.social.instagram</mat-label>
+            <input matInput formControlName="instagramCtrl"
+                   placeholder="{{ 'shop.creation.details.social.instagram.placeholder' | translate }}">
           </mat-form-field>
         </div>
         <div class="social-links">
           <img src="../assets/twitter.png" class="social-links-logo">
           <mat-form-field>
-            <mat-label>Ihr Twitter Name</mat-label>
-            <input matInput formControlName="twitterCtrl" placeholder="Zwitscher">
+            <mat-label translate>shop.creation.details.social.twitter</mat-label>
+            <input matInput formControlName="twitterCtrl"
+                   placeholder="{{ 'shop.creation.details.social.twitter.placeholder' | translate }}">
           </mat-form-field>
         </div>
       </div>
       <div>
-        <button mat-button matStepperPrevious>Zurück</button>
-        <button mat-button matStepperNext>Weiter</button>
+        <button mat-button matStepperPrevious>
+          <span translate>shop.creation.back</span>
+        </button>
+        <button mat-button matStepperNext>
+          <span translate>shop.creation.proceed</span>
+        </button>
       </div>
     </form>
   </mat-step>
   <mat-step [stepControl]="contactFormGroup">
     <form [formGroup]="contactFormGroup">
-      <ng-template matStepLabel>Welche Kontaktmöglichkeiten möchten Sie anbieten?</ng-template>
-      <p>Füllen Sie einfach alle Möglichkeiten aus, die Sie bedienen wollen. </p>
+      <ng-template matStepLabel>
+        <span translate>shop.creation.contact.heading</span>
+      </ng-template>
+      <p translate>shop.creation.details.contact.description</p>
       <small *ngIf="contactFormGroup.hasError('atLeastOneRequired')"
              style="color: red">{{contactFormGroup.getError('atLeastOneRequired').text}}
       </small>
@@ -115,19 +139,26 @@
           {{contactTypes.getDisplayName(contactType)}}
         </p>
         <mat-form-field>
-          <mat-label>Ihr Kontakt</mat-label>
-          <input matInput formControlName="{{contactType.toLowerCase()}}Ctrl" placeholder="Ihre Kontaktmöglichkeit">
+          <mat-label translate>shop.creation.details.contact.contact</mat-label>
+          <input matInput formControlName="{{contactType.toLowerCase()}}Ctrl"
+                 placeholder="{{ 'shop.creation.details.contact.contact.placeholder' | translate }}">
         </mat-form-field>
       </div>
       <div>
-        <button mat-button matStepperPrevious>Zurück</button>
-        <button mat-button matStepperNext>Weiter</button>
+        <button mat-button matStepperPrevious>
+          <span translate>shop.creation.back</span>
+        </button>
+        <button mat-button matStepperNext>
+          <span translate>shop.creation.proceed</span>
+        </button>
       </div>
     </form>
   </mat-step>
   <mat-step [stepControl]="openingFormGroup">
     <form [formGroup]="openingFormGroup">
-      <ng-template matStepLabel>Was sind Ihre Öffnungszeiten?</ng-template>
+      <ng-template matStepLabel>
+        <span translate>shop.creation.opening.heading</span>
+      </ng-template>
       <div style="margin-top: 15px; margin-bottom: 30px; float:left;"
            *ngFor="let day of days">
         <button mat-mini-fab color="primary"
@@ -139,41 +170,44 @@
         <h2 [ngClass]="{'disabled-font' : !this.businessHours.POSSIBLE_BUSINESS_HOURS.get(day).enabled}"
             style="float:left; margin-right: 50px; vertical-align: bottom; width: 15%;">{{day}}</h2>
         <mat-form-field>
-          <mat-label>Von</mat-label>
+          <mat-label translate>shop.creation.opening.from</mat-label>
           <input formControlName="{{day}}FromCtrl" matInput type="time"
                  value="{{this.businessHours.POSSIBLE_BUSINESS_HOURS.get(day).from}}">
         </mat-form-field>
         <mat-form-field>
-          <mat-label>Bis</mat-label>
+          <mat-label translate>shop.creation.opening.to</mat-label>
           <input formControlName="{{day}}ToCtrl" matInput type="time"
                  value="{{this.businessHours.POSSIBLE_BUSINESS_HOURS.get(day).to}}">
         </mat-form-field>
       </div>
       <div>
-        Wie lange beraten Sie Ihre Kunden im Schnitt?
+        <span translate>shop.creation.opening.duration</span>
         <mat-form-field style="width: 30px; padding-left: 8px;">
           <input formControlName="defaultCtrl" matInput type="number">
         </mat-form-field>
-        Minuten
+        <span translate>shop.creation.opening.minutes</span>
       </div>
       <div>
-        Wie viel Pause brauchen Sie dazwischen?
+        <span translate>shop.creation.opening.pause</span>
         <mat-form-field style="width: 30px; padding-left: 8px;">
           <input formControlName="pauseCtrl" matInput type="number">
         </mat-form-field>
-        Minuten
+        <span translate>shop.creation.opening.minutes</span>
       </div>
       <div>
-        Wie viel Vorlaufzeit benötigen Sie? Ein Kunde kann beispielsweise den nächsten Termin erst zur jetzigen Uhrzeit
-        + 45 Minuten buchen.
+        <span translate>shop.creation.opening.delay</span>
         <mat-form-field style="width: 30px; padding-left: 8px;">
           <input formControlName="delayCtrl" matInput type="number">
         </mat-form-field>
-        Minuten
+        <span translate>shop.creation.opening.minutes</span>
       </div>
       <div>
-        <button mat-button matStepperPrevious>Zurück</button>
-        <button mat-button matStepperNext>Weiter</button>
+        <button mat-button matStepperPrevious>
+          <span translate>shop.creation.back</span>
+        </button>
+        <button mat-button matStepperNext>
+          <span translate>shop.creation.proceed</span>
+        </button>
       </div>
     </form>
   </mat-step>
@@ -231,38 +265,38 @@
   </mat-step>
   <mat-step [stepControl]="passwordFormGroup">
     <form [formGroup]="passwordFormGroup">
-      <ng-template matStepLabel>Fast fertig!</ng-template>
-      <p>Wählen Sie noch ein Passwort. Damit können Sie Ihre Angaben später ändern. Wählen Sie ein sicheres Passwort,
-        das
-        mindestens 12 Zeichen hat. Ein gutes Beispiel ist ein Satz, den Sie sich gut merken können.</p>
+      <ng-template matStepLabel>
+        <span translate>shop.creation.password.heading</span>
+      </ng-template>
+      <p translate>shop.creation.password.description</p>
       <div>
         <mat-form-field appearance="outline">
-          <mat-label>Password</mat-label>
+          <mat-label translate>shop.creation.password.password</mat-label>
           <mat-pass-toggle-visibility #toggleVisbility matSuffix></mat-pass-toggle-visibility>
           <input matInput #passwordWithValidation
                  [type]="toggleVisbility.type"
                  required
                  formControlName="passwordCtrl"
-                 placeholder="Password"
+                 placeholder="{{ 'shop.creation.password.password.placeholder' | translate }}"
                  tabindex="1">
           <mat-hint align="end" aria-live="polite">
             {{passwordWithValidation.value.length}} / 25
           </mat-hint>
-          <mat-error *ngIf="passwordComponentWithValidation.passwordFormControl.hasError('required')">
-            Password is required
+          <mat-error *ngIf="passwordComponentWithValidation.passwordFormControl.hasError('required')" translate>
+            shop.creation.password.error.required
           </mat-error>
         </mat-form-field>
         <mat-form-field appearance="outline">
-          <mat-label>Password wiederholen</mat-label>
+          <mat-label translate>shop.creation.password.repeat</mat-label>
           <mat-pass-toggle-visibility #toggleVisbility matSuffix></mat-pass-toggle-visibility>
           <input matInput #passwordConfirm
                  [type]="toggleVisbility.type"
                  required
                  formControlName="confirmPasswordCtrl"
-                 placeholder="Password wiederholen"
+                 placeholder="{{ 'shop.creation.password.repeat.placeholder' | translate }"
                  tabindex="2">
-          <mat-error *ngIf="passwordComponentWithValidation.passwordFormControl.hasError('required')">
-            Password is required
+          <mat-error *ngIf="passwordComponentWithValidation.passwordFormControl.hasError('required')" translate>
+            shop.creation.password.error.required
           </mat-error>
         </mat-form-field>
       </div>
@@ -276,28 +310,36 @@
         <!--Password's strength info-->
         <mat-password-strength-info
           [passwordComponent]="passwordComponentWithValidation"
-          minCharsCriteriaMsg="Minimum 12 Zeichen"
-          lowerCaseCriteriaMsg="Mindestens ein Kleinbuchstabe"
-          upperCaseCriteriaMsg="Mindestens ein Großbuchstabe">
+          minCharsCriteriaMsg="{{ 'shop.creation.password.validation.count' | translate }}"
+          lowerCaseCriteriaMsg="{{ 'shop.creation.password.validation.lowercase' | translate }}"
+          upperCaseCriteriaMsg="{{ 'shop.creation.password.validation.lowercase' | translate }}">
         </mat-password-strength-info>
       </div>
       <div class="padding-vertical">
-        <mat-checkbox formControlName="privacyCtrl">Ich habe die <a target="_blank" [routerLink]="'/privacy'">Datenschutzerklärung</a>
-          gelesen und akzeptiere diese.
-        </mat-checkbox>
+        <mat-checkbox formControlName="privacyCtrl" translate>shop.creation.password.privacy</mat-checkbox>
       </div>
       <div>
-        <button mat-button matStepperPrevious>Zurück</button>
-        <button mat-button matStepperNext>Weiter</button>
+        <button mat-button matStepperPrevious>
+          <span translate>shop.creation.back</span>
+        </button>
+        <button mat-button matStepperNext>
+          <span translate>shop.creation.proceed</span>
+        </button>
       </div>
     </form>
   </mat-step>
   <mat-step>
-    <ng-template matStepLabel>Geschafft!</ng-template>
-    <p>Wir können Ihren Laden jetzt anlegen. </p>
+    <ng-template matStepLabel>
+      <span translate>shop.creation.finish.heading</span>
+    </ng-template>
+    <p translate>shop.creation.finish.description</p>
     <div>
-      <button mat-button matStepperPrevious>Zurück</button>
-      <button mat-button (click)="createShop()">Speichern</button>
+      <button mat-button matStepperPrevious>
+        <span translate>shop.creation.back</span>
+      </button>
+      <button mat-button (click)="createShop()">
+        <span translate>shop.creation.save</span>
+      </button>
     </div>
     <mat-progress-bar *ngIf="this.progress > 0" [value]="this.progress" style="width: 20%"></mat-progress-bar>
   </mat-step>

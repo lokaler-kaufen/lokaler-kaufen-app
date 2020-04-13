@@ -1,0 +1,306 @@
+{
+    "admin": {
+        "details": {
+            "email": "E-Mail:",
+            "save": "Änderungen speichern",
+            "approve": "Laden bestätigen",
+            "revoke": "Bestätigung zurückziehen",
+            "delete": "Laden löschen",
+            "error": {
+                "title": "Tut uns leid!",
+                "message": "Es ist ein Fehler beim Laden der Details aufgetreten."
+            }
+        },
+        "login": {
+            "heading": "Login für Admins"
+        },
+        "overview": {
+            "header.id": "ID",
+            "header.name": "Name",
+            "header.owner": "Inhaber",
+            "header.street": "Straße",
+            "header.zipcode": "PLZ",
+            "header.city": "Stadt",
+            "header.email": "E-Mail",
+            "header.status": "Status",
+            "approved": "Bestätigt",
+            "not.approved": "Nicht bestätigt"
+        }
+    },
+    "app": {
+        "footer": {
+            "imprint": "Impressum",
+            "privacy": "Datenschutz",
+            "support": "Support"
+        },
+        "header": {
+            "logo.alt": "lokaler.kaufen Logo"
+        }
+    },
+    "booking": {
+        "popup": {
+            "heading": "Buchen",
+            "contact.type": "Kontaktmöglichkeit",
+            "contact.data": "Ihre Kontaktdaten",
+            "contact.name": "Ihr Name",
+            "contact.email": "Ihre E-Mail-Adresse",
+            "submit": "Buchen!",
+            "cancel": "Abbrechen",
+            "validation": {
+                "error": {
+                    "email": "Bitte geben Sie eine valide E-Mail-Adresse ein!"
+                }
+            }
+        },
+        "success.popup": {
+            "heading": "Super!",
+            "description.1": "Ihre Buchung wurde erfolgreich abgeschlossen. {{data.owner}} ruft Sie per {{data.contactType}} am {{data.day}} zwischen {{data.start}} und {{data.end}} Uhr auf der {{data.contactNumber}} an. Bitte beachten Sie, dass es zu Stoßzeiten ab und zu zu Verzögerungen kommen kann.",
+            "description.2": "Wir haben Ihnen eine Bestätigungsmail gesendet in der Sie auch einen Link finden, mit dem Sie den Termin absagen können. Sollte die Mail nicht angekommen sein, schauen Sie bitte auch in Ihren Spam-Ordner.",
+            "accept": "Verstanden"
+        }
+    },
+    "reservation": {
+        "cancel": {
+            "description": "Sind Sie sicher, dass Sie Ihre Reservierung stornieren möchten?",
+            "confirm": "Jetzt stornieren"
+        }
+    },
+    "landing": {
+        "title": "Einkaufen per Videochat - bei Läden in Ihrer Umgebung",
+        "subtitle": "Wo möchten Sie einkaufen?",
+        "shop.owner": "Sie sind Ladenbesitzer? Hier geht's lang...",
+        "submit": "Los geht's!",
+        "zipcode": "Ihre Postleitzahl"
+    },
+    "login": {
+        "description": "Login für Ladenbesitzer",
+        "email": "E-Mail",
+        "password": "Passwort",
+        "password.forgotten": "Passwort vergessen?",
+        "register": "Jetzt registrieren",
+        "submit": "Login",
+        "error": "Tut uns leid, der Login ist fehlgeschlagen. Entweder haben Sie sich bei Ihrer E-Mail-Adresse und/oder beim Passwort vertippt oder das System hat gerade ein paar Problemchen."
+    },
+    "password.reset": {
+        "page": {
+            "description": "Bitte geben Sie Ihr neues Passwort ein.",
+            "password": "Password",
+            "repeat": "Password wiederholen",
+            "submit": "Passwort setzen",
+            "error": "Bitte geben Sie ein Passwort ein.",
+            "validation": {
+                "count": "Minimum 12 Zeichen",
+                "lowercase": "Mindestens ein Kleinbuchstabe",
+                "uppercase": "Mindestens ein Großbuchstabe"
+            }
+        },
+        "popup": {
+            "heading": "Passwort vergessen",
+            "email": "Ihre E-Mail-Adresse",
+            "email.description": "Bitte geben Sie eine valide E-Mail-Adresse ein!",
+            "cancel": "Abbrechen",
+            "submit": "Senden"
+        }
+    },
+    "registration": {
+        "popup": {
+            "heading": "Jetzt geht's los!",
+            "description": "In wenigen Schritten zu Ihrem eigenen Laden auf lokaler.kaufen! Geben Sie einfach Ihre E-Mail-Adresse ein und lassen Sie sich von unserem Assistenten durch die Laden-Erstellung begleiten. Ganz einfach, versprochen!",
+            "email": "E-Mail",
+            "cancel": "Doch nicht",
+            "submit": "OK",
+            "confirmation": {
+                "title": "Soweit so gut!",
+                "description": "Wir haben Ihnen eine E-Mail an {{email.value}} geschickt. Bitte bestätigen Sie kurz Ihre E-Mail-Adresse, indem Sie auf den Link in der Mail klicken. Sollte die E-Mail nicht angekommen sein, schauen Sie bitte auch in Ihren Spam-Ordner.",
+                "submit": "OK"
+            }
+        }
+    },
+    "shop": {
+        "creation": {
+            "heading": "Hallo und herzlich willkommen! Toll, dass Sie einen Laden auf lokaler.kaufen anlegen wollen! Dafür brauchen wir noch ein paar Informationen von Ihnen.",
+            "proceed": "Weiter",
+            "back": "Zurück",
+            "save": "Speichern",
+            "start": {
+                "heading": "Starten wir ganz einfach",
+                "name": "Wie ist Ihr Name?",
+                "name.placeholder": "Max Mustermann",
+                "shop.name": "Und wie heißt Ihr Laden?",
+                "shop.name.placeholder": "Maxis Modeladen"
+            },
+            "address": {
+                "heading": "Wo befindet sich Ihr Laden?",
+                "street": "Straße",
+                "street.placeholder": "Hauptstr. 11",
+                "zipcode": "PLZ",
+                "zipcode.placeholder": "12345",
+                "city": "Stadt",
+                "supplement": "Adresszusatz",
+                "supplement.placeholder": "Hinterhof"
+            },
+            "description": {
+                "heading": "Beschreiben Sie ihren Laden.",
+                "description": "Was verkaufen Sie, was zeichnet Ihren Laden aus und wobei können Sie Ihre Kunden am besten beraten?",
+                "label": "Beschreibung",
+                "placeholder": "Hier gibt es vegane Kleidung und Schuhe."
+            },
+            "details": {
+                "heading": "Falls Sie eine Webseite haben, können Sie diese anzeigen lassen und Ihren Kunden dort weitere Details zu Ihrem Laden zur Verfügung stellen.",
+                "website": "Ihre Webseite",
+                "website.placeholder": "https://mywebsite.de",
+                "social": {
+                    "description": "Sie können zusätzlich Auftritte in sozialen Medien hinzufügen. Bitte geben Sie bei sozialen Medien nur Ihren Namen an und keine kompletten URLs (z. B. 'lokalerkaufen' statt 'https://www.facebook.com/lokalerkaufen/')",
+                    "facebook": "Ihr Facebook-Name",
+                    "facebook.placeholder": "MeinLaden",
+                    "instagram": "Ihr Instagram-Name",
+                    "instagram.placeholder": "MeineInstagramSeite",
+                    "twitter": "Ihr Twitter-Name",
+                    "twitter.placeholder": "Zwitscher"
+                }
+            },
+            "contact": {
+                "heading": "Welche Kontaktmöglichkeiten möchten Sie anbieten?",
+                "description": "Füllen Sie einfach alle Möglichkeiten aus, die Sie bedienen wollen.",
+                "contact": "Ihr Kontakt",
+                "contact.placeholder": "Ihre Kontaktmöglichkeit"
+            },
+            "opening": {
+                "heading": "Was sind Ihre Öffnungszeiten?",
+                "from": "Von",
+                "to": "Bis",
+                "duration": "Wie lange beraten Sie Ihre Kunden im Schnitt?",
+                "minutes": "Minuten",
+                "pause": "Wie viel Pause brauchen Sie dazwischen?",
+                "delay": "Wie viel Vorlaufzeit benötigen Sie? Ein Kunde kann beispielsweise den nächsten Termin erst zur jetzigen Uhrzeit + 45 Minuten buchen."
+            },
+            "logo": {
+                "heading": "Sie haben ein Logo?",
+                "description": "Bitte beachten Sie die maximale Dateigröße von 5 MB.",
+                "file": "Datei auswählen...",
+                "error": {
+                    "size": "Die Datei ist zu groß. Bitte wählen Sie eine Datei aus, die maximal 2 MB groß ist.",
+                    "type": "Bitte wählen Sie eine Datei mit der Endung '.png', '.jpeg' oder '.jpg' aus."
+                }
+            },
+            "password": {
+                "heading": "Fast fertig!",
+                "description": "Wählen Sie noch ein Passwort. Damit können Sie Ihre Angaben später ändern. Wählen Sie ein sicheres Passwort, das mindestens 12 Zeichen hat. Ein gutes Beispiel ist ein Satz, den Sie sich gut merken können.",
+                "password": "Passwort",
+                "password.placeholder": "Passwort",
+                "repeat": "Passwort wiederholen",
+                "repeat.placeholder": "Passwort wiederholen",
+                "error": {
+                    "required": "Bitte geben Sie ein Passwort ein."
+                },
+                "validation": {
+                    "count": "Minimum 12 Zeichen",
+                    "lowercase": "Mindestens ein Kleinbuchstabe",
+                    "uppercase": "Mindestens ein Großbuchstabe"
+                },
+                "privacy": "Ich habe die <a target=\"_blank\" [routerLink]=\"'/privacy'\">Datenschutzerklärung</a> gelesen und akzeptiere diese."
+            },
+            "finish": {
+                "heading": "Geschafft!",
+                "description": "Wir können Ihren Laden jetzt anlegen."
+            },
+            "success": {
+                "heading": "Juhu!",
+                "description": "Ihr Laden {{data}} ist jetzt bei lokaler.kaufen! Schön, dass Sie dabei sind.",
+                "login": "Zum Login"
+            }
+        },
+        "details-config": {
+            "heading": "Bei Ihnen hat sich etwas geändert? Dann aktualisieren Sie hier einfach Ihre Daten.",
+            "proceed": "Weiter",
+            "back": "Zurück",
+            "save": "Speichern",
+            "start": {
+                "heading": "Starten wir ganz einfach",
+                "name": "Wie ist Ihr Name?",
+                "name.placeholder": "Max Mustermann",
+                "shop.name": "Und wie heißt Ihr Laden?",
+                "shop.name.placeholder": "Maxis Modeladen"
+            },
+            "address": {
+                "heading": "Wo befindet sich Ihr Laden?",
+                "street": "Straße",
+                "street.placeholder": "Hauptstr. 11",
+                "zipcode": "PLZ",
+                "zipcode.placeholder": "12345",
+                "city": "Stadt",
+                "supplement": "Adresszusatz",
+                "supplement.placeholder": "Hinterhof"
+            },
+            "description": {
+                "heading": "Beschreiben Sie ihren Laden.",
+                "description": "Was verkaufen Sie, was zeichnet Ihren Laden aus und wobei können Sie Ihre Kunden am besten beraten?",
+                "label": "Beschreibung",
+                "placeholder": "Hier gibt es vegane Kleidung und Schuhe."
+            },
+            "details": {
+                "heading": "Falls Sie eine Webseite haben, können Sie diese anzeigen lassen und Ihren Kunden dort weitere Details zu Ihrem Laden zur Verfügung stellen.",
+                "website": "Ihre Webseite",
+                "website.placeholder": "https://mywebsite.de",
+                "social": {
+                    "description": "Sie können zusätzlich Auftritte in sozialen Medien hinzufügen. Bitte geben Sie bei sozialen Medien nur Ihren Namen an und keine kompletten URLs (z. B. 'lokalerkaufen' statt 'https://www.facebook.com/lokalerkaufen/')",
+                    "facebook": "Ihr Facebook-Name",
+                    "facebook.placeholder": "MeinLaden",
+                    "instagram": "Ihr Instagram-Name",
+                    "instagram.placeholder": "MeineInstagramSeite",
+                    "twitter": "Ihr Twitter-Name",
+                    "twitter.placeholder": "Zwitscher"
+                }
+            },
+            "contact": {
+                "heading": "Welche Kontaktmöglichkeiten möchten Sie anbieten?",
+                "description": "Füllen Sie einfach alle Möglichkeiten aus, die Sie bedienen wollen.",
+                "contact": "Ihr Kontakt",
+                "contact.placeholder": "Ihre Kontaktmöglichkeit"
+            },
+            "opening": {
+                "heading": "Was sind Ihre Öffnungszeiten?",
+                "from": "Von",
+                "to": "Bis",
+                "duration": "Wie lange beraten Sie Ihre Kunden im Schnitt?",
+                "minutes": "Minuten",
+                "pause": "Wie viel Pause brauchen Sie dazwischen?",
+                "delay": "Wie viel Vorlaufzeit benötigen Sie? Ein Kunde kann beispielsweise den nächsten Termin erst zur jetzigen Uhrzeit + 45 Minuten buchen."
+            },
+            "logo": {
+                "heading": "Sie haben ein Logo?",
+                "description": "Bitte beachten Sie die maximale Dateigröße von 5 MB.",
+                "alt": "Shop-Logo",
+                "delete": "Datei löschen",
+                "file": "Datei auswählen...",
+                "error": {
+                    "size": "Die Datei ist zu groß. Bitte wählen Sie eine Datei aus, die maximal 2 MB groß ist.",
+                    "type": "Bitte wählen Sie eine Datei mit der Endung '.png', '.jpeg' oder '.jpg' aus."
+                }
+            }
+        },
+        "details": {
+            "back": "Zurück",
+            "description.empty": "Dieser Laden hat noch keine Beschreibung hinterlegt.",
+            "image.alt": "Shop-Logo",
+            "slots": {
+                "empty": "Dieser Laden bietet am {{slots.dayName}} leider keine Termine an.",
+                "start": "Start",
+                "end": "Ende",
+                "available": "Verfügbar",
+                "not.available": "Belegt",
+                "booknow": "Jetzt buchen"
+            }
+        },
+        "management": {
+            "save": "Speichern"
+        },
+        "search": {
+            "heading": "Wonach suchen Sie heute?",
+            "placeholder": "Suchen Sie nach Ihrem Lieblingsgeschäft oder nach Begriffen wie Kaffee, Optiker, ...",
+            "nearby": "Läden in der Nähe von",
+            "distance": "{{ distance }} km entfernt",
+            "empty": "Leider haben wir keine Ergebnisse zu Ihrer Suche nach '{{lastSearchString}}' gefunden."
+        }
+    }
+}

@@ -2,16 +2,19 @@
   <shop-details *ngIf="shopOwnerDetails" (updateShopEvent)="updateShop($event)"
                 [detailsObservable]="shopOwnerDetails"
                 [sendUpdatedShopDetails]="getUpdatedDetails"></shop-details>
-  <div><h3>E-Mail: {{shopDetails.email}}</h3></div>
+  <div>
+    <h3><span translate>admin.details.email</span> {{shopDetails.email}}</h3>
+  </div>
   <button class="admin-button" mat-raised-button color="primary"
-          (click)="this.getUpdatedDetails.next(true)">Änderungen speichern
+          (click)="this.getUpdatedDetails.next(true)">
+    <span translate>admin.details.save</span>
   </button>
   <button class="admin-button" mat-raised-button color="primary"
           (click)="changeShopApproval()">
-    <div *ngIf="!shopDetails.approved">Laden bestätigen</div>
-    <div *ngIf="shopDetails.approved">Bestätigung zurückziehen</div>
+    <span *ngIf="!shopDetails.approved" translate>admin.details.approve</span>
+    <span *ngIf="shopDetails.approved" translate>admin.details.revoke</span>
   </button>
   <button class="admin-button" mat-raised-button color="primary"
-          (click)="deleteShop()">Laden löschen
-  </button>
+          (click)="deleteShop()">
+    <span translate>admin.details.delete</span></button>
 </div>

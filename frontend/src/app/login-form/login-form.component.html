@@ -1,10 +1,10 @@
 <form [formGroup]="formController" (ngSubmit)="onSubmit()">
   <mat-form-field class="form-item">
-    <mat-label>E-Mail</mat-label>
+    <mat-label translate>login.email</mat-label>
     <input
       type="email"
       formControlName="email"
-      placeholder="E-Mail"
+      placeholder="{{ 'login.email' | translate }}"
       required
       matInput
       autofocus
@@ -12,11 +12,11 @@
   </mat-form-field>
 
   <mat-form-field class="form-item">
-    <mat-label>Passwort</mat-label>
+    <mat-label translate>login.password</mat-label>
     <input
       type="password"
       formControlName="password"
-      placeholder="Passwort"
+      placeholder="{{ 'login.password' | translate }}"
       required
       matInput
     />
@@ -27,11 +27,8 @@
           type="submit"
           class="form-item"
           color="primary">
-    Login
+    <span translate>login.submit</span>
   </button>
 
-  <p class="error" *ngIf="isFailed()">
-    Tut uns leid, der Login ist fehlgeschlagen. Entweder haben Sie sich bei Ihrer E-Mail-Adresse und/oder beim Passwort
-    vertippt oder das System hat gerade ein paar Problemchen.
-  </p>
+  <p class="error" *ngIf="isFailed()" translate>login.error</p>
 </form>
