@@ -27,7 +27,7 @@ class JpaShopBreaksRepositoryImpl implements ShopBreaksRepository {
             int dayOfWeek = entry.getKey().getValue();
 
             for (Breaks.Break aBreak : entry.getValue()) {
-                entities.add(new ShopBreakEntity(uuidFactory.create(), shopId.getId(), dayOfWeek, aBreak.getStart().toLocalTime(), aBreak.getEnd().toLocalTime()));
+                entities.add(new ShopBreakEntity(uuidFactory.create(), shopId.getId(), dayOfWeek, aBreak.getStart(), aBreak.getEnd()));
             }
         }
 

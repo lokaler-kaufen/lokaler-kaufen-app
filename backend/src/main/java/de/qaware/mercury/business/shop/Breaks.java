@@ -3,7 +3,7 @@ package de.qaware.mercury.business.shop;
 import lombok.Value;
 
 import java.time.DayOfWeek;
-import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -20,10 +20,8 @@ public class Breaks {
 
     @Value
     public static class Break {
-        // TODO: Refactor this to LocalTime
-        LocalDateTime start;
-        // TODO: Refactor this to LocalTime
-        LocalDateTime end;
+        LocalTime start;
+        LocalTime end;
     }
 
     public Map<DayOfWeek, Set<Break>> groupedByDayOfWeek() {

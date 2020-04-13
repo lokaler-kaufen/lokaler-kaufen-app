@@ -92,7 +92,7 @@ class SlotServiceImpl implements SlotService {
             }
 
             // Put the slot start and end as break to the corresponding weekday
-            breaks.computeIfAbsent(start.getDayOfWeek(), ignored -> new HashSet<>()).add(new Breaks.Break(start, end));
+            breaks.computeIfAbsent(start.getDayOfWeek(), ignored -> new HashSet<>()).add(new Breaks.Break(start.toLocalTime(), end.toLocalTime()));
         }
 
         return new Breaks(
