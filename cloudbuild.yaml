@@ -3,13 +3,13 @@ steps:
   - name: gcr.io/theta-mile-271809/lokaler.kaufen.build-container
     id: "build-backend"
     entrypoint: gradle
-    args: ["--no-daemon", "--gradle-user-home", "/gradle-cache", "-i", "-u", "gradle", "build"]
+    args: ["--no-daemon", "--gradle-user-home", "/gradle-cache", "-i", "build"]
     dir: backend
     waitFor: ["-"]
   # Analyze backend code quality
   - name: gcr.io/theta-mile-271809/lokaler.kaufen.build-container
     entrypoint: gradle
-    args: ["--no-daemon", "--gradle-user-home", "/gradle-cache", "-i", "-u", "gradle", "clean", "test", "sonarqube"]
+    args: ["--no-daemon", "--gradle-user-home", "/gradle-cache", "-i", "clean", "test", "sonarqube"]
     dir: backend
     secretEnv: ["SONAR_TOKEN"]
     waitFor: ["build-backend"]
