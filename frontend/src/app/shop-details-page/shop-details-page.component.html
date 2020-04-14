@@ -50,6 +50,15 @@
               Twitter</a>
           </div>
         </div>
+        <mat-divider></mat-divider>
+        <div class="booking-title">
+          <h3>Terminbuchung</h3>
+          <p>Wählen Sie jetzt Ihren Wunschzeitpunkt aus und {{ shop.name }} ruft Sie für Ihr persönliches
+            Beratungsgespräch
+            an<span *ngIf="!hasOnlyPhone"> - per Videochat direkt aus dem Laden</span>. <span
+              *ngIf="hasOnlyPhone">{{ shop.name }}
+              bietet derzeit noch keine Videoberatung an, Sie können sich aber per Telefon beraten lassen.</span></p>
+        </div>
         <mat-tab-group>
           <mat-tab *ngFor="let slots of slotsPerDay">
             <ng-template mat-tab-label>
@@ -60,7 +69,6 @@
               <h3 *ngIf="!slots.hasSlots" class="text-no-values margin-top">
                 Dieser Laden bietet am {{slots.dayName}} leider keine Termine an.
               </h3>
-
               <div *ngIf="slots.hasSlots">
                 <mat-table [dataSource]="slots.slots" class="margin-top" id="calendar">
                   <ng-container matColumnDef="from">
@@ -155,6 +163,15 @@
             <img src="../assets/twitter.png" class="social-links-logo">
             Twitter</a>
         </div>
+      </div>
+      <mat-divider></mat-divider>
+      <div class="booking-title">
+        <h3>Terminbuchung</h3>
+        <p>Wählen Sie jetzt Ihren Wunschzeitpunkt aus und {{ shop.name }} ruft Sie für Ihr persönliches
+          Beratungsgespräch
+          an<span *ngIf="!hasOnlyPhone"> - per Videochat direkt aus dem Laden</span>. <span
+            *ngIf="hasOnlyPhone">{{ shop.name }}
+            bietet derzeit noch keine Videoberatung an, Sie können sich aber per Telefon beraten lassen.</span></p>
       </div>
       <mat-accordion>
         <mat-expansion-panel *ngFor="let slots of slotsPerDay" [expanded]="slots == activatedSlot"
