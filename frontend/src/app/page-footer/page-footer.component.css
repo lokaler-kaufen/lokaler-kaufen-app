@@ -81,4 +81,10 @@
     padding-top: 25px;
     flex-wrap: wrap
   }
+
+  .footer-area {
+    margin-left: -33px;
+    transform: translate(17px, 24px);
+  }
+
 }
