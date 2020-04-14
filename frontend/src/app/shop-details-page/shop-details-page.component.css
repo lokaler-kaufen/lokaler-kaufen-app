@@ -9,6 +9,7 @@
 
 .social-links {
   padding-right: 15px;
+  padding-top: 10px;
   display: flex;
   align-items: end;
 }
@@ -19,6 +20,14 @@
   width: 25px;
   /* set png color */
   filter: invert(20%) sepia(34%) saturate(4623%) hue-rotate(246deg) brightness(90%) contrast(99%);
+}
+
+.social-links-block {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  padding-top: 10px;
 }
 
 .book-button {
