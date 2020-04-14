@@ -1,6 +1,16 @@
 .landing-page {
-  /* found this value at exactly 720px screen width (i.e. smallest "non-small" screen width) */
-  width: 609px;
+  width: 720px;
+}
+
+.form-section {
+  display: flex;
+  flex-direction: column;
+  max-width: 500px;
+  margin: auto;
+}
+
+.zip-code-input {
+  text-align: center;
 }
 
 @media screen and (max-width: 719px) {
@@ -9,17 +19,57 @@
   }
 }
 
-section {
-  display: flex;
-  flex-direction: column;
-}
-
 form mat-form-field, button, a[mat-raised-button] {
   width: 100%;
 }
 
-h2, h3 {
+h2, h3, p {
   text-align: center;
+}
+
+.explanation-area {
+  background-color: #673ab7;
+  position: relative;
+  padding-top: 120px;
+}
+
+.explanation-area::before {
+  content: " ";
+  position: absolute;
+  top: -1px;
+  left: 0;
+  right: 0;
+  height: 100px;
+  background-color: white;
+
+  /* The points are: left-top, left-bottom, right-top.  */
+  clip-path: polygon(0 0, 0 100%, 100% 0);
+}
+
+.explanation-area h2, h3, p {
+  color: #fafafa;
+}
+
+.explanation-area h3 {
+  font-weight: bold;
+}
+
+.explanation-card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.explanation-card {
+  box-sizing: border-box;
+  width: 33%;
+  text-align: center;
+}
+
+@media screen and (max-width: 719px) {
+  .explanation-card {
+    width: 85%;
+  }
 }
 
 /* Chrome, Safari, Edge, Opera */

@@ -44,12 +44,14 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {ContactTypesComponent} from './contact-types/contact-types.component';
 import {MatDividerModule} from '@angular/material/divider';
 import {NormalLayoutComponent} from './layouts/normal-layout/normal-layout.component';
+import {LandingLayoutComponent} from './layouts/landing-layout/landing-layout.component';
 import {AdminLayoutComponent} from './layouts/admin-layout/admin-layout.component';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatGridListModule} from '@angular/material/grid-list';
 
 @NgModule({
   declarations: [
@@ -77,6 +79,7 @@ import {MatToolbarModule} from '@angular/material/toolbar';
     ShopDetailsConfigComponent,
     ContactTypesComponent,
     NormalLayoutComponent,
+    LandingLayoutComponent,
     AdminLayoutComponent
   ],
   imports: [
@@ -96,7 +99,7 @@ import {MatToolbarModule} from '@angular/material/toolbar';
     MatIconModule,
     MatInputModule,
     MatPasswordStrengthModule,
-    MatProgressBarModule, 
+    MatProgressBarModule,
     MatProgressSpinnerModule,
     MatSelectModule,
     MatSortModule,
@@ -105,7 +108,8 @@ import {MatToolbarModule} from '@angular/material/toolbar';
     MatTabsModule,
     MatToolbarModule,
     ReactiveFormsModule,
-    SimpleNotificationsModule.forRoot()
+    SimpleNotificationsModule.forRoot(),
+    MatGridListModule
   ],
   providers: [
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}},

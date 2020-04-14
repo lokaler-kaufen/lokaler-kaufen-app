@@ -15,11 +15,16 @@ import {CancelReservationComponent} from './cancel-reservation/cancel-reservatio
 import {AdminDetailsPageComponent} from './admin-details-page/admin-details-page.component';
 import {NormalLayoutComponent} from './layouts/normal-layout/normal-layout.component';
 import {AdminLayoutComponent} from './layouts/admin-layout/admin-layout.component';
+import {LandingLayoutComponent} from './layouts/landing-layout/landing-layout.component';
 
 const routes: Routes = [
   {
-    path: '', component: NormalLayoutComponent, children: [
+    path: '', component: LandingLayoutComponent, children: [
       {path: '', component: LandingPageComponent},
+    ]
+  },
+  {
+    path: '', component: NormalLayoutComponent, children: [
       {path: 'shops', component: ShopSearchPageComponent},
       {path: 'shops/:id', component: ShopDetailsPageComponent},
       {path: 'create-shop', component: ShopCreationPageComponent},
