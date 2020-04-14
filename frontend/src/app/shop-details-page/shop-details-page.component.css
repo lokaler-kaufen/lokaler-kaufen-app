@@ -7,8 +7,17 @@
   text-decoration: none;
 }
 
+.address-title {
+  font-weight: bold;
+}
+
+.booking-title {
+  padding-top: 25px;
+}
+
 .social-links {
   padding-right: 15px;
+  padding-top: 10px;
   display: flex;
   align-items: flex-end;
 }
@@ -21,8 +30,46 @@
   filter: invert(20%) sepia(34%) saturate(4623%) hue-rotate(246deg) brightness(90%) contrast(99%);
 }
 
+.social-links-block {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  padding-top: 10px;
+  padding-bottom: 25px;
+}
+
+.social-links-block-small {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 120px);
+  justify-content: center;
+  padding-top: 10px;
+  padding-bottom: 25px;
+}
+
+
 .book-button {
   width: 100%;
+}
+
+.shop-details-card-image-container {
+  width: 160px;
+  height: 160px;
+  transform: translate(-20%, 50%);
+  position: absolute;
+  left: 80%;
+  margin-top: -160px;
+  border-radius: 50%;
+  border: 0;
+  background-color: #ffffff;
+  z-index: 2;
+}
+
+.shop-details-card-image {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .small-booking-row {
@@ -59,6 +106,14 @@
   max-height: 180px;
   display: block;
 }
+
+.shop-logo-small {
+  max-width: 120px;
+  max-height: 180px;
+  display: block;
+  margin: auto;
+}
+
 
 .shop-logo-svg {
   height: 120px;

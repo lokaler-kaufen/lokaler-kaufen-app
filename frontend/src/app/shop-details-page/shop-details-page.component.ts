@@ -39,6 +39,11 @@ export class ShopDetailsPageComponent implements OnInit {
     return this.shop?.details?.trim().length > 0;
   }
 
+  get hasOnlyPhone(): boolean {
+    return (this.shop?.contactTypes?.length === 1 &&
+      this.shop?.contactTypes?.values()?.next()?.value === 'PHONE');
+  }
+
   shopId: string;
   shop: ShopDetailDto;
   activatedSlot: SlotsPerDay;
