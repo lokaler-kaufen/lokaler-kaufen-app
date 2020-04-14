@@ -52,35 +52,37 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatGridListModule} from '@angular/material/grid-list';
+import {ShopLogoComponent} from './shop-logo/shop-logo.component';
 
 @NgModule({
   declarations: [
+    AdminDetailsPageComponent,
+    AdminLayoutComponent,
     AdminLoginPageComponent,
     AdminOverviewPageComponent,
-    AdminDetailsPageComponent,
     AppComponent,
     AppFooterComponent,
     AppHeaderComponent,
     BookingPopupComponent,
     CancelReservationComponent,
+    ContactTypesComponent,
     ImprintPageComponent,
+    LandingLayoutComponent,
     LandingPageComponent,
     LoginFormComponent,
     LoginPageComponent,
+    NormalLayoutComponent,
     PasswordResetPageComponent,
     PasswordResetPopupComponent,
     PrivacyPageComponent,
     RegisterBusinessPopupComponent,
     ShopCreationPageComponent,
     ShopCreationSuccessPopupComponent,
-    ShopDetailsPageComponent,
-    ShopManagementPageComponent,
-    ShopSearchPageComponent,
     ShopDetailsConfigComponent,
-    ContactTypesComponent,
-    NormalLayoutComponent,
-    LandingLayoutComponent,
-    AdminLayoutComponent
+    ShopDetailsPageComponent,
+    ShopLogoComponent,
+    ShopManagementPageComponent,
+    ShopSearchPageComponent
   ],
   imports: [
     AppRoutingModule,
@@ -96,6 +98,7 @@ import {MatGridListModule} from '@angular/material/grid-list';
     MatDividerModule,
     MatExpansionModule,
     MatFormFieldModule,
+    MatGridListModule,
     MatIconModule,
     MatInputModule,
     MatPasswordStrengthModule,
@@ -108,8 +111,7 @@ import {MatGridListModule} from '@angular/material/grid-list';
     MatTabsModule,
     MatToolbarModule,
     ReactiveFormsModule,
-    SimpleNotificationsModule.forRoot(),
-    MatGridListModule
+    SimpleNotificationsModule.forRoot()
   ],
   providers: [
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}},
