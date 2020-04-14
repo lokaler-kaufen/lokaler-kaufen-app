@@ -30,10 +30,10 @@ class SlotServiceTest extends Specification {
     @Unroll
     def "Check Empty Slot Generation: #usecase"() {
         when:
-        List<Slot> slots = slotService.generateSlots(start.toLocalDate(), end.toLocalDate(), config, [])
+        Slots slots = slotService.generateSlots(start.toLocalDate(), end.toLocalDate(), config, [])
 
         then:
-        slots.isEmpty()
+        countSlots(slots) == 0
 
         where:
         usecase         | start | end   | config
@@ -44,12 +44,12 @@ class SlotServiceTest extends Specification {
     @Unroll
     def "Check Slot Generation: #usecase"() {
         when:
-        List<Slot> slots = slotService.generateSlots(start, end, config, reservations)
+        Slots slots = slotService.generateSlots(start, end, config, reservations)
 
         then:
         // Set the clock to 00:00 of the starting day to always get the same number of slots
         _ * clock.now() >> LocalDateTime.of(start, LocalTime.of(0, 0, 0))
-        slots.size() == count
+        countSlots(slots) == count
 
         where:
         usecase                   | start       | end         | config                            | reservations || count
@@ -85,7 +85,7 @@ class SlotServiceTest extends Specification {
         IllegalArgumentException _ = thrown()
     }
 
-    def "test breaks"() {
+    def "test shop breaks"() {
         given: "a fixed date"
         clock.now() >> LocalDateTime.parse("2020-04-13T13:09:39.940482")
         SlotConfig slotConfig = mondayConfig(10, 12);
@@ -95,17 +95,18 @@ class SlotServiceTest extends Specification {
 
         then: "we get two slots, starting next monday"
         // Next monday (see clock above)
-        preview.begin == LocalDate.of(2020, 4, 20)
-        preview.days == 7
+        preview.days[0].date == LocalDate.of(2020, 4, 20)
+        preview.days.size() == 7
+
         // 10:00 - 10:30
-        preview.slots[0].start == LocalDateTime.of(2020, 4, 20, 10, 0)
-        preview.slots[0].end == LocalDateTime.of(2020, 4, 20, 10, 30)
+        preview.days[0].slots[0].start == LocalDateTime.of(2020, 4, 20, 10, 0)
+        preview.days[0].slots[0].end == LocalDateTime.of(2020, 4, 20, 10, 30)
         // 11:00 - 11:30
-        preview.slots[1].start == LocalDateTime.of(2020, 4, 20, 11, 0)
-        preview.slots[1].end == LocalDateTime.of(2020, 4, 20, 11, 30)
+        preview.days[0].slots[1].start == LocalDateTime.of(2020, 4, 20, 11, 0)
+        preview.days[0].slots[1].end == LocalDateTime.of(2020, 4, 20, 11, 30)
 
         when: "we resolve these slots to breaks"
-        Breaks breaks = slotService.resolveBreaks(Set.of(preview.slots[0].id, preview.slots[1].id), slotConfig)
+        Breaks breaks = slotService.resolveBreaks(Set.of(preview.days[0].slots[0].id, preview.days[0].slots[1].id), slotConfig)
 
         then: "we get breaks containing exactly the both slots"
         breaks.getMonday() == Set.of(
@@ -134,14 +135,22 @@ class SlotServiceTest extends Specification {
             .setMonday(new DayConfig(LocalTime.of(10, 0), LocalTime.of(12, 0)))
             .setTimeBetweenSlots(30).setTimePerSlot(30).setDelayForFirstSlot(60)
             .build()
-        List<Slot> slots = slotService.generateSlots(LocalDate.of(2020, 4, 13), LocalDate.of(2020, 4, 13), slotConfig, [])
+        Slots slots = slotService.generateSlots(LocalDate.of(2020, 4, 13), LocalDate.of(2020, 4, 13), slotConfig, [])
 
         then: "the first slot delay is honored"
         // We only have one slot, as it's 09:30, and we wanted a delay of 60 minutes. Therefore the first possible slot
         // would be at 10:30 - but according to the given slot config, this is the slot at 11:00
-        slots.size() == 1
-        slots[0].start == LocalDateTime.of(2020, 4, 13, 11, 0)
-        slots[0].end == LocalDateTime.of(2020, 4, 13, 11, 30)
+        countSlots(slots) == 1
+        slots.days[0].slots[0].start == LocalDateTime.of(2020, 4, 13, 11, 0)
+        slots.days[0].slots[0].end == LocalDateTime.of(2020, 4, 13, 11, 30)
+    }
+
+    static int countSlots(Slots slots) {
+        int count = 0;
+        for (Slots.SlotDay day : slots.getDays()) {
+            count += day.getSlots().size()
+        }
+        return count
     }
 
     static LocalDate monday() {

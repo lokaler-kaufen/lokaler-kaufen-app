@@ -9,6 +9,7 @@ import de.qaware.mercury.business.shop.Breaks;
 import de.qaware.mercury.business.shop.DayConfig;
 import de.qaware.mercury.business.shop.SlotConfig;
 import de.qaware.mercury.business.time.Clock;
+import de.qaware.mercury.util.Lists;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +24,7 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -34,25 +36,29 @@ class SlotServiceImpl implements SlotService {
     private final Clock clock;
 
     @Override
-    public List<Slot> generateSlots(LocalDate start, LocalDate end, SlotConfig slotConfig, List<Interval> blockedSlots) {
+    public Slots generateSlots(LocalDate start, LocalDate end, SlotConfig slotConfig, List<Interval> blockedSlots) {
         if (end.isBefore(start)) {
             throw new IllegalArgumentException("Start date must be before or same end date");
         }
         // Safeguard against endless loops
         if (slotConfig.getTimePerSlot() < 1) {
-            return List.of();
+            return new Slots(start, end, List.of());
         }
 
-        LocalDate current = start;
+        LocalDate currentDate = start;
 
-        List<Slot> result = new ArrayList<>();
+        // Preserve insertion order
+        Map<LocalDate, List<Slot>> slotsByDate = new LinkedHashMap<>();
 
-        while (!current.isAfter(end)) {
-            result.addAll(generateSlotsForDay(current, slotConfig, blockedSlots));
-            current = current.plusDays(1);
+        while (!currentDate.isAfter(end)) {
+            slotsByDate.put(currentDate, generateSlotsForDay(currentDate, slotConfig, blockedSlots));
+
+            currentDate = currentDate.plusDays(1);
         }
 
-        return result;
+        return new Slots(
+            start, end, Lists.map(slotsByDate.entrySet(), entry -> new Slots.SlotDay(entry.getKey(), entry.getValue()))
+        );
     }
 
     @Override
@@ -76,7 +82,7 @@ class SlotServiceImpl implements SlotService {
         LocalDate sunday = getNextSunday(monday);
 
         // Monday to sunday are always 7 days
-        return new Slots(7, monday, generateSlots(monday, sunday, slotConfig, List.of()));
+        return generateSlots(monday, sunday, slotConfig, List.of());
     }
 
     @Override

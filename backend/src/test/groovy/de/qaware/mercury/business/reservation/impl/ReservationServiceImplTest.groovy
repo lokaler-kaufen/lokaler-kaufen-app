@@ -52,8 +52,8 @@ class ReservationServiceImplTest extends Specification {
         then:
         clock.today() >> today
         reservationRepository.findReservationsForShop(id, today.atTime(0, 0), today.atTime(23, 59)) >> []
-        slotService.generateSlots(today, today, shop.getSlotConfig(), []) >> []
-        slots.slots.isEmpty()
+        slotService.generateSlots(today, today, shop.getSlotConfig(), []) >> new Slots(today, today, [])
+        slots.days.isEmpty()
         shopService.findBreaks(shop) >> Breaks.none()
     }
 

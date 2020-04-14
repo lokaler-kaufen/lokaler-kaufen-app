@@ -20,7 +20,7 @@ public interface SlotService {
      * @param blockedSlots slots blocked by something, e.g. existing reservation or breaks
      * @return A list of available time slots between the start and end date.
      */
-    List<Slot> generateSlots(LocalDate start, LocalDate end, SlotConfig slotConfig, List<Interval> blockedSlots);
+    Slots generateSlots(LocalDate start, LocalDate end, SlotConfig slotConfig, List<Interval> blockedSlots);
 
     /**
      * Checks if the given slot is a valid slot under the given slot configuration.
