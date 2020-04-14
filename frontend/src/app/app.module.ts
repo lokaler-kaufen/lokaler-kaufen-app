@@ -52,6 +52,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatGridListModule} from '@angular/material/grid-list';
+import {PageFooterComponent} from './page-footer/page-footer.component';
 import {ShopLogoComponent} from './shop-logo/shop-logo.component';
 
 @NgModule({
@@ -72,6 +73,7 @@ import {ShopLogoComponent} from './shop-logo/shop-logo.component';
     LoginFormComponent,
     LoginPageComponent,
     NormalLayoutComponent,
+    PageFooterComponent,
     PasswordResetPageComponent,
     PasswordResetPopupComponent,
     PrivacyPageComponent,
@@ -82,7 +84,7 @@ import {ShopLogoComponent} from './shop-logo/shop-logo.component';
     ShopDetailsPageComponent,
     ShopLogoComponent,
     ShopManagementPageComponent,
-    ShopSearchPageComponent
+    ShopSearchPageComponent,
   ],
   imports: [
     AppRoutingModule,

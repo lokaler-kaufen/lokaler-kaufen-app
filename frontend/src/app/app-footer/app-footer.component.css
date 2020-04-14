@@ -7,7 +7,8 @@
 
 
 .version-info {
-  color: #fafafa;
+  text-align: center;
+  color: #aaaaaa;
 }
 /* switch footer links to column mode on small devices */
 @media screen and (max-width: 719px) {
