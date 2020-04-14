@@ -42,8 +42,12 @@ h2, h3, p {
   height: 100px;
   background-color: #673ab7;
 
-  /* The points are: right-top, right-bottom, left-bottom.  */
-  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+  /* The points are: right-top, right-bottom, a teensy bit under the right-bottom,
+   a teensy bit under left-bottom, left bottom.
+
+   Having the additional two points under the triangle prevents an ugly line in
+   Chrome between the triangle and the explanation area block. I know. Don't judge me. */
+  clip-path: polygon(100% 0, 100% 100%, 100% 101%, 0 101%, 0 100%);
 }
 
 .explanation-area h2, h3, p {
