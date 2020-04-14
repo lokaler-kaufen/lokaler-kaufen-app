@@ -30,20 +30,20 @@ h2, h3, p {
 .explanation-area {
   background-color: #673ab7;
   position: relative;
-  padding-top: 120px;
+  margin-top: 120px;
 }
 
 .explanation-area::before {
   content: " ";
   position: absolute;
-  top: -1px;
+  top: -100px;
   left: 0;
   right: 0;
   height: 100px;
-  background-color: white;
+  background-color: #673ab7;
 
-  /* The points are: left-top, left-bottom, right-top.  */
-  clip-path: polygon(0 0, 0 100%, 100% 0);
+  /* The points are: right-top, right-bottom, left-bottom.  */
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
 }
 
 .explanation-area h2, h3, p {
