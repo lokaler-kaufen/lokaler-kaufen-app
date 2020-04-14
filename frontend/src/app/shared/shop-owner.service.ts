@@ -54,6 +54,10 @@ export class ShopOwnerService {
       });
   }
 
+  forceLogoutState() {
+    this.loggedIn.next(false);
+  }
+
   logout() {
     return this.http.delete('/api/shop/login').toPromise()
 

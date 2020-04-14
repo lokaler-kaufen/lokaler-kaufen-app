@@ -21,7 +21,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import {MatTableModule} from '@angular/material/table';
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {MatSortModule} from '@angular/material/sort';
 import {BookingPopupComponent} from './booking-popup/booking-popup.component';
 import {MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule} from '@angular/material/dialog';
@@ -53,6 +53,7 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatGridListModule} from '@angular/material/grid-list';
 import {ShopLogoComponent} from './shop-logo/shop-logo.component';
+import {LogoutInterceptor} from './data/logout.interceptor';
 
 @NgModule({
   declarations: [
@@ -114,6 +115,7 @@ import {ShopLogoComponent} from './shop-logo/shop-logo.component';
     SimpleNotificationsModule.forRoot()
   ],
   providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: LogoutInterceptor, multi: true},
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}},
     {provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher}
   ],

@@ -4,8 +4,9 @@ import {ShopAdminDto, ShopsAdminDto, TokenInfoDto} from '../data/api';
 import {UpdateShopData} from '../shop-details-config/shop-details-config.component';
 import {Observable, Subject} from 'rxjs';
 
-const API_ADMIN_TOKEN_INFO = '/api/admin/login/token-info';
-const API_ADMIN_LOGIN = '/api/admin/login';
+const API_ADMIN = '/api/admin';
+const API_ADMIN_LOGIN = `${API_ADMIN}/login`;
+const API_ADMIN_TOKEN_INFO = `${API_ADMIN}/login/token-info`;
 
 @Injectable({providedIn: 'root'})
 export class AdminService {
@@ -33,6 +34,10 @@ export class AdminService {
     this.loggedIn.next(true);
   }
 
+  forceLogoutState() {
+    this.loggedIn.next(false);
+  }
+
   logout(): Promise<void> {
     return this.client.delete(API_ADMIN_LOGIN).toPromise()
       .then(() => console.log('Admin logout successful.'))
@@ -41,31 +46,31 @@ export class AdminService {
   }
 
   listAllShops(): Promise<ShopsAdminDto> {
-    return this.client.get('/api/admin/shop').toPromise();
+    return this.client.get(`${API_ADMIN}/shop`).toPromise();
   }
 
   getShopWithId(id: string): Promise<ShopAdminDto> {
     const shopId = encodeURIComponent(id);
 
-    return this.client.get<ShopAdminDto>(`/api/admin/shop/${shopId}`).toPromise();
+    return this.client.get<ShopAdminDto>(`${API_ADMIN}/shop/${shopId}`).toPromise();
   }
 
   updateShop(updatedShop: UpdateShopData) {
     const shopId = encodeURIComponent(updatedShop.id);
 
-    return this.client.put(`/api/admin/shop/${shopId}`, updatedShop.updateShopDto).toPromise();
+    return this.client.put(`${API_ADMIN}/shop/${shopId}`, updatedShop.updateShopDto).toPromise();
   }
 
   deleteShop(id: string) {
     const shopId = encodeURIComponent(id);
 
-    return this.client.delete(`/api/admin/shop/${shopId}`).toPromise();
+    return this.client.delete(`${API_ADMIN}/shop/${shopId}`).toPromise();
   }
 
   changeShopApproval(id: string, enabled: boolean) {
     const shopId = encodeURIComponent(id);
 
-    return this.client.put(`/api/admin/shop/${shopId}/approve?approved=${enabled}`, {}).toPromise();
+    return this.client.put(`${API_ADMIN}/shop/${shopId}/approve?approved=${enabled}`, {}).toPromise();
   }
 
 }
