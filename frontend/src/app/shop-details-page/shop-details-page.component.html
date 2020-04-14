@@ -8,24 +8,128 @@
     </button>
   </div>
 
-  <div *ngIf="shop.imageUrl" class="shop-details-card-image-container mat-elevation-z5 only-large">
-    <img src="{{shop.imageUrl}}" alt="Shop Logo" class="shop-logo shop-details-card-image">
+  <!--  ONLY LARGE LAYOUT-->
+  <div class="only-large">
+    <div *ngIf="shop.imageUrl" class="shop-details-card-image-container mat-elevation-z5">
+      <img src="{{shop.imageUrl}}" alt="Shop Logo" class="shop-logo shop-details-card-image">
+    </div>
+    <mat-card class="mat-elevation-z5">
+      <mat-card-header>
+        <div class="shop-header">
+          <div class="shop-details-header">
+            <mat-card-title class="margin-vertical" id="title">{{ shop.name }}</mat-card-title>
+          </div>
+        </div>
+      </mat-card-header>
+      <mat-card-content>
+        <div *ngIf="!hasDescription">Dieser Laden hat noch keine Beschreibung hinterlegt.</div>
+        <div *ngIf="hasDescription" style="padding-top: 25px">{{ shop.details }}</div>
+        <div class="social-links-block">
+          <div *ngIf="shop.website" class="social-links">
+            <a href="{{returnValidLink(shop.website)}}" target="_blank" class="social-links"
+               style="padding-left: 5px;">
+              <img src="../assets/web.png" class="social-links-logo">
+              Website</a>
+          </div>
+          <div *ngIf="shop.socialLinks.facebook" class="social-links">
+            <a href="{{returnValidFacebookLink(shop.socialLinks.facebook)}}" target="_blank" class="social-links"
+               style="padding-left: 5px;">
+              <img src="../assets/facebook.png" class="social-links-logo">
+              Facebook</a>
+          </div>
+          <div *ngIf="shop.socialLinks.instagram" class="social-links">
+            <a href="{{returnValidInstagramLink(shop.socialLinks.instagram)}}" target="_blank" class="social-links"
+               style="padding-left: 5px;">
+              <img src="../assets/instagram.png" class="social-links-logo">
+              Instagram</a>
+          </div>
+          <div *ngIf="shop.socialLinks.twitter" class="social-links">
+            <a href="{{returnValidTwitterLink(shop.socialLinks.twitter)}}" target="_blank" class="social-links"
+               style="padding-left: 5px;">
+              <img src="../assets/twitter.png" class="social-links-logo">
+              Twitter</a>
+          </div>
+        </div>
+        <mat-tab-group>
+          <mat-tab *ngFor="let slots of slotsPerDay">
+            <ng-template mat-tab-label>
+              <div (click)="activatedSlot = slots"
+                   [ngClass]="!slots.hasSlots? 'not-open' : ''">{{slots.dayName}}</div>
+            </ng-template>
+            <ng-template matTabContent>
+              <h3 *ngIf="!slots.hasSlots" class="text-no-values margin-top">
+                Dieser Laden bietet am {{slots.dayName}} leider keine Termine an.
+              </h3>
+
+              <div *ngIf="slots.hasSlots">
+                <mat-table [dataSource]="slots.slots" class="margin-top" id="calendar">
+                  <ng-container matColumnDef="from">
+                    <mat-header-cell *matHeaderCellDef> Start</mat-header-cell>
+                    <mat-cell *matCellDef="let element">{{element.start}}</mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="to">
+                    <mat-header-cell *matHeaderCellDef> Ende</mat-header-cell>
+                    <mat-cell *matCellDef="let element">{{element.end}}</mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="available">
+                    <mat-header-cell *matHeaderCellDef> Verfügbar</mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                      <button class="book-button"
+                              mat-raised-button
+                              *ngIf="element.available"
+                              (click)="showBookingPopup(element.id)"
+                              color="primary">
+                        Jetzt buchen
+                      </button>
+
+                      <button class="book-button" mat-stroked-button *ngIf="!element.available" disabled>
+                        Belegt
+                      </button>
+                    </mat-cell>
+                  </ng-container>
+
+                  <mat-header-row *matHeaderRowDef="['from', 'to', 'available']"></mat-header-row>
+                  <mat-row *matRowDef="let row; columns: ['from', 'to', 'available']"></mat-row>
+                </mat-table>
+              </div>
+
+
+            </ng-template>
+          </mat-tab>
+        </mat-tab-group>
+        <div class="shop-details margin-big-vertical">
+          <div>
+            <div>{{shop.name}}</div>
+            <div>{{shop.street}} {{shop.addressSupplement}}</div>
+            <div>{{shop.zipCode}} {{shop.city}}</div>
+            <div><a href="mailto:{{shop.email}}">{{shop.email}}</a></div>
+          </div>
+
+          <div>
+            <contact-types [availableContactTypes]="shop.contactTypes"></contact-types>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
   </div>
-  <mat-card class="mat-elevation-z5">
-    <div *ngIf="shop.imageUrl" class="only-small">
+  <!--  END LARGE LAYOUT-->
+
+  <!--  ONLY SMALL LAYOUT-->
+  <div class="only-small">
+    <div *ngIf="shop.imageUrl">
       <img src="{{shop.imageUrl}}" alt="Shop Logo" class="shop-logo-small shop-details-card-image-small">
     </div>
-    <mat-card-header>
-      <div class="shop-header">
-        <div class="shop-details-header">
-          <mat-card-title class="margin-vertical" id="title">{{ shop.name }}</mat-card-title>
-        </div>
+    <div class="shop-header">
+      <div class="shop-details-header">
+        <mat-card-title class="margin-vertical" id="title-small">{{ shop.name }}</mat-card-title>
       </div>
-    </mat-card-header>
+    </div>
     <mat-card-content>
       <div *ngIf="!hasDescription">Dieser Laden hat noch keine Beschreibung hinterlegt.</div>
       <div *ngIf="hasDescription" style="padding-top: 25px">{{ shop.details }}</div>
-      <div class="social-links-block">
+      <div class="social-links-block-small">
         <div *ngIf="shop.website" class="social-links">
           <a href="{{returnValidLink(shop.website)}}" target="_blank" class="social-links"
              style="padding-left: 5px;">
@@ -51,59 +155,6 @@
             Twitter</a>
         </div>
       </div>
-      <div class="only-large">
-        <mat-tab-group>
-          <mat-tab *ngFor="let slots of slotsPerDay">
-            <ng-template mat-tab-label>
-              <div (click)="activatedSlot = slots"
-                   [ngClass]="!slots.hasSlots? 'not-open' : ''">{{slots.dayName}}</div>
-            </ng-template>
-            <ng-template matTabContent>
-              <h3 *ngIf="!slots.hasSlots" class="text-no-values margin-top">
-                Dieser Laden bietet am {{slots.dayName}} leider keine Termine an.
-            </h3>
-
-            <div *ngIf="slots.hasSlots">
-              <mat-table [dataSource]="slots.slots" class="margin-top" id="calendar">
-                <ng-container matColumnDef="from">
-                  <mat-header-cell *matHeaderCellDef> Start</mat-header-cell>
-                  <mat-cell *matCellDef="let element">{{element.start}}</mat-cell>
-                </ng-container>
-
-                <ng-container matColumnDef="to">
-                  <mat-header-cell *matHeaderCellDef> Ende</mat-header-cell>
-                  <mat-cell *matCellDef="let element">{{element.end}}</mat-cell>
-                </ng-container>
-
-                <ng-container matColumnDef="available">
-                  <mat-header-cell *matHeaderCellDef> Verfügbar</mat-header-cell>
-                  <mat-cell *matCellDef="let element">
-                    <button class="book-button"
-                            mat-raised-button
-                            *ngIf="element.available"
-                            (click)="showBookingPopup(element.id)"
-                            color="primary">
-                      Jetzt buchen
-                    </button>
-
-                    <button class="book-button" mat-stroked-button *ngIf="!element.available" disabled>
-                      Belegt
-                    </button>
-                  </mat-cell>
-                </ng-container>
-
-                <mat-header-row *matHeaderRowDef="['from', 'to', 'available']"></mat-header-row>
-                <mat-row *matRowDef="let row; columns: ['from', 'to', 'available']"></mat-row>
-              </mat-table>
-            </div>
-
-
-          </ng-template>
-        </mat-tab>
-      </mat-tab-group>
-    </div>
-    <!-- ONLY SMALL -->
-    <div class="only-small">
       <mat-accordion>
         <mat-expansion-panel *ngFor="let slots of slotsPerDay" [expanded]="slots == activatedSlot"
                              (opened)="activatedSlot = slots">
@@ -137,19 +188,19 @@
           </div>
         </mat-expansion-panel>
       </mat-accordion>
-    </div>
-    <div class="shop-details margin-big-vertical">
+      <div class="shop-details margin-big-vertical">
+        <div>
+          <contact-types [availableContactTypes]="shop.contactTypes"></contact-types>
+        </div>
+      </div>
       <div>
         <div>{{shop.name}}</div>
         <div>{{shop.street}} {{shop.addressSupplement}}</div>
         <div>{{shop.zipCode}} {{shop.city}}</div>
         <div><a href="mailto:{{shop.email}}">{{shop.email}}</a></div>
       </div>
-
-      <div>
-        <contact-types [availableContactTypes]="shop.contactTypes"></contact-types>
-      </div>
-    </div>
     </mat-card-content>
-  </mat-card>
+
+  </div>
+  <!--  END SMALL LAYOUT-->
 </div>

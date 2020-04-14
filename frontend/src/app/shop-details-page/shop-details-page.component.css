@@ -31,6 +31,15 @@
   padding-bottom: 25px;
 }
 
+.social-links-block-small {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 120px);
+  justify-content: center;
+  padding-top: 10px;
+  padding-bottom: 25px;
+}
+
+
 .book-button {
   width: 100%;
 }
