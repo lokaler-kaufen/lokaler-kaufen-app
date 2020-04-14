@@ -10,7 +10,7 @@
 .social-links {
   padding-right: 15px;
   display: flex;
-  align-items: end;
+  align-items: flex-end;
 }
 
 .social-links-logo {
