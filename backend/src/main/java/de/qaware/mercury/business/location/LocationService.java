@@ -5,7 +5,23 @@ import de.qaware.mercury.business.location.impl.LocationNotFoundException;
 import java.util.List;
 
 public interface LocationService {
+    /**
+     * Looks up the location from the given zip code.
+     *
+     * @param zipCode zip code to search for
+     * @return location
+     * @throws LocationNotFoundException if the location isn't found
+     */
     GeoLocation lookup(String zipCode) throws LocationNotFoundException;
+
+    /**
+     * Resolves the federal state from the given zip code.
+     *
+     * @param zipCode zip code to search for
+     * @return federal state
+     * @throws LocationNotFoundException if the location isn't found
+     */
+    FederalState resolveFederalState(String zipCode) throws LocationNotFoundException;
 
     /**
      * Search for all locations containing the given zip code.
@@ -14,4 +30,5 @@ public interface LocationService {
      * @return all found hits
      */
     List<LocationSuggestion> suggest(String zipCode);
+
 }

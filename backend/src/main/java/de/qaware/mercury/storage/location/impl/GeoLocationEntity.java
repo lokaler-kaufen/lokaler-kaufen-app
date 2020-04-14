@@ -40,6 +40,10 @@ class GeoLocationEntity {
     private String placeName;
 
     @Setter
+    @Column(name = "admin_code1", nullable = false)
+    private String stateShort;
+
+    @Setter
     @Column(nullable = false)
     private double latitude;
 

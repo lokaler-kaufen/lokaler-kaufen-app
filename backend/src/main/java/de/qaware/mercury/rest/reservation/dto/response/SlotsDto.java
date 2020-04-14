@@ -6,7 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.function.Predicate;
 
 @Data
 @NoArgsConstructor
@@ -16,11 +18,18 @@ public class SlotsDto {
     private String end;
     private List<SlotDayDto> days;
 
-    public static SlotsDto of(Slots slots) {
+    /**
+     * Converts the given Slots to a SlotsDto.
+     *
+     * @param slots     slots
+     * @param isHoliday predicate which is called with a date to determine if this date is a holiday
+     * @return SlotsDto
+     */
+    public static SlotsDto of(Slots slots, Predicate<LocalDate> isHoliday) {
         return new SlotsDto(
             slots.getStart().toString(),
             slots.getEnd().toString(),
-            Lists.map(slots.getDays(), SlotDayDto::of)
+            Lists.map(slots.getDays(), s -> SlotDayDto.of(s, isHoliday))
         );
     }
 
@@ -33,10 +42,10 @@ public class SlotsDto {
         private boolean holiday;
         private List<SlotDto> slots;
 
-        public static SlotDayDto of(Slots.SlotDay slotDay) {
+        public static SlotDayDto of(Slots.SlotDay slotDay, Predicate<LocalDate> isHoliday) {
             return new SlotDayDto(
-                // TODO: Holiday stuff
-                slotDay.getDate().toString(), slotDay.getDate().getDayOfWeek().name(), false, Lists.map(slotDay.getSlots(), SlotDto::of)
+                slotDay.getDate().toString(), slotDay.getDate().getDayOfWeek().name(), isHoliday.test(slotDay.getDate()),
+                Lists.map(slotDay.getSlots(), SlotDto::of)
             );
         }
     }

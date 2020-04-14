@@ -1,7 +1,7 @@
 package de.qaware.mercury.business.reservation.impl
 
+import de.qaware.mercury.business.location.FederalState
 import de.qaware.mercury.business.reservation.HolidayService
-import de.qaware.mercury.business.reservation.State
 import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Subject
@@ -15,7 +15,7 @@ class HolidayServiceImplTest extends Specification {
 
     def "bavarian holidays"() {
         expect:
-        sut.isHoliday(date, State.BAVARIA) == result
+        sut.isHoliday(date, FederalState.BAVARIA) == result
 
         where:
         date                       | result

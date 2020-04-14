@@ -1,5 +1,6 @@
 package de.qaware.mercury.storage.location;
 
+import de.qaware.mercury.business.location.FederalState;
 import de.qaware.mercury.business.location.GeoLocation;
 import de.qaware.mercury.business.location.LocationSuggestion;
 import org.springframework.lang.Nullable;
@@ -26,4 +27,7 @@ public interface LocationRepository {
      * @return a list of all location suggestions matching the given zipCode
      */
     List<LocationSuggestion> suggest(String zipCode);
+
+    @Nullable
+    FederalState resolveFederalState(String zipCode);
 }

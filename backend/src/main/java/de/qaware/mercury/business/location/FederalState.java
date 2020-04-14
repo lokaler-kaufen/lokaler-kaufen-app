@@ -1,8 +1,8 @@
-package de.qaware.mercury.business.reservation;
+package de.qaware.mercury.business.location;
 
 import lombok.Getter;
 
-public enum State {
+public enum FederalState {
     BREMEN("hb"),
     HAMBURG("hh"),
     BERLIN("be"),
@@ -23,7 +23,17 @@ public enum State {
     @Getter
     private final String code;
 
-    State(String code) {
+    FederalState(String code) {
         this.code = code;
+    }
+
+    public static FederalState parse(String input) {
+        for (FederalState federalState : values()) {
+            if (federalState.getCode().equalsIgnoreCase(input)) {
+                return federalState;
+            }
+        }
+
+        throw new InvalidFederalStateException(input);
     }
 }

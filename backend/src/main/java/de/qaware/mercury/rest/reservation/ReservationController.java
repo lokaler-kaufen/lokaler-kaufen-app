@@ -1,7 +1,11 @@
 package de.qaware.mercury.rest.reservation;
 
+import de.qaware.mercury.business.location.FederalState;
+import de.qaware.mercury.business.location.LocationService;
+import de.qaware.mercury.business.location.impl.LocationNotFoundException;
 import de.qaware.mercury.business.login.LoginException;
 import de.qaware.mercury.business.login.ReservationCancellationToken;
+import de.qaware.mercury.business.reservation.HolidayService;
 import de.qaware.mercury.business.reservation.ReservationFailedException;
 import de.qaware.mercury.business.reservation.ReservationNotFoundException;
 import de.qaware.mercury.business.reservation.ReservationService;
@@ -44,6 +48,8 @@ public class ReservationController {
     private final ReservationService reservationService;
     private final ShopService shopService;
     private final SlotService slotService;
+    private final HolidayService holidayService;
+    private final LocationService locationService;
 
     @PostMapping(path = "/{shopId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void createReservation(@PathVariable("shopId") @Pattern(regexp = Validation.SHOP_ID) String shopId, @Valid @RequestBody CreateReservationDto request) throws ShopNotFoundException, ReservationFailedException {
@@ -63,16 +69,18 @@ public class ReservationController {
     public SlotsDto getSlotsForShop(
         @PathVariable("shopId") @Pattern(regexp = Validation.SHOP_ID) String shopId,
         @RequestParam(value = "days", defaultValue = "7") @Min(1) int days
-    ) throws ShopNotFoundException {
+    ) throws ShopNotFoundException, LocationNotFoundException {
         Shop shop = shopService.findByIdOrThrow(Shop.Id.parse(shopId));
         Slots slots = reservationService.listSlots(shop, days);
+        FederalState federalState = locationService.resolveFederalState(shop.getZipCode());
 
-        return SlotsDto.of(slots);
+        return SlotsDto.of(slots, date -> holidayService.isHoliday(date, federalState));
     }
 
     @PostMapping(path = "/preview", consumes = MediaType.APPLICATION_JSON_VALUE)
     public SlotsDto previewSlots(@Valid @RequestBody SlotConfigDto request) {
         Slots slots = slotService.previewSlots(request.toSlots());
-        return SlotsDto.of(slots);
+        // The date -> false stuff below marks every day as a non-holiday
+        return SlotsDto.of(slots, date -> false);
     }
 }
