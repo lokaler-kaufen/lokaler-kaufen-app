@@ -1,9 +1,13 @@
-<div class="app-footer margin-big-vertical margin-horizontal">
-  <a class="margin-horizontal margin-bottom" routerLink="imprint">Impressum</a>
-  <a class="margin-horizontal margin-bottom" routerLink="privacy">Datenschutz</a>
-  <a class="margin-horizontal margin-bottom" target="_blank" href="https://lokaler.kaufen/support"
-     rel="noopener noreferrer">Support</a>
-</div>
+<!--<div class="app-footer margin-big-vertical margin-horizontal">-->
+<!--  <a class="margin-horizontal margin-bottom" routerLink="imprint">Impressum</a>-->
+<!--  <a class="margin-horizontal margin-bottom" routerLink="privacy">Datenschutz</a>-->
+<!--  <a class="margin-horizontal margin-bottom" target="_blank" href="https://lokaler.kaufen/support"-->
+<!--     rel="noopener noreferrer">Support</a>-->
+<!--</div>-->
 <div class="app-footer margin-vertical margin-horizontal" *ngIf="versionInfo">
-  <span class="version-info">{{versionInfo.version}} #{{versionInfo.commitHash}} - {{versionInfo.commitTime}}</span>
+  <span class="version-info">
+    <p>&copy; 2020 lokaler.kaufen | made with ❤️ in munich / mainz / rosenheim | crafted by qaware</p>
+    <p>version: {{versionInfo.version}} | commit-hash: #{{versionInfo.commitHash.substr(0, 8)}}
+      | build-time: {{versionInfo.commitTime}}</p>
+  </span>
 </div>
