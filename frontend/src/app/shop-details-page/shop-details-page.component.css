@@ -28,10 +28,31 @@
   align-items: flex-end;
   flex-wrap: wrap;
   padding-top: 10px;
+  padding-bottom: 25px;
 }
 
 .book-button {
   width: 100%;
+}
+
+.shop-details-card-image-container {
+  width: 160px;
+  height: 160px;
+  transform: translate(-20%, 50%);
+  position: absolute;
+  left: 80%;
+  margin-top: -160px;
+  border-radius: 50%;
+  border: 0;
+  background-color: #ffffff;
+  z-index: 2;
+}
+
+.shop-details-card-image {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .small-booking-row {
@@ -68,6 +89,14 @@
   max-height: 180px;
   display: block;
 }
+
+.shop-logo-small {
+  max-width: 120px;
+  max-height: 180px;
+  display: block;
+  margin: auto;
+}
+
 
 .shop-logo-svg {
   height: 120px;
