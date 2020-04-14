@@ -16,7 +16,8 @@
           <mat-card-subtitle>
             <div *ngIf="!hasDescription">Dieser Laden hat noch keine Beschreibung hinterlegt.</div>
             <div *ngIf="hasDescription">{{ shop.details }}</div>
-            <div style="display: flex; justify-content: flex-start; align-items: flex-end; padding-top: 10px;">
+            <div
+              style="display: flex; justify-content: flex-start; align-items: flex-end; flex-wrap: wrap; padding-top: 10px;">
               <div *ngIf="shop.website" class="social-links">
                 <a href="{{returnValidLink(shop.website)}}" target="_blank" class="social-links"
                    style="padding-left: 5px;">
