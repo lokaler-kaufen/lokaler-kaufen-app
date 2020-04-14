@@ -7,6 +7,10 @@
   text-decoration: none;
 }
 
+.address-title {
+  font-weight: bold;
+}
+
 .social-links {
   padding-right: 15px;
   padding-top: 10px;
