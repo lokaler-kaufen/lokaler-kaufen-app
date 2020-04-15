@@ -2,7 +2,8 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {ShopAdminDto, ShopsAdminDto, TokenInfoDto} from '../data/api';
 import {UpdateShopData} from '../shop-details-config/shop-details-config.component';
-import {Observable, Subject} from 'rxjs';
+import {Observable} from 'rxjs';
+import {LoginStateService} from './login-state.service';
 
 const API_ADMIN = '/api/admin';
 const API_ADMIN_LOGIN = `${API_ADMIN}/login`;
@@ -11,38 +12,32 @@ const API_ADMIN_TOKEN_INFO = `${API_ADMIN}/login/token-info`;
 @Injectable({providedIn: 'root'})
 export class AdminService {
 
-  private loggedIn = new Subject<boolean>();
-
-  constructor(private client: HttpClient) {
+  constructor(private client: HttpClient, private loginStateService: LoginStateService) {
     this.client.get(API_ADMIN_TOKEN_INFO).toPromise()
       .then((response: TokenInfoDto) => {
         if (response.status === 'LOGGED_IN') {
-          this.loggedIn.next(true);
+          this.loginStateService.loginAdmin();
 
         } else {
-          this.loggedIn.next(false);
+          this.loginStateService.logoutAdmin();
         }
       })
-      .catch(() => this.loggedIn.next(false));
+      .catch(() => this.loginStateService.logoutAdmin());
   }
 
   getAdminLoginState(): Observable<boolean> {
-    return this.loggedIn.asObservable();
+    return this.loginStateService.isAdmin;
   }
 
   onSuccessfulLogin() {
-    this.loggedIn.next(true);
-  }
-
-  forceLogoutState() {
-    this.loggedIn.next(false);
+    this.loginStateService.loginAdmin();
   }
 
   logout(): Promise<void> {
     return this.client.delete(API_ADMIN_LOGIN).toPromise()
       .then(() => console.log('Admin logout successful.'))
       .catch(error => console.error('Admin logout failed.', error))
-      .finally(() => this.loggedIn.next(false));
+      .finally(() => this.loginStateService.logoutAdmin());
   }
 
   listAllShops(): Promise<ShopsAdminDto> {
