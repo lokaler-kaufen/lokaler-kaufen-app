@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Observable, Subject} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
+import {TokenInfoDto} from '../data/api';
 
 export interface LoginCredentials {
   email: string;
@@ -11,8 +12,9 @@ export interface ResetPasswordBody {
   email: string;
 }
 
-const API_LOGIN_SHOP_OWNER = '/api/shop/login';
-const API_RESET_SHOP_OWNER_PASSWORD = '/api/shop/send-password-reset-link';
+const API_SHOP_OWNER_TOKEN_INFO = '/api/shop/login/token-info';
+const API_SHOP_OWNER_LOGIN = '/api/shop/login';
+const API_SHOP_OWNER_PASSWORD_RESET = '/api/shop/send-password-reset-link';
 
 /**
  * Service dealing with shop owner sessions.
@@ -23,9 +25,16 @@ export class ShopOwnerService {
   private loggedIn = new Subject<boolean>();
 
   constructor(private http: HttpClient) {
-    // call whoami to determine the initial state on page load
-    this.http.get(API_LOGIN_SHOP_OWNER).toPromise()
-      .then(() => this.loggedIn.next(true))
+    // call token-info to determine the initial state on page load
+    this.http.get(API_SHOP_OWNER_TOKEN_INFO).toPromise()
+      .then((response: TokenInfoDto) => {
+        if (response.status === 'LOGGED_IN') {
+          this.loggedIn.next(true);
+
+        } else {
+          this.loggedIn.next(false);
+        }
+      })
       .catch(() => this.loggedIn.next(false));
   }
 
@@ -34,7 +43,7 @@ export class ShopOwnerService {
   }
 
   login(credentials: LoginCredentials) {
-    return this.http.post(API_LOGIN_SHOP_OWNER, credentials).toPromise()
+    return this.http.post(API_SHOP_OWNER_LOGIN, credentials).toPromise()
 
       .then(() => console.log('[ShopOwnerService] Login successful.'))
 
@@ -59,7 +68,7 @@ export class ShopOwnerService {
   }
 
   resetPassword(body: ResetPasswordBody) {
-    return this.http.post(API_RESET_SHOP_OWNER_PASSWORD, body).toPromise()
+    return this.http.post(API_SHOP_OWNER_PASSWORD_RESET, body).toPromise()
 
       .then(() => console.log('[ShopOwnerService] Password reset successful.'))
 
