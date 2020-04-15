@@ -46,7 +46,6 @@ export class ShopDetailsPageComponent implements OnInit {
 
   shopId: string;
   shop: ShopDetailDto;
-  activatedSlot: SlotsPerDay;
 
   slotsPerDay: Array<SlotsPerDay> = [];
 
@@ -84,7 +83,6 @@ export class ShopDetailsPageComponent implements OnInit {
             slots: slots.slots[key],
             hasSlots: slots.slots[key].length > 0
           });
-          this.activatedSlot = this.slotsPerDay[0];
         });
       }, error => {
         console.log('Error requesting slots: ' + error.status + ', ' + error.message);
@@ -93,6 +91,13 @@ export class ShopDetailsPageComponent implements OnInit {
   }
 
   showBookingPopup(slotId: string) {
+    const selectedSlot = this.findSlotById(slotId);
+    if (!selectedSlot) {
+      console.log('Can not find slot with id ' + slotId);
+      this.notificationsService.error('Tut uns Leid!', 'Bei der Buchung ist ein Fehler aufgetreten.');
+      return;
+    }
+    const selectedSlotTime = selectedSlot.slots.find(s => s.id === slotId);
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
     dialogConfig.width = '450px';
@@ -109,9 +114,9 @@ export class ShopDetailsPageComponent implements OnInit {
             owner: this.shop.name,
             contactNumber: data.phoneNumber,
             contactType: ContactTypesEnum.getDisplayName(data.option),
-            day: this.activatedSlot.dayName,
-            start: this.activatedSlot.slots.find(s => s.id === slotId).start,
-            end: this.activatedSlot.slots.find(s => s.id === slotId).end
+            day: selectedSlot.dayName,
+            start: selectedSlotTime.start,
+            end: selectedSlotTime.end
           } as BookingSuccessData;
           const reservationDto: CreateReservationDto = {
             contact: data.phoneNumber,
@@ -124,7 +129,7 @@ export class ShopDetailsPageComponent implements OnInit {
           this.client.post<SlotsDto>('/api/reservation/' + this.shopId, reservationDto)
             .subscribe(() => {
                 this.matDialog.open(BookingSuccessPopupComponent, successConfig);
-                this.activatedSlot.slots.find(s => s.id === slotId).available = false;
+                selectedSlotTime.available = false;
               },
               error => {
                 console.log('Error booking time slot: ' + error.status + ', ' + error.message);
@@ -132,6 +137,16 @@ export class ShopDetailsPageComponent implements OnInit {
               });
         }
       });
+  }
+
+  private findSlotById(slotId: string): SlotsPerDay {
+    return this.slotsPerDay.find(day => {
+      if (day.slots.find(s => s.id === slotId)) {
+        return true;
+      } else {
+        return false;
+      }
+    });
   }
 
   returnValidLink(url: string) {

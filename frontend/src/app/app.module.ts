@@ -55,6 +55,7 @@ import {MatGridListModule} from '@angular/material/grid-list';
 import {PageFooterComponent} from './page-footer/page-footer.component';
 import {ShopLogoComponent} from './shop-logo/shop-logo.component';
 import {LogoutInterceptor} from './data/logout.interceptor';
+import { SlotsComponent } from './slots/slots.component';
 
 @NgModule({
   declarations: [
@@ -86,6 +87,7 @@ import {LogoutInterceptor} from './data/logout.interceptor';
     ShopLogoComponent,
     ShopManagementPageComponent,
     ShopSearchPageComponent,
+    SlotsComponent
   ],
   imports: [
     AppRoutingModule,

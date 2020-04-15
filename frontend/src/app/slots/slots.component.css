@@ -1,0 +1,18 @@
+.book-button {
+  width: 100%;
+}
+
+.not-open {
+  color: lightgray;
+}
+
+.small-booking-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.small-booking-row > div {
+  width: 50%;
+}
+

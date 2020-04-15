@@ -63,54 +63,7 @@
               *ngIf="hasOnlyPhone">{{ shop.name }}
               bietet derzeit noch keine Videoberatung an, Sie können sich aber per Telefon beraten lassen.</span></p>
         </div>
-        <mat-tab-group>
-          <mat-tab *ngFor="let slots of slotsPerDay">
-            <ng-template mat-tab-label>
-              <div (click)="activatedSlot = slots"
-                   [ngClass]="!slots.hasSlots? 'not-open' : ''">{{slots.dayName}}</div>
-            </ng-template>
-            <ng-template matTabContent>
-              <h3 *ngIf="!slots.hasSlots" class="text-no-values margin-top">
-                Dieser Laden bietet am {{slots.dayName}} leider keine Termine an.
-              </h3>
-              <div *ngIf="slots.hasSlots">
-                <mat-table [dataSource]="slots.slots" class="margin-top" id="calendar">
-                  <ng-container matColumnDef="from">
-                    <mat-header-cell *matHeaderCellDef> Start</mat-header-cell>
-                    <mat-cell *matCellDef="let element">{{element.start}}</mat-cell>
-                  </ng-container>
-
-                  <ng-container matColumnDef="to">
-                    <mat-header-cell *matHeaderCellDef> Ende</mat-header-cell>
-                    <mat-cell *matCellDef="let element">{{element.end}}</mat-cell>
-                  </ng-container>
-
-                  <ng-container matColumnDef="available">
-                    <mat-header-cell *matHeaderCellDef> Verfügbar</mat-header-cell>
-                    <mat-cell *matCellDef="let element">
-                      <button class="book-button"
-                              mat-raised-button
-                              *ngIf="element.available"
-                              (click)="showBookingPopup(element.id)"
-                              color="primary">
-                        Jetzt buchen
-                      </button>
-
-                      <button class="book-button" mat-stroked-button *ngIf="!element.available" disabled>
-                        Belegt
-                      </button>
-                    </mat-cell>
-                  </ng-container>
-
-                  <mat-header-row *matHeaderRowDef="['from', 'to', 'available']"></mat-header-row>
-                  <mat-row *matRowDef="let row; columns: ['from', 'to', 'available']"></mat-row>
-                </mat-table>
-              </div>
-
-
-            </ng-template>
-          </mat-tab>
-        </mat-tab-group>
+        <slots (selectedSlotId)="showBookingPopup($event)" [slotsPerDay]="slotsPerDay"></slots>
         <div class="shop-details margin-big-vertical">
           <div>
             <div class="address-title">Adresse</div>
@@ -179,39 +132,7 @@
             *ngIf="hasOnlyPhone">{{ shop.name }}
             bietet derzeit noch keine Videoberatung an, Sie können sich aber per Telefon beraten lassen.</span></p>
       </div>
-      <mat-accordion>
-        <mat-expansion-panel *ngFor="let slots of slotsPerDay" [expanded]="slots == activatedSlot"
-                             (opened)="activatedSlot = slots">
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              <div [ngClass]="!slots.hasSlots? 'not-open' : ''">{{slots.dayName}}</div>
-            </mat-panel-title>
-          </mat-expansion-panel-header>
-          <h3 *ngIf="!slots.hasSlots" class="text-no-values">
-            Dieser Laden bietet am {{slots.dayName}} leider keine Termine an.
-          </h3>
-          <div *ngIf="slots.hasSlots">
-            <div *ngFor="let slot of slots.slots; last as last">
-              <div class="small-booking-row padding-vertical">
-                <div>{{ slot.start }} - {{ slot.end }}</div>
-                <div>
-                  <button *ngIf="slot.available"
-                          class="book-button"
-                          mat-raised-button
-                          color="primary"
-                          (click)="showBookingPopup(slot.id)">
-                    Buchen
-                  </button>
-
-                  <button *ngIf="!slot.available" class="book-button" mat-stroked-button disabled>
-                    Belegt
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </mat-expansion-panel>
-      </mat-accordion>
+      <slots (selectedSlotId)="showBookingPopup($event)" [slotsPerDay]="slotsPerDay"></slots>
       <div class="shop-details margin-big-vertical">
         <div>
           <contact-types [availableContactTypes]="shop.contactTypes"></contact-types>

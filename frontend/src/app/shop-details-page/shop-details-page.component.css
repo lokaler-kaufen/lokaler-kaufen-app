@@ -47,10 +47,6 @@
   padding-bottom: 25px;
 }
 
-.book-button {
-  width: 100%;
-}
-
 .shop-logo-bubble {
   box-sizing: border-box;
   width: 160px;
@@ -94,16 +90,6 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-}
-
-.small-booking-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.small-booking-row > div {
-  width: 50%;
 }
 
 .shop-details {
