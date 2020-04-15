@@ -62,7 +62,7 @@ class ShopAdminController {
         authenticationHelper.authenticateAdmin(servletRequest);
         Shop shop = shopService.findById(Shop.Id.parse(id));
         if (shop == null) {
-            throw new ShopNotFoundException(Shop.Id.parse(id));
+            throw ShopNotFoundException.ofShopId(Shop.Id.parse(id));
         }
 
         return ShopAdminDto.of(shop, imageService);
@@ -90,7 +90,7 @@ class ShopAdminController {
 
         Shop shop = shopService.findById(shopId);
         if (shop == null) {
-            throw new ShopNotFoundException(shopId);
+            throw ShopNotFoundException.ofShopId(shopId);
         }
 
         SlotConfig slotConfig = request.getSlots().toSlots();

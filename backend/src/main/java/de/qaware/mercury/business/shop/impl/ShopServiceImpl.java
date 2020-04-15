@@ -82,7 +82,7 @@ class ShopServiceImpl implements ShopService {
     public void delete(Shop.Id id) throws ShopNotFoundException {
         Shop shop = shopRepository.findById(id);
         if (shop == null) {
-            throw new ShopNotFoundException(id);
+            throw ShopNotFoundException.ofShopId(id);
         }
 
         shopRepository.deleteById(id);
@@ -111,7 +111,7 @@ class ShopServiceImpl implements ShopService {
     public Shop findByIdOrThrow(Shop.Id id) throws ShopNotFoundException {
         Shop shop = findById(id);
         if (shop == null) {
-            throw new ShopNotFoundException(id);
+            throw ShopNotFoundException.ofShopId(id);
         }
         return shop;
     }
@@ -202,7 +202,7 @@ class ShopServiceImpl implements ShopService {
     public void changeApproved(Shop.Id id, boolean approved) throws ShopNotFoundException {
         Shop shop = shopRepository.findById(id);
         if (shop == null) {
-            throw new ShopNotFoundException(id);
+            throw ShopNotFoundException.ofShopId(id);
         }
         if (shop.isApproved() == approved) {
             // Nothing to do, state in database is the same as the new state
@@ -290,6 +290,12 @@ class ShopServiceImpl implements ShopService {
         return updatedShop;
     }
 
+    @Override
+    @Nullable
+    public Shop findBySlug(String slug) {
+        return shopRepository.findBySlug(slug);
+    }
+
     private List<ShopWithDistance> toShopWithDistance(List<Shop> shops, GeoLocation location) {
         return Lists.map(shops, s -> new ShopWithDistance(s, DistanceUtil.distanceInKmBetween(s.getGeoLocation(), location)
         ));
@@ -298,5 +304,4 @@ class ShopServiceImpl implements ShopService {
     private List<ShopWithDistance> filterByDistance(List<ShopWithDistance> shops, int maxDistance) {
         return shops.stream().filter(s -> s.getDistance() <= maxDistance).collect(Collectors.toList());
     }
-
 }

@@ -78,7 +78,7 @@ class ShopController {
     public ShopDetailDto getShopDetails(@PathVariable @Pattern(regexp = Validation.SHOP_ID) String id) throws ShopNotFoundException {
         Shop shop = shopService.findById(Shop.Id.parse(id));
         if (shop == null) {
-            throw new ShopNotFoundException(Shop.Id.parse(id));
+            throw ShopNotFoundException.ofShopId(Shop.Id.parse(id));
         }
 
         return ShopDetailDto.of(shop, imageService);

@@ -89,4 +89,7 @@ public interface ShopService {
      * @return Shop without image id
      */
     Shop deleteImage(Shop shop);
+
+    @Nullable
+    Shop findBySlug(String slug);
 }

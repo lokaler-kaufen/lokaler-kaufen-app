@@ -16,6 +16,8 @@ spring.jpa:
   database-platform: org.hibernate.dialect.PostgreSQL10Dialect
 
 mercury:
+  redirect:
+    shopDetailLinkTemplate: "${variables.domain}/#/shops/{{ id }}"
   frontend:
     enable-caching: true
   images:
