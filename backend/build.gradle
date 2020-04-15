@@ -42,6 +42,9 @@ dependencies {
     runtimeOnly 'com.h2database:h2'
     runtimeOnly 'org.postgresql:postgresql'
 
+    // Spring Boot configuration magic
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
     // Lombok
     annotationProcessor 'org.projectlombok:lombok'
     compileOnly 'org.projectlombok:lombok'
