@@ -18,3 +18,8 @@ ssh lokaler.kaufen -L 2345:[ip of the database]:5432
 ```
 
 The IP of the database can be found in the Cloud console. Then connect to PostgreSQL at `localhost:2345`
+
+## Use TLS
+
+1. Download the PostgreSQL server certificate from the Cloud console
+1. Adjust the connection string, append `?sslmode=verify-ca&sslrootcert=/path/to/certificate.pem` at the end
