@@ -122,7 +122,12 @@
 
 .shop-details-header {
   float: left;
+  line-height: 160%;
   width: calc(100% - 140px);
+}
+
+.shop-title {
+  font-size: 22px;
 }
 
 .shop-logo {
