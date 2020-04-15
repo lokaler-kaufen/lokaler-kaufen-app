@@ -7,6 +7,8 @@ import java.util.function.Predicate;
 
 @Service
 public class SlugServiceImpl implements SlugService {
+    private static final int MAX_TRIES = 1000;
+
     /**
      * Allowed chars in a slug. You only need to include lower case characters.
      */
@@ -25,6 +27,11 @@ public class SlugServiceImpl implements SlugService {
 
             // Slug isn't unique, so append a counter and try again
             counter++;
+
+            // Failsafe against a broken isSlugUnique predicate
+            if (counter > MAX_TRIES) {
+                throw new IllegalStateException("Reached maximum tries for slug creation");
+            }
         } while (true);
     }
 
