@@ -4,7 +4,6 @@ import {HttpClient} from '@angular/common/http';
 import {ActivatedRoute} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {ShopCreationSuccessPopupComponent} from '../shop-creation-success-popup/shop-creation-success-popup.component';
-import {NotificationsService} from 'angular2-notifications';
 import {
   BreaksDto,
   CreateShopDto,
@@ -17,6 +16,7 @@ import {ContactTypesEnum} from '../contact-types/available-contact-types';
 import {filter} from 'rxjs/operators';
 import {ReplaySubject} from 'rxjs';
 import {ImageService} from '../shared/image.service';
+import {AsyncNotificationService} from '../i18n/async-notification.service';
 import {StepperSelectionEvent} from '@angular/cdk/stepper';
 import {ReserveSlotsData, SlotSelectionData} from '../slots/slots.component';
 import {SlotBreakData, SlotBreaksData} from '../shop-details-config/shop-details-config.component';
@@ -90,7 +90,7 @@ export class ShopCreationPageComponent implements OnInit {
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private matDialog: MatDialog,
-    private notificationsService: NotificationsService,
+    private notificationsService: AsyncNotificationService,
     private imageService: ImageService
   ) {
     this.days = Array.from(this.businessHours.POSSIBLE_BUSINESS_HOURS.keys());
@@ -307,15 +307,15 @@ export class ShopCreationPageComponent implements OnInit {
   private handleError(error) {
     console.log('Error creating new shop: ' + error.status + ', ' + error.message + ', ' + error.error.code);
     if (error.status === 400 && error.error.code === 'LOCATION_NOT_FOUND') {
-      this.notificationsService.error('Ungültige PLZ', 'Diese Postleitzahl kennen wir leider nicht, haben Sie sich vertippt?');
+      this.notificationsService.error('shop.creation.error.location-not-found.title', 'shop.creation.error.location-not-found.message');
     }
     if (error.status === 409 && error.error.code === 'SHOP_ALREADY_EXISTS') {
       this.notificationsService.error(
-        'Moment mal...',
-        'Sie haben sich bereits registriert. Sie können sich unter Login für Ladenbesitzer anmelden.'
+        'shop.creation.error.shop-already-exists.title',
+        'shop.creation.error.shop-already-exists.message'
       );
     } else {
-      this.notificationsService.error('Tut uns leid!', 'Ihr Laden konnte nicht angelegt werden.');
+      this.notificationsService.error('shop.creation.error.generic.title', 'shop.creation.error.generic.message');
     }
   }
 

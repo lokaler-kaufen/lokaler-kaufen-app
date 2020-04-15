@@ -12,9 +12,9 @@ import {
   BookingSuccessPopupComponent
 } from '../booking-success-popup/booking-success-popup.component';
 import {HttpClient} from '@angular/common/http';
-import {NotificationsService} from 'angular2-notifications';
 import {CreateReservationDto, ShopDetailDto, SlotsDto} from '../data/api';
 import {ContactTypesEnum} from '../contact-types/available-contact-types';
+import {AsyncNotificationService} from '../i18n/async-notification.service';
 import {ReplaySubject} from 'rxjs';
 import {ReserveSlotsData, SlotSelectionData} from '../slots/slots.component';
 
@@ -28,7 +28,7 @@ export class ShopDetailsPageComponent implements OnInit {
   constructor(private client: HttpClient,
               private activatedRoute: ActivatedRoute,
               private matDialog: MatDialog,
-              private notificationsService: NotificationsService) {
+              private notificationsService: AsyncNotificationService) {
   }
 
   get hasDescription(): boolean {
@@ -67,7 +67,7 @@ export class ShopDetailsPageComponent implements OnInit {
     })
       .catch(error => {
         console.log('Error requesting shop details: ' + error.status + ', ' + error.message);
-        this.notificationsService.error('Tut uns leid!', 'Es ist ein Fehler beim Laden der Details aufgetreten.');
+        this.notificationsService.error('shop.details.error.generic.title', 'shop.details.error.generic.message');
       });
 
     this.client.get<SlotsDto>('/api/reservation/' + this.shopId + '/slot?days=7')
@@ -76,7 +76,7 @@ export class ShopDetailsPageComponent implements OnInit {
         this.slotsPerDay.next({slots});
       }, error => {
         console.log('Error requesting slots: ' + error.status + ', ' + error.message);
-        this.notificationsService.error('Tut uns leid!', 'Es ist ein Fehler beim Laden der Slots aufgetreten.');
+        this.notificationsService.error('shop.details.error.slots.title', 'shop.details.error.slots.message');
       });
   }
 
@@ -115,7 +115,7 @@ export class ShopDetailsPageComponent implements OnInit {
               },
               error => {
                 console.log('Error booking time slot: ' + error.status + ', ' + error.message);
-                this.notificationsService.error('Tut uns leid!', 'Es ist ein Fehler bei der Buchung aufgetreten.');
+                this.notificationsService.error('shop.details.error.booking.title', 'shop.details.error.booking.message');
               });
         }
       });

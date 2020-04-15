@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
-import {NotificationsService} from 'angular2-notifications';
+import {AsyncNotificationService} from '../i18n/async-notification.service';
 
 @Component({
   selector: 'cancel-reservation',
@@ -15,7 +15,7 @@ export class CancelReservationComponent implements OnInit {
   constructor(private route: ActivatedRoute,
               private router: Router,
               private client: HttpClient,
-              private notificationsService: NotificationsService) {
+              private notificationsService: AsyncNotificationService) {
   }
 
   ngOnInit(): void {
@@ -32,7 +32,7 @@ export class CancelReservationComponent implements OnInit {
         },
         error => {
           console.log('Error cancelling reservation: ' + error.status + ', ' + error.message);
-          this.notificationsService.error('Tut uns leid!', 'Wir konnten Ihre Buchung leider nicht stornieren.');
+          this.notificationsService.error('reservation.cancel.error.title', 'reservation.cancel.error.message');
         });
   }
 

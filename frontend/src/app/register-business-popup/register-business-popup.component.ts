@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
 import {MatDialogRef} from '@angular/material/dialog';
 import {HttpClient} from '@angular/common/http';
-import {NotificationsService} from 'angular2-notifications';
 import {FormControl, Validators} from '@angular/forms';
+import {AsyncNotificationService} from '../i18n/async-notification.service';
 
 @Component({
   selector: 'register-business-popup',
@@ -17,7 +17,7 @@ export class RegisterBusinessPopupComponent {
 
   constructor(private client: HttpClient,
               public dialogRef: MatDialogRef<RegisterBusinessPopupComponent>,
-              private notificationsService: NotificationsService) {
+              private notificationsService: AsyncNotificationService) {
   }
 
   onNoClick(): void {
@@ -38,12 +38,14 @@ export class RegisterBusinessPopupComponent {
         console.log('Error sending creation link: ' + error.status + ', ' + error.message + ', ' + error.headers.get('x-trace-id'));
         if (error.status === 409 && error.error.code === 'SHOP_ALREADY_EXISTS') {
           this.notificationsService.error(
-            'Moment mal...',
-            'Sie haben sich bereits registriert. Sie können sich unter Login für Ladenbesitzer anmelden.'
+            'registration.popup.error.already-registered.title',
+            'registration.popup.error.already-registered.message'
           );
 
         } else {
-          this.notificationsService.error('Tut uns leid!', 'Es ist ein Fehler beim Senden Ihres Links aufgetreten.');
+          this.notificationsService.error(
+            'registration.popup.error.generic.title',
+            'registration.popup.error.generic.message');
         }
       });
   }

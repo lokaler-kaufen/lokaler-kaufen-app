@@ -2,10 +2,10 @@ import {Component} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {PasswordResetPopupComponent} from '../password-reset-popup/password-reset-popup.component';
 import {HttpClient} from '@angular/common/http';
-import {NotificationsService} from 'angular2-notifications';
 import {ShopOwnerService} from '../shared/shop-owner.service';
 import {BreakpointObserver} from '@angular/cdk/layout';
 import {RegisterBusinessPopupComponent} from '../register-business-popup/register-business-popup.component';
+import {AsyncNotificationService} from '../i18n/async-notification.service';
 
 @Component({
   selector: 'login-page',
@@ -21,7 +21,7 @@ export class LoginPageComponent {
   constructor(
     private matDialog: MatDialog,
     private client: HttpClient,
-    private notificationsService: NotificationsService,
+    private notificationsService: AsyncNotificationService,
     private shopOwnerService: ShopOwnerService,
     breakpointObserver: BreakpointObserver
   ) {
@@ -37,16 +37,15 @@ export class LoginPageComponent {
       if (result) {
         this.client.post('/api/shop/send-password-reset-link', result).subscribe(() => {
             this.notificationsService.success(
-              'Alles klar!',
-              'Wir haben Ihnen eine E-Mail zum Zurücksetzen Ihres Passworts geschickt. Sollte die Mail nicht ' +
-              'angekommen sein, schauen Sie bitte auch in Ihren Spam-Ordner.'
+              'login.password.reset.success.title',
+              'login.password.reset.success.message'
             );
           },
           error => {
             console.log('Error password reset: ' + error.status + ', ' + error.message);
             this.notificationsService.error(
-              'Tut uns leid!',
-              'Es ist ein Fehler beim Zurücksetzen Ihres Passworts aufgetreten.'
+              'login.password.reset.error.title',
+              'login.password.reset.error.message'
             );
           });
       }

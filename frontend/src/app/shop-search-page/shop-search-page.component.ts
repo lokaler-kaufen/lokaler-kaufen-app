@@ -97,9 +97,9 @@ export class ShopSearchPageComponent implements OnInit {
   private handleError(error) {
     console.log('Error requesting shop overview: ' + error.status + ', ' + error.message);
     if (error.status === 400 && error.error.code === 'LOCATION_NOT_FOUND') {
-      this.notificationsService.error('Ungültige PLZ', 'Diese Postleitzahl kennen wir leider nicht, haben Sie sich vertippt?');
+      this.notificationsService.error('shop.search.error.location-not-found.title', 'shop.search.error.location-not-found.message');
     } else {
-      this.notificationsService.error('Tut uns leid!', 'Ein Fehler beim Laden der Läden ist aufgetreten.');
+      this.notificationsService.error('shop.search.error.generic.title', 'shop.search.error.generic.message');
     }
     this.newLocation = this.location;
     window.history.replaceState({}, '', '/#/shops?location=' + this.location);

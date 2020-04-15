@@ -86,7 +86,15 @@
     "reservation": {
         "cancel": {
             "description": "Sind Sie sicher, dass Sie Ihre Reservierung stornieren möchten?",
-            "confirm": "Jetzt stornieren"
+            "confirm": "Jetzt stornieren",
+            "success": {
+                "title": "Alles klar!",
+                "message": "Wir haben Ihre Buchung storniert. Der Laden wird von uns informiert."
+            },
+            "error": {
+                "title": "Tut uns leid!",
+                "message": "Wir konnten Ihre Buchung leider nicht stornieren."
+            }
         }
     },
     "landing": {
@@ -111,7 +119,17 @@
         "password.forgotten": "Passwort vergessen?",
         "register": "Jetzt registrieren",
         "submit": "Login",
-        "error": "Tut uns leid, der Login ist fehlgeschlagen. Entweder haben Sie sich bei Ihrer E-Mail-Adresse und/oder beim Passwort vertippt oder das System hat gerade ein paar Problemchen."
+        "error": "Tut uns leid, der Login ist fehlgeschlagen. Entweder haben Sie sich bei Ihrer E-Mail-Adresse und/oder beim Passwort vertippt oder das System hat gerade ein paar Problemchen.",
+        "password.reset": {
+            "success": {
+                "title": "Alles klar!",
+                "message": "Wir haben Ihnen eine E-Mail zum Zurücksetzen Ihres Passworts geschickt. Sollte die Mail nicht angekommen sein, schauen Sie bitte auch in Ihren Spam-Ordner."
+            },
+            "error": {
+                "title": "Tut uns leid!",
+                "message": "Es ist ein Fehler beim Zurücksetzen Ihres Passworts aufgetreten."
+            }
+        }
     },
     "password.reset": {
         "page": {
@@ -124,6 +142,10 @@
                 "count": "Minimum 12 Zeichen",
                 "lowercase": "Mindestens ein Kleinbuchstabe",
                 "uppercase": "Mindestens ein Großbuchstabe"
+            },
+            "submit.error": {
+                "title": "Tut uns leid!",
+                "message": "Wir konnten Ihr Passwort nicht zurücksetzen."
             }
         },
         "popup": {
@@ -145,6 +167,16 @@
                 "title": "Soweit so gut!",
                 "description": "Wir haben Ihnen eine E-Mail an {{email.value}} geschickt. Bitte bestätigen Sie kurz Ihre E-Mail-Adresse, indem Sie auf den Link in der Mail klicken. Sollte die E-Mail nicht angekommen sein, schauen Sie bitte auch in Ihren Spam-Ordner.",
                 "submit": "OK"
+            },
+            "error": {
+                "already-registered": {
+                    "title": "Moment mal...",
+                    "message": "Sie haben sich bereits registriert. Sie können sich unter Login für Ladenbesitzer anmelden."
+                },
+                "generic": {
+                    "title": "Tut uns leid!",
+                    "message": "Es ist ein Fehler beim Senden Ihres Links aufgetreten."
+                }
             }
         }
     },
@@ -240,6 +272,24 @@
                 "heading": "Juhu!",
                 "description": "Ihr Laden {{data}} ist jetzt bei lokaler.kaufen! Schön, dass Sie dabei sind.",
                 "login": "Zum Login"
+            },
+            "error": {
+                "location-not-found": {
+                    "title": "Ungültige PLZ",
+                    "message": "Diese Postleitzahl kennen wir leider nicht, haben Sie sich vertippt?"
+                },
+                "shop-already-exists": {
+                    "title": "Moment mal...",
+                    "message": "Sie haben sich bereits registriert. Sie können sich unter Login für Ladenbesitzer anmelden."
+                },
+                "logo-upload-failed": {
+                    "title": "Tut uns leid!",
+                    "message": "Ihr Logo konnte nicht hochgeladen werden."
+                },
+                "generic": {
+                    "title": "Tut uns leid!",
+                    "message": "Ihr Laden konnte nicht angelegt werden."
+                }
             }
         },
         "details-config": {
@@ -309,6 +359,16 @@
                     "size": "Die Datei ist zu groß. Bitte wählen Sie eine Datei aus, die maximal 2 MB groß ist.",
                     "type": "Bitte wählen Sie eine Datei mit der Endung '.png', '.jpeg' oder '.jpg' aus."
                 }
+            },
+            "error": {
+                "generic": {
+                    "title": "Tut uns leid!",
+                    "message": "Es ist ein Fehler beim Laden der Details aufgetreten."
+                },
+                "update": {
+                    "title": "Ungültige Eingabe",
+                    "message": "Bitte überprüfen Sie Ihre Änderungen nochmal."
+                }
             }
         },
         "details": {
@@ -322,17 +382,67 @@
                 "available": "Verfügbar",
                 "not.available": "Belegt",
                 "booknow": "Jetzt buchen"
+            },
+            "error": {
+                "generic": {
+                    "title": "Tut uns leid!",
+                    "message": "Es ist ein Fehler beim Laden der Details aufgetreten."
+                },
+                "slots": {
+                    "title": "Tut uns leid!",
+                    "message": "Es ist ein Fehler beim Laden der Slots aufgetreten."
+                },
+                "booking": {
+                    "title": "Tut uns leid!",
+                    "message": "Es ist ein Fehler beim Laden der Buchung aufgetreten."
+                }
             }
         },
         "management": {
-            "save": "Speichern"
+            "save": "Speichern",
+            "error": {
+                "generic": {
+                    "title": "Tut uns leid!",
+                    "message": "Es ist ein Fehler beim Laden der Details aufgetreten."
+                },
+                "delete": {
+                    "title": "Tut uns Leid!",
+                    "message": "Wir konnten dein Bild leider nicht löschen."
+                },
+                "update": {
+                    "title": "Tut uns leid!",
+                    "message": "Ihr Laden konnte leider nicht aktualisiert werden."
+                },
+                "location-not-found": {
+                    "title": "Ungültige PLZ",
+                    "message": "Diese Postleitzahl kennen wir leider nicht, haben Sie sich vertippt?"
+                },
+                "authentication": {
+                    "title": "Authentifizierungsfehler",
+                    "message": "Es ist ein Fehler aufgetreten. Bitte melden Sie sich erneut an."
+                },
+                "logo-upload-failed": {
+                    "title": "Tut uns leid!",
+                    "message": "Ihr Logo konnte nicht hochgeladen werden."
+                }
+            }
         },
         "search": {
             "heading": "Wonach suchen Sie heute?",
             "placeholder": "Suchen Sie nach Ihrem Lieblingsgeschäft oder nach Begriffen wie Kaffee, Optiker, ...",
             "nearby": "Läden in der Nähe von",
             "distance": "{{ distance }} km entfernt",
-            "empty": "Leider haben wir keine Ergebnisse zu Ihrer Suche nach '{{lastSearchString}}' gefunden."
+            "empty": "Leider haben wir keine Ergebnisse zu Ihrer Suche nach '{{lastSearchString}}' gefunden.",
+            "error": {
+                "generic": {
+                    "title": "Tut uns leid!",
+                    "message": "Es ist ein Fehler beim Laden der Läden aufgetreten."
+                },
+                "location-not-found": {
+                    "title": "Ungültige PLZ",
+                    "message": "Diese Postleitzahl kennen wir leider nicht, haben Sie sich vertippt?"
+                }
+            }
         }
     }
 }

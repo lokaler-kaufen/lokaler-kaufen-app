@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
-import {NotificationsService} from 'angular2-notifications';
+import {AsyncNotificationService} from '../i18n/async-notification.service';
 
 @Component({
   selector: 'password-reset-page',
@@ -19,7 +19,7 @@ export class PasswordResetPageComponent implements OnInit {
               private formBuilder: FormBuilder,
               private client: HttpClient,
               private router: Router,
-              private notificationsService: NotificationsService) {
+              private notificationsService: AsyncNotificationService) {
   }
 
   ngOnInit(): void {
@@ -41,7 +41,7 @@ export class PasswordResetPageComponent implements OnInit {
       },
       error => {
         console.log('Error resetting password: ' + error.status + ', ' + error.message);
-        this.notificationsService.error('Tut uns leid!', 'Wir konnten Ihr Passwort nicht zurücksetzen.');
+        this.notificationsService.error('password.reset.page.submit.error.title', 'password.reset.page.submit.error.message');
       });
   }
 
