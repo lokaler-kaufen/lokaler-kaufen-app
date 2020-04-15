@@ -60,10 +60,7 @@ class ImageServiceImpl implements ImageService {
 
     @Override
     @Nullable
-    public URI generatePublicUrl(@Nullable Image.Id imageId) {
-        if (imageId == null) {
-            return null;
-        }
+    public URI generatePublicUrl(Image.Id imageId) {
         return URI.create(
             configuration.getPublicUrlTemplate().replace("{{ filename }}", generateFilename(imageId))
         );

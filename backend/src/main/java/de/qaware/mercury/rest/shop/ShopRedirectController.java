@@ -3,6 +3,7 @@ package de.qaware.mercury.rest.shop;
 import de.qaware.mercury.business.shop.Shop;
 import de.qaware.mercury.business.shop.ShopNotFoundException;
 import de.qaware.mercury.business.shop.ShopService;
+import de.qaware.mercury.business.shop.ShopSharingConfigurationProperties;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -21,10 +22,10 @@ import javax.validation.constraints.NotBlank;
 @RestController
 @RequestMapping("/api/shop/redirect")
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
-@EnableConfigurationProperties(ShopRedirectConfigurationProperties.class)
+@EnableConfigurationProperties(ShopSharingConfigurationProperties.class)
 public class ShopRedirectController {
     private final ShopService shopService;
-    private final ShopRedirectConfigurationProperties configuration;
+    private final ShopSharingConfigurationProperties configuration;
 
     @GetMapping("/{slug}")
     public ResponseEntity<Void> redirect(@PathVariable("slug") @NotBlank String slug) throws ShopNotFoundException {

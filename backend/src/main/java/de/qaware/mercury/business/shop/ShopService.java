@@ -4,6 +4,7 @@ import de.qaware.mercury.business.image.Image;
 import de.qaware.mercury.business.location.impl.LocationNotFoundException;
 import org.springframework.lang.Nullable;
 
+import java.net.URI;
 import java.util.List;
 
 public interface ShopService {
@@ -92,4 +93,21 @@ public interface ShopService {
 
     @Nullable
     Shop findBySlug(String slug);
+
+    /**
+     * Generates the share link for the given shop.
+     *
+     * @param shop shop
+     * @return share link
+     */
+    URI generateShareLink(Shop shop);
+
+    /**
+     * Generates the image url for the given shop.
+     *
+     * @param shop shop
+     * @return image url
+     */
+    @Nullable
+    URI generateImageUrl(Shop shop);
 }

@@ -1,8 +1,8 @@
 package de.qaware.mercury.rest.shop.dto.response;
 
-import de.qaware.mercury.business.image.ImageService;
 import de.qaware.mercury.business.shop.ContactType;
 import de.qaware.mercury.business.shop.Shop;
+import de.qaware.mercury.business.shop.ShopService;
 import de.qaware.mercury.rest.shop.dto.requestresponse.SocialLinksDto;
 import de.qaware.mercury.util.Null;
 import de.qaware.mercury.util.Sets;
@@ -33,9 +33,9 @@ public class ShopDetailDto {
     @Nullable
     private String website;
     private SocialLinksDto socialLinks;
+    private String shareLink;
 
-    public static ShopDetailDto of(Shop shop, ImageService imageService) {
-        URI imageUrl = imageService.generatePublicUrl(shop.getImageId());
+    public static ShopDetailDto of(Shop shop, ShopService shopService) {
         return new ShopDetailDto(
             shop.getId().getId().toString(),
             shop.getName(),
@@ -47,9 +47,10 @@ public class ShopDetailDto {
             shop.getAddressSupplement(),
             Sets.map(shop.getContacts().keySet(), ContactType::getId),
             shop.getDetails(),
-            Null.map(imageUrl, URI::toString),
+            Null.map(shopService.generateImageUrl(shop), URI::toString),
             shop.getWebsite(),
-            SocialLinksDto.of(shop.getSocialLinks())
+            SocialLinksDto.of(shop.getSocialLinks()),
+            shopService.generateShareLink(shop).toString()
         );
     }
 }

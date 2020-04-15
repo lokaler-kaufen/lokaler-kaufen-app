@@ -12,6 +12,7 @@ import de.qaware.mercury.business.shop.ShopAlreadyExistsException
 import de.qaware.mercury.business.shop.ShopCreation
 import de.qaware.mercury.business.shop.ShopNotFoundException
 import de.qaware.mercury.business.shop.ShopService
+import de.qaware.mercury.business.shop.ShopSharingConfigurationProperties
 import de.qaware.mercury.business.shop.ShopUpdate
 import de.qaware.mercury.business.shop.ShopWithDistance
 import de.qaware.mercury.business.shop.SlugService
@@ -38,13 +39,14 @@ class ShopServiceImplSpec extends Specification {
     ShopLoginService shopLoginService = Mock()
     Clock clock = Mock()
     ShopServiceConfigurationProperties config = Mock()
+    ShopSharingConfigurationProperties sharingConfig = Mock()
     AdminService adminService = Mock()
     ImageService imageService = Mock()
     ShopBreaksRepository shopBreaksRepository = Mock()
     SlugService slugService = Mock()
 
     void setup() {
-        shopService = new ShopServiceImpl(uuidFactory, locationService, shopRepository, emailService, shopLoginService, clock, config, adminService, imageService, shopBreaksRepository, slugService)
+        shopService = new ShopServiceImpl(uuidFactory, locationService, shopRepository, emailService, shopLoginService, clock, config, adminService, imageService, shopBreaksRepository, slugService, sharingConfig)
     }
 
     def "List all shops"() {

@@ -17,6 +17,7 @@ import de.qaware.mercury.business.shop.ShopAlreadyExistsException;
 import de.qaware.mercury.business.shop.ShopCreation;
 import de.qaware.mercury.business.shop.ShopNotFoundException;
 import de.qaware.mercury.business.shop.ShopService;
+import de.qaware.mercury.business.shop.ShopSharingConfigurationProperties;
 import de.qaware.mercury.business.shop.ShopUpdate;
 import de.qaware.mercury.business.shop.ShopWithDistance;
 import de.qaware.mercury.business.shop.SlugService;
@@ -33,6 +34,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -40,7 +42,7 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
-@EnableConfigurationProperties(ShopServiceConfigurationProperties.class)
+@EnableConfigurationProperties({ShopServiceConfigurationProperties.class, ShopSharingConfigurationProperties.class})
 class ShopServiceImpl implements ShopService {
     private final UUIDFactory uuidFactory;
     private final LocationService locationService;
@@ -53,6 +55,7 @@ class ShopServiceImpl implements ShopService {
     private final ImageService imageService;
     private final ShopBreaksRepository shopBreaksRepository;
     private final SlugService slugService;
+    private final ShopSharingConfigurationProperties sharingConfig;
 
     @Override
     @Transactional(readOnly = true)
@@ -294,6 +297,24 @@ class ShopServiceImpl implements ShopService {
     @Nullable
     public Shop findBySlug(String slug) {
         return shopRepository.findBySlug(slug);
+    }
+
+    @Override
+    public URI generateShareLink(Shop shop) {
+        return URI.create(
+            sharingConfig.getShopShareLinkTemplate()
+                .replace("{{ slug }}", shop.getSlug())
+        );
+    }
+
+    @Override
+    @Nullable
+    public URI generateImageUrl(Shop shop) {
+        if (shop.getImageId() == null) {
+            return null;
+        }
+
+        return imageService.generatePublicUrl(shop.getImageId());
     }
 
     private List<ShopWithDistance> toShopWithDistance(List<Shop> shops, GeoLocation location) {

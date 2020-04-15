@@ -1,7 +1,6 @@
 package de.qaware.mercury.rest.shop;
 
 import de.qaware.mercury.business.admin.Admin;
-import de.qaware.mercury.business.image.ImageService;
 import de.qaware.mercury.business.location.impl.LocationNotFoundException;
 import de.qaware.mercury.business.login.LoginException;
 import de.qaware.mercury.business.reservation.SlotService;
@@ -44,7 +43,6 @@ import javax.validation.constraints.Pattern;
 @Validated
 class ShopAdminController {
     private final ShopService shopService;
-    private final ImageService imageService;
     private final AuthenticationHelper authenticationHelper;
     private final SlotService slotService;
 
@@ -65,14 +63,14 @@ class ShopAdminController {
             throw ShopNotFoundException.ofShopId(Shop.Id.parse(id));
         }
 
-        return ShopAdminDto.of(shop, imageService);
+        return ShopAdminDto.of(shop, shopService);
     }
 
     @GetMapping
     public ShopsAdminDto listAll(HttpServletRequest request) throws LoginException {
         authenticationHelper.authenticateAdmin(request);
 
-        return ShopsAdminDto.of(shopService.listAll(), imageService);
+        return ShopsAdminDto.of(shopService.listAll(), shopService);
     }
 
     @PutMapping(path = "/{id}/approve")
@@ -109,7 +107,7 @@ class ShopAdminController {
             request.getBreaks() == null ? Breaks.none() : slotService.resolveBreaks(request.getBreaks().toSlotIds(), slotConfig)
         ));
         log.info("Admin {} updated shop '{}'", admin.getEmail(), shop.getName());
-        return ShopAdminDto.of(updatedShop, imageService);
+        return ShopAdminDto.of(updatedShop, shopService);
     }
 
     @DeleteMapping(path = "/{id}")

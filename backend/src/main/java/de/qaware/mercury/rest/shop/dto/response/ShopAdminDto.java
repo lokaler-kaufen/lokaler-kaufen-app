@@ -1,8 +1,8 @@
 package de.qaware.mercury.rest.shop.dto.response;
 
-import de.qaware.mercury.business.image.ImageService;
 import de.qaware.mercury.business.shop.ContactType;
 import de.qaware.mercury.business.shop.Shop;
+import de.qaware.mercury.business.shop.ShopService;
 import de.qaware.mercury.rest.shop.dto.request.SlotConfigDto;
 import de.qaware.mercury.rest.shop.dto.requestresponse.SocialLinksDto;
 import de.qaware.mercury.util.Maps;
@@ -37,9 +37,9 @@ public class ShopAdminDto {
     private String website;
     private SlotConfigDto slots;
     private SocialLinksDto socialLinks;
+    private String shareLink;
 
-    public static ShopAdminDto of(Shop shop, ImageService imageService) {
-        URI imageUrl = imageService.generatePublicUrl(shop.getImageId());
+    public static ShopAdminDto of(Shop shop, ShopService shopService) {
         return new ShopAdminDto(
             shop.getId().getId().toString(),
             shop.getName(),
@@ -53,10 +53,11 @@ public class ShopAdminDto {
             shop.isEnabled(),
             shop.isApproved(),
             shop.getDetails(),
-            Null.map(imageUrl, URI::toString),
+            Null.map(shopService.generateImageUrl(shop), URI::toString),
             shop.getWebsite(),
             Null.map(shop.getSlotConfig(), SlotConfigDto::of),
-            SocialLinksDto.of(shop.getSocialLinks())
+            SocialLinksDto.of(shop.getSocialLinks()),
+            shopService.generateShareLink(shop).toString()
         );
     }
 }
