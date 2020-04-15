@@ -64,6 +64,8 @@
 
 .shop-contact-types {
   width: 40%;
+  display: flex;
+  align-items: center;
 }
 
 /* styles for small devices */
