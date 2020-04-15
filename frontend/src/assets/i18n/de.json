@@ -53,7 +53,7 @@
     },
     "app": {
         "footer": {
-            "copyright": "&copy; 2020 lokaler.kaufen | made with ❤️ in munich / mainz / rosenheim | crafted by qaware"
+            "copyright": "© 2020 lokaler.kaufen | made with ❤️ in munich / mainz / rosenheim | crafted by qaware"
         },
         "header": {
             "logo.alt": "lokaler.kaufen Logo"
