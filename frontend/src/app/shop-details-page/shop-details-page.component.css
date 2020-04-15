@@ -127,7 +127,7 @@
 }
 
 .shop-title {
-  font-size: 22px;
+  font-size: 20px;
 }
 
 .shop-logo {
@@ -150,6 +150,10 @@
 @media screen and (max-width: 719px) {
   .shop-details {
     flex-direction: column;
+  }
+
+  .shop-title {
+    font-size: 20px;
   }
 
   .shop-details > div {
