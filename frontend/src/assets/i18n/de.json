@@ -53,9 +53,7 @@
     },
     "app": {
         "footer": {
-            "imprint": "Impressum",
-            "privacy": "Datenschutz",
-            "support": "Support"
+            "copyright": "&copy; 2020 lokaler.kaufen | made with ❤️ in munich / mainz / rosenheim | crafted by qaware"
         },
         "header": {
             "logo.alt": "lokaler.kaufen Logo"
@@ -375,6 +373,12 @@
             "back": "Zurück",
             "description.empty": "Dieser Laden hat noch keine Beschreibung hinterlegt.",
             "image.alt": "Shop-Logo",
+            "booking": {
+                "heading": "Terminbuchung",
+                "description.1": "Wählen Sie jetzt Ihren Wunschzeitpunkt aus und {{ shop.name }} ruft Sie für Ihr persönliches Beratungsgespräch an",
+                "description.2": " - per Videochat direkt aus dem Laden",
+                "description.3": "{{ shop.name }} bietet derzeit noch keine Videoberatung an, Sie können sich aber per Telefon beraten lassen."
+            },
             "slots": {
                 "empty": "Dieser Laden bietet am {{slots.dayName}} leider keine Termine an.",
                 "start": "Start",
@@ -383,6 +387,7 @@
                 "not.available": "Belegt",
                 "booknow": "Jetzt buchen"
             },
+            "address": "Adresse",
             "error": {
                 "generic": {
                     "title": "Tut uns leid!",

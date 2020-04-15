@@ -28,7 +28,7 @@
         </div>
       </mat-card-header>
       <mat-card-content>
-        <div *ngIf="!hasDescription">Dieser Laden hat noch keine Beschreibung hinterlegt.</div>
+        <div *ngIf="!hasDescription" translate>shop.details.description.empty</div>
         <div *ngIf="hasDescription" style="padding-top: 15px">{{ shop.details }}</div>
         <div class="social-links-block">
           <div *ngIf="shop.website" class="social-links">
@@ -58,17 +58,16 @@
         </div>
         <mat-divider></mat-divider>
         <div class="booking-title">
-          <h3>Terminbuchung</h3>
-          <p>Wählen Sie jetzt Ihren Wunschzeitpunkt aus und {{ shop.name }} ruft Sie für Ihr persönliches
-            Beratungsgespräch
-            an<span *ngIf="!hasOnlyPhone"> - per Videochat direkt aus dem Laden</span>. <span
-              *ngIf="hasOnlyPhone">{{ shop.name }}
-              bietet derzeit noch keine Videoberatung an, Sie können sich aber per Telefon beraten lassen.</span></p>
+          <h3 translate>shop.details.booking.heading</h3>
+          <p>
+            <span translate>shop.details.booking.description.1</span><span *ngIf="!hasOnlyPhone" translate>shop.details.booking.description.2</span>.
+            <span *ngIf="hasOnlyPhone">{{ 'shop.details.booking.description.3' | translate: { shop: shop } }}</span>
+          </p>
         </div>
         <slots (selectedSlot)="showBookingPopup($event)" [data]="slotsPerDay"></slots>
         <div class="shop-details margin-big-vertical">
           <div>
-            <div class="address-title">Adresse</div>
+            <div class="address-title" translate>shop.details.address</div>
             <div>{{shop.name}}</div>
             <div>{{shop.street}} {{shop.addressSupplement}}</div>
             <div>{{shop.zipCode}} {{shop.city}}</div>
@@ -96,7 +95,7 @@
       </div>
     </div>
     <mat-card-content>
-      <div *ngIf="!hasDescription">Dieser Laden hat noch keine Beschreibung hinterlegt.</div>
+      <div *ngIf="!hasDescription" translate>shop.details.description.empty</div>
       <div *ngIf="hasDescription" style="padding-top: 25px">{{ shop.details }}</div>
       <div class="social-links-block-small">
         <div *ngIf="shop.website" class="social-links">
@@ -126,12 +125,10 @@
       </div>
       <mat-divider></mat-divider>
       <div class="booking-title">
-        <h3>Terminbuchung</h3>
-        <p>Wählen Sie jetzt Ihren Wunschzeitpunkt aus und {{ shop.name }} ruft Sie für Ihr persönliches
-          Beratungsgespräch
-          an<span *ngIf="!hasOnlyPhone"> - per Videochat direkt aus dem Laden</span>. <span
-            *ngIf="hasOnlyPhone">{{ shop.name }}
-            bietet derzeit noch keine Videoberatung an, Sie können sich aber per Telefon beraten lassen.</span></p>
+        <h3 translate>shop.details.booking.heading</h3>
+        <p><span translate>shop.details.booking.description.1</span>
+          <span *ngIf="!hasOnlyPhone" translate>shop.details.booking.description.2</span>. <span
+            *ngIf="hasOnlyPhone">{{ 'shop.details.booking.description.3' | translate: { shop: shop } }}</span></p>
       </div>
       <slots (selectedSlot)="showBookingPopup($event)" [data]="slotsPerDay"></slots>
       <div class="shop-details margin-big-vertical">
@@ -140,7 +137,7 @@
         </div>
       </div>
       <div>
-        <div class="address-title">Adresse</div>
+        <div class="address-title" translate>shop.details.address</div>
         <div>{{shop.name}}</div>
         <div>{{shop.street}} {{shop.addressSupplement}}</div>
         <div>{{shop.zipCode}} {{shop.city}}</div>
