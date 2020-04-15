@@ -51,4 +51,7 @@ public interface ShopRepository {
      * @return all approved and enabled shops matching the given query within the given search area
      */
     List<Shop> searchActive(String query, BoundingBox searchArea);
+
+    @Nullable
+    Shop findBySlug(String slug);
 }

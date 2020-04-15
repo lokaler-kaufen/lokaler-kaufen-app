@@ -13,7 +13,9 @@ public final class ShopEntityFixtures {
     public static ShopEntity create(UUIDFactory uuidFactory, Clock clock) {
         return new ShopEntity(uuidFactory.create(),
             "shop",
-            "owner", "shop@local.host",
+            "slug",
+            "owner",
+            "shop@local.host",
             "street",
             "zipCode",
             "city",

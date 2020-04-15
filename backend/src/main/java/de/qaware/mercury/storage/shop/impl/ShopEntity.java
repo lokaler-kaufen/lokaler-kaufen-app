@@ -49,6 +49,10 @@ public class ShopEntity {
 
     @Setter
     @Column(nullable = false)
+    private String slug;
+
+    @Setter
+    @Column(nullable = false)
     private String ownerName;
 
     @Setter
@@ -236,6 +240,7 @@ public class ShopEntity {
         return new ShopEntity(
             shop.getId().getId(),
             shop.getName(),
+            shop.getSlug(),
             shop.getOwnerName(),
             shop.getEmail(),
             shop.getStreet(),
@@ -285,6 +290,7 @@ public class ShopEntity {
         return new Shop(
             Shop.Id.of(id),
             name,
+            slug,
             ownerName,
             email,
             street,

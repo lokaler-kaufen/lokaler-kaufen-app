@@ -18,6 +18,7 @@ import java.util.UUID;
 public class Shop {
     Id id;
     String name;
+    String slug;
     String ownerName;
     String email;
     String street;

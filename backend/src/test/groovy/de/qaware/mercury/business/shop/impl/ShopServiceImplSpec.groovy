@@ -14,6 +14,7 @@ import de.qaware.mercury.business.shop.ShopNotFoundException
 import de.qaware.mercury.business.shop.ShopService
 import de.qaware.mercury.business.shop.ShopUpdate
 import de.qaware.mercury.business.shop.ShopWithDistance
+import de.qaware.mercury.business.shop.SlugService
 import de.qaware.mercury.business.time.Clock
 import de.qaware.mercury.business.uuid.UUIDFactory
 import de.qaware.mercury.storage.shop.ShopBreaksRepository
@@ -40,9 +41,10 @@ class ShopServiceImplSpec extends Specification {
     AdminService adminService = Mock()
     ImageService imageService = Mock()
     ShopBreaksRepository shopBreaksRepository = Mock()
+    SlugService slugService = Mock()
 
     void setup() {
-        shopService = new ShopServiceImpl(uuidFactory, locationService, shopRepository, emailService, shopLoginService, clock, config, adminService, imageService, shopBreaksRepository)
+        shopService = new ShopServiceImpl(uuidFactory, locationService, shopRepository, emailService, shopLoginService, clock, config, adminService, imageService, shopBreaksRepository, slugService)
     }
 
     def "List all shops"() {

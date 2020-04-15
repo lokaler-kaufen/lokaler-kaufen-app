@@ -19,6 +19,7 @@ import de.qaware.mercury.business.shop.ShopNotFoundException;
 import de.qaware.mercury.business.shop.ShopService;
 import de.qaware.mercury.business.shop.ShopUpdate;
 import de.qaware.mercury.business.shop.ShopWithDistance;
+import de.qaware.mercury.business.shop.SlugService;
 import de.qaware.mercury.business.time.Clock;
 import de.qaware.mercury.business.uuid.UUIDFactory;
 import de.qaware.mercury.storage.shop.ShopBreaksRepository;
@@ -51,6 +52,7 @@ class ShopServiceImpl implements ShopService {
     private final AdminService adminService;
     private final ImageService imageService;
     private final ShopBreaksRepository shopBreaksRepository;
+    private final SlugService slugService;
 
     @Override
     @Transactional(readOnly = true)
@@ -127,6 +129,7 @@ class ShopServiceImpl implements ShopService {
         Shop shop = new Shop(
             Shop.Id.of(id),
             creation.getName(),
+            slugService.generateShopSlug(creation.getName(), slug -> shopRepository.findBySlug(slug) == null),
             creation.getOwnerName(),
             creation.getEmail(),
             creation.getStreet(),
@@ -169,6 +172,7 @@ class ShopServiceImpl implements ShopService {
         Shop updatedShop = new Shop(
             shop.getId(),
             update.getName(),
+            shop.getSlug(),
             update.getOwnerName(),
             shop.getEmail(),
             update.getStreet(),

@@ -87,4 +87,8 @@ class JpaShopRepositoryImpl implements ShopRepository {
         return Lists.map(shopDataRepository.findByName(name), ShopEntity::toShop);
     }
 
+    @Override
+    public Shop findBySlug(String slug) {
+        return Null.map(shopDataRepository.findBySlug(slug), ShopEntity::toShop);
+    }
 }

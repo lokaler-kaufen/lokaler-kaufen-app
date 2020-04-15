@@ -37,8 +37,6 @@ class ImageServiceImpl implements ImageService {
     public Image addImage(Shop.Id shopId, InputStream data) {
         log.info("Adding image for shop {}", shopId);
 
-        // TODO: Check maximum images for shop
-
         Image image = new Image(Image.Id.random(uuidFactory));
 
         try (InputStream stream = imageScaler.scale(image.getId(), data, configuration.getSize(), IMAGE_FORMAT, configuration.getQuality())) {
