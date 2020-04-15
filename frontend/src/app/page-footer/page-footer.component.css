@@ -51,7 +51,7 @@
 .footer-content {
   display: flex;
   flex-direction: row;
-  align-content: center;
+  align-items: center;
   justify-content: center;
   text-align: center;
   padding-top: 25px;
