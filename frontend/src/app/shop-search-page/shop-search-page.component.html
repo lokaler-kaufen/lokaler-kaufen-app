@@ -37,7 +37,7 @@
 
   <div *ngIf="!isSearchEmpty">
 
-    <mat-card class="mat-elevation-z5 clickable highlightable margin-top"
+    <mat-card class="mat-elevation-z3 clickable highlightable margin-top"
               *ngFor="let shop of shops" (click)="showDetailPage({id: shop.id})">
       <mat-card-content>
         <div class="shop">
@@ -62,5 +62,5 @@
     </mat-card>
 
   </div>
-
+  <page-footer></page-footer>
 </div>
