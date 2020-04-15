@@ -10,6 +10,7 @@ import org.springframework.test.web.servlet.ResultActions
 
 import javax.servlet.http.Cookie
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
@@ -38,16 +39,16 @@ class AdminLoginControllerIntTest extends IntegrationTestSpecification {
         ))
 
         then: "we get a cookie containing the token"
-        Cookie cookie = result
+        Cookie token = result
             .andExpect(status().isOk())
             .andExpect(cookie().httpOnly("mercury-admin", true))
             .andReturn().getResponse().getCookie("mercury-admin")
 
         when: "we call the whoami endpoint"
-        result = mvc.perform(get("/api/admin/login").cookie(cookie))
+        result = mvc.perform(get("/api/admin/login").cookie(token))
 
         then: "we get our email address"
-        ResultActions _ = result
+        result
             .andExpect(status().isOk())
             .andExpect(content().json(
                 """
@@ -56,5 +57,48 @@ class AdminLoginControllerIntTest extends IntegrationTestSpecification {
                 }
                 """
             ))
+
+        when: "we call tokeninfo"
+        result = mvc.perform(get("/api/admin/login/token-info").cookie(token))
+
+        then: "we get logged in"
+        result
+            .andExpect(status().isOk())
+            .andExpect(content().json(
+                """
+                {
+                  "status": "LOGGED_IN"
+                }
+                """
+            ))
+
+        when: "we log out"
+        result = mvc.perform(delete("/api/admin/login"))
+
+        then: "the cookie is gone"
+        result
+            .andExpect(cookie().maxAge("mercury-admin", -1))
+
+        when: "we call the whoami endpoint"
+        result = mvc.perform(get("/api/admin/login"))
+
+        then: "we get unauthorized"
+        result
+            .andExpect(status().isUnauthorized())
+
+        when: "we call tokeninfo"
+        result = mvc.perform(get("/api/admin/login/token-info"))
+
+        then: "we get not logged in"
+        result
+            .andExpect(status().isOk())
+            .andExpect(content().json(
+                """
+                {
+                  "status": "NOT_LOGGED_IN"
+                }
+                """
+            ))
+
     }
 }
