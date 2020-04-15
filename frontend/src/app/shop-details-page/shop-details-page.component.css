@@ -47,9 +47,33 @@
   padding-bottom: 25px;
 }
 
-
 .book-button {
   width: 100%;
+}
+
+.shop-logo-bubble {
+  box-sizing: border-box;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  position: absolute;
+  top: -80px;
+  right: 80px;
+  background-color: white;
+}
+
+.shop-logo-bubble-image {
+  /*
+  diameter = 160px
+  => radius = 80px
+  => inner square side length: (2 * sqrt( radius^2 / 2) ) = 112px (rounded down to the next even int)
+  => offset (top and left) of square relative to top-left of circle: (diameter - square length) / 2 = 24px
+   */
+  width: 112px;
+  height: 112px;
+  position: absolute;
+  top: 24px;
+  left: 24px;
 }
 
 .shop-details-card-image-container {
@@ -102,29 +126,7 @@
 }
 
 .shop-logo {
-  max-width: 120px;
-  max-height: 180px;
-  display: block;
-}
-
-.shop-logo-small {
-  max-width: 120px;
-  max-height: 180px;
-  display: block;
-  margin: auto;
-}
-
-
-.shop-logo-svg {
-  height: 120px;
-}
-
-.shop-logo-container {
-  float: right;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  height: 180px;
 }
 
 ::ng-deep.mat-tab-labels {
@@ -155,21 +157,6 @@
 
   .shop-details-header {
     width: 100%;
-  }
-
-  .shop-logo {
-    max-width: 120px;
-    max-height: 120px;
-    padding-bottom: 20px;
-  }
-
-  .shop-logo-svg {
-    height: 100px;
-  }
-
-  .shop-logo-container {
-    height: auto;
-    float: left;
   }
 }
 

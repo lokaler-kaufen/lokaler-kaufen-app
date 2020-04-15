@@ -33,7 +33,7 @@
 
 .shop-logo-container {
   width: 100px;
-  max-height: 100px;
+  height: 100px;
 }
 
 .shop-text {
@@ -42,7 +42,15 @@
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  max-width: calc(100% - 101px);
+  max-width: calc(100% - 24px - 100px - 24px - 1px - 24px - 24px);
+  /*
+  24px padding left of img
+  100px img
+  24px right of img
+  1px divider
+  24px left of text
+  24px right of text
+  */
 }
 
 .shop-text > div {
@@ -84,10 +92,14 @@
 
   .shop-logo-container {
     width: 60px;
-    max-height: 60px;
+    height: 60px;
   }
 
   .shop-text {
     max-width: calc(100% - 60px - 16px);
+    /*
+    60px img width
+    16px padding between img and text
+    */
   }
 }

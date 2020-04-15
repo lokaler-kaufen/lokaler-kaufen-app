@@ -8,12 +8,16 @@
     </button>
   </div>
 
-  <!--  ONLY LARGE LAYOUT-->
+  <!-- region ONLY LARGE LAYOUT -->
   <div class="only-large">
-    <div *ngIf="shop.imageUrl" class="shop-details-card-image-container mat-elevation-z5">
-      <img src="{{shop.imageUrl}}" alt="Shop Logo" class="shop-logo shop-details-card-image">
-    </div>
     <mat-card class="mat-elevation-z5">
+      <div class="shop-logo-bubble mat-elevation-z5">
+        <!-- mat-card adds "position: relative" so we can use it to "position: absolute" our floaty image -->
+        <div class="shop-logo-bubble-image">
+          <shop-logo [imageUrl]="shop.imageUrl"></shop-logo>
+        </div>
+      </div>
+
       <mat-card-header>
         <div class="shop-header">
           <div class="shop-details-header">
@@ -123,12 +127,13 @@
       </mat-card-content>
     </mat-card>
   </div>
-  <!--  END LARGE LAYOUT-->
 
-  <!--  ONLY SMALL LAYOUT-->
+  <!-- endregion -->
+
+  <!-- region ONLY SMALL LAYOUT -->
   <div class="only-small">
-    <div *ngIf="shop.imageUrl">
-      <img src="{{shop.imageUrl}}" alt="Shop Logo" class="shop-logo-small shop-details-card-image-small">
+    <div *ngIf="shop.imageUrl" class="shop-logo margin-bottom">
+      <shop-logo [imageUrl]="shop.imageUrl"></shop-logo>
     </div>
     <div class="shop-header">
       <div class="shop-details-header">
@@ -221,5 +226,5 @@
     </mat-card-content>
 
   </div>
-  <!--  END SMALL LAYOUT-->
+  <!-- endregion END SMALL LAYOUT-->
 </div>
