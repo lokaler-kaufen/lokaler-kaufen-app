@@ -99,6 +99,5 @@ class AdminLoginControllerIntTest extends IntegrationTestSpecification {
                 }
                 """
             ))
-
     }
 }
