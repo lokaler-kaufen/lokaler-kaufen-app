@@ -36,9 +36,9 @@ public class ShopRedirectController {
         String url = configuration.getShopDetailLinkTemplate()
             .replace("{{ id }}", shop.getId().getId().toString());
 
-        // See https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/302
+        // See https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/301
         HttpHeaders headers = new HttpHeaders();
         headers.add("Location", url);
-        return new ResponseEntity<>(headers, HttpStatus.FOUND);
+        return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
     }
 }
