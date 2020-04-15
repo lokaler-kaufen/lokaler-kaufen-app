@@ -24,9 +24,10 @@ steps:
     args: ["push", "gcr.io/$PROJECT_ID/lokaler.kaufen"]
     waitFor: ["build-image"]
   # Deploy container image to Cloud Run
-  - name: 'gcr.io/cloud-builders/gcloud'
-    args: ['beta', 'run', 'deploy', 'lokaler-kaufen-srv', '--image', 'gcr.io/$PROJECT_ID/lokaler.kaufen', '--region', 'europe-west4', '--platform', 'managed', '--allow-unauthenticated']
-    waitFor: ["push-image"]
+# TODO: Enable after firewall issue of CloudRun & CloudSQL is solved
+#  - name: 'gcr.io/cloud-builders/gcloud'
+#    args: ['beta', 'run', 'deploy', 'lokaler-kaufen-srv', '--image', 'gcr.io/$PROJECT_ID/lokaler.kaufen', '--region', 'europe-west4', '--platform', 'managed', '--allow-unauthenticated']
+#    waitFor: ["push-image"]
 
 # Increase timeout to 15 minutes 
 timeout: 900s
