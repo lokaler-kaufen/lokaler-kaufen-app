@@ -49,7 +49,7 @@
             <mat-divider [vertical]="true" class="divider" *ngIf="!isSmallScreen"></mat-divider>
 
             <div class="shop-text" [class.padding-horizontal]="!isSmallScreen" [class.padding-left]="isSmallScreen">
-              <div class="mat-card-title">{{ shop.name }}</div>
+              <div class="mat-card-title shop-title">{{ shop.name }}</div>
               <div class="mat-card-subtitle">{{ shop.distance.toFixed(0) }} km entfernt</div>
             </div>
           </div>

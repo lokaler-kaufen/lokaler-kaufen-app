@@ -53,6 +53,10 @@
   */
 }
 
+.shop-title {
+  font-size: 18px;
+}
+
 .shop-text > div {
   width: 100%;
   word-break: break-word;
