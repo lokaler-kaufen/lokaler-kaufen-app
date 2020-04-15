@@ -6,8 +6,10 @@ import de.qaware.mercury.test.plumbing.IntegrationTest
 import groovy.transform.TypeChecked
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.mock.web.MockHttpServletResponse
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.transaction.annotation.Transactional
+import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper
 import spock.lang.Specification
 
 /**
@@ -21,4 +23,9 @@ import spock.lang.Specification
 @TypeChecked
 @IntegrationTest
 abstract class IntegrationTestSpecification extends Specification {
+    private static final ObjectMapper mapper = new ObjectMapper();
+
+    static <T> T contentAsObject(MockHttpServletResponse response, Class<T> clazz) {
+        return mapper.readValue(response.getContentAsByteArray(), clazz);
+    }
 }
