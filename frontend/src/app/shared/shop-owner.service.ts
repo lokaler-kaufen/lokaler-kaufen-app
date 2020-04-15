@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
-import {Observable, Subject} from 'rxjs';
+import {Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
+import {LoginStateService} from './login-state.service';
 import {TokenInfoDto} from '../data/api';
 
 export interface LoginCredentials {
@@ -22,24 +23,22 @@ const API_SHOP_OWNER_PASSWORD_RESET = '/api/shop/send-password-reset-link';
 @Injectable({providedIn: 'root'})
 export class ShopOwnerService {
 
-  private loggedIn = new Subject<boolean>();
-
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private loginStateService: LoginStateService) {
     // call token-info to determine the initial state on page load
     this.http.get(API_SHOP_OWNER_TOKEN_INFO).toPromise()
       .then((response: TokenInfoDto) => {
         if (response.status === 'LOGGED_IN') {
-          this.loggedIn.next(true);
+          this.loginStateService.loginShopOwner();
 
         } else {
-          this.loggedIn.next(false);
+          this.loginStateService.logoutShopOwner();
         }
       })
-      .catch(() => this.loggedIn.next(false));
+      .catch(() => this.loginStateService.logoutShopOwner());
   }
 
   get shopOwnerLoggedIn(): Observable<boolean> {
-    return this.loggedIn.asObservable();
+    return this.loginStateService.isShopOwner;
   }
 
   login(credentials: LoginCredentials) {
@@ -49,7 +48,7 @@ export class ShopOwnerService {
 
       .catch(error => {
         console.error('[ShopOwnerService] Login failed.', error);
-        this.loggedIn.next(false);
+        this.loginStateService.logoutShopOwner();
         throw error;
       });
   }
@@ -64,7 +63,7 @@ export class ShopOwnerService {
         throw error;
       })
 
-      .finally(() => this.loggedIn.next(false));
+      .finally(() => this.loginStateService.logoutShopOwner());
   }
 
   resetPassword(body: ResetPasswordBody) {
@@ -81,12 +80,12 @@ export class ShopOwnerService {
 
   /** @deprecated */
   storeOwnerLoggedIn(): void {
-    this.loggedIn.next(true);
+    this.loginStateService.loginShopOwner();
   }
 
   /** @deprecated */
   storeOwnerLoggedOut(): void {
-    this.loggedIn.next(false);
+    this.loginStateService.logoutShopOwner();
   }
 
 }
