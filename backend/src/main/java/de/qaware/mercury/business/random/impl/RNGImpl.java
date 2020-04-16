@@ -8,7 +8,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 class RNGImpl implements RNG {
-    private static final ThreadLocal<SecureRandom> SECURE_RANDOM_THREAD_LOCAL = ThreadLocal.withInitial(SecureRandom::new);
+    private static final SecureRandom SECURE_RANDOM = new SecureRandom();
 
     @Override
     @SuppressWarnings("java:S2068") // Shut up SonarQube. If you need crypto-safe random, use nextBytesSecure()
@@ -21,7 +21,7 @@ class RNGImpl implements RNG {
     @Override
     public byte[] nextBytesSecure(int size) {
         byte[] result = new byte[size];
-        SECURE_RANDOM_THREAD_LOCAL.get().nextBytes(result);
+        SECURE_RANDOM.nextBytes(result);
         return result;
     }
 }

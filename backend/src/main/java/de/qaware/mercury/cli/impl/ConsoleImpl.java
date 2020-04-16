@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 import java.util.Scanner;
 
 @Component
+@SuppressWarnings("java:S106")
+    // Shut up SonarQube - this is a console, it needs to print to stdout
 class ConsoleImpl implements Console {
     private final Scanner scanner;
 

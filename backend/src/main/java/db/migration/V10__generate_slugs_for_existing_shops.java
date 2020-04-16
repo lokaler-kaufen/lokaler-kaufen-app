@@ -23,6 +23,7 @@ import java.util.UUID;
  * See https://flywaydb.org/documentation/migrations#java-based-migrations
  */
 @Slf4j
+@SuppressWarnings("java:S101") // Shut up SonarQube - Flyway expects the class in this format.
 public class V10__generate_slugs_for_existing_shops extends BaseJavaMigration {
     @Override
     public void migrate(Context context) throws Exception {
