@@ -1,5 +1,6 @@
-package de.qaware.mercury.util.validation
+package de.qaware.mercury.business.validation
 
+import de.qaware.mercury.business.validation.Validation
 import spock.lang.Specification
 
 import java.util.regex.Pattern

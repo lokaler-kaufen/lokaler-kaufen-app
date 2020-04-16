@@ -1,6 +1,8 @@
 package de.qaware.mercury.rest.reservation.dto.request;
 
-import de.qaware.mercury.util.validation.Validation;
+import de.qaware.mercury.business.shop.ContactType;
+import de.qaware.mercury.business.validation.EnumValue;
+import de.qaware.mercury.business.validation.Validation;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,8 +19,8 @@ import javax.validation.constraints.Pattern;
 public class CreateReservationDto {
     @NotBlank
     private String slotId;
-    @NotBlank
-    // TODO: Validate enum
+    @NotNull
+    @EnumValue(enumClass = ContactType.class)
     private String contactType;
     @NotBlank
     // TODO validate pattern

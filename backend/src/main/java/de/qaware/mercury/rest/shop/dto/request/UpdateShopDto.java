@@ -1,5 +1,7 @@
 package de.qaware.mercury.rest.shop.dto.request;
 
+import de.qaware.mercury.business.shop.ContactType;
+import de.qaware.mercury.business.validation.EnumValue;
 import de.qaware.mercury.rest.shop.dto.requestresponse.SocialLinksDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -41,7 +43,7 @@ public class UpdateShopDto {
     private String website;
     // Maps from WHATSAPP -> Telephone number, for example
     @NotEmpty
-    private Map<String, String> contacts;
+    private Map<@EnumValue(enumClass = ContactType.class) String, String> contacts;
     @Valid
     private SlotConfigDto slots;
     @Valid

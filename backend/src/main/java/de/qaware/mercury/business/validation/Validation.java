@@ -1,4 +1,4 @@
-package de.qaware.mercury.util.validation;
+package de.qaware.mercury.business.validation;
 
 public final class Validation {
     private Validation() {

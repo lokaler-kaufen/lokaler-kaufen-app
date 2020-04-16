@@ -1,6 +1,6 @@
 package de.qaware.mercury.rest.shop.dto.request;
 
-import de.qaware.mercury.util.validation.Validation;
+import de.qaware.mercury.business.validation.Validation;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
