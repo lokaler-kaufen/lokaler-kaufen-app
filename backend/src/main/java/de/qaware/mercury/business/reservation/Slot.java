@@ -13,6 +13,7 @@ public class Slot {
     boolean available;
 
     @Value
+    @SuppressWarnings("java:S1700") // Shut up SonarQube
     public static class Id {
         String id;
 

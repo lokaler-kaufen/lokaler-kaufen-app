@@ -11,7 +11,8 @@ class RNGImpl implements RNG {
     private static final SecureRandom SECURE_RANDOM = new SecureRandom();
 
     @Override
-    @SuppressWarnings("java:S2068") // Shut up SonarQube. If you need crypto-safe random, use nextBytesSecure()
+    @SuppressWarnings({"java:S2068", "java:S2245"})
+    // Shut up SonarQube. If you need crypto-safe random, use nextBytesSecure()
     public byte[] nextBytes(int size) {
         byte[] result = new byte[size];
         ThreadLocalRandom.current().nextBytes(result);

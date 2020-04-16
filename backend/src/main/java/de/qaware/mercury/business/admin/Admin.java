@@ -19,6 +19,7 @@ public class Admin {
     ZonedDateTime updated;
 
     @Value(staticConstructor = "of")
+    @SuppressWarnings("java:S1700") // Shut up SonarQube
     public static class Id {
         UUID id;
 
