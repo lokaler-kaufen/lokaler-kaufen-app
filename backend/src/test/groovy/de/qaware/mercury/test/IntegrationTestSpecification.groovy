@@ -23,7 +23,7 @@ import spock.lang.Specification
 @TypeChecked
 @IntegrationTest
 abstract class IntegrationTestSpecification extends Specification {
-    private static final ObjectMapper mapper = new ObjectMapper();
+    static final ObjectMapper mapper = new ObjectMapper();
 
     static <T> T contentAsObject(MockHttpServletResponse response, Class<T> clazz) {
         return mapper.readValue(response.getContentAsByteArray(), clazz);
