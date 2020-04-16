@@ -1,4 +1,4 @@
-import {async, ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
+import {async, ComponentFixture, fakeAsync, flushMicrotasks, TestBed, tick} from '@angular/core/testing';
 import {AdminOverviewPageComponent} from './admin-overview-page.component';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import {RouterTestingModule} from '@angular/router/testing';
@@ -41,6 +41,7 @@ describe('AdminOverviewPageComponent', () => {
 
   it('should load all shops', fakeAsync(() => {
     prepareExampleResult();
+    flushMicrotasks();
 
     expect(fixture.debugElement.queryAll(By.css('mat-row')).length).toEqual(3);
   }));
@@ -48,6 +49,7 @@ describe('AdminOverviewPageComponent', () => {
 
   it('should navigate to details page on a click', fakeAsync(() => {
     prepareExampleResult();
+    flushMicrotasks();
 
     fixture.debugElement.query(By.css('mat-row')).nativeElement.click();
 
