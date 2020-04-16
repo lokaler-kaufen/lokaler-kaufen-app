@@ -8,8 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public
-class ImageDto {
+public class ImageDto {
     private String id;
 
     public static ImageDto of(Image image) {
