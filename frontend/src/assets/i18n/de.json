@@ -435,7 +435,7 @@
         "search": {
             "heading": "Wonach suchen Sie heute?",
             "placeholder": "Suchen Sie nach Ihrem Lieblingsgeschäft oder nach Begriffen wie Kaffee, Optiker, ...",
-            "nearby": "Läden in der Nähe von",
+            "nearby": "Läden in der Nähe von ",
             "distance": "{{ distance }} km entfernt",
             "empty": "Leider haben wir keine Ergebnisse zu Ihrer Suche nach '{{lastSearchString}}' gefunden.",
             "error": {
