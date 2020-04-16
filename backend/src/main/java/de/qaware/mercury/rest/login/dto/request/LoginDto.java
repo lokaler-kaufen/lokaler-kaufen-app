@@ -1,5 +1,6 @@
 package de.qaware.mercury.rest.login.dto.request;
 
+import de.qaware.mercury.rest.validation.ValidationConstants;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,8 +14,7 @@ import javax.validation.constraints.Pattern;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LoginDto {
-    // From https://www.regular-expressions.info/email.html
-    @Email(regexp = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}$", flags = Pattern.Flag.CASE_INSENSITIVE)
+    @Email(regexp = ValidationConstants.EMAIL_REGEX, flags = Pattern.Flag.CASE_INSENSITIVE)
     @NotNull
     private String email;
     @NotBlank

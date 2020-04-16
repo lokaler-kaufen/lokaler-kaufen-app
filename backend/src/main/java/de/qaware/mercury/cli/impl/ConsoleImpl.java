@@ -9,6 +9,7 @@ import java.util.Scanner;
 class ConsoleImpl implements Console {
     private final Scanner scanner;
 
+    @SuppressWarnings("java:S4829") // Shut up SonarQube - we need to read from stdin, because this is a console.
     public ConsoleImpl() {
         scanner = new Scanner(System.in);
     }

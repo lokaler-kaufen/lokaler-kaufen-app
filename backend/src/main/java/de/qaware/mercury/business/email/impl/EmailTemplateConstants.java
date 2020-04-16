@@ -19,6 +19,7 @@ public final class EmailTemplateConstants {
     public static final String CONTACT = "{{ contact }}";
     public static final String SHOP_CREATION_LINK = "{{ link }}";
     public static final String CANCEL_RESERVATION_LINK = "{{ cancelReservationLink }}";
+    @SuppressWarnings("java:S2068") // Shut up SonarQube :/
     public static final String PASSWORD_RESET_LINK = "{{ link }}";
 
     public static final String SHOP_EMAIL_ADDRESS = "{{ email }}";
