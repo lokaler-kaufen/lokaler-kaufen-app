@@ -41,6 +41,8 @@ import javax.validation.constraints.Pattern;
 @Slf4j
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 @Validated
+@SuppressWarnings("java:S4784")
+    // JDK since 9 has additional protection against ReDos attacks
 class ShopAdminController {
     private final ShopService shopService;
     private final AuthenticationHelper authenticationHelper;

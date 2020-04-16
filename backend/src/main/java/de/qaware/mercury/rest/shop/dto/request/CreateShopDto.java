@@ -1,7 +1,7 @@
 package de.qaware.mercury.rest.shop.dto.request;
 
 import de.qaware.mercury.rest.shop.dto.requestresponse.SocialLinksDto;
-import de.qaware.mercury.rest.validation.ValidationConstants;
+import de.qaware.mercury.util.validation.Validation;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -43,7 +43,7 @@ public class CreateShopDto {
     @Nullable
     private String website;
     @NotBlank
-    @Size(min = ValidationConstants.MIN_PASSWORD_LENGTH, max = ValidationConstants.MAX_PASSWORD_LENGTH)
+    @Size(min = Validation.MIN_PASSWORD_LENGTH, max = Validation.MAX_PASSWORD_LENGTH)
     private String password;
     // Maps from WHATSAPP -> Telephone number, for example
     @NotEmpty

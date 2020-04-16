@@ -1,6 +1,6 @@
 package de.qaware.mercury.rest.login.dto.request;
 
-import de.qaware.mercury.rest.validation.ValidationConstants;
+import de.qaware.mercury.util.validation.Validation;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,8 +13,9 @@ import javax.validation.constraints.Pattern;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@SuppressWarnings("java:S4784") // JDK since 9 has additional protection against ReDos attacks
 public class LoginDto {
-    @Email(regexp = ValidationConstants.EMAIL_REGEX, flags = Pattern.Flag.CASE_INSENSITIVE)
+    @Email(regexp = Validation.EMAIL_REGEX, flags = Pattern.Flag.CASE_INSENSITIVE)
     @NotNull
     private String email;
     @NotBlank

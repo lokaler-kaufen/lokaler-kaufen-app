@@ -58,6 +58,8 @@ import static de.qaware.mercury.rest.plumbing.authentication.AuthenticationHelpe
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 @RequestMapping(value = "/api/shop", produces = MediaType.APPLICATION_JSON_VALUE)
 @Validated
+@SuppressWarnings("java:S4784")
+    // JDK since 9 has additional protection against ReDos attacks
 class ShopController {
     private final ShopService shopService;
     private final TokenService tokenService;

@@ -40,6 +40,7 @@ import javax.validation.constraints.Pattern;
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 @RequestMapping(value = "/api/reservation", produces = MediaType.APPLICATION_JSON_VALUE)
 @Validated
+@SuppressWarnings("java:S4784") // JDK since 9 has additional protection against ReDos attacks
 public class ReservationController {
     private final ReservationService reservationService;
     private final ShopService shopService;
