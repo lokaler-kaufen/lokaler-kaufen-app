@@ -1,6 +1,5 @@
 package de.qaware.mercury.rest.clienterror
 
-
 import de.qaware.mercury.business.clienterror.ClientErrorService
 import de.qaware.mercury.test.IntegrationTestSpecification
 import org.springframework.beans.factory.annotation.Autowired
@@ -17,14 +16,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class ClientErrorControllerIntTest extends IntegrationTestSpecification {
     @Autowired
-    MockMvc mockMvc
+    MockMvc mvc
 
     @Autowired
     ClientErrorService clientErrorService
 
     def "reportError"() {
         when: "we report an error"
-        ResultActions result = mockMvc.perform(post("/api/client-error").contentType(MediaType.APPLICATION_JSON).content(
+        ResultActions result = mvc.perform(post("/api/client-error").contentType(MediaType.APPLICATION_JSON).content(
             """
             {
               "traceId": "12345",
