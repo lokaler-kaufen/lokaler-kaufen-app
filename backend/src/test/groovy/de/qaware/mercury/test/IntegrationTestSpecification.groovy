@@ -28,4 +28,8 @@ abstract class IntegrationTestSpecification extends Specification {
     static <T> T contentAsObject(MockHttpServletResponse response, Class<T> clazz) {
         return mapper.readValue(response.getContentAsByteArray(), clazz);
     }
+
+    static Map<String, Object> contentAsMap(MockHttpServletResponse response) {
+        return mapper.readValue(response.getContentAsByteArray(), Map.class);
+    }
 }

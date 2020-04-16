@@ -1,6 +1,6 @@
 package de.qaware.mercury.rest.info
 
-import de.qaware.mercury.rest.info.response.VersionDto
+
 import de.qaware.mercury.test.IntegrationTestSpecification
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.mock.web.MockHttpServletResponse
@@ -23,9 +23,9 @@ class InfoRestControllerIntTest extends IntegrationTestSpecification {
             .andExpect(status().isOk())
             .andReturn().getResponse()
 
-        VersionDto versionDto = contentAsObject(response, VersionDto.class)
-        versionDto.commitHash != null
-        versionDto.version != null
-        versionDto.commitTime != null
+        Map<String, Object> versionDto = contentAsMap(response)
+        versionDto['commitHash'] != null
+        versionDto['version'] != null
+        versionDto['commitTime'] != null
     }
 }
