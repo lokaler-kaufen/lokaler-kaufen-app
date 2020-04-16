@@ -132,3 +132,21 @@ bootJar {
 
 // have some fun ./gradlew kick ass
 task kick(dependsOn: clean) {}
+
+/**
+ * Downloads all dependencies for cache warmup
+ */
+task resolveDependencies(group: "build setup", description: "Resolve and prefetch dependencies") {
+    doLast {
+        def resolve = {
+            ConfigurationContainer configurations ->
+                configurations
+                    .findAll({ Configuration c -> c.isCanBeResolved() })
+                    .each({ Configuration c -> c.resolve() })
+        }
+        project.rootProject.allprojects.each { Project subProject ->
+            resolve(subProject.buildscript.configurations)
+            resolve(subProject.configurations)
+        }
+    }
+}
