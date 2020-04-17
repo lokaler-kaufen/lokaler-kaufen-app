@@ -6,9 +6,10 @@ import {HttpClient} from '@angular/common/http';
 })
 export class ImageService {
 
-  BASE_URL: string = '/api/image/shop';
+  BASE_URL = '/api/image/shop';
 
-  constructor(private client: HttpClient) { }
+  constructor(private client: HttpClient) {
+  }
 
   public upload(formData) {
     return this.client.post<any>(this.BASE_URL, formData, {
@@ -20,4 +21,5 @@ export class ImageService {
   delete() {
     return this.client.delete<any>(this.BASE_URL);
   }
+
 }

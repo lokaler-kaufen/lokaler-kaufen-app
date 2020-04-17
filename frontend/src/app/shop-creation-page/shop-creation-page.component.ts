@@ -41,24 +41,23 @@ export class BusinessHours {
   styleUrls: ['./shop-creation-page.component.css']
 })
 export class ShopCreationPageComponent implements OnInit {
+
   nameFormGroup: FormGroup;
   addressFormGroup: FormGroup;
   descriptionFormGroup: FormGroup;
   contactFormGroup = new FormGroup({});
   openingFormGroup = new FormGroup({});
   passwordFormGroup: FormGroup;
-
   passwordRegex: RegExp = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.{12,})');
-
   token: string;
   contactTypes = ContactTypesEnum;
-
   businessHours = BusinessHours;
-
   days;
   citySuggestions: LocationSuggestionDto[] = [];
-
   image: File;
+  fileIsTooBig = false;
+  wrongFileExtension = false;
+  progress = 0;
 
   constructor(
     private client: HttpClient,
@@ -256,7 +255,7 @@ export class ShopCreationPageComponent implements OnInit {
       }
       return null;
     };
-  };
+  }
 
   private onZipCodeValid() {
     const zipCode = this.addressFormGroup.get('zipCtrl').value;
@@ -269,11 +268,8 @@ export class ShopCreationPageComponent implements OnInit {
           this.addressFormGroup.get('cityCtrl').setErrors({noCityFound: true});
         }
       })
-      .catch(error => console.log('Error fetching cities to zip code'));
+      .catch(() => console.log('Error fetching cities to zip code'));
   }
-
-  fileIsTooBig: boolean = false;
-  wrongFileExtension: boolean = false;
 
   onFileChanged(event) {
     const file = event.target.files[0];
@@ -292,8 +288,6 @@ export class ShopCreationPageComponent implements OnInit {
     this.fileIsTooBig = false;
     this.wrongFileExtension = false;
   }
-
-  progress: number = 0;
 
   private postImageAndDetails(createShopRequestDto: CreateShopDto) {
     this.client.post('/api/shop?token=' + this.token, createShopRequestDto).subscribe(() => {

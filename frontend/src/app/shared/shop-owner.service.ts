@@ -48,7 +48,7 @@ export class ShopOwnerService {
   }
 
   logout() {
-    return this.http.delete('/api/shop/login').toPromise()
+    return this.http.delete(API_SHOP_OWNER_LOGIN).toPromise()
 
       .then(() => console.log('[ShopOwnerService] Logout successful.'))
 

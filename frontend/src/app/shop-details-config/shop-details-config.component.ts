@@ -262,7 +262,7 @@ export class ShopDetailsConfigComponent implements OnInit {
       }
       return null;
     };
-  };
+  }
 
   private onZipCodeValid() {
     const zipCode = this.addressFormGroup.get('zipCtrl').value;
@@ -275,7 +275,7 @@ export class ShopDetailsConfigComponent implements OnInit {
           this.addressFormGroup.get('cityCtrl').setErrors({noCityFound: true});
         }
       })
-      .catch(error => console.log('Error fetching cities to zip code'));
+      .catch(() => console.log('Error fetching cities to zip code'));
   }
 
   onFileChanged(event) {
@@ -301,25 +301,25 @@ export class ShopDetailsConfigComponent implements OnInit {
     switch (day) {
       case 'Montag':
         return slots.monday;
-        break;
+
       case 'Dienstag':
         return slots.tuesday;
-        break;
+
       case 'Mittwoch':
         return slots.wednesday;
-        break;
+
       case 'Donnerstag':
         return slots.thursday;
-        break;
+
       case 'Freitag':
         return slots.friday;
-        break;
+
       case 'Samstag':
         return slots.saturday;
-        break;
+
       case 'Sonntag':
         return slots.sunday;
-        break;
+
     }
   }
 
