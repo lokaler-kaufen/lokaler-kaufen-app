@@ -28,13 +28,7 @@ export class ShopOwnerService {
     // check the current status once and if we didn't find a token, try to get the tokenInfo from the backend
     this.loginStateService.isShopOwner
       .pipe(first())
-      .subscribe(loggedIn => {
-        if (loggedIn) {
-          console.log('I äm logged in, yey');
-        } else {
-          this.updateTokenInfo();
-        }
-      });
+      .subscribe(loggedIn => loggedIn || this.updateTokenInfo());
   }
 
   get shopOwnerLoggedIn(): Observable<boolean> {
