@@ -42,6 +42,8 @@ public class UpdateShopDto {
     @Nullable
     private String website;
     // Maps from WHATSAPP -> Telephone number, for example
+    @NotNull
+    private boolean autoColorEnabled;
     @NotEmpty
     private Map<@EnumValue(enumClass = ContactType.class) String, String> contacts;
     @Valid

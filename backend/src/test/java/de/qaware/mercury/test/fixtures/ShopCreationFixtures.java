@@ -22,7 +22,7 @@ public final class ShopCreationFixtures {
     public static ShopCreation create(SlotConfig slotConfig) {
         return new ShopCreation(
             "shop-1@local.host", "owner", "name", "street", "81549", "München", "addressSupplement", "details", "https://local.host",
-            "shop-1", Map.of(ContactType.WHATSAPP, "whatsapp"), slotConfig,
+            false, "shop-1", Map.of(ContactType.WHATSAPP, "whatsapp"), slotConfig,
             new SocialLinks("instagram", "facebook", "twitter"), Breaks.none()
         );
     }
