@@ -12,7 +12,7 @@ import {MatDialogModule} from '@angular/material/dialog';
 /**
  * Overriding the ZipCodeCacheService to prevent cross-test leaking through the browser's localStorage.
  */
-class MockZipCodeCacheService extends ZipCodeCacheService {
+class MockZipCodeCacheService {
 
   private zipCode = '';
 
@@ -30,7 +30,7 @@ describe('LandingPageComponent', () => {
   let component: LandingPageComponent;
   let fixture: ComponentFixture<LandingPageComponent>;
   let httpMock;
-  let zipCodeCacheService: ZipCodeCacheService;
+  let zipCodeCacheService: MockZipCodeCacheService;
 
   beforeEach(async(() => {
     zipCodeCacheService = new MockZipCodeCacheService();
