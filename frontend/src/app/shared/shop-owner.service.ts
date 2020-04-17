@@ -3,6 +3,7 @@ import {Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {LoginStateService} from './login-state.service';
 import {TokenInfoDto} from '../data/api';
+import {first} from 'rxjs/operators';
 
 export interface LoginCredentials {
   email: string;
@@ -24,17 +25,16 @@ const API_SHOP_OWNER_PASSWORD_RESET = '/api/shop/send-password-reset-link';
 export class ShopOwnerService {
 
   constructor(private http: HttpClient, private loginStateService: LoginStateService) {
-    // call token-info to determine the initial state on page load
-    this.http.get(API_SHOP_OWNER_TOKEN_INFO).toPromise()
-      .then((response: TokenInfoDto) => {
-        if (response.status === 'LOGGED_IN') {
-          this.loginStateService.loginShopOwner();
-
+    // check the current status once and if we didn't find a token, try to get the tokenInfo from the backend
+    this.loginStateService.isShopOwner
+      .pipe(first())
+      .subscribe(loggedIn => {
+        if (loggedIn) {
+          console.log('I äm logged in, yey');
         } else {
-          this.loginStateService.logoutShopOwner();
+          this.updateTokenInfo();
         }
-      })
-      .catch(() => this.loginStateService.logoutShopOwner());
+      });
   }
 
   get shopOwnerLoggedIn(): Observable<boolean> {
@@ -77,10 +77,24 @@ export class ShopOwnerService {
       });
   }
 
+  private updateTokenInfo() {
+    this.http.get(API_SHOP_OWNER_TOKEN_INFO).toPromise()
+      .then((tokenInfo: TokenInfoDto) => {
+        if (tokenInfo.status === 'LOGGED_IN') {
+          this.loginStateService.loginShopOwner(tokenInfo);
+
+        } else {
+          this.loginStateService.logoutShopOwner();
+        }
+      })
+      .catch(() => this.loginStateService.logoutShopOwner());
+  }
+
 
   /** @deprecated */
   storeOwnerLoggedIn(): void {
-    this.loginStateService.loginShopOwner();
+    // will set the login state to true if the user is actually logged in
+    this.updateTokenInfo();
   }
 
   /** @deprecated */
