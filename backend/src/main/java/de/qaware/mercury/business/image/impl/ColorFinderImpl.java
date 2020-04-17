@@ -1,8 +1,10 @@
 package de.qaware.mercury.business.image.impl;
 
+import antlr.preprocessor.PreprocessorTokenTypes;
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
 import de.qaware.mercury.business.image.Color;
+import de.qaware.mercury.business.image.ColorDistanceUtil;
 import de.qaware.mercury.business.image.ColorFindResult;
 import de.qaware.mercury.business.image.ColorFinder;
 import de.qaware.mercury.business.image.ColorMap;
@@ -23,8 +25,10 @@ import java.util.regex.Pattern;
 @Slf4j
 public class ColorFinderImpl implements ColorFinder {
     private static final int EXIT_CODE_SUCCESS = 0;
+    private static final int RESIZE_RESOLUTION = 40;
     private static final String PIXEL_REGEX = "^(?<x>[0-9]+),(?<y>[0-9]+): \\([ ]*(?<r>[0-9]+),[ ]*(?<g>[0-9]+),[ ]*(?<b>[0-9]+)\\) (?<hex>#[0-9A-F]*)$";
     private static final Pattern PATTERN = Pattern.compile(PIXEL_REGEX);
+    private static final double COLOR_DISTANCE_THRESHOLD = 1.5;
 
     @Override
     public ColorFindResult getDominantColor(Image.Id imageId, InputStream data) {
@@ -40,7 +44,7 @@ public class ColorFinderImpl implements ColorFinder {
 
 
     private ColorFindResult scaleImpl(InputStream data) throws IOException, InterruptedException {
-        String resolution = String.format("%dx%d", 8, 8);
+        String resolution = String.format("%dx%d", RESIZE_RESOLUTION, RESIZE_RESOLUTION);
         String[] args = {
             "gm", "convert", "-background", "white", "-extent", "0x0", "+matte", "-size", resolution, "-", "-resize", resolution, "-depth", "8", "txt:-"
         };
@@ -98,38 +102,64 @@ public class ColorFinderImpl implements ColorFinder {
         return colorMap;
     }
 
+    private double calculateConfidence(Map<Color, Integer> colorHistogram, Color color){
+        double similarColors = colorHistogram.get(color);
+        for (Color otherColor: colorHistogram.keySet()){
+            if (color.equals(otherColor)){
+                continue;
+            }
+            if (ColorDistanceUtil.getColorDistance(color, otherColor) < COLOR_DISTANCE_THRESHOLD){
+                similarColors += colorHistogram.get(otherColor);
+            }
+        }
+        return similarColors / colorHistogram.values().stream().reduce(Integer::sum).orElseThrow();
+    }
+
+    private ColorFindResult findMostConfidentResult(Map<Color, Integer> colorHistogram) {
+        ColorFindResult bestMatch = ColorFindResult.of(null, -1);
+        for (Color color : colorHistogram.keySet()) {
+            double confidence = calculateConfidence(colorHistogram, color);
+            if (confidence > bestMatch.getConfidence()) {
+                bestMatch = ColorFindResult.of(color.getHex(), confidence);
+            }
+        }
+        return bestMatch;
+    }
 
     private ColorFindResult getDominantColor(ColorMap colorMap) {
-        Map<String, Integer> colorHistogram = new HashMap<>();
+        Map<Color, Integer> colorHistogram = new HashMap<>();
         int maxX = colorMap.getWidth() - 1;
         int maxY = colorMap.getHeight() - 1;
         // let's walk around the border.
 
         // top side left to right
         for (int x = 0; x <= maxX; x++) {
-            colorHistogram.put(colorMap.getColor(x, 0).getHex(), colorHistogram.getOrDefault(colorMap.getColor(x, 0).getHex(), 0) + 1);
+            colorHistogram.put(colorMap.getColor(x, 0), colorHistogram.getOrDefault(colorMap.getColor(x, 0), 0) + 1);
         }
 
         // right side up to down
         for (int y = 1; y <= maxY; y++) {
-            colorHistogram.put(colorMap.getColor(maxX, y).getHex(), colorHistogram.getOrDefault(colorMap.getColor(maxX, y).getHex(), 0) + 1);
+            colorHistogram.put(colorMap.getColor(maxX, y), colorHistogram.getOrDefault(colorMap.getColor(maxX, y), 0) + 1);
         }
 
         // down side left to right (omitting the lower right corner we already counted)
         for (int x = 0; x <= maxX; x++) {
-            colorHistogram.put(colorMap.getColor(x, maxY).getHex(), colorHistogram.getOrDefault(colorMap.getColor(x, maxY).getHex(), 0) + 1);
+            colorHistogram.put(colorMap.getColor(x, maxY), colorHistogram.getOrDefault(colorMap.getColor(x, maxY), 0) + 1);
 
         }
 
         // left side up to down (omitting the upper left and lower left corner we already counted)
         for (int y = 1; y <= maxY - 1; y++) {
-            colorHistogram.put(colorMap.getColor(0, y).getHex(), colorHistogram.getOrDefault(colorMap.getColor(0, y).getHex(), 0) + 1);
+            colorHistogram.put(colorMap.getColor(0, y), colorHistogram.getOrDefault(colorMap.getColor(0, y), 0) + 1);
 
         }
-        int numberOfFields = 2 * colorMap.getWidth() + 2 * colorMap.getHeight() - 4;
-        Map.Entry<String, Integer> topColorEntry = colorHistogram.entrySet().stream().max(Map.Entry.comparingByValue()).orElseThrow();
-        double highestCount = topColorEntry.getValue();
-        return ColorFindResult.of(topColorEntry.getKey(), highestCount / numberOfFields);
+        Map.Entry<Color, Integer> topColorEntry = colorHistogram.entrySet().stream().max(Map.Entry.comparingByValue()).orElseThrow();
+
+        double confidence = calculateConfidence(colorHistogram, topColorEntry.getKey());
+
+        ColorFindResult mostConfidentResult = findMostConfidentResult(colorHistogram);
+        return ColorFindResult.of(topColorEntry.getKey().getHex(), confidence);
     }
+
 
 }
