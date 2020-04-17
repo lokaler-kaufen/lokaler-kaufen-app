@@ -14,6 +14,8 @@ public interface ShopService {
 
     Shop update(Shop shop, ShopUpdate update) throws LocationNotFoundException;
 
+    void updateShopColor(Shop shop, String color);
+
     void changeApproved(Shop.Id id, boolean approved) throws ShopNotFoundException;
 
     /**
@@ -21,9 +23,10 @@ public interface ShopService {
      *
      * @param shop  the shop
      * @param image the image
+     * @param color the shop color
      * @return Updated shop
      */
-    Shop setImage(Shop shop, Image image);
+    Shop setImage(Shop shop, Image image, String color);
 
     /**
      * Finds all approved and enabled shops

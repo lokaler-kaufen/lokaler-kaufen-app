@@ -1,6 +1,7 @@
 package de.qaware.mercury.rest.image;
 
 import de.qaware.mercury.business.image.Image;
+import de.qaware.mercury.business.image.ImageNotFoundException;
 import de.qaware.mercury.business.image.ImageService;
 import de.qaware.mercury.business.login.LoginException;
 import de.qaware.mercury.business.shop.Shop;
@@ -9,6 +10,7 @@ import de.qaware.mercury.rest.image.response.ImageDto;
 import de.qaware.mercury.rest.plumbing.authentication.AuthenticationHelper;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,6 +27,7 @@ import java.io.InputStream;
 /**
  * This controller manages shop (thumbnail) images.
  */
+@Slf4j
 @RestController
 @RequestMapping(value = "/api/image/shop")
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
@@ -46,15 +49,22 @@ public class ShopImageController {
         @RequestParam("file") MultipartFile file, HttpServletRequest servletRequest
     ) throws LoginException, IOException {
         Shop shop = authenticationHelper.authenticateShop(servletRequest);
+        String color = null;
 
         // Store the image
         Image image;
         try (InputStream stream = file.getInputStream()) {
             image = imageService.addImage(shop.getId(), stream);
+            try {
+                color = imageService.getImageColor(image.getId());
+            } catch (ImageNotFoundException e) {
+                log.error("Could not derive image color. Will use default.", e);
+                color = "#FFFFFF";
+            }
         }
 
         // Set the uploaded image as new shop image
-        shopService.setImage(shop, image);
+        shopService.setImage(shop, image, color);
         return ImageDto.of(image);
     }
 

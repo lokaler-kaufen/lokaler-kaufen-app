@@ -100,7 +100,7 @@ class DebugPopulateDatabase implements ApplicationRunner {
                 Objects.requireNonNull(stream, String.format("Can't load resource '%s'", imageResource));
                 image = imageService.addImage(shop.getId(), stream);
             }
-            shopService.setImage(shop, image);
+            shopService.setImage(shop, image, null);
 
             log.info("Created shop {}", shop);
         }

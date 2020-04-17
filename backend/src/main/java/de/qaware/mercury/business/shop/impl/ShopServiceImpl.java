@@ -205,6 +205,11 @@ class ShopServiceImpl implements ShopService {
     }
 
     @Override
+    public void updateShopColor(Shop shop, String color) {
+        shopRepository.update(shop.withShopColor(color));
+    }
+
+    @Override
     @Transactional
     public void changeApproved(Shop.Id id, boolean approved) throws ShopNotFoundException {
         Shop shop = shopRepository.findById(id);
@@ -232,13 +237,14 @@ class ShopServiceImpl implements ShopService {
 
     @Override
     @Transactional
-    public Shop setImage(Shop shop, Image image) {
+    public Shop setImage(Shop shop, Image image, String color) {
         if (shop.getImageId() != null && !shop.getImageId().equals(image.getId())) {
             // Shop had an image which is different from the new image -> delete old image
             imageService.deleteImage(shop.getImageId());
         }
 
         Shop updatedShop = shop.withImageId(image.getId());
+        updatedShop = updatedShop.withShopColor(color);
         shopRepository.update(updatedShop);
         return updatedShop;
     }

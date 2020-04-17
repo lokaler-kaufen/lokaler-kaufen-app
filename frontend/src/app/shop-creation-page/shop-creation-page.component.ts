@@ -187,6 +187,8 @@ export class ShopCreationPageComponent implements OnInit {
     createShopRequestDto.addressSupplement = this.addressFormGroup.get('suffixCtrl').value;
     createShopRequestDto.details = this.descriptionFormGroup.get('descriptionCtrl').value;
     createShopRequestDto.website = this.descriptionFormGroup.get('urlCtrl').value;
+    // todo for debug purposes only
+    createShopRequestDto.autoColorEnabled = true;
     createShopRequestDto.socialLinks = {
       twitter: this.descriptionFormGroup.get('twitterCtrl').value,
       instagram: this.descriptionFormGroup.get('instagramCtrl').value,

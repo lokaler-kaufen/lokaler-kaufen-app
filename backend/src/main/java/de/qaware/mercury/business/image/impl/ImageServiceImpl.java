@@ -1,5 +1,6 @@
 package de.qaware.mercury.business.image.impl;
 
+import de.qaware.mercury.business.image.ColorFinder;
 import de.qaware.mercury.business.image.Image;
 import de.qaware.mercury.business.image.ImageConfigurationProperties;
 import de.qaware.mercury.business.image.ImageException;
@@ -32,6 +33,7 @@ class ImageServiceImpl implements ImageService {
     private final ImageRepository imageRepository;
     private final ImageScaler imageScaler;
     private final ImageConfigurationProperties configuration;
+    private final ColorFinder colorFinder;
 
     @Override
     public Image addImage(Shop.Id shopId, InputStream data) {
@@ -51,6 +53,12 @@ class ImageServiceImpl implements ImageService {
     @Override
     public InputStream loadImage(Image.Id imageId) throws ImageNotFoundException {
         return imageRepository.loadImage(imageId, generateFilename(imageId));
+    }
+
+    @Override
+    public String getImageColor(Image.Id imageId) throws ImageNotFoundException {
+        InputStream image = loadImage(imageId);
+        return colorFinder.getDominantColor(imageId, image).getHexColor();
     }
 
     @Override
