@@ -198,10 +198,6 @@
         <li>Verwenden Sie keine Fotos. Diese sind verkleinert schwer erkennbar und wirken unruhig.</li>
         <li>Verwenden Sie ein Bild mit einer Auflösung von mind. 300x300 Pixeln.</li>
       </ul>
-      <input
-        style="display: none"
-        type="file" (change)="onFileChanged($event)"
-        #fileInput>
       <div *ngIf="this.image" style="display: flex; flex-direction: column">
         <div>
           <img *ngIf="localImageUrl" src="{{this.localImageUrl}}" style="max-width: 150px; max-height: 150px">
@@ -212,6 +208,7 @@
       </div>
       <div style="display: flex; flex-direction: column;">
         <div style="max-width: 155px; padding-top: 5px">
+          <input style="display: none" type="file" (change)="onFileChanged($event)" #fileInput>
           <button mat-raised-button color="primary" (click)="fileInput.click()">Datei auswählen...</button>
         </div>
         <div style="padding-top: 10px;" *ngIf="image">
