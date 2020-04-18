@@ -62,7 +62,7 @@ class DebugPopulateDatabase implements ApplicationRunner {
     private void createShops() throws ShopNotFoundException, ShopAlreadyExistsException, LocationNotFoundException, IOException {
         createShop(new ShopCreation(
             "moe@local.host", "Moe", "Moe's Whiskey", "Lothstr. 64", "85579", "Neubiberg", "", "Bester Whiskey in ganz Neubiberg!",
-            "https://www.moes-whiskey.com/", false, "moe",
+            "https://www.moes-whiskey.com/", true, "moe",
             Map.of(ContactType.WHATSAPP, "0151/123456789", ContactType.FACETIME, "moe@local.host"),
             new SlotConfig(15, 5, 60,
                 new DayConfig(LocalTime.of(8, 0), LocalTime.of(17, 0)),
@@ -77,14 +77,14 @@ class DebugPopulateDatabase implements ApplicationRunner {
 
         createShop(new ShopCreation(
             "flo@local.host", "Flo", "Flo's Kaffeeladen", "Aschauer Str. 32", "81549", "München", "", "Hier gibts jede Art von Kaffee!", null,
-            false, "flo", Map.of(ContactType.GOOGLE_DUO, "@vlow"),
+            true, "flo", Map.of(ContactType.GOOGLE_DUO, "@vlow"),
             new SlotConfig(30, 10, 45, null, null, null, null, null, null, null),
             new SocialLinks("derflo", "der.flo", "@derflo"), Breaks.everyday(LocalTime.of(11, 30), LocalTime.of(12, 0))
         ), "/dev/shopimages/flo.jpg");
 
         createShop(new ShopCreation(
             "vroni@local.host", "Vroni", "Vroni's Kleiderladen", "Rheinstraße 4C", "55116", "Mainz", "", "Kleider, Kleider, Kleider!", null,
-            false, "vroni", Map.of(ContactType.GOOGLE_DUO, "vroni@local.host", ContactType.SIGNAL, "@vroni"),
+            true, "vroni", Map.of(ContactType.GOOGLE_DUO, "vroni@local.host", ContactType.SIGNAL, "@vroni"),
             new SlotConfig(60, 15, 120, null, null, null, null, null, null, null),
             new SocialLinks("dievroni", "die.vroni", "@dievroni"), Breaks.everyday(LocalTime.of(12, 0), LocalTime.of(14, 0))
         ), "/dev/shopimages/vroni.jpg");
