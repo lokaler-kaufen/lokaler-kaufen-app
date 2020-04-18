@@ -187,22 +187,50 @@
     </div>
   </mat-step>
   <mat-step [optional]="true">
-    <ng-template matStepLabel>Sie haben ein Logo?</ng-template>
-    <p>Bitte beachten Sie die maximale Dateigröße von 5 MB.</p>
-    <input
-      style="display: none"
-      type="file" (change)="onFileChanged($event)"
-      #fileInput>
-    <div *ngIf="this.image">{{this.image.name}}</div>
-    <button (click)="fileInput.click()">Datei auswählen...</button>
-    <mat-error *ngIf="fileIsTooBig">Die Datei ist zu groß. Bitte wählen Sie eine Datei aus, die maximal 2 MB groß ist.
-    </mat-error>
-    <mat-error *ngIf="wrongFileExtension">Bitte wählen Sie eine Datei mit der Endung '.png', '.jpeg' oder '.jpg' aus.
-    </mat-error>
-    <div>
-      <button mat-button matStepperPrevious>Zurück</button>
-      <button mat-button matStepperNext>Weiter</button>
-    </div>
+    <form [formGroup]="logoFormGroup">
+      <ng-template matStepLabel>Sie haben ein Logo?</ng-template>
+      <p>Wählen Sie einfach eine JPEG oder PNG Bilddatei von Ihrem Rechner aus. Die Datei muss kleiner als 5 MB
+        sein.</p>
+      <p>Hier noch ein paar Tipps für ein gutes Logo:</p>
+      <ul>
+        <li>Wählen Sie ein Bild mit einem einheitlichen, einfarbigen Hintergrund, z.B. weiß oder transparent.</li>
+        <li>Vermeiden Sie Bilder mit viel Text. Das Logo wird verkleinert angezeigt und Text damit schwer lesbar.</li>
+        <li>Verwenden Sie keine Fotos. Diese sind verkleinert schwer erkennbar und wirken unruhig.</li>
+        <li>Verwenden Sie ein Bild mit einer Auflösung von mind. 300x300 Pixeln.</li>
+      </ul>
+      <input
+        style="display: none"
+        type="file" (change)="onFileChanged($event)"
+        #fileInput>
+      <div *ngIf="this.image" style="display: flex; flex-direction: column">
+        <div>
+          <img *ngIf="localImageUrl" src="{{this.localImageUrl}}" style="max-width: 150px; max-height: 150px">
+        </div>
+        <div>
+          Ihre ausgewählte Datei: {{this.image.name}}
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column;">
+        <div style="max-width: 155px; padding-top: 5px">
+          <button mat-raised-button color="primary" (click)="fileInput.click()">Datei auswählen...</button>
+        </div>
+        <div style="padding-top: 10px;" *ngIf="image">
+          <p>Um das Logo auf der Seite Ihres Ladens schöner in Szene zu setzen, passen wir die Farbe rund um Ihr Logo
+            automatisch an. Das funktioniert in den allermeisten Fällen sehr gut. Falls Sie jedoch mit dem Ergebnis
+            unzufrieden sind, können Sie die Funktion auch später jederzeit deaktivieren.</p>
+          <mat-checkbox formControlName="autoColorCtrl">Automatische Farbe aktivieren (empfohlen)
+          </mat-checkbox>
+        </div>
+      </div>
+      <mat-error *ngIf="fileIsTooBig">Die Datei ist zu groß. Bitte wählen Sie eine Datei aus, die maximal 2 MB groß ist.
+      </mat-error>
+      <mat-error *ngIf="wrongFileExtension">Bitte wählen Sie eine Datei mit der Endung '.png', '.jpeg' oder '.jpg' aus.
+      </mat-error>
+      <div style="padding-top: 15px">
+        <button mat-button matStepperPrevious>Zurück</button>
+        <button mat-button matStepperNext>Weiter</button>
+      </div>
+    </form>
   </mat-step>
   <mat-step [stepControl]="passwordFormGroup">
     <form [formGroup]="passwordFormGroup">
