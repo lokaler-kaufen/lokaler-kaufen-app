@@ -1,3 +1,4 @@
+export * from './breaksDto';
 export * from './clientErrorDto';
 export * from './createReservationDto';
 export * from './createShopDto';
