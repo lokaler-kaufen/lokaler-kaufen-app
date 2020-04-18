@@ -164,10 +164,4 @@
 
 }
 
-@media screen and (min-width: 940px) {
 
-  ::ng-deep .mat-tab-header-pagination {
-    display: none !important;
-  }
-
-}
