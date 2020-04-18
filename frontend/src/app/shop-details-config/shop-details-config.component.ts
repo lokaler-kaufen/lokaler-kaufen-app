@@ -10,11 +10,14 @@ import {
   LocationSuggestionsDto,
   ShopOwnerDetailDto,
   SlotConfigDto,
+  SlotsDto,
   UpdateShopDto
 } from '../data/api';
 import {ContactTypesEnum} from '../contact-types/available-contact-types';
 import {filter} from 'rxjs/operators';
 import {HttpClient} from '@angular/common/http';
+import {StepperSelectionEvent} from '@angular/cdk/stepper';
+import {ReserveSlotsData, SlotSelectionData} from '../slots/slots.component';
 
 export interface UpdateShopData {
   image: File;
@@ -65,11 +68,16 @@ export class ShopDetailsConfigComponent implements OnInit {
 
   deleteImage = false;
 
+  slotsPreview: ReplaySubject<ReserveSlotsData> = new ReplaySubject<ReserveSlotsData>();
+
+  breakSlots: string[] = [];
+
   ngOnInit() {
     this.configureFormControls();
     this.detailsObservable
       .subscribe((shopDetails: ShopOwnerDetailDto) => {
           this.details = shopDetails;
+          this.breakSlots = shopDetails.breaks.slotIds;
           this.setConfiguredShopDetails();
         },
         error => {
@@ -219,7 +227,6 @@ export class ShopDetailsConfigComponent implements OnInit {
     this.contactTypes.availableContactTypes.forEach(contact => {
       const contactCtrl = contact.toLowerCase() + 'Ctrl';
       const value = this.contactFormGroup.get(contactCtrl).value;
-      console.log('Contact type: ' + contact + ', value: ' + value);
       if (value) {
         availableContactTypes[contact] = value;
       }
@@ -230,7 +237,6 @@ export class ShopDetailsConfigComponent implements OnInit {
       if (opening.enabled) {
         const fromCtrl = day + 'FromCtrl';
         const toCtrl = day + 'ToCtrl';
-        console.log('FromCtrl: ' + fromCtrl);
         slots = setRightSlot(day, this.openingFormGroup.get(fromCtrl).value, this.openingFormGroup.get(toCtrl).value, slots);
       }
     });
@@ -238,6 +244,7 @@ export class ShopDetailsConfigComponent implements OnInit {
     slots.timePerSlot = this.openingFormGroup.get('defaultCtrl').value;
     slots.delayForFirstSlot = this.openingFormGroup.get('delayCtrl').value;
     updateShopDto.slots = slots;
+    updateShopDto.breaks = {slotIds: this.breakSlots};
     this.updateShopEvent.next({
       updateShopDto,
       id: this.details.id,
@@ -276,6 +283,45 @@ export class ShopDetailsConfigComponent implements OnInit {
         }
       })
       .catch(() => console.log('Error fetching cities to zip code'));
+  }
+
+  private fillSlotsConfig() {
+    let slots: SlotConfigDto = {};
+    this.businessHours.POSSIBLE_BUSINESS_HOURS.forEach((opening, day) => {
+      if (opening.enabled) {
+        const fromCtrl = day + 'FromCtrl';
+        const toCtrl = day + 'ToCtrl';
+        slots = setRightSlot(day, this.openingFormGroup.get(fromCtrl).value, this.openingFormGroup.get(toCtrl).value, slots);
+      }
+    });
+    slots.timeBetweenSlots = this.openingFormGroup.get('pauseCtrl').value;
+    slots.timePerSlot = this.openingFormGroup.get('defaultCtrl').value;
+    slots.delayForFirstSlot = this.openingFormGroup.get('delayCtrl').value;
+    return slots;
+  }
+
+  changeBreakSlot($event: SlotSelectionData) {
+    if ($event.removeSlot) {
+      const index = this.breakSlots.indexOf($event.id, 0);
+      if (index > -1) {
+        this.breakSlots.splice(index, 1);
+      }
+    } else {
+      this.breakSlots.push($event.id);
+    }
+  }
+
+  previewSlots($event: StepperSelectionEvent) {
+    if ($event.selectedIndex !== 5) {
+      return;
+    }
+    const slots = this.fillSlotsConfig();
+    this.client.post<SlotsDto>('/api/reservation/preview', slots).toPromise().then(preview => {
+      this.slotsPreview.next({
+        slots: preview,
+        breaks: this.details.breaks
+      });
+    });
   }
 
   onFileChanged(event) {

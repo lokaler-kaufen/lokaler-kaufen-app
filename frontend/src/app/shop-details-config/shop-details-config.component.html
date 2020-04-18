@@ -1,6 +1,6 @@
 <p>Bei Ihnen hat sich etwas geändert? Dann aktualisieren Sie hier einfach Ihre Daten. </p>
 
-<mat-vertical-stepper [linear]="false" #stepper>
+<mat-vertical-stepper [linear]="false" #stepper (selectionChange)="previewSlots($event)">
   <mat-step [stepControl]="nameFormGroup">
     <form [formGroup]="nameFormGroup">
       <ng-template matStepLabel>Starten wir ganz einfach</ng-template>
@@ -170,10 +170,24 @@
         </mat-form-field>
         Minuten
       </div>
+      <div class="padding-vertical">
+        Bitte überprüfen Sie die Pausenzeiten, wenn Sie etwas an Ihren Öffnungszeiten ändern.
+      </div>
       <div>
         <button mat-button matStepperPrevious>Zurück</button>
+        <button mat-button matStepperNext>Weiter</button>
       </div>
     </form>
+  </mat-step>
+  <mat-step [optional]="true">
+    <ng-template matStepLabel>Sie können auch Pausenzeiten angeben.</ng-template>
+    <p>Wählen sie einfach die Slots aus, zu denen Sie keine Beratung anbieten.</p>
+    <slots *ngIf="details.breaks" [slotsDataObservable]="slotsPreview" (selectedSlotId)="changeBreakSlot($event)"
+           [isSlotConfig]="true"></slots>
+    <div>
+      <button mat-button matStepperPrevious>Zurück</button>
+      <button mat-button matStepperNext>Weiter</button>
+    </div>
   </mat-step>
   <mat-step [optional]="true">
     <ng-template matStepLabel>Sie haben ein Logo?</ng-template>

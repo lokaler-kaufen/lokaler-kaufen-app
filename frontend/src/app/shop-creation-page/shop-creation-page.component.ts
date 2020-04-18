@@ -5,11 +5,13 @@ import {ActivatedRoute} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {ShopCreationSuccessPopupComponent} from '../shop-creation-success-popup/shop-creation-success-popup.component';
 import {NotificationsService} from 'angular2-notifications';
-import {CreateShopDto, LocationSuggestionDto, LocationSuggestionsDto, SlotConfigDto} from '../data/api';
+import {CreateShopDto, LocationSuggestionDto, LocationSuggestionsDto, SlotConfigDto, SlotsDto} from '../data/api';
 import {ContactTypesEnum} from '../contact-types/available-contact-types';
 import {catchError, filter, map} from 'rxjs/operators';
-import {of} from 'rxjs';
+import {of, ReplaySubject} from 'rxjs';
 import {ImageService} from '../shared/image.service';
+import {StepperSelectionEvent} from '@angular/cdk/stepper';
+import {ReserveSlotsData, SlotSelectionData} from '../slots/slots.component';
 
 export class OpeningHours {
   constructor(enabled: boolean = true, from: string = '09:00', to: string = '16:00') {
@@ -59,6 +61,9 @@ export class ShopCreationPageComponent implements OnInit {
   wrongFileExtension = false;
   progress = 0;
 
+  slotsPreview: ReplaySubject<ReserveSlotsData> = new ReplaySubject<ReserveSlotsData>();
+  breakSlots: string[] = [];
+
   constructor(
     private client: HttpClient,
     private formBuilder: FormBuilder,
@@ -74,6 +79,10 @@ export class ShopCreationPageComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       this.token = params.token;
     });
+    this.initFormControls();
+  }
+
+  private initFormControls() {
     this.nameFormGroup = this.formBuilder.group({
       nameCtrl: ['', Validators.required],
       businessNameCtrl: ['', Validators.required]
@@ -127,7 +136,6 @@ export class ShopCreationPageComponent implements OnInit {
       confirmPasswordCtrl: ['', Validators.required],
       privacyCtrl: ['', Validators.requiredTrue]
     }, {validator: this.checkMatchingPasswords('passwordCtrl', 'confirmPasswordCtrl')});
-
   }
 
   // Validation password equals confirmed password
@@ -193,21 +201,26 @@ export class ShopCreationPageComponent implements OnInit {
       }
     });
     createShopRequestDto.contacts = availableContactTypes;
+    const slots = this.fillSlotsConfig();
+    createShopRequestDto.slots = slots;
+    createShopRequestDto.password = this.passwordFormGroup.get('passwordCtrl').value;
+    createShopRequestDto.breaks = {slotIds: this.breakSlots};
+    return createShopRequestDto;
+  }
+
+  private fillSlotsConfig() {
     let slots: SlotConfigDto = {};
     this.businessHours.POSSIBLE_BUSINESS_HOURS.forEach((opening, day) => {
       if (opening.enabled) {
         const fromCtrl = day + 'FromCtrl';
         const toCtrl = day + 'ToCtrl';
-        console.log('FromCtrl: ' + fromCtrl);
         slots = setRightSlot(day, this.openingFormGroup.get(fromCtrl).value, this.openingFormGroup.get(toCtrl).value, slots);
       }
     });
     slots.timeBetweenSlots = this.openingFormGroup.get('pauseCtrl').value;
     slots.timePerSlot = this.openingFormGroup.get('defaultCtrl').value;
     slots.delayForFirstSlot = this.openingFormGroup.get('delayCtrl').value;
-    createShopRequestDto.slots = slots;
-    createShopRequestDto.password = this.passwordFormGroup.get('passwordCtrl').value;
-    return createShopRequestDto;
+    return slots;
   }
 
   private postShopCreation(createShopRequestDto: CreateShopDto) {
@@ -328,6 +341,25 @@ export class ShopCreationPageComponent implements OnInit {
       });
   }
 
+  changeBreakSlot($event: SlotSelectionData) {
+    if ($event.removeSlot) {
+      delete this.breakSlots[$event.id];
+    } else {
+      this.breakSlots.push($event.id);
+    }
+  }
+
+  previewSlots($event: StepperSelectionEvent) {
+    if ($event.selectedIndex !== 5) {
+      return;
+    }
+    const slots = this.fillSlotsConfig();
+    this.client.post<SlotsDto>('/api/reservation/preview', slots).toPromise().then(preview => {
+      this.slotsPreview.next({
+        slots: preview
+      });
+    });
+  }
 }
 
 export function setRightSlot(dayString: string, from: string, to: string, slots: SlotConfigDto) {
