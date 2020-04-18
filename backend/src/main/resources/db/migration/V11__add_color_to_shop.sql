@@ -3,7 +3,4 @@ ALTER TABLE shop
     ADD COLUMN shop_color varchar;
 
 ALTER TABLE shop
-    ADD COLUMN auto_color_enabled boolean NOT NULL DEFAULT FALSE;
-
-ALTER TABLE shop
-    ALTER COLUMN shop_color DROP DEFAULT;
+    ADD COLUMN auto_color_enabled boolean NOT NULL DEFAULT TRUE;
