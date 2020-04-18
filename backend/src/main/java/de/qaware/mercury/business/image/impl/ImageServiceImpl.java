@@ -57,8 +57,12 @@ class ImageServiceImpl implements ImageService {
 
     @Override
     public String getImageColor(Image.Id imageId) throws ImageNotFoundException {
-        InputStream image = loadImage(imageId);
-        return colorFinder.getDominantColor(imageId, image).getHexColor();
+
+        try(InputStream image = loadImage(imageId)) {
+            return colorFinder.getDominantColor(imageId, image).getHexColor();
+        } catch (IOException e) {
+            throw new ImageException("Failed to load image", e);
+        }
     }
 
     @Override
