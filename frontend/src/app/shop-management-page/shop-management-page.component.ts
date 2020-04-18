@@ -54,6 +54,8 @@ export class ShopManagementPageComponent implements OnInit {
           console.log('Could not delete image: ' + error.body);
           this.notificationsService.error('Tut uns Leid!', 'Wir konnten dein Bild leider nicht löschen.');
         });
+      } else {
+        this.updateShopDto($event);
       }
     }
   }
@@ -121,4 +123,5 @@ export class ShopManagementPageComponent implements OnInit {
 
     this.notificationsService.error(notificationTitle, notificationText);
   }
+
 }
