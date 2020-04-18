@@ -26,6 +26,11 @@ export class BookingSuccessPopupComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  getDate() {
+    const date = new Date(this.data.day);
+    return date.toLocaleDateString('de-DE');
+  }
+
   onClick(): void {
     this.dialogRef.close();
   }
