@@ -9,7 +9,7 @@ import de.qaware.mercury.test.email.Email
 import de.qaware.mercury.test.email.Emails
 import de.qaware.mercury.test.email.TestEmailSender
 import de.qaware.mercury.test.fixtures.ShopCreationFixtures
-import de.qaware.mercury.test.time.FixedClock
+import de.qaware.mercury.test.time.TestClock
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
@@ -410,8 +410,8 @@ class ReservationControllerIntTest extends IntegrationTestSpecification {
     static class MockConfig {
         @Bean
         @Primary
-        FixedClock fixedClock() {
-            return new FixedClock(ZonedDateTime.parse("2020-04-16T13:22:33.016252+02:00[Europe/Berlin]"));
+        TestClock testClock() {
+            return new TestClock(ZonedDateTime.parse("2020-04-16T13:22:33.016252+02:00[Europe/Berlin]"));
         }
 
         @Bean

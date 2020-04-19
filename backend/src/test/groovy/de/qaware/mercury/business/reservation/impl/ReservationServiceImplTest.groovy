@@ -22,7 +22,7 @@ import de.qaware.mercury.test.builder.SlotConfigBuilder
 import de.qaware.mercury.test.fixtures.BreaksFixtures
 import de.qaware.mercury.test.fixtures.ShopFixtures
 import de.qaware.mercury.test.fixtures.SlotConfigFixtures
-import de.qaware.mercury.test.time.FixedClock
+import de.qaware.mercury.test.time.TestClock
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -34,7 +34,7 @@ import java.time.ZonedDateTime
 class ReservationServiceImplTest extends Specification {
     SlotService slotService = Mock()
     ReservationRepository reservationRepository = Mock()
-    FixedClock clock = new FixedClock()
+    TestClock clock = new TestClock()
     UUIDFactory uuidFactory = Mock()
     EmailService emailService = Mock()
     TokenService tokenService = Mock()
