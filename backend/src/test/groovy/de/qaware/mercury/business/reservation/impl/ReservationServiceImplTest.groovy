@@ -16,22 +16,25 @@ import de.qaware.mercury.business.shop.ContactType
 import de.qaware.mercury.business.shop.Shop
 import de.qaware.mercury.business.shop.ShopService
 import de.qaware.mercury.business.shop.SlotConfig
-import de.qaware.mercury.business.time.Clock
 import de.qaware.mercury.business.uuid.UUIDFactory
 import de.qaware.mercury.storage.reservation.ReservationRepository
 import de.qaware.mercury.test.builder.SlotConfigBuilder
+import de.qaware.mercury.test.fixtures.BreaksFixtures
 import de.qaware.mercury.test.fixtures.ShopFixtures
+import de.qaware.mercury.test.fixtures.SlotConfigFixtures
+import de.qaware.mercury.test.time.FixedClock
 import spock.lang.Specification
 import spock.lang.Subject
 
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.LocalTime
 import java.time.ZonedDateTime
 
 class ReservationServiceImplTest extends Specification {
     SlotService slotService = Mock()
     ReservationRepository reservationRepository = Mock()
-    Clock clock = Mock()
+    FixedClock clock = new FixedClock()
     UUIDFactory uuidFactory = Mock()
     EmailService emailService = Mock()
     TokenService tokenService = Mock()
@@ -42,7 +45,8 @@ class ReservationServiceImplTest extends Specification {
 
     def "List available slots for shop"() {
         given:
-        LocalDate today = LocalDateTime.now().toLocalDate()
+        clock.setNow(ZonedDateTime.now())
+        LocalDate today = clock.today()
         Shop.Id id = Shop.Id.of(UUID.randomUUID())
         Shop shop = new Shop.ShopBuilder().id(id).slotConfig(new SlotConfigBuilder().build()).build()
 
@@ -50,7 +54,6 @@ class ReservationServiceImplTest extends Specification {
         Slots slots = reservationService.listSlots(shop, 1)
 
         then:
-        clock.today() >> today
         reservationRepository.findReservationsForShop(id, today.atTime(0, 0), today.atTime(23, 59)) >> []
         slotService.generateSlots(today, today, shop.getSlotConfig(), []) >> new Slots(today, today, [])
         slots.days.isEmpty()
@@ -143,6 +146,44 @@ class ReservationServiceImplTest extends Specification {
         1 * tokenService.verifyReservationCancellationToken(cancellationToken) >> cancellation
         1 * reservationRepository.findById(reservationId) >> null
         thrown ReservationNotFoundException
+    }
+
+    def "test shop breaks"() {
+        given: "a shop, open monday from 10:00 - 13:00, pause from 11:00 - 12:00"
+        // This is a monday
+        clock.setNow(ZonedDateTime.parse("2020-04-20T07:00:00+02:00[Europe/Berlin]"))
+
+        // We want to test against a real slot service, not the mocked one
+        ReservationService sut = new ReservationServiceImpl(new SlotServiceImpl(clock), reservationRepository, clock, uuidFactory, emailService, tokenService, shopService)
+
+        Shop shop = ShopFixtures.create().withSlotConfig(
+            SlotConfigFixtures.monday(30, 30, LocalTime.of(10, 0), LocalTime.of(13, 0))
+        )
+        // No reservations
+        reservationRepository.findReservationsForShop(shop.id, _, _) >> []
+        // Break from 11:00 to 12:00
+        shopService.findBreaks(shop) >> BreaksFixtures.monday(LocalTime.of(11, 0), LocalTime.of(12, 0))
+
+        when: "we list the slots for today"
+        Slots slots = sut.listSlots(shop, 1)
+
+        then: "we get 3 slots, and one is marked as not available"
+        def today = clock.today()
+        Slots.SlotDay monday = slots.days[0]
+        // Slots should be: 10:00 - 10:30 | 11:00 - 11:30 (break) | 12:00 - 12:30
+        monday.slots.size() == 3
+
+        monday.slots[0].start == today.atTime(10, 0)
+        monday.slots[0].end == today.atTime(10, 30)
+        monday.slots[0].available
+
+        monday.slots[1].start == today.atTime(11, 0)
+        monday.slots[1].end == today.atTime(11, 30)
+        !monday.slots[1].available // Pause!
+
+        monday.slots[2].start == today.atTime(12, 0)
+        monday.slots[2].end == today.atTime(12, 30)
+        monday.slots[2].available
     }
 
     private static Reservation createTestReservation(Reservation.Id reservationId, Shop.Id shopId) {

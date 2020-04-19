@@ -1,11 +1,15 @@
 package de.qaware.mercury.test.time;
 
 import de.qaware.mercury.business.time.Clock;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.ZonedDateTime;
 
 public class FixedClock implements Clock {
-    private final ZonedDateTime now;
+    @Getter
+    @Setter
+    private ZonedDateTime now;
 
     public FixedClock(ZonedDateTime now) {
         this.now = now;

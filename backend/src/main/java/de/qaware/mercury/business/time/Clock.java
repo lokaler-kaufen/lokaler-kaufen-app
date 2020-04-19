@@ -13,7 +13,7 @@ public interface Clock {
     }
 
     default LocalDate today() {
-        return now().toLocalDate();
+        return nowZoned().toLocalDate();
     }
 
     default Date nowAsLegacyDate() {
