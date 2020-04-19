@@ -15,6 +15,10 @@ import java.util.Map;
  * This means that the ratio will be 1.0 (or 100%) if the identified color is indistinguishable
  * from the rest of the histogram and 0.0 (or 0%) if the identified color is different from all
  * colors in the given color histogram.
+ * <p>
+ * Be aware that this is a simple but not 100% correct way to calculate the confidence.
+ * If the histogram contains 100% of a very similar color and the original color is not contained at all,
+ * the confidence will still be 100%. Nevertheless, the difference should not be noticeable.
  */
 @Service
 public class ColorConfidenceCalculatorImpl implements ColorConfidenceCalculator {
@@ -24,7 +28,7 @@ public class ColorConfidenceCalculatorImpl implements ColorConfidenceCalculator 
 
     @Override
     public double calculateConfidence(Color color, Map<Color, Integer> colorHistogram) {
-        double similarColors = colorHistogram.get(color);
+        double similarColors = colorHistogram.getOrDefault(color, 0);
         for (Color otherColor : colorHistogram.keySet()) {
             if (color.equals(otherColor)) {
                 continue;
