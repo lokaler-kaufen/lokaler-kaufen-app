@@ -1,7 +1,7 @@
 package de.qaware.mercury.business.image.impl;
 
-import de.qaware.mercury.business.image.ColorFinder;
 import de.qaware.mercury.business.image.Image;
+import de.qaware.mercury.business.image.ImageAnalyzer;
 import de.qaware.mercury.business.image.ImageConfigurationProperties;
 import de.qaware.mercury.business.image.ImageException;
 import de.qaware.mercury.business.image.ImageFormat;
@@ -33,7 +33,7 @@ class ImageServiceImpl implements ImageService {
     private final ImageRepository imageRepository;
     private final ImageScaler imageScaler;
     private final ImageConfigurationProperties configuration;
-    private final ColorFinder colorFinder;
+    private final ImageAnalyzer imageAnalyzer;
 
     @Override
     public Image addImage(Shop.Id shopId, InputStream data) {
@@ -56,10 +56,14 @@ class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public String getImageColor(Image.Id imageId) throws ImageNotFoundException {
+    public String getImageBackgroundColor(Image.Id imageId) throws ImageNotFoundException {
 
-        try(InputStream image = loadImage(imageId)) {
-            return colorFinder.getDominantColor(imageId, image).getHexColor();
+        try (InputStream image = loadImage(imageId)) {
+            // At the moment, we're returning the color regardless of the confidence.
+            // There have not been any false positives yet, so it's hard to pinpoint the acceptable
+            // threshold correctly. If there are any false positives, this is the right place to return
+            // a default value (e.g. #FFFFFF) if the confidence value is to low.
+            return imageAnalyzer.getBackgroundColor(imageId, image).getHexColor();
         } catch (IOException e) {
             throw new ImageException("Failed to load image", e);
         }

@@ -1,7 +1,7 @@
-package de.qaware.mercury.business.image.analysis.graphicsmagick.impl;
+package de.qaware.mercury.business.image.color.analysis.graphicsmagick.impl;
 
 import de.qaware.mercury.business.image.ImageException;
-import de.qaware.mercury.business.image.analysis.graphicsmagick.GMImageToTextConverter;
+import de.qaware.mercury.business.image.color.analysis.graphicsmagick.GMImageToTextConverter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

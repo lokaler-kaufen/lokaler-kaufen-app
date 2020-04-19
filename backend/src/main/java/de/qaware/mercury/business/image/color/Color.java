@@ -1,7 +1,10 @@
-package de.qaware.mercury.business.image;
+package de.qaware.mercury.business.image.color;
 
 import lombok.Value;
 
+/**
+ * A simple container for the colors, containing both, an RGB and a hex representation of the color.
+ */
 @Value(staticConstructor = "of")
 public class Color {
     int red;
@@ -9,6 +12,14 @@ public class Color {
     int blue;
     String hex;
 
+    /**
+     * Private constructor to perform validation for static constructor ('of').
+     *
+     * @param red   r component
+     * @param green g component
+     * @param blue  b component
+     * @param hex   hex representation, (e.g. '#FFAF10').
+     */
     private Color(int red, int green, int blue, String hex) {
         if (red < 0 || red > 255 ||
             green < 0 || green > 255 ||

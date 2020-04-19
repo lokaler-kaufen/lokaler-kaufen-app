@@ -2,13 +2,10 @@ package de.qaware.mercury.cli;
 
 import de.qaware.mercury.business.image.ImageNotFoundException;
 import de.qaware.mercury.business.image.ImageService;
-import de.qaware.mercury.business.login.AdminEmailSettings;
-import de.qaware.mercury.business.login.AdminLoginService;
 import de.qaware.mercury.business.shop.Shop;
 import de.qaware.mercury.business.shop.ShopService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -34,7 +31,7 @@ public class UpdateColorsRunner {
         for (Shop shop: shopList ) {
             if (shop.getImageId() != null){
                 try {
-                    String color = imageService.getImageColor(shop.getImageId());
+                    String color = imageService.getImageBackgroundColor(shop.getImageId());
                     shopService.updateShopColor(shop, color);
                 } catch (ImageNotFoundException e) {
                     log.warn("Could not update color for shop with id {}.", shop.getId());

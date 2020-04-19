@@ -1,6 +1,6 @@
-package de.qaware.mercury.business.image.analysis.graphicsmagick;
+package de.qaware.mercury.business.image.color.analysis.graphicsmagick;
 
-import de.qaware.mercury.business.image.ColorMap;
+import de.qaware.mercury.business.image.color.ColorMap;
 
 /**
  * GraphicsMagick can convert images to a textual view, which is essentially a list of every pixel in the picture.

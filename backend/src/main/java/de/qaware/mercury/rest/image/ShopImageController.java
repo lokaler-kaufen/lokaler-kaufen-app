@@ -56,7 +56,7 @@ public class ShopImageController {
         try (InputStream stream = file.getInputStream()) {
             image = imageService.addImage(shop.getId(), stream);
             try {
-                color = imageService.getImageColor(image.getId());
+                color = imageService.getImageBackgroundColor(image.getId());
             } catch (ImageNotFoundException e) {
                 log.error("Could not derive image color. Will use default.", e);
                 color = "#FFFFFF";

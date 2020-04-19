@@ -12,7 +12,14 @@ public interface ImageService {
 
     InputStream loadImage(Image.Id imageId) throws ImageNotFoundException;
 
-    String getImageColor(Image.Id imageId) throws ImageNotFoundException;
+    /**
+     * Get the probable background color of the image with the given ID.
+     *
+     * @param imageId the internal ID of the image as referenced in the shop.
+     * @return A hex color string (e.g. '#FFAF10', including the '#' sign).
+     * @throws ImageNotFoundException If the image with the given ID cannot be found.
+     */
+    String getImageBackgroundColor(Image.Id imageId) throws ImageNotFoundException;
 
     ImageFormat getImageFormat();
 
