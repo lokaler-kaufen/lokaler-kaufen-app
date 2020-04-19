@@ -1,0 +1,33 @@
+.book-button {
+  width: 100%;
+}
+
+.not-open {
+  color: lightgray;
+}
+
+.small-booking-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.small-booking-row > div {
+  width: 50%;
+}
+
+::ng-deep.mat-tab-labels {
+  justify-content: space-between;
+}
+
+::ng-deep.mat-tab-label, ::ng-deep.mat-tab-label-active {
+  min-width: 115px !important;
+}
+
+@media screen and (min-width: 940px) {
+
+  ::ng-deep .mat-tab-header-pagination {
+    display: none !important;
+  }
+
+}

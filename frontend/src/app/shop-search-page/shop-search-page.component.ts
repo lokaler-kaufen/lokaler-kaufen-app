@@ -63,8 +63,10 @@ export class ShopSearchPageComponent implements OnInit {
 
   private handleResponse(response) {
     if (response.shops.length > 0) {
-      this.shops = response.shops;
+      this.shops = [...response.shops]
+        .sort((shop1, shop2) => shop1.distance - shop2.distance);
       this.isSearchEmpty = false;
+
     } else {
       this.shops = [];
       console.log('Keine Läden gefunden.');
@@ -120,10 +122,6 @@ export class ShopSearchPageComponent implements OnInit {
   selectAll($event: MouseEvent) {
     const input = $event.target as HTMLInputElement;
     input.select();
-  }
-
-  sortShopsForMobile() {
-    return this.shops.sort((shop1, shop2) => shop1.distance - shop2.distance);
   }
 
   handleKeyEvent($event: KeyboardEvent) {

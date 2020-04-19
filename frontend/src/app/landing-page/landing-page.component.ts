@@ -15,7 +15,7 @@ import {BreakpointObserver} from '@angular/cdk/layout';
 })
 export class LandingPageComponent implements OnInit {
 
-  private zipCodeInitialValue: string;
+  private zipCodeInitialValue: string | null;
 
   suggestions: LocationSuggestionDto[] = [];
 

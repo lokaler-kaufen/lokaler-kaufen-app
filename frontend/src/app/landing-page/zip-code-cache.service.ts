@@ -1,14 +1,16 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
+import {BrowserStorageService} from '../data/browser-storage.service';
+
+const KEY = 'zipCode';
 
 /**
  * Simple caching service that stores the ZIP code in local storage
  */
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({providedIn: 'root'})
 export class ZipCodeCacheService {
 
-  private static readonly KEY = 'zipCode';
+  constructor(private browserStorage: BrowserStorageService) {
+  }
 
   /**
    * Set the zip code (and update it)
@@ -16,13 +18,14 @@ export class ZipCodeCacheService {
    * @param zipCode zipCode that should be stored
    */
   public setZipCode(zipCode: string) {
-    localStorage.setItem(ZipCodeCacheService.KEY, zipCode);
+    this.browserStorage.set(KEY, zipCode);
   }
 
   /**
    * Returns the last zip code or null if none is present
    */
-  public getZipCode(): string {
-    return localStorage.getItem(ZipCodeCacheService.KEY);
+  public getZipCode(): string | null {
+    return this.browserStorage.get(KEY);
   }
+
 }

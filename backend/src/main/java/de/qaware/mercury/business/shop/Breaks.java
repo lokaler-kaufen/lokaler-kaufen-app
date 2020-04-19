@@ -4,7 +4,7 @@ import lombok.Value;
 
 import java.time.DayOfWeek;
 import java.time.LocalTime;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -25,7 +25,7 @@ public class Breaks {
     }
 
     public Map<DayOfWeek, Set<Break>> groupedByDayOfWeek() {
-        Map<DayOfWeek, Set<Break>> result = new HashMap<>();
+        Map<DayOfWeek, Set<Break>> result = new EnumMap<>(DayOfWeek.class);
 
         result.put(DayOfWeek.MONDAY, monday);
         result.put(DayOfWeek.TUESDAY, tuesday);

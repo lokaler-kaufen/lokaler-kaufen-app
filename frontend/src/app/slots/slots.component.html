@@ -1,0 +1,92 @@
+<!-- ONLY LARGE -->
+<div class="only-large">
+  <mat-tab-group>
+    <mat-tab *ngFor="let slots of slotsPerDay">
+      <ng-template mat-tab-label>
+        <div [ngClass]="!slots.hasSlots? 'not-open' : ''">{{slots.dayName}}</div>
+      </ng-template>
+      <ng-template matTabContent>
+        <h3 *ngIf="!slots.hasSlots" class="text-no-values margin-top">
+          <div *ngIf="!isSlotConfig">Dieser Laden bietet am {{slots.dayName}} leider keine Termine an.</div>
+          <div *ngIf="isSlotConfig">Sie bieten am {{slots.dayName}} leider keine Termine an.</div>
+        </h3>
+        <div *ngIf="slots.hasSlots">
+          <mat-table [dataSource]="slots.slots" class="margin-top" id="calendar">
+            <ng-container matColumnDef="from">
+              <mat-header-cell *matHeaderCellDef> Start</mat-header-cell>
+              <mat-cell *matCellDef="let element">{{element.start}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="to">
+              <mat-header-cell *matHeaderCellDef> Ende</mat-header-cell>
+              <mat-cell *matCellDef="let element">{{element.end}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="available">
+              <mat-header-cell *matHeaderCellDef> Verfügbar</mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                <button class="book-button"
+                        mat-raised-button
+                        *ngIf="element.available"
+                        (click)="sendSelectedSlotId(element.id)"
+                        color="primary">
+                  <div *ngIf="!isSlotConfig">Buchen</div>
+                  <div *ngIf="isSlotConfig">Pause eintragen</div>
+                </button>
+
+                <button class="book-button" mat-stroked-button *ngIf="!element.available && !isSlotConfig" disabled>
+                  <div>Belegt</div>
+                </button>
+
+                <button class="book-button" mat-stroked-button *ngIf="!element.available && isSlotConfig"
+                        (click)="sendRemovedSlotId(element.id)">
+                  <div>Blockiert</div>
+                </button>
+              </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="['from', 'to', 'available']"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: ['from', 'to', 'available']"></mat-row>
+          </mat-table>
+        </div>
+
+      </ng-template>
+    </mat-tab>
+  </mat-tab-group>
+</div>
+<!-- ONLY SMALL -->
+<mat-accordion class="only-small">
+  <mat-expansion-panel *ngFor="let slots of slotsPerDay">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <div [ngClass]="!slots.hasSlots? 'not-open' : ''">{{slots.dayName}}</div>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <h3 *ngIf="!slots.hasSlots" class="text-no-values">
+      <div *ngIf="!isSlotConfig">Dieser Laden bietet am {{slots.dayName}} leider keine Termine an.</div>
+      <div *ngIf="isSlotConfig">Sie bieten am {{slots.dayName}} leider keine Termine an.</div>
+    </h3>
+    <div *ngIf="slots.hasSlots">
+      <div *ngFor="let slot of slots.slots; last as last">
+        <div class="small-booking-row padding-vertical">
+          <div>{{ slot.start }} - {{ slot.end }}</div>
+          <div>
+            <button *ngIf="slot.available"
+                    class="book-button"
+                    mat-raised-button
+                    color="primary"
+                    (click)="sendSelectedSlotId(slot.id)">
+              <div *ngIf="!isSlotConfig">Buchen</div>
+              <div *ngIf="isSlotConfig">Pause eintragen</div>
+            </button>
+
+            <button *ngIf="!slot.available" class="book-button" mat-stroked-button disabled>
+              <div *ngIf="!isSlotConfig">Belegt</div>
+              <div *ngIf="isSlotConfig">Blockiert</div>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-expansion-panel>
+</mat-accordion>

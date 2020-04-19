@@ -3,6 +3,7 @@ package de.qaware.mercury.storage.shop.impl;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.lang.Nullable;
 
 import java.util.List;
 import java.util.UUID;
@@ -84,4 +85,7 @@ public interface ShopDataRepository extends JpaRepository<ShopEntity, UUID> {
             "WHERE (lower(s.name) LIKE lower(:query) OR lower(s.details) LIKE lower(:query)) AND s.enabled = true AND s.approved = true"
     )
     List<ShopEntity> searchActive(@Param("query") String query);
+
+    @Nullable
+    ShopEntity findBySlug(String slug);
 }

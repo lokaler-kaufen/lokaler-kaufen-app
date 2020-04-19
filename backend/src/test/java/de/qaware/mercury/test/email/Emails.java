@@ -5,6 +5,7 @@ import lombok.Getter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Predicate;
 
 public class Emails {
     @Getter
@@ -23,15 +24,11 @@ public class Emails {
     }
 
     public Emails findWithRecipient(String recipient) {
-        Emails result = new Emails();
+        return filterEmails(email -> email.getRecipients().contains(recipient));
+    }
 
-        for (Email email : emails) {
-            if (email.getRecipients().contains(recipient)) {
-                result.add(email);
-            }
-        }
-
-        return result;
+    public Emails findWithSubjectContaining(String text) {
+        return filterEmails(email -> email.getSubject().contains(text));
     }
 
     public int size() {
@@ -40,5 +37,21 @@ public class Emails {
 
     public Email get(int index) {
         return emails.get(index);
+    }
+
+    public void clear() {
+        emails.clear();
+    }
+
+    private Emails filterEmails(Predicate<Email> predicate) {
+        Emails result = new Emails();
+
+        for (Email email : emails) {
+            if (predicate.test(email)) {
+                result.add(email);
+            }
+        }
+
+        return result;
     }
 }

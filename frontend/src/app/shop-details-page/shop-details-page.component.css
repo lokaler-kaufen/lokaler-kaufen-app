@@ -7,8 +7,17 @@
   text-decoration: none;
 }
 
+.address-title {
+  font-weight: bold;
+}
+
+.booking-title {
+  padding-top: 25px;
+}
+
 .social-links {
   padding-right: 15px;
+  padding-top: 10px;
   display: flex;
   align-items: flex-end;
 }
@@ -21,18 +30,66 @@
   filter: invert(20%) sepia(34%) saturate(4623%) hue-rotate(246deg) brightness(90%) contrast(99%);
 }
 
-.book-button {
-  width: 100%;
-}
-
-.small-booking-row {
+.social-links-block {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: flex-start;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  padding-top: 10px;
+  padding-bottom: 25px;
 }
 
-.small-booking-row > div {
-  width: 50%;
+.social-links-block-small {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 120px);
+  justify-content: center;
+  padding-top: 10px;
+  padding-bottom: 25px;
+}
+
+.shop-logo-bubble {
+  box-sizing: border-box;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  position: absolute;
+  top: -80px;
+  right: 80px;
+  background-color: white;
+}
+
+.shop-logo-bubble-image {
+  /*
+  diameter = 160px
+  => radius = 80px
+  => inner square side length: (2 * sqrt( radius^2 / 2) ) = 112px (rounded down to the next even int)
+  => offset (top and left) of square relative to top-left of circle: (diameter - square length) / 2 = 24px
+   */
+  width: 112px;
+  height: 112px;
+  position: absolute;
+  top: 24px;
+  left: 24px;
+}
+
+.shop-details-card-image-container {
+  width: 160px;
+  height: 160px;
+  transform: translate(-20%, 50%);
+  position: absolute;
+  left: 80%;
+  margin-top: -160px;
+  border-radius: 50%;
+  border: 0;
+  background-color: #ffffff;
+  z-index: 2;
+}
+
+.shop-details-card-image {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .shop-details {
@@ -51,25 +108,16 @@
 
 .shop-details-header {
   float: left;
+  line-height: 160%;
   width: calc(100% - 140px);
 }
 
+.shop-title {
+  font-size: 20px;
+}
+
 .shop-logo {
-  max-width: 120px;
-  max-height: 180px;
-  display: block;
-}
-
-.shop-logo-svg {
-  height: 120px;
-}
-
-.shop-logo-container {
-  float: right;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  height: 180px;
 }
 
 ::ng-deep.mat-tab-labels {
@@ -90,6 +138,10 @@
     flex-direction: column;
   }
 
+  .shop-title {
+    font-size: 20px;
+  }
+
   .shop-details > div {
     padding: 12px 0;
   }
@@ -100,21 +152,6 @@
 
   .shop-details-header {
     width: 100%;
-  }
-
-  .shop-logo {
-    max-width: 120px;
-    max-height: 120px;
-    padding-bottom: 20px;
-  }
-
-  .shop-logo-svg {
-    height: 100px;
-  }
-
-  .shop-logo-container {
-    height: auto;
-    float: left;
   }
 }
 
@@ -127,10 +164,4 @@
 
 }
 
-@media screen and (min-width: 940px) {
 
-  ::ng-deep .mat-tab-header-pagination {
-    display: none !important;
-  }
-
-}

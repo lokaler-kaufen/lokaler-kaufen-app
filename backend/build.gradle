@@ -42,6 +42,9 @@ dependencies {
     runtimeOnly 'com.h2database:h2'
     runtimeOnly 'org.postgresql:postgresql'
 
+    // Spring Boot configuration magic
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
     // Lombok
     annotationProcessor 'org.projectlombok:lombok'
     compileOnly 'org.projectlombok:lombok'
@@ -73,16 +76,12 @@ dependencies {
     }
 
     // mandatory dependencies for using Spock
-    testImplementation "org.codehaus.groovy:groovy-all:2.5.8"
-    testImplementation platform("org.spockframework:spock-bom:2.0-M1-groovy-2.5")
+    testImplementation platform("org.spockframework:spock-bom:2.0-M2-groovy-2.5")
     testImplementation "org.spockframework:spock-core"
     testImplementation "org.spockframework:spock-spring"
 
     // Testcontainers for integration tests
-    testCompile 'org.testcontainers:postgresql:1.13.0'
-
-    testRuntimeOnly "net.bytebuddy:byte-buddy:1.9.3"
-    testRuntimeOnly "org.objenesis:objenesis:2.6"
+    testImplementation 'org.testcontainers:postgresql:1.13.0'
 
     // Spring Dev Tools for faster reload
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
@@ -133,3 +132,21 @@ bootJar {
 
 // have some fun ./gradlew kick ass
 task kick(dependsOn: clean) {}
+
+/**
+ * Downloads all dependencies for cache warmup
+ */
+task resolveDependencies(group: "build setup", description: "Resolve and prefetch dependencies") {
+    doLast {
+        def resolve = {
+            ConfigurationContainer configurations ->
+                configurations
+                    .findAll({ Configuration c -> c.isCanBeResolved() })
+                    .each({ Configuration c -> c.resolve() })
+        }
+        project.rootProject.allprojects.each { Project subProject ->
+            resolve(subProject.buildscript.configurations)
+            resolve(subProject.configurations)
+        }
+    }
+}

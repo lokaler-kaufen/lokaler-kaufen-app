@@ -21,7 +21,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import {MatTableModule} from '@angular/material/table';
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {MatSortModule} from '@angular/material/sort';
 import {BookingPopupComponent} from './booking-popup/booking-popup.component';
 import {MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule} from '@angular/material/dialog';
@@ -52,35 +52,42 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatGridListModule} from '@angular/material/grid-list';
+import {PageFooterComponent} from './page-footer/page-footer.component';
+import {ShopLogoComponent} from './shop-logo/shop-logo.component';
+import {LogoutInterceptor} from './data/logout.interceptor';
+import { SlotsComponent } from './slots/slots.component';
 
 @NgModule({
   declarations: [
+    AdminDetailsPageComponent,
+    AdminLayoutComponent,
     AdminLoginPageComponent,
     AdminOverviewPageComponent,
-    AdminDetailsPageComponent,
     AppComponent,
     AppFooterComponent,
     AppHeaderComponent,
     BookingPopupComponent,
     CancelReservationComponent,
+    ContactTypesComponent,
     ImprintPageComponent,
+    LandingLayoutComponent,
     LandingPageComponent,
     LoginFormComponent,
     LoginPageComponent,
+    NormalLayoutComponent,
+    PageFooterComponent,
     PasswordResetPageComponent,
     PasswordResetPopupComponent,
     PrivacyPageComponent,
     RegisterBusinessPopupComponent,
     ShopCreationPageComponent,
     ShopCreationSuccessPopupComponent,
+    ShopDetailsConfigComponent,
     ShopDetailsPageComponent,
+    ShopLogoComponent,
     ShopManagementPageComponent,
     ShopSearchPageComponent,
-    ShopDetailsConfigComponent,
-    ContactTypesComponent,
-    NormalLayoutComponent,
-    LandingLayoutComponent,
-    AdminLayoutComponent
+    SlotsComponent
   ],
   imports: [
     AppRoutingModule,
@@ -96,6 +103,7 @@ import {MatGridListModule} from '@angular/material/grid-list';
     MatDividerModule,
     MatExpansionModule,
     MatFormFieldModule,
+    MatGridListModule,
     MatIconModule,
     MatInputModule,
     MatPasswordStrengthModule,
@@ -108,10 +116,10 @@ import {MatGridListModule} from '@angular/material/grid-list';
     MatTabsModule,
     MatToolbarModule,
     ReactiveFormsModule,
-    SimpleNotificationsModule.forRoot(),
-    MatGridListModule
+    SimpleNotificationsModule.forRoot()
   ],
   providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: LogoutInterceptor, multi: true},
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}},
     {provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher}
   ],

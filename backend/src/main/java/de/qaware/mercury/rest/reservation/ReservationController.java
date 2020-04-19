@@ -16,10 +16,10 @@ import de.qaware.mercury.business.shop.ContactType;
 import de.qaware.mercury.business.shop.Shop;
 import de.qaware.mercury.business.shop.ShopNotFoundException;
 import de.qaware.mercury.business.shop.ShopService;
+import de.qaware.mercury.business.validation.Validation;
 import de.qaware.mercury.rest.reservation.dto.request.CreateReservationDto;
 import de.qaware.mercury.rest.reservation.dto.response.SlotsDto;
 import de.qaware.mercury.rest.shop.dto.request.SlotConfigDto;
-import de.qaware.mercury.util.validation.Validation;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,6 +44,7 @@ import javax.validation.constraints.Pattern;
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 @RequestMapping(value = "/api/reservation", produces = MediaType.APPLICATION_JSON_VALUE)
 @Validated
+@SuppressWarnings("java:S4784") // JDK since 9 has additional protection against ReDos attacks
 public class ReservationController {
     private final ReservationService reservationService;
     private final ShopService shopService;

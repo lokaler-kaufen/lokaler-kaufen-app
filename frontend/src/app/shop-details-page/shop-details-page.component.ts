@@ -15,6 +15,8 @@ import {HttpClient} from '@angular/common/http';
 import {NotificationsService} from 'angular2-notifications';
 import {CreateReservationDto, ShopDetailDto, SlotDto, SlotsDto} from '../data/api';
 import {ContactTypesEnum} from '../contact-types/available-contact-types';
+import {ReplaySubject} from 'rxjs';
+import {ReserveSlotsData, SlotSelectionData} from '../slots/slots.component';
 
 export interface SlotsPerDay {
   dayName: string;
@@ -39,18 +41,19 @@ export class ShopDetailsPageComponent implements OnInit {
     return this.shop?.details?.trim().length > 0;
   }
 
+  get hasOnlyPhone(): boolean {
+    return (this.shop?.contactTypes?.length === 1 &&
+      this.shop?.contactTypes?.values()?.next()?.value === 'PHONE');
+  }
+
   shopId: string;
   shop: ShopDetailDto;
-  activatedSlot: SlotsPerDay;
 
-  slotsPerDay: Array<SlotsPerDay> = [];
+  slotsPerDay: ReplaySubject<ReserveSlotsData> = new ReplaySubject<ReserveSlotsData>();
 
-  today: Date;
-
-  weekday = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
+  slotsConfig: SlotsDto;
 
   ngOnInit(): void {
-    this.today = new Date();
     this.activatedRoute.paramMap
       .subscribe(value => {
         console.log('subscribe param map');
@@ -71,23 +74,21 @@ export class ShopDetailsPageComponent implements OnInit {
 
     this.client.get<SlotsDto>('/api/reservation/' + this.shopId + '/slot?days=7')
       .subscribe((slots: SlotsDto) => {
-        console.log('Subscribe Slots');
-        // convert to map
-        Object.keys(slots.slots).forEach(key => {
-          this.slotsPerDay.push({
-            dayName: this.getDayName(key),
-            slots: slots.slots[key],
-            hasSlots: slots.slots[key].length > 0
-          });
-          this.activatedSlot = this.slotsPerDay[0];
-        });
+        this.slotsConfig = slots;
+        this.slotsPerDay.next({slots});
       }, error => {
         console.log('Error requesting slots: ' + error.status + ', ' + error.message);
         this.notificationsService.error('Tut uns leid!', 'Es ist ein Fehler beim Laden der Slots aufgetreten.');
       });
   }
 
-  showBookingPopup(slotId: string) {
+  showBookingPopup($event: SlotSelectionData) {
+    const selectedSlot = this.findSlotById($event.id);
+    if (!selectedSlot) {
+      console.log('Can not find slot with id ' + $event);
+      this.notificationsService.error('Tut uns Leid!', 'Bei der Buchung ist ein Fehler aufgetreten.');
+      return;
+    }
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
     dialogConfig.width = '450px';
@@ -104,22 +105,22 @@ export class ShopDetailsPageComponent implements OnInit {
             owner: this.shop.name,
             contactNumber: data.phoneNumber,
             contactType: ContactTypesEnum.getDisplayName(data.option),
-            day: this.activatedSlot.dayName,
-            start: this.activatedSlot.slots.find(s => s.id === slotId).start,
-            end: this.activatedSlot.slots.find(s => s.id === slotId).end
+            day: selectedSlot.date,
+            start: selectedSlot.start,
+            end: selectedSlot.end
           } as BookingSuccessData;
           const reservationDto: CreateReservationDto = {
             contact: data.phoneNumber,
             contactType: data.option,
             email: data.email,
             name: data.name,
-            slotId
+            slotId: $event.id
           };
 
           this.client.post<SlotsDto>('/api/reservation/' + this.shopId, reservationDto)
             .subscribe(() => {
                 this.matDialog.open(BookingSuccessPopupComponent, successConfig);
-                this.activatedSlot.slots.find(s => s.id === slotId).available = false;
+                selectedSlot.available = false;
               },
               error => {
                 console.log('Error booking time slot: ' + error.status + ', ' + error.message);
@@ -127,6 +128,17 @@ export class ShopDetailsPageComponent implements OnInit {
               });
         }
       });
+  }
+
+  private findSlotById(slotId: string): SlotDto {
+    let slotDto = null;
+    Object.keys(this.slotsConfig.slots).find(key => {
+      slotDto = this.slotsConfig.slots[key].find(s => s.id === slotId);
+      if (slotDto) {
+        return slotDto;
+      }
+    });
+    return slotDto;
   }
 
   returnValidLink(url: string) {
@@ -142,11 +154,6 @@ export class ShopDetailsPageComponent implements OnInit {
       result = startingUrl + url;
     }
     return result;
-  }
-
-  // monday is index 0, add slot offset % 7 to get day name
-  getDayName(slotOffset): string {
-    return this.weekday[(this.today.getDay() + parseInt(slotOffset, 10)) % 7];
   }
 
   public back(): void {

@@ -11,6 +11,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 @SpringBootApplication
 @Slf4j
 public class MercuryApplication {
+    @SuppressWarnings("java:S4823") // Make SonarQube shut up, I'm confident this is safe.
     public static void main(String[] args) {
         if (hasFlag(args, "--add-admin")) {
             log.info("Starting in 'Add admin' mode");

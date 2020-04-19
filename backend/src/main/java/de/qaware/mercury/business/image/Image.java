@@ -10,6 +10,7 @@ public class Image {
     Id id;
 
     @Value(staticConstructor = "of")
+    @SuppressWarnings("java:S1700") // Shut up SonarQube
     public static class Id {
         UUID id;
 

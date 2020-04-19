@@ -1,7 +1,6 @@
 package de.qaware.mercury.rest.shop
 
 import de.qaware.mercury.business.image.Image
-import de.qaware.mercury.business.image.ImageService
 import de.qaware.mercury.business.login.ShopLoginService
 import de.qaware.mercury.business.login.TokenService
 import de.qaware.mercury.business.reservation.SlotService
@@ -32,21 +31,23 @@ class ShopControllerSpec extends Specification {
     ShopService shopService = Mock(ShopService)
     TokenService tokenService = Mock(TokenService)
     ShopLoginService shopLoginService = Mock(ShopLoginService)
-    ImageService imageService = Mock(ImageService)
 
     HttpServletResponse httpServletResponse = Mock(HttpServletResponse)
     CookieHelper cookieHelper = Mock(CookieHelper)
     SlotService slotService = Mock(SlotService)
 
     void setup() {
-        controller = new ShopController(shopService, imageService, tokenService, shopLoginService, cookieHelper, slotService)
+        controller = new ShopController(shopService, tokenService, shopLoginService, cookieHelper, slotService)
     }
 
     def "Retrieve shop details"() {
-        setup:
+        given:
         Shop shop = ShopFixtures.create()
         String testImageUrl = "http://image.url/path"
-        URI testImageUri = new URI(testImageUrl)
+        String testShareLink = "http://share.url/path"
+        shopService.generateImageUrl(shop) >> new URI(testImageUrl)
+        shopService.generateShareLink(shop) >> new URI(testShareLink)
+        shopService.findById(Shop.Id.parse(shop.id.toString())) >> shop
 
         when:
         ShopDetailDto result = controller.getShopDetails(shop.id.toString())
@@ -55,9 +56,7 @@ class ShopControllerSpec extends Specification {
         result
         result.id == shop.id.toString()
         result.imageUrl == testImageUrl
-
-        1 * shopService.findById(Shop.Id.parse(shop.id.toString())) >> shop
-        1 * imageService.generatePublicUrl(shop.imageId) >> testImageUri
+        result.shareLink == testShareLink
     }
 
     def "getShopDetails throws ShopNotFoundException if shop is not found"() {
@@ -118,7 +117,9 @@ class ShopControllerSpec extends Specification {
         CreateShopDto dto = new CreateShopDto("name", "ownername", "street", "zipCode", "city", "addressSupplement", "details", "www.example.com", "password", Map.of(), slots, new SocialLinksDto("instagram", "facebook", "twitter"), null)
         String token = "test-token"
         String testImageUrl = "http://image.url/path"
-        URI testImageUri = new URI(testImageUrl)
+        String testShareUrl = "http://share.url/path"
+        shopService.generateImageUrl(shop) >> new URI(testImageUrl)
+        shopService.generateShareLink(shop) >> new URI(testShareUrl)
 
         when:
         ShopDetailDto result = controller.createShop(dto, token, httpServletResponse)
@@ -127,18 +128,19 @@ class ShopControllerSpec extends Specification {
         result
         result.id == shop.id.toString()
         result.imageUrl == testImageUrl
+        result.shareLink == testShareUrl
 
         1 * shopService.create(_) >> shop
-        1 * imageService.generatePublicUrl(shop.imageId) >> testImageUri
     }
 
     def "Gets nearby shops by location string"() {
         setup:
         String testLocation = "location string"
         String testImageUrl = "http://image.url/path"
-        URI testImageUri = new URI(testImageUrl)
         Shop shop = ShopFixtures.create()
         List<ShopWithDistance> shopWithDistanceList = [new ShopWithDistance(shop, 12.1)]
+        shopService.generateImageUrl(shop) >> new URI(testImageUrl)
+        shopService.generateShareLink(shop) >> new URI("http://share.url/path")
 
         when:
         ShopListDto result = controller.findActive(testLocation, null)
@@ -149,17 +151,17 @@ class ShopControllerSpec extends Specification {
             assert it.imageUrl == testImageUrl
         }
         1 * shopService.findActive(testLocation) >> shopWithDistanceList
-        1 * imageService.generatePublicUrl(shop.imageId) >> testImageUri
     }
 
     def "Gets nearby shops by location string and max distance"() {
         setup:
         String testLocation = "location string"
         String testImageUrl = "http://image.url/path"
-        URI testImageUri = new URI(testImageUrl)
         Shop shop = ShopFixtures.create()
         List<ShopWithDistance> shopWithDistanceList = [new ShopWithDistance(shop, 5)]
         int maxDistance = 5
+        shopService.generateImageUrl(shop) >> new URI(testImageUrl)
+        shopService.generateShareLink(shop) >> new URI("http://share.url/path")
 
         when:
         ShopListDto result = controller.findActive(testLocation, maxDistance)
@@ -170,7 +172,7 @@ class ShopControllerSpec extends Specification {
             assert it.imageUrl == testImageUrl
         }
         1 * shopService.findActive(testLocation, maxDistance) >> shopWithDistanceList
-        1 * imageService.generatePublicUrl(shop.imageId) >> testImageUri
+
     }
 
     def "Search shops by query and location"() {
@@ -178,10 +180,12 @@ class ShopControllerSpec extends Specification {
         String testLocation = "location string"
         String testQuery = "query string"
         String testImageUrl = "http://image.url/path"
-        URI testImageUri = new URI(testImageUrl)
         Image.Id imageId = Image.Id.of(UUID.randomUUID())
         Shop shop = ShopFixtures.create(imageId)
         List<ShopWithDistance> shopWithDistanceList = [new ShopWithDistance(shop, 12.1)]
+        shopService.generateImageUrl(shop) >> new URI(testImageUrl)
+        shopService.generateShareLink(shop) >> new URI("http://share.url/path")
+        shopService.searchActive(testQuery, testLocation) >> shopWithDistanceList
 
         when:
         ShopListDto result = controller.searchActive(testQuery, testLocation, null)
@@ -191,8 +195,6 @@ class ShopControllerSpec extends Specification {
         result.shops.each {
             assert it.imageUrl == testImageUrl
         }
-        1 * shopService.searchActive(testQuery, testLocation) >> shopWithDistanceList
-        1 * imageService.generatePublicUrl(imageId) >> testImageUri
     }
 
     def "Gets nearby shops by query, location and max distance"() {
@@ -200,11 +202,13 @@ class ShopControllerSpec extends Specification {
         String testLocation = "location string"
         String testQuery = "query string"
         String testImageUrl = "http://image.url/path"
-        URI testImageUri = new URI(testImageUrl)
         int maxDistance = 5
         Image.Id imageId = Image.Id.of(UUID.randomUUID())
         Shop shop = ShopFixtures.create(imageId)
         List<ShopWithDistance> shopWithDistanceList = [new ShopWithDistance(shop, 5)]
+        shopService.searchActive(testQuery, testLocation, maxDistance) >> shopWithDistanceList
+        shopService.generateImageUrl(shop) >> new URI(testImageUrl)
+        shopService.generateShareLink(shop) >> new URI("http://share.url/path")
 
         when:
         ShopListDto result = controller.searchActive(testQuery, testLocation, maxDistance)
@@ -214,7 +218,5 @@ class ShopControllerSpec extends Specification {
         result.shops.each {
             assert it.imageUrl == testImageUrl
         }
-        1 * shopService.searchActive(testQuery, testLocation, maxDistance) >> shopWithDistanceList
-        1 * imageService.generatePublicUrl(imageId) >> testImageUri
     }
 }

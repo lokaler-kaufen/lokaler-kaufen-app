@@ -16,6 +16,9 @@ spring.jpa:
   database-platform: org.hibernate.dialect.PostgreSQL10Dialect
 
 mercury:
+  sharing:
+    shopDetailLinkTemplate: "${variables.domain}/#/shops/{{ id }}"
+    shopShareLinkTemplate: "${variables.domain}/bei/{{ slug }}"
   frontend:
     enable-caching: true
   images:

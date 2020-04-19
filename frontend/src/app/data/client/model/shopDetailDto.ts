@@ -21,6 +21,7 @@ export interface ShopDetailDto {
     imageUrl?: string;
     name?: string;
     ownerName?: string;
+    shareLink?: string;
     socialLinks?: SocialLinksDto;
     street?: string;
     website?: string;

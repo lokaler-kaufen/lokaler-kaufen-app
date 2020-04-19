@@ -1,6 +1,7 @@
 <p>Hallo und herzlich willkommen! Toll, dass Sie einen Laden auf lokaler.kaufen anlegen wollen! Dafür brauchen wir noch
   ein paar Informationen von Ihnen. </p>
-<mat-vertical-stepper [linear]="true" #stepper>
+
+<mat-vertical-stepper [linear]="true" #stepper (selectionChange)="previewSlots($event)">
   <mat-step [stepControl]="nameFormGroup">
     <form [formGroup]="nameFormGroup">
       <ng-template matStepLabel>Starten wir ganz einfach</ng-template>
@@ -177,6 +178,15 @@
     </form>
   </mat-step>
   <mat-step [optional]="true">
+    <ng-template matStepLabel>Sie können auch Pausenzeiten angeben.</ng-template>
+    <p>Wählen sie einfach die Slots aus, zu denen Sie keine Beratung anbieten.</p>
+    <slots [slotsDataObservable]="slotsPreview" (selectedSlotId)="changeBreakSlot($event)" [isSlotConfig]="true"></slots>
+    <div>
+      <button mat-button matStepperPrevious>Zurück</button>
+      <button mat-button matStepperNext>Weiter</button>
+    </div>
+  </mat-step>
+  <mat-step [optional]="true">
     <ng-template matStepLabel>Sie haben ein Logo?</ng-template>
     <p>Bitte beachten Sie die maximale Dateigröße von 5 MB.</p>
     <input
@@ -267,3 +277,4 @@
     <mat-progress-bar *ngIf="this.progress > 0" [value]="this.progress" style="width: 20%"></mat-progress-bar>
   </mat-step>
 </mat-vertical-stepper>
+<page-footer></page-footer>

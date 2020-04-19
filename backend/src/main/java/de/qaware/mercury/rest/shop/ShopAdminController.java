@@ -1,7 +1,6 @@
 package de.qaware.mercury.rest.shop;
 
 import de.qaware.mercury.business.admin.Admin;
-import de.qaware.mercury.business.image.ImageService;
 import de.qaware.mercury.business.location.impl.LocationNotFoundException;
 import de.qaware.mercury.business.login.LoginException;
 import de.qaware.mercury.business.reservation.SlotService;
@@ -13,12 +12,12 @@ import de.qaware.mercury.business.shop.ShopService;
 import de.qaware.mercury.business.shop.ShopUpdate;
 import de.qaware.mercury.business.shop.SlotConfig;
 import de.qaware.mercury.business.shop.SocialLinks;
+import de.qaware.mercury.business.validation.Validation;
 import de.qaware.mercury.rest.plumbing.authentication.AuthenticationHelper;
 import de.qaware.mercury.rest.shop.dto.request.UpdateShopDto;
 import de.qaware.mercury.rest.shop.dto.response.ShopAdminDto;
 import de.qaware.mercury.rest.shop.dto.response.ShopsAdminDto;
 import de.qaware.mercury.util.Maps;
-import de.qaware.mercury.util.validation.Validation;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,9 +41,10 @@ import javax.validation.constraints.Pattern;
 @Slf4j
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 @Validated
+@SuppressWarnings("java:S4784")
+    // JDK since 9 has additional protection against ReDos attacks
 class ShopAdminController {
     private final ShopService shopService;
-    private final ImageService imageService;
     private final AuthenticationHelper authenticationHelper;
     private final SlotService slotService;
 
@@ -62,17 +62,17 @@ class ShopAdminController {
         authenticationHelper.authenticateAdmin(servletRequest);
         Shop shop = shopService.findById(Shop.Id.parse(id));
         if (shop == null) {
-            throw new ShopNotFoundException(Shop.Id.parse(id));
+            throw ShopNotFoundException.ofShopId(Shop.Id.parse(id));
         }
 
-        return ShopAdminDto.of(shop, imageService);
+        return ShopAdminDto.of(shop, shopService);
     }
 
     @GetMapping
     public ShopsAdminDto listAll(HttpServletRequest request) throws LoginException {
         authenticationHelper.authenticateAdmin(request);
 
-        return ShopsAdminDto.of(shopService.listAll(), imageService);
+        return ShopsAdminDto.of(shopService.listAll(), shopService);
     }
 
     @PutMapping(path = "/{id}/approve")
@@ -90,7 +90,7 @@ class ShopAdminController {
 
         Shop shop = shopService.findById(shopId);
         if (shop == null) {
-            throw new ShopNotFoundException(shopId);
+            throw ShopNotFoundException.ofShopId(shopId);
         }
 
         SlotConfig slotConfig = request.getSlots().toSlots();
@@ -109,7 +109,7 @@ class ShopAdminController {
             request.getBreaks() == null ? Breaks.none() : slotService.resolveBreaks(request.getBreaks().toSlotIds(), slotConfig)
         ));
         log.info("Admin {} updated shop '{}'", admin.getEmail(), shop.getName());
-        return ShopAdminDto.of(updatedShop, imageService);
+        return ShopAdminDto.of(updatedShop, shopService);
     }
 
     @DeleteMapping(path = "/{id}")

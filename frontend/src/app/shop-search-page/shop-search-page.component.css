@@ -1,20 +1,10 @@
-tr:not(.example-expanded-row):hover {
-  background: whitesmoke;
-}
-
-.mat-column-supportedContactTypes {
-  flex: 0 0 40% !important;
-  width: 40% !important;
-}
-
-.mat-column-distance {
-  flex: 0 0 10% !important;
-  width: 10% !important;
-}
-
 .align-baseline {
   display: flex;
   align-items: baseline
+}
+
+.search-field {
+  width: 75%;
 }
 
 .zip-code-div {
@@ -28,64 +18,55 @@ tr:not(.example-expanded-row):hover {
   line-height: 1;
 }
 
-.search-field {
-  width: 75%;
-}
-
-.hide {
-  visibility: hidden;
-}
-
-.shop-logo {
-  max-width: 80px;
-  max-height: 80px;
-  display: block;
-}
-
-.default-logo {
-  height: 80px;
-}
-
-.shop-titel {
-  justify-content: start;
-}
-
-.shop-overview {
+.shop {
   display: flex;
+}
+
+.meta {
+  width: 60%;
+  display: flex;
+}
+
+.shop-logo-container, .shop-text {
+  flex-shrink: 0;
+}
+
+.shop-logo-container {
+  width: 100px;
+  height: 100px;
+}
+
+.shop-text {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   align-items: flex-start;
-  justify-content: space-between;
-  padding-left: 2%;
+  max-width: calc(100% - 24px - 100px - 24px - 1px - 24px - 24px);
+  /*
+  24px padding left of img
+  100px img
+  24px right of img
+  1px divider
+  24px left of text
+  24px right of text
+  */
 }
 
-.image-and-shop {
-  display: flex;
-  align-items: center;
+.shop-title {
+  font-size: 18px;
+}
+
+.shop-text > div {
+  width: 100%;
+  word-break: break-word;
 }
 
 .shop-contact-types {
   width: 40%;
-  min-width: 350px;
-}
-
-.shop-text {
   display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  height: 80px;
-  min-width: 250px;
-  margin-left: 12px;
-  margin-right: 24px;
+  align-items: center;
 }
-
-.divider {
-  margin-left: 12px;
-  height: 80px;
-}
-
-.mat-card-actions, .mat-card-subtitle, .mat-card-content {
-  margin-bottom: 0px;
-}
-
 
 /* styles for small devices */
 @media screen and (max-width: 719px) {
@@ -107,13 +88,24 @@ tr:not(.example-expanded-row):hover {
     order: 2;
   }
 
-  .shop-overview {
-    flex-direction: column;
-    width: 90vw;
+  .shop {
+    display: block;
+  }
+
+  .meta, .shop-contact-types {
+    width: 100%;
+  }
+
+  .shop-logo-container {
+    width: 60px;
+    height: 60px;
   }
 
   .shop-text {
-    padding-bottom: 15px;
+    max-width: calc(100% - 60px - 16px);
+    /*
+    60px img width
+    16px padding between img and text
+    */
   }
-
 }

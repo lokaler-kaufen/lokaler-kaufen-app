@@ -16,18 +16,20 @@ import {ShopOwnerService} from '../shared/shop-owner.service';
 })
 export class ShopManagementPageComponent implements OnInit {
 
-  shopDetails: ReplaySubject<ShopOwnerDetailDto> = new ReplaySubject<ShopOwnerDetailDto>();
-
-  getUpdatedDetails: ReplaySubject<boolean> = new ReplaySubject<boolean>();
-
-  shopId: string;
-
   constructor(private client: HttpClient,
               private router: Router,
               private notificationsService: NotificationsService,
               private shopOwnerService: ShopOwnerService,
               private imageService: ImageService) {
   }
+
+  shopDetails: ReplaySubject<ShopOwnerDetailDto> = new ReplaySubject<ShopOwnerDetailDto>();
+
+  getUpdatedDetails: ReplaySubject<boolean> = new ReplaySubject<boolean>();
+
+  shopId: string;
+
+  progress = 0;
 
   ngOnInit() {
     this.client.get<ShopOwnerDetailDto>('/api/shop/me')
@@ -40,19 +42,21 @@ export class ShopManagementPageComponent implements OnInit {
         });
   }
 
-  progress: number = 0;
-
   updateShop($event: UpdateShopData) {
     if ($event.image) {
       this.updateImageAndDetails($event);
     } else {
       if ($event.deleteImage) {
-        this.imageService.delete().toPromise().then(() => console.log('Image deleted.')).catch(error => {
-          console.log('Could not delete image.');
+        this.imageService.delete().toPromise().then(() => {
+          console.log('Image deleted.');
+          this.updateShopDto($event);
+        }).catch(error => {
+          console.log('Could not delete image: ' + error.body);
           this.notificationsService.error('Tut uns Leid!', 'Wir konnten dein Bild leider nicht löschen.');
         });
+      } else {
+        this.updateShopDto($event);
       }
-      this.updateShopDto($event);
     }
   }
 
@@ -119,4 +123,5 @@ export class ShopManagementPageComponent implements OnInit {
 
     this.notificationsService.error(notificationTitle, notificationText);
   }
+
 }

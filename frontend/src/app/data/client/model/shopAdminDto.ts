@@ -24,6 +24,7 @@ export interface ShopAdminDto {
     imageUrl?: string;
     name?: string;
     ownerName?: string;
+    shareLink?: string;
     slots?: SlotConfigDto;
     socialLinks?: SocialLinksDto;
     street?: string;

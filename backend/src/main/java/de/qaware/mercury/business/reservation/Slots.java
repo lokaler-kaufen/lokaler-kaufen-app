@@ -9,6 +9,7 @@ import java.util.List;
  * Slots, grouped by date.
  */
 @Value
+@SuppressWarnings("java:S1700") // Shut up SonarQube
 public class Slots {
     LocalDate start;
     LocalDate end;

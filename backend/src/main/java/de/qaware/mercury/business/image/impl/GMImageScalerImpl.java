@@ -36,9 +36,10 @@ class GMImageScalerImpl implements ImageScaler {
         Path outputImage = Files.createTempFile("mercury-image-", format.getExtension()).toAbsolutePath();
 
         // See http://www.graphicsmagick.org/convert.html
+        // See https://superuser.com/questions/213336/using-graphicsmagick-or-imagemagick-how-do-i-replace-transparency-with-a-fill-c
         String resolution = String.format("%dx%d", maxSize, maxSize);
         String[] args = {
-            "gm", "convert", "-size", resolution, "-", "-resize", resolution, "-quality", Integer.toString(quality), "+profile", "*", outputImage.toString()
+            "gm", "convert", "-background", "white", "-extent", "0x0", "+matte", "-size", resolution, "-", "-resize", resolution, "-quality", Integer.toString(quality), "+profile", "*", outputImage.toString()
         };
 
         // Start GraphicsMagick

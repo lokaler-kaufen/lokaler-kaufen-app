@@ -9,11 +9,13 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { BreaksDto } from './breaksDto';
 import { SlotConfigDto } from './slotConfigDto';
 import { SocialLinksDto } from './socialLinksDto';
 
 export interface ShopOwnerDetailDto { 
     addressSupplement?: string;
+    breaks?: BreaksDto;
     city?: string;
     contacts?: { [key: string]: string; };
     details?: string;
@@ -21,6 +23,7 @@ export interface ShopOwnerDetailDto {
     imageUrl?: string;
     name?: string;
     ownerName?: string;
+    shareLink?: string;
     slots?: SlotConfigDto;
     socialLinks?: SocialLinksDto;
     street?: string;

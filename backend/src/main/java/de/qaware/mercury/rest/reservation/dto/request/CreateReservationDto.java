@@ -1,5 +1,8 @@
 package de.qaware.mercury.rest.reservation.dto.request;
 
+import de.qaware.mercury.business.shop.ContactType;
+import de.qaware.mercury.business.validation.EnumValue;
+import de.qaware.mercury.business.validation.Validation;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,11 +15,12 @@ import javax.validation.constraints.Pattern;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@SuppressWarnings("java:S4784") // JDK since 9 has additional protection against ReDos attacks
 public class CreateReservationDto {
     @NotBlank
     private String slotId;
-    @NotBlank
-    // TODO: Validate enum
+    @NotNull
+    @EnumValue(enumClass = ContactType.class)
     private String contactType;
     @NotBlank
     // TODO validate pattern
@@ -24,8 +28,7 @@ public class CreateReservationDto {
     @NotBlank
     // TODO validate pattern
     private String name;
-    // From https://www.regular-expressions.info/email.html
-    @Email(regexp = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}$", flags = Pattern.Flag.CASE_INSENSITIVE)
+    @Email(regexp = Validation.EMAIL_REGEX, flags = Pattern.Flag.CASE_INSENSITIVE)
     @NotNull
     private String email;
 }

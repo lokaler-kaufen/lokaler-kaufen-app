@@ -1,6 +1,6 @@
 package de.qaware.mercury.rest.shop
 
-import de.qaware.mercury.business.image.ImageService
+
 import de.qaware.mercury.business.reservation.SlotService
 import de.qaware.mercury.business.shop.Breaks
 import de.qaware.mercury.business.shop.Shop
@@ -21,20 +21,23 @@ class ShopOwnerControllerTest extends Specification {
     ShopOwnerController controller
 
     AuthenticationHelper authenticationHelper = Mock(AuthenticationHelper)
-    ImageService imageService = Mock(ImageService)
     ShopService shopService = Mock(ShopService)
     SlotService slotService = Mock(SlotService)
     HttpServletRequest httpServletRequest = Mock(HttpServletRequest)
 
     void setup() {
-        controller = new ShopOwnerController(authenticationHelper, imageService, shopService, slotService)
+        controller = new ShopOwnerController(authenticationHelper, shopService, slotService)
     }
 
     def "Retrieve shop settings"() {
-        setup:
+        given:
         Shop shop = ShopFixtures.create()
         String testImageUrl = "http://image.url/path"
-        URI testImageUri = new URI(testImageUrl)
+        authenticationHelper.authenticateShop(httpServletRequest) >> shop
+        shopService.findBreaks(shop) >> Breaks.none()
+        slotService.convertBreaksToSlots(_) >> List.of()
+        shopService.generateImageUrl(shop) >> new URI(testImageUrl)
+        shopService.generateShareLink(shop) >> new URI("http://share.url/path")
 
         when:
         ShopOwnerDetailDto result = controller.getShopSettings(httpServletRequest)
@@ -43,21 +46,19 @@ class ShopOwnerControllerTest extends Specification {
         result
         result.id == shop.id.toString()
         result.imageUrl == testImageUrl
-
-        1 * authenticationHelper.authenticateShop(httpServletRequest) >> shop
-        1 * imageService.generatePublicUrl(shop.imageId) >> testImageUri
-        shopService.findBreaks(shop) >> Breaks.none()
-        slotService.convertBreaksToSlots(_) >> List.of()
+        result.shareLink == "http://share.url/path"
     }
 
     def "Shop gets updated"() {
-        setup:
+        given:
         Shop shop = ShopFixtures.create()
         SlotConfigDto slots = SlotConfigDto.of(shop.getSlotConfig())
         UpdateShopDto dto = new UpdateShopDto("name", "ownername", "street", "zipCode", "city", "addressSupplement", "details", "www.example.com", Map.of(), slots, new SocialLinksDto("instagram", "facebook", "twitter"), null)
-
+        shopService.findBreaks(shop) >> Breaks.none()
+        slotService.convertBreaksToSlots(_) >> List.of()
         String testImageUrl = "http://image.url/path"
-        URI testImageUri = new URI(testImageUrl)
+        shopService.generateImageUrl(shop) >> new URI(testImageUrl)
+        shopService.generateShareLink(shop) >> new URI("http://share.url/path")
 
         when:
         ShopOwnerDetailDto result = controller.updateShop(dto, httpServletRequest)
@@ -66,11 +67,9 @@ class ShopOwnerControllerTest extends Specification {
         result
         result.id == shop.id.toString()
         result.imageUrl == testImageUrl
+        result.shareLink == "http://share.url/path"
 
         1 * authenticationHelper.authenticateShop(httpServletRequest)
         1 * shopService.update(_, _) >> shop
-        1 * imageService.generatePublicUrl(shop.imageId) >> testImageUri
-        shopService.findBreaks(shop) >> Breaks.none()
-        slotService.convertBreaksToSlots(_) >> List.of()
     }
 }

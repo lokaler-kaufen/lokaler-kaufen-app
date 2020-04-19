@@ -18,6 +18,7 @@ import java.util.UUID;
 public class Shop {
     Id id;
     String name;
+    String slug;
     String ownerName;
     String email;
     String street;
@@ -43,6 +44,7 @@ public class Shop {
     ZonedDateTime updated;
 
     @Value(staticConstructor = "of")
+    @SuppressWarnings("java:S1700") // Shut up SonarQube
     public static class Id {
         UUID id;
 

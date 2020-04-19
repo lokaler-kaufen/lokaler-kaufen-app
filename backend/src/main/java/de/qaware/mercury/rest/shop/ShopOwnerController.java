@@ -1,6 +1,5 @@
 package de.qaware.mercury.rest.shop;
 
-import de.qaware.mercury.business.image.ImageService;
 import de.qaware.mercury.business.location.impl.LocationNotFoundException;
 import de.qaware.mercury.business.login.LoginException;
 import de.qaware.mercury.business.reservation.Slot;
@@ -40,7 +39,6 @@ import java.util.List;
 @Validated
 public class ShopOwnerController {
     private final AuthenticationHelper authenticationHelper;
-    private final ImageService imageService;
     private final ShopService shopService;
     private final SlotService slotService;
 
@@ -56,7 +54,7 @@ public class ShopOwnerController {
         Shop shop = authenticationHelper.authenticateShop(servletRequest);
         List<Slot> slots = slotService.convertBreaksToSlots(shopService.findBreaks(shop));
 
-        return ShopOwnerDetailDto.of(shop, BreaksDto.fromSlots(slots), imageService);
+        return ShopOwnerDetailDto.of(shop, BreaksDto.fromSlots(slots), shopService);
     }
 
     /**
@@ -89,6 +87,6 @@ public class ShopOwnerController {
         ));
         List<Slot> slots = slotService.convertBreaksToSlots(breaks);
 
-        return ShopOwnerDetailDto.of(updatedShop, BreaksDto.fromSlots(slots), imageService);
+        return ShopOwnerDetailDto.of(updatedShop, BreaksDto.fromSlots(slots), shopService);
     }
 }

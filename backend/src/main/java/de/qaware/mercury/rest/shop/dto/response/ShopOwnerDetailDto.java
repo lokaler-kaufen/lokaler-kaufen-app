@@ -1,8 +1,8 @@
 package de.qaware.mercury.rest.shop.dto.response;
 
-import de.qaware.mercury.business.image.ImageService;
 import de.qaware.mercury.business.shop.ContactType;
 import de.qaware.mercury.business.shop.Shop;
+import de.qaware.mercury.business.shop.ShopService;
 import de.qaware.mercury.rest.shop.dto.request.BreaksDto;
 import de.qaware.mercury.rest.shop.dto.request.SlotConfigDto;
 import de.qaware.mercury.rest.shop.dto.requestresponse.SocialLinksDto;
@@ -36,9 +36,9 @@ public class ShopOwnerDetailDto {
     private SlotConfigDto slots;
     private SocialLinksDto socialLinks;
     private BreaksDto breaks;
+    private String shareLink;
 
-    public static ShopOwnerDetailDto of(Shop shop, BreaksDto breaks, ImageService imageService) {
-        URI imageUrl = imageService.generatePublicUrl(shop.getImageId());
+    public static ShopOwnerDetailDto of(Shop shop, BreaksDto breaks, ShopService shopService) {
         return new ShopOwnerDetailDto(
             shop.getId().getId().toString(),
             shop.getName(),
@@ -48,12 +48,13 @@ public class ShopOwnerDetailDto {
             shop.getCity(),
             shop.getAddressSupplement(),
             shop.getDetails(),
-            Null.map(imageUrl, URI::toString),
+            Null.map(shopService.generateImageUrl(shop), URI::toString),
             shop.getWebsite(),
             Maps.mapKeys(shop.getContacts(), ContactType::getId),
             Null.map(shop.getSlotConfig(), SlotConfigDto::of),
             SocialLinksDto.of(shop.getSocialLinks()),
-            breaks
+            breaks,
+            shopService.generateShareLink(shop).toString()
         );
     }
 }

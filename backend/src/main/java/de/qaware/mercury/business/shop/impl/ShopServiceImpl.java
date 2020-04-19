@@ -17,8 +17,10 @@ import de.qaware.mercury.business.shop.ShopAlreadyExistsException;
 import de.qaware.mercury.business.shop.ShopCreation;
 import de.qaware.mercury.business.shop.ShopNotFoundException;
 import de.qaware.mercury.business.shop.ShopService;
+import de.qaware.mercury.business.shop.ShopSharingConfigurationProperties;
 import de.qaware.mercury.business.shop.ShopUpdate;
 import de.qaware.mercury.business.shop.ShopWithDistance;
+import de.qaware.mercury.business.shop.SlugService;
 import de.qaware.mercury.business.time.Clock;
 import de.qaware.mercury.business.uuid.UUIDFactory;
 import de.qaware.mercury.storage.shop.ShopBreaksRepository;
@@ -32,6 +34,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -39,7 +42,7 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
-@EnableConfigurationProperties(ShopServiceConfigurationProperties.class)
+@EnableConfigurationProperties({ShopServiceConfigurationProperties.class, ShopSharingConfigurationProperties.class})
 class ShopServiceImpl implements ShopService {
     private final UUIDFactory uuidFactory;
     private final LocationService locationService;
@@ -51,6 +54,8 @@ class ShopServiceImpl implements ShopService {
     private final AdminService adminService;
     private final ImageService imageService;
     private final ShopBreaksRepository shopBreaksRepository;
+    private final SlugService slugService;
+    private final ShopSharingConfigurationProperties sharingConfig;
 
     @Override
     @Transactional(readOnly = true)
@@ -80,7 +85,7 @@ class ShopServiceImpl implements ShopService {
     public void delete(Shop.Id id) throws ShopNotFoundException {
         Shop shop = shopRepository.findById(id);
         if (shop == null) {
-            throw new ShopNotFoundException(id);
+            throw ShopNotFoundException.ofShopId(id);
         }
 
         shopRepository.deleteById(id);
@@ -109,7 +114,7 @@ class ShopServiceImpl implements ShopService {
     public Shop findByIdOrThrow(Shop.Id id) throws ShopNotFoundException {
         Shop shop = findById(id);
         if (shop == null) {
-            throw new ShopNotFoundException(id);
+            throw ShopNotFoundException.ofShopId(id);
         }
         return shop;
     }
@@ -127,6 +132,7 @@ class ShopServiceImpl implements ShopService {
         Shop shop = new Shop(
             Shop.Id.of(id),
             creation.getName(),
+            slugService.generateShopSlug(creation.getName(), slug -> shopRepository.findBySlug(slug) == null),
             creation.getOwnerName(),
             creation.getEmail(),
             creation.getStreet(),
@@ -169,6 +175,7 @@ class ShopServiceImpl implements ShopService {
         Shop updatedShop = new Shop(
             shop.getId(),
             update.getName(),
+            shop.getSlug(),
             update.getOwnerName(),
             shop.getEmail(),
             update.getStreet(),
@@ -198,7 +205,7 @@ class ShopServiceImpl implements ShopService {
     public void changeApproved(Shop.Id id, boolean approved) throws ShopNotFoundException {
         Shop shop = shopRepository.findById(id);
         if (shop == null) {
-            throw new ShopNotFoundException(id);
+            throw ShopNotFoundException.ofShopId(id);
         }
         if (shop.isApproved() == approved) {
             // Nothing to do, state in database is the same as the new state
@@ -286,6 +293,30 @@ class ShopServiceImpl implements ShopService {
         return updatedShop;
     }
 
+    @Override
+    @Nullable
+    public Shop findBySlug(String slug) {
+        return shopRepository.findBySlug(slug);
+    }
+
+    @Override
+    public URI generateShareLink(Shop shop) {
+        return URI.create(
+            sharingConfig.getShopShareLinkTemplate()
+                .replace("{{ slug }}", shop.getSlug())
+        );
+    }
+
+    @Override
+    @Nullable
+    public URI generateImageUrl(Shop shop) {
+        if (shop.getImageId() == null) {
+            return null;
+        }
+
+        return imageService.generatePublicUrl(shop.getImageId());
+    }
+
     private List<ShopWithDistance> toShopWithDistance(List<Shop> shops, GeoLocation location) {
         return Lists.map(shops, s -> new ShopWithDistance(s, DistanceUtil.distanceInKmBetween(s.getGeoLocation(), location)
         ));
@@ -294,5 +325,4 @@ class ShopServiceImpl implements ShopService {
     private List<ShopWithDistance> filterByDistance(List<ShopWithDistance> shops, int maxDistance) {
         return shops.stream().filter(s -> s.getDistance() <= maxDistance).collect(Collectors.toList());
     }
-
 }

@@ -1,6 +1,9 @@
 import {Injectable} from '@angular/core';
-import {Observable, Subject} from 'rxjs';
+import {Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
+import {LoginStateService} from './login-state.service';
+import {TokenInfoDto} from '../data/api';
+import {first} from 'rxjs/operators';
 
 export interface LoginCredentials {
   email: string;
@@ -11,8 +14,9 @@ export interface ResetPasswordBody {
   email: string;
 }
 
-const API_LOGIN_SHOP_OWNER = '/api/shop/login';
-const API_RESET_SHOP_OWNER_PASSWORD = '/api/shop/send-password-reset-link';
+const API_SHOP_OWNER_TOKEN_INFO = '/api/shop/login/token-info';
+const API_SHOP_OWNER_LOGIN = '/api/shop/login';
+const API_SHOP_OWNER_PASSWORD_RESET = '/api/shop/send-password-reset-link';
 
 /**
  * Service dealing with shop owner sessions.
@@ -20,33 +24,31 @@ const API_RESET_SHOP_OWNER_PASSWORD = '/api/shop/send-password-reset-link';
 @Injectable({providedIn: 'root'})
 export class ShopOwnerService {
 
-  private loggedIn = new Subject<boolean>();
-
-  constructor(private http: HttpClient) {
-    // call whoami to determine the initial state on page load
-    this.http.get(API_LOGIN_SHOP_OWNER).toPromise()
-      .then(() => this.loggedIn.next(true))
-      .catch(() => this.loggedIn.next(false));
+  constructor(private http: HttpClient, private loginStateService: LoginStateService) {
+    // check the current status once and if we didn't find a token, try to get the tokenInfo from the backend
+    this.loginStateService.isShopOwner
+      .pipe(first())
+      .subscribe(loggedIn => loggedIn || this.updateTokenInfo());
   }
 
   get shopOwnerLoggedIn(): Observable<boolean> {
-    return this.loggedIn.asObservable();
+    return this.loginStateService.isShopOwner;
   }
 
   login(credentials: LoginCredentials) {
-    return this.http.post(API_LOGIN_SHOP_OWNER, credentials).toPromise()
+    return this.http.post(API_SHOP_OWNER_LOGIN, credentials).toPromise()
 
       .then(() => console.log('[ShopOwnerService] Login successful.'))
 
       .catch(error => {
         console.error('[ShopOwnerService] Login failed.', error);
-        this.loggedIn.next(false);
+        this.loginStateService.logoutShopOwner();
         throw error;
       });
   }
 
   logout() {
-    return this.http.delete('/api/shop/login').toPromise()
+    return this.http.delete(API_SHOP_OWNER_LOGIN).toPromise()
 
       .then(() => console.log('[ShopOwnerService] Logout successful.'))
 
@@ -55,11 +57,11 @@ export class ShopOwnerService {
         throw error;
       })
 
-      .finally(() => this.loggedIn.next(false));
+      .finally(() => this.loginStateService.logoutShopOwner());
   }
 
   resetPassword(body: ResetPasswordBody) {
-    return this.http.post(API_RESET_SHOP_OWNER_PASSWORD, body).toPromise()
+    return this.http.post(API_SHOP_OWNER_PASSWORD_RESET, body).toPromise()
 
       .then(() => console.log('[ShopOwnerService] Password reset successful.'))
 
@@ -69,15 +71,29 @@ export class ShopOwnerService {
       });
   }
 
+  private updateTokenInfo() {
+    this.http.get(API_SHOP_OWNER_TOKEN_INFO).toPromise()
+      .then((tokenInfo: TokenInfoDto) => {
+        if (tokenInfo.status === 'LOGGED_IN') {
+          this.loginStateService.loginShopOwner(tokenInfo);
+
+        } else {
+          this.loginStateService.logoutShopOwner();
+        }
+      })
+      .catch(() => this.loginStateService.logoutShopOwner());
+  }
+
 
   /** @deprecated */
   storeOwnerLoggedIn(): void {
-    this.loggedIn.next(true);
+    // will set the login state to true if the user is actually logged in
+    this.updateTokenInfo();
   }
 
   /** @deprecated */
   storeOwnerLoggedOut(): void {
-    this.loggedIn.next(false);
+    this.loginStateService.logoutShopOwner();
   }
 
 }

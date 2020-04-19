@@ -1,0 +1,88 @@
+.footer-area::before {
+  content: " ";
+  position: absolute;
+  width: 100%;
+  margin-left: -50px;
+  transform: translate(50px, 0px);
+  margin-right: 25px;
+
+  top: -100px;
+  left: 0;
+  right: 0;
+  height: 100px;
+  background-color: #673ab7;
+
+  /* The points are: right-top, right-bottom, a teensy bit under the right-bottom,
+   a teensy bit under left-bottom, left bottom.
+
+   Having the additional two points under the triangle prevents an ugly line in
+   Chrome between the triangle and the explanation area block. I know. Don't judge me. */
+  clip-path: polygon(100% 0, 100% 100%, 100% 101%, 0 101%, 0 100%);
+}
+
+.footer-area {
+  background-color: #673ab7;
+  position: relative;
+  margin-top: 120px;
+  margin-left: -50px;
+  transform: translate(25px, 36px);
+  border-radius: 0 0 4px 4px;
+  padding: 25px;
+}
+
+
+.footer-area h2, h3, p, a {
+  text-align: center;
+  color: #fafafa;
+}
+
+.footer-area a {
+  text-decoration: none;
+}
+
+.footer-area h3 {
+  font-weight: bold;
+}
+
+.footer-divider {
+  border-color: #aaaaaa;
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+  padding-top: 25px;
+  flex-wrap: wrap
+}
+
+.footer-section {
+  width: 33%;
+  min-width: 140px;
+  padding-bottom: 25px;
+
+}
+
+
+/* styles for small devices */
+@media screen and (max-width: 719px) {
+  .footer-divider {
+    display: none;
+  }
+
+  .footer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding-top: 25px;
+    flex-wrap: wrap
+  }
+
+  .footer-area {
+    margin-left: -33px;
+    transform: translate(17px, 24px);
+  }
+
+}

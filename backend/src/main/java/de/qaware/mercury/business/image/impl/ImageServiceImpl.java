@@ -37,8 +37,6 @@ class ImageServiceImpl implements ImageService {
     public Image addImage(Shop.Id shopId, InputStream data) {
         log.info("Adding image for shop {}", shopId);
 
-        // TODO: Check maximum images for shop
-
         Image image = new Image(Image.Id.random(uuidFactory));
 
         try (InputStream stream = imageScaler.scale(image.getId(), data, configuration.getSize(), IMAGE_FORMAT, configuration.getQuality())) {
@@ -62,10 +60,7 @@ class ImageServiceImpl implements ImageService {
 
     @Override
     @Nullable
-    public URI generatePublicUrl(@Nullable Image.Id imageId) {
-        if (imageId == null) {
-            return null;
-        }
+    public URI generatePublicUrl(Image.Id imageId) {
         return URI.create(
             configuration.getPublicUrlTemplate().replace("{{ filename }}", generateFilename(imageId))
         );

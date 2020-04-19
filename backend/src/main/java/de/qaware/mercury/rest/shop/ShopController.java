@@ -1,6 +1,5 @@
 package de.qaware.mercury.rest.shop;
 
-import de.qaware.mercury.business.image.ImageService;
 import de.qaware.mercury.business.location.impl.LocationNotFoundException;
 import de.qaware.mercury.business.login.LoginException;
 import de.qaware.mercury.business.login.PasswordResetToken;
@@ -21,6 +20,7 @@ import de.qaware.mercury.business.shop.ShopNotFoundException;
 import de.qaware.mercury.business.shop.ShopService;
 import de.qaware.mercury.business.shop.SlotConfig;
 import de.qaware.mercury.business.shop.SocialLinks;
+import de.qaware.mercury.business.validation.Validation;
 import de.qaware.mercury.rest.shop.dto.request.CreateShopDto;
 import de.qaware.mercury.rest.shop.dto.request.ResetPasswordDto;
 import de.qaware.mercury.rest.shop.dto.request.SendCreateLinkDto;
@@ -29,7 +29,6 @@ import de.qaware.mercury.rest.shop.dto.response.ShopDetailDto;
 import de.qaware.mercury.rest.shop.dto.response.ShopListDto;
 import de.qaware.mercury.rest.util.cookie.CookieHelper;
 import de.qaware.mercury.util.Maps;
-import de.qaware.mercury.util.validation.Validation;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -59,9 +58,10 @@ import static de.qaware.mercury.rest.plumbing.authentication.AuthenticationHelpe
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 @RequestMapping(value = "/api/shop", produces = MediaType.APPLICATION_JSON_VALUE)
 @Validated
+@SuppressWarnings("java:S4784")
+    // JDK since 9 has additional protection against ReDos attacks
 class ShopController {
     private final ShopService shopService;
-    private final ImageService imageService;
     private final TokenService tokenService;
     private final ShopLoginService shopLoginService;
     private final CookieHelper cookieHelper;
@@ -78,10 +78,10 @@ class ShopController {
     public ShopDetailDto getShopDetails(@PathVariable @Pattern(regexp = Validation.SHOP_ID) String id) throws ShopNotFoundException {
         Shop shop = shopService.findById(Shop.Id.parse(id));
         if (shop == null) {
-            throw new ShopNotFoundException(Shop.Id.parse(id));
+            throw ShopNotFoundException.ofShopId(Shop.Id.parse(id));
         }
 
-        return ShopDetailDto.of(shop, imageService);
+        return ShopDetailDto.of(shop, shopService);
     }
 
     /**
@@ -157,7 +157,7 @@ class ShopController {
         VerifiedToken<ShopLogin.Id, ShopToken> loginToken = shopLoginService.login(email, request.getPassword());
         cookieHelper.addTokenCookie(SHOP_COOKIE_NAME, loginToken, response);
 
-        return ShopDetailDto.of(createdShop, imageService);
+        return ShopDetailDto.of(createdShop, shopService);
     }
 
     /**
@@ -170,9 +170,9 @@ class ShopController {
     @GetMapping("nearby")
     public ShopListDto findActive(@RequestParam @NotBlank String zipCode, @RequestParam(required = false) @Nullable Integer maxDistance) throws LocationNotFoundException {
         if (maxDistance != null) {
-            return ShopListDto.of(shopService.findActive(zipCode, maxDistance), imageService);
+            return ShopListDto.of(shopService.findActive(zipCode, maxDistance), shopService);
         }
-        return ShopListDto.of(shopService.findActive(zipCode), imageService);
+        return ShopListDto.of(shopService.findActive(zipCode), shopService);
     }
 
     /**
@@ -186,8 +186,8 @@ class ShopController {
     @GetMapping("search")
     public ShopListDto searchActive(@RequestParam @NotBlank String query, @NotBlank @RequestParam String zipCode, @RequestParam(required = false) @Nullable Integer maxDistance) throws LocationNotFoundException {
         if (maxDistance != null) {
-            return ShopListDto.of(shopService.searchActive(query, zipCode, maxDistance), imageService);
+            return ShopListDto.of(shopService.searchActive(query, zipCode, maxDistance), shopService);
         }
-        return ShopListDto.of(shopService.searchActive(query, zipCode), imageService);
+        return ShopListDto.of(shopService.searchActive(query, zipCode), shopService);
     }
 }
