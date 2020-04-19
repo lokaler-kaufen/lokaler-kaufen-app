@@ -21,6 +21,8 @@ public class ColorDistanceUtil {
     /**
      * Returns the Delta E distance between two given colors.
      *
+     * The calculation is based on the RGB values only, the hex value is ignored.
+     *
      * 0.0 - 0.5: practically indistinguishable
      * 0.5 - 1.0: hardly distinguishable
      * 1.0 - 2.0: small color difference
@@ -29,7 +31,6 @@ public class ColorDistanceUtil {
      *     > 5.0: different color
      *
      * See: https://de.wikipedia.org/wiki/Delta_E#Bewertung_von_%CE%94E
-     *
      * @param color1 The first color (p)
      * @param color2 The second color (v)
      * @return The Delta E distance.
