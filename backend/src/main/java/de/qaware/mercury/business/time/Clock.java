@@ -8,7 +8,9 @@ import java.util.Date;
 public interface Clock {
     ZonedDateTime nowZoned();
 
-    LocalDateTime now();
+    default LocalDateTime now() {
+        return nowZoned().toLocalDateTime();
+    }
 
     default LocalDate today() {
         return now().toLocalDate();
