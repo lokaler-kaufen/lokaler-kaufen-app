@@ -1,11 +1,9 @@
 package de.qaware.mercury.business.reservation.impl;
 
 import de.qaware.mercury.business.reservation.Interval;
-import de.qaware.mercury.business.reservation.InvalidSlotIdException;
 import de.qaware.mercury.business.reservation.Slot;
 import de.qaware.mercury.business.reservation.SlotService;
 import de.qaware.mercury.business.reservation.Slots;
-import de.qaware.mercury.business.shop.Breaks;
 import de.qaware.mercury.business.shop.DayConfig;
 import de.qaware.mercury.business.shop.SlotConfig;
 import de.qaware.mercury.business.time.Clock;
@@ -22,12 +20,9 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 @Service
 @Slf4j
@@ -83,52 +78,6 @@ class SlotServiceImpl implements SlotService {
 
         // Monday to sunday are always 7 days
         return generateSlots(monday, sunday, slotConfig, List.of());
-    }
-
-    @Override
-    public Breaks resolveBreaks(Set<Slot.Id> slotIds, SlotConfig slotConfig) {
-        Map<DayOfWeek, Set<Breaks.Break>> breaks = new EnumMap<>(DayOfWeek.class);
-
-        for (Slot.Id slotId : slotIds) {
-            LocalDateTime start = slotId.toLocalDateTime();
-            LocalDateTime end = start.plusMinutes(slotConfig.getTimePerSlot());
-
-            if (!isValidSlot(start, end, slotConfig)) {
-                throw new InvalidSlotIdException(slotId.getId());
-            }
-
-            // Put the slot start and end as break to the corresponding weekday
-            breaks.computeIfAbsent(start.getDayOfWeek(), ignored -> new HashSet<>()).add(Breaks.Break.of(start.toLocalTime(), end.toLocalTime()));
-        }
-
-        return new Breaks(
-            breaks.getOrDefault(DayOfWeek.MONDAY, Set.of()),
-            breaks.getOrDefault(DayOfWeek.TUESDAY, Set.of()),
-            breaks.getOrDefault(DayOfWeek.WEDNESDAY, Set.of()),
-            breaks.getOrDefault(DayOfWeek.THURSDAY, Set.of()),
-            breaks.getOrDefault(DayOfWeek.FRIDAY, Set.of()),
-            breaks.getOrDefault(DayOfWeek.SATURDAY, Set.of()),
-            breaks.getOrDefault(DayOfWeek.SUNDAY, Set.of())
-        );
-    }
-
-    @Override
-    public List<Slot> convertBreaksToSlots(Breaks breaks) {
-        LocalDate monday = getNextMonday();
-
-        List<Slot> result = new ArrayList<>();
-        for (var entry : breaks.groupedByDayOfWeek().entrySet()) {
-            DayOfWeek dayOfWeek = entry.getKey();
-
-            for (Breaks.Break aBreak : entry.getValue()) {
-                LocalDateTime breakStart = monday.with(TemporalAdjusters.nextOrSame(dayOfWeek)).atTime(aBreak.getStart());
-                LocalDateTime breakEnd = LocalDateTime.of(breakStart.toLocalDate(), aBreak.getEnd());
-
-                result.add(new Slot(Slot.Id.of(breakStart), breakStart, breakEnd, false));
-            }
-        }
-
-        return result;
     }
 
     private LocalDate getNextSunday(LocalDate monday) {

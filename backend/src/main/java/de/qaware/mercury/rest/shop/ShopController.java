@@ -150,7 +150,7 @@ class ShopController {
             Maps.mapKeys(request.getContacts(), ContactType::parse),
             slotConfig,
             request.getSocialLinks() == null ? SocialLinks.none() : request.getSocialLinks().toSocialLinks(),
-            request.getBreaks() == null ? Breaks.none() : slotService.resolveBreaks(request.getBreaks().toSlotIds(), slotConfig)
+            request.getBreaks() == null ? Breaks.none() : request.getBreaks().toBreaks()
         ));
 
         // When the shop is created, the client is automatically logged in

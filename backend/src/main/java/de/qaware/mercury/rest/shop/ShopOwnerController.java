@@ -2,8 +2,6 @@ package de.qaware.mercury.rest.shop;
 
 import de.qaware.mercury.business.location.impl.LocationNotFoundException;
 import de.qaware.mercury.business.login.LoginException;
-import de.qaware.mercury.business.reservation.Slot;
-import de.qaware.mercury.business.reservation.SlotService;
 import de.qaware.mercury.business.shop.Breaks;
 import de.qaware.mercury.business.shop.ContactType;
 import de.qaware.mercury.business.shop.Shop;
@@ -12,8 +10,8 @@ import de.qaware.mercury.business.shop.ShopUpdate;
 import de.qaware.mercury.business.shop.SlotConfig;
 import de.qaware.mercury.business.shop.SocialLinks;
 import de.qaware.mercury.rest.plumbing.authentication.AuthenticationHelper;
-import de.qaware.mercury.rest.shop.dto.request.BreaksDto;
 import de.qaware.mercury.rest.shop.dto.request.UpdateShopDto;
+import de.qaware.mercury.rest.shop.dto.requestresponse.BreaksDto;
 import de.qaware.mercury.rest.shop.dto.response.ShopDetailDto;
 import de.qaware.mercury.rest.shop.dto.response.ShopOwnerDetailDto;
 import de.qaware.mercury.util.Maps;
@@ -30,7 +28,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.List;
 
 @Slf4j
 @RestController
@@ -40,7 +37,6 @@ import java.util.List;
 public class ShopOwnerController {
     private final AuthenticationHelper authenticationHelper;
     private final ShopService shopService;
-    private final SlotService slotService;
 
     /**
      * Retrieves settings of a shop for the owner.
@@ -52,9 +48,9 @@ public class ShopOwnerController {
     @GetMapping(path = "/me")
     public ShopOwnerDetailDto getShopSettings(HttpServletRequest servletRequest) throws LoginException {
         Shop shop = authenticationHelper.authenticateShop(servletRequest);
-        List<Slot> slots = slotService.convertBreaksToSlots(shopService.findBreaks(shop));
+        Breaks breaks = shopService.findBreaks(shop);
 
-        return ShopOwnerDetailDto.of(shop, BreaksDto.fromSlots(slots), shopService);
+        return ShopOwnerDetailDto.of(shop, BreaksDto.of(breaks), shopService);
     }
 
     /**
@@ -70,7 +66,7 @@ public class ShopOwnerController {
         Shop shop = authenticationHelper.authenticateShop(servletRequest);
 
         SlotConfig slotConfig = request.getSlots().toSlots();
-        Breaks breaks = request.getBreaks() == null ? Breaks.none() : slotService.resolveBreaks(request.getBreaks().toSlotIds(), slotConfig);
+        Breaks breaks = request.getBreaks() == null ? Breaks.none() : request.getBreaks().toBreaks();
         Shop updatedShop = shopService.update(shop, new ShopUpdate(
             request.getName(),
             request.getOwnerName(),
@@ -85,8 +81,7 @@ public class ShopOwnerController {
             request.getSocialLinks() == null ? SocialLinks.none() : request.getSocialLinks().toSocialLinks(),
             breaks
         ));
-        List<Slot> slots = slotService.convertBreaksToSlots(breaks);
 
-        return ShopOwnerDetailDto.of(updatedShop, BreaksDto.fromSlots(slots), shopService);
+        return ShopOwnerDetailDto.of(updatedShop, request.getBreaks(), shopService);
     }
 }

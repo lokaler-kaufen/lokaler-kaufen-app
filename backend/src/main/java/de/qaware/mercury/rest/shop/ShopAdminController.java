@@ -106,7 +106,7 @@ class ShopAdminController {
             Maps.mapKeys(request.getContacts(), ContactType::parse),
             slotConfig,
             request.getSocialLinks() == null ? SocialLinks.none() : request.getSocialLinks().toSocialLinks(),
-            request.getBreaks() == null ? Breaks.none() : slotService.resolveBreaks(request.getBreaks().toSlotIds(), slotConfig)
+            request.getBreaks() == null ? Breaks.none() : request.getBreaks().toBreaks()
         ));
         log.info("Admin {} updated shop '{}'", admin.getEmail(), shop.getName());
         return ShopAdminDto.of(updatedShop, shopService);

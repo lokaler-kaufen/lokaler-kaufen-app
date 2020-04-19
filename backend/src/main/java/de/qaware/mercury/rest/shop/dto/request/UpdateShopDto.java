@@ -2,6 +2,7 @@ package de.qaware.mercury.rest.shop.dto.request;
 
 import de.qaware.mercury.business.shop.ContactType;
 import de.qaware.mercury.business.validation.EnumValue;
+import de.qaware.mercury.rest.shop.dto.requestresponse.BreaksDto;
 import de.qaware.mercury.rest.shop.dto.requestresponse.SocialLinksDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;

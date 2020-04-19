@@ -12,7 +12,6 @@ import java.time.format.DateTimeFormatter;
 @AllArgsConstructor
 public class SlotDto {
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
-    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     private String id;
     private String start;

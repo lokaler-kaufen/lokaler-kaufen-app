@@ -1,7 +1,6 @@
 package de.qaware.mercury.rest.shop
 
 
-import de.qaware.mercury.business.reservation.SlotService
 import de.qaware.mercury.business.shop.Breaks
 import de.qaware.mercury.business.shop.Shop
 import de.qaware.mercury.business.shop.ShopService
@@ -22,11 +21,10 @@ class ShopOwnerControllerTest extends Specification {
 
     AuthenticationHelper authenticationHelper = Mock(AuthenticationHelper)
     ShopService shopService = Mock(ShopService)
-    SlotService slotService = Mock(SlotService)
     HttpServletRequest httpServletRequest = Mock(HttpServletRequest)
 
     void setup() {
-        controller = new ShopOwnerController(authenticationHelper, shopService, slotService)
+        controller = new ShopOwnerController(authenticationHelper, shopService)
     }
 
     def "Retrieve shop settings"() {
@@ -35,7 +33,6 @@ class ShopOwnerControllerTest extends Specification {
         String testImageUrl = "http://image.url/path"
         authenticationHelper.authenticateShop(httpServletRequest) >> shop
         shopService.findBreaks(shop) >> Breaks.none()
-        slotService.convertBreaksToSlots(_) >> List.of()
         shopService.generateImageUrl(shop) >> new URI(testImageUrl)
         shopService.generateShareLink(shop) >> new URI("http://share.url/path")
 
@@ -55,7 +52,6 @@ class ShopOwnerControllerTest extends Specification {
         SlotConfigDto slots = SlotConfigDto.of(shop.getSlotConfig())
         UpdateShopDto dto = new UpdateShopDto("name", "ownername", "street", "zipCode", "city", "addressSupplement", "details", "www.example.com", Map.of(), slots, new SocialLinksDto("instagram", "facebook", "twitter"), null)
         shopService.findBreaks(shop) >> Breaks.none()
-        slotService.convertBreaksToSlots(_) >> List.of()
         String testImageUrl = "http://image.url/path"
         shopService.generateImageUrl(shop) >> new URI(testImageUrl)
         shopService.generateShareLink(shop) >> new URI("http://share.url/path")

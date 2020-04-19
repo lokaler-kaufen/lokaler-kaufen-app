@@ -1,10 +1,8 @@
 package de.qaware.mercury.business.reservation.impl
 
 import de.qaware.mercury.business.reservation.Interval
-import de.qaware.mercury.business.reservation.Slot
 import de.qaware.mercury.business.reservation.SlotService
 import de.qaware.mercury.business.reservation.Slots
-import de.qaware.mercury.business.shop.Breaks
 import de.qaware.mercury.business.shop.DayConfig
 import de.qaware.mercury.business.shop.SlotConfig
 import de.qaware.mercury.business.time.Clock
@@ -83,46 +81,6 @@ class SlotServiceTest extends Specification {
         slotService.generateSlots(sunday(), saturday(), saturdayConfig(8, 18), new ArrayList<Interval>())
         then:
         IllegalArgumentException _ = thrown()
-    }
-
-    def "test shop breaks"() {
-        given: "a fixed date"
-        clock.now() >> LocalDateTime.parse("2020-04-13T13:09:39.940482")
-        SlotConfig slotConfig = mondayConfig(10, 12);
-
-        when: "we preview the slots"
-        Slots preview = slotService.previewSlots(slotConfig)
-
-        then: "we get two slots, starting next monday"
-        // Next monday (see clock above)
-        preview.days[0].date == LocalDate.of(2020, 4, 20)
-        preview.days.size() == 7
-
-        // 10:00 - 10:30
-        preview.days[0].slots[0].start == LocalDateTime.of(2020, 4, 20, 10, 0)
-        preview.days[0].slots[0].end == LocalDateTime.of(2020, 4, 20, 10, 30)
-        // 11:00 - 11:30
-        preview.days[0].slots[1].start == LocalDateTime.of(2020, 4, 20, 11, 0)
-        preview.days[0].slots[1].end == LocalDateTime.of(2020, 4, 20, 11, 30)
-
-        when: "we resolve these slots to breaks"
-        Breaks breaks = slotService.resolveBreaks(Set.of(preview.days[0].slots[0].id, preview.days[0].slots[1].id), slotConfig)
-
-        then: "we get breaks containing exactly the both slots"
-        breaks.getMonday() == Set.of(
-            Breaks.Break.of(LocalTime.of(10, 0), LocalTime.of(10, 30)), // Slot 1
-            Breaks.Break.of(LocalTime.of(11, 0), LocalTime.of(11, 30)) // Slot 2
-        )
-
-        when: "we convert the breaks back to slots"
-        List<Slot> slots = slotService.convertBreaksToSlots(breaks)
-
-        then: "we get exactly these slots back"
-        slots.size() == 2
-        slots[0].start == LocalDateTime.of(2020, 4, 20, 10, 0)
-        slots[0].end == LocalDateTime.of(2020, 4, 20, 10, 30)
-        slots[1].start == LocalDateTime.of(2020, 4, 20, 11, 0)
-        slots[1].end == LocalDateTime.of(2020, 4, 20, 11, 30)
     }
 
     def "test first slot delay"() {
