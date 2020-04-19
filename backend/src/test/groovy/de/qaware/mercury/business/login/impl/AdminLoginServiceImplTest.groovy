@@ -11,6 +11,7 @@ import de.qaware.mercury.business.login.VerifiedToken
 import de.qaware.mercury.business.time.Clock
 import de.qaware.mercury.business.uuid.UUIDFactory
 import de.qaware.mercury.storage.admin.AdminRepository
+import de.qaware.mercury.test.time.TestClock
 import spock.lang.Specification
 import spock.lang.Subject
 import spock.lang.Unroll
@@ -24,7 +25,7 @@ class AdminLoginServiceImplTest extends Specification {
     PasswordHasher passwordHasher = Mock()
     TokenService tokenService = Mock()
     UUIDFactory uuidFactory = Mock()
-    Clock clock = Mock()
+    Clock clock = new TestClock()
 
 
     @Subject
@@ -42,7 +43,6 @@ class AdminLoginServiceImplTest extends Specification {
         then:
         1 * uuidFactory.create() >> uuid
         1 * passwordHasher.hash('supersecret') >> hasher
-        2 * clock.nowZoned() >> ZonedDateTime.now()
         1 * adminRepository.insert(_)
 
         with(admin) {

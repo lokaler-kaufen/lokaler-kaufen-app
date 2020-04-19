@@ -7,6 +7,7 @@ import de.qaware.mercury.business.shop.DayConfig
 import de.qaware.mercury.business.shop.SlotConfig
 import de.qaware.mercury.business.time.Clock
 import de.qaware.mercury.test.builder.SlotConfigBuilder
+import de.qaware.mercury.test.time.TestClock
 import spock.lang.Specification
 import spock.lang.Subject
 import spock.lang.Unroll
@@ -20,7 +21,7 @@ import java.time.temporal.TemporalAdjusters
 import static java.time.LocalDateTime.now
 
 class SlotServiceTest extends Specification {
-    Clock clock = Mock()
+    Clock clock = new TestClock()
 
     @Subject
     SlotService slotService = new SlotServiceImpl(clock)
@@ -40,17 +41,19 @@ class SlotServiceTest extends Specification {
     }
 
     @Unroll
-    def "Check Slot Generation: #usecase"() {
+    def "Check Slot Generation: #usecase"(String useCase, LocalDate start, LocalDate end, SlotConfig config, List<Interval> blockedSlots, int count) {
+        given:
+        // Set the clock to 00:00 of the starting day to always get the same number of slots
+        clock.setNow(start.atStartOfDay())
+
         when:
-        Slots slots = slotService.generateSlots(start, end, config, reservations)
+        Slots slots = slotService.generateSlots(start, end, config, blockedSlots)
 
         then:
-        // Set the clock to 00:00 of the starting day to always get the same number of slots
-        _ * clock.now() >> LocalDateTime.of(start, LocalTime.of(0, 0, 0))
         countSlots(slots) == count
 
         where:
-        usecase                   | start       | end         | config                            | reservations || count
+        useCase                   | start       | end         | config                            | blockedSlots || count
         'Monday'                  | monday()    | monday()    | mondayConfig(10, 23)              | []           || 13
         'Tuesday'                 | tuesday()   | tuesday()   | tuesdayConfig(8, 18)              | []           || 10
         'Wednesday'               | wednesday() | wednesday() | wednesdayConfig(8, 18)            | []           || 10
@@ -85,7 +88,7 @@ class SlotServiceTest extends Specification {
 
     def "test first slot delay"() {
         given: "a fixed date"
-        clock.now() >> LocalDateTime.parse("2020-04-13T09:30:00")
+        clock.setNow(LocalDateTime.parse("2020-04-13T09:30:00"))
 
         when: "we generate slots"
         // Monday from 10 to 12, 30 minutes length, 30 minutes pause, 60 min delay

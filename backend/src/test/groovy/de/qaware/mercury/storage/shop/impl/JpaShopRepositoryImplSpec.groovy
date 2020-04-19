@@ -5,6 +5,7 @@ import de.qaware.mercury.business.location.GeoLocation
 import de.qaware.mercury.business.shop.Shop
 import de.qaware.mercury.business.time.Clock
 import de.qaware.mercury.test.fixtures.ShopFixtures
+import de.qaware.mercury.test.time.TestClock
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -13,14 +14,13 @@ import java.time.ZonedDateTime
 class JpaShopRepositoryImplSpec extends Specification {
 
     ShopDataRepository dataRepository
-    Clock clock
+    Clock clock = new TestClock()
 
     @Subject
     JpaShopRepositoryImpl repository
 
     def setup() {
         dataRepository = Mock(ShopDataRepository)
-        clock = Mock(Clock)
         repository = new JpaShopRepositoryImpl(dataRepository, clock)
     }
 
