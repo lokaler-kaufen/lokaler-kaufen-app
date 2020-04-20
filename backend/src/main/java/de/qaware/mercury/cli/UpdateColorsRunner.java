@@ -28,8 +28,8 @@ public class UpdateColorsRunner {
         console.printLine("#######################");
 
         List<Shop> shopList = shopService.listAll();
-        for (Shop shop: shopList ) {
-            if (shop.getImageId() != null){
+        for (Shop shop : shopList) {
+            if (shop.getImageId() != null) {
                 try {
                     String color = imageService.getImageBackgroundColor(shop.getImageId());
                     shopService.updateShopColor(shop, color);
