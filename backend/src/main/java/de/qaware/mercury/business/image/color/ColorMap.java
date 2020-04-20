@@ -33,8 +33,8 @@ public class ColorMap {
      * @param color The color of the pixel.
      */
     public void setColor(int x, int y, Color color) {
-        if (x > maxWidth || y > maxHeight || x < 0 || y < 0) {
-            throw new IllegalArgumentException("Coordinates must be between 0 and maxX/maxY");
+        if (x >= maxWidth || y >= maxHeight || x < 0 || y < 0) {
+            throw new IllegalArgumentException("Coordinates must be at least 0 and less than maxWidth/maxHeight");
         }
         colors[x][y] = color;
         // width and height should be 1 based
