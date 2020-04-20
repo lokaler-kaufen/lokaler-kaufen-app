@@ -231,12 +231,12 @@ public class ShopEntity {
     private String twitter;
 
     @Setter
-    @Column(nullable = true, columnDefinition = "varchar")
+    @Column(nullable = true)
     @Nullable
     private String shopColor;
 
     @Setter
-    @Column(nullable = false, columnDefinition = "boolean")
+    @Column(nullable = false)
     private boolean autoColorEnabled;
 
     @Column(nullable = false)
