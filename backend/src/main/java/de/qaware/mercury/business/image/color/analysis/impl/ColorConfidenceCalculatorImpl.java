@@ -29,12 +29,13 @@ public class ColorConfidenceCalculatorImpl implements ColorConfidenceCalculator 
     @Override
     public double calculateConfidence(Color color, Map<Color, Integer> colorHistogram) {
         double similarColors = colorHistogram.getOrDefault(color, 0);
-        for (Color otherColor : colorHistogram.keySet()) {
+        for (Map.Entry<Color, Integer> colorHistogramEntry : colorHistogram.entrySet()) {
+            Color otherColor = colorHistogramEntry.getKey();
             if (color.equals(otherColor)) {
                 continue;
             }
             if (ColorDistanceUtil.getColorDistance(color, otherColor) < COLOR_DISTANCE_THRESHOLD) {
-                similarColors += colorHistogram.get(otherColor);
+                similarColors += colorHistogramEntry.getValue();
             }
         }
         return similarColors / colorHistogram.values().stream().mapToInt(v -> v).sum();
