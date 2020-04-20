@@ -1,6 +1,7 @@
 package de.qaware.mercury.rest.shop.dto.requestresponse;
 
 import de.qaware.mercury.business.shop.Breaks;
+import de.qaware.mercury.business.shop.InvalidBreakException;
 import de.qaware.mercury.util.Lists;
 import de.qaware.mercury.util.Sets;
 import lombok.AllArgsConstructor;
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotNull;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 @Data
@@ -65,10 +67,14 @@ public class BreaksDto {
         private String end;
 
         public Breaks.Break toBreak() {
-            return Breaks.Break.of(
-                LocalTime.parse(start, TIME_FORMATTER),
-                LocalTime.parse(end, TIME_FORMATTER)
-            );
+            try {
+                LocalTime startTime = LocalTime.parse(start, TIME_FORMATTER);
+                LocalTime endTime = LocalTime.parse(end, TIME_FORMATTER);
+
+                return Breaks.Break.of(startTime, endTime);
+            } catch (DateTimeParseException e) {
+                throw new InvalidBreakException(start, end, "Failed to parse time", e);
+            }
         }
 
         public static BreakDto of(Breaks.Break aBreak) {

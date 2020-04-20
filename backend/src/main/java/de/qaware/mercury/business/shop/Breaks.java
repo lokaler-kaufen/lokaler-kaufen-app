@@ -18,10 +18,22 @@ public class Breaks {
     Set<Break> saturday;
     Set<Break> sunday;
 
-    @Value(staticConstructor = "of")
+    @Value
     public static class Break {
         LocalTime start;
         LocalTime end;
+
+        private Break(LocalTime start, LocalTime end) {
+            this.start = start;
+            this.end = end;
+        }
+
+        public static Break of(LocalTime start, LocalTime end) {
+            if (end.isBefore(start)) {
+                throw new InvalidBreakException(String.format("end is before start. start = %s, end = %s", start, end));
+            }
+            return new Break(start, end);
+        }
     }
 
     public Map<DayOfWeek, Set<Break>> groupedByDayOfWeek() {

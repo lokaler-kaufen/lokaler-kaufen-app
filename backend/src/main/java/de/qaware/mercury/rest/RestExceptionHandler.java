@@ -9,6 +9,7 @@ import de.qaware.mercury.business.reservation.InvalidReservationIdException;
 import de.qaware.mercury.business.reservation.InvalidSlotIdException;
 import de.qaware.mercury.business.reservation.ReservationFailedException;
 import de.qaware.mercury.business.reservation.ReservationNotFoundException;
+import de.qaware.mercury.business.shop.InvalidBreakException;
 import de.qaware.mercury.business.shop.InvalidShopIdException;
 import de.qaware.mercury.business.shop.ShopAlreadyExistsException;
 import de.qaware.mercury.business.shop.ShopNotFoundException;
@@ -102,6 +103,13 @@ class RestExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<ErrorDto> handleInvalidImageIdException(InvalidImageIdException exception) {
         ErrorDto errorDto = ErrorDto.of(uuidFactory, "INVALID_IMAGE_ID", exception.getMessage());
         log.debug("Handled InvalidImageIdException with exception id {}", errorDto.getId(), exception);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDto);
+    }
+
+    @ExceptionHandler(InvalidBreakException.class)
+    public ResponseEntity<ErrorDto> handleInvalidBreakException(InvalidBreakException exception) {
+        ErrorDto errorDto = ErrorDto.of(uuidFactory, "INVALID_BREAK", exception.getMessage());
+        log.debug("Handled InvalidBreakException with exception id {}", errorDto.getId(), exception);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDto);
     }
 
