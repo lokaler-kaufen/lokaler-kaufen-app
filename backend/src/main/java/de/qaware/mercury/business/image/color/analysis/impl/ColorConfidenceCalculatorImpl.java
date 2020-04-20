@@ -37,7 +37,7 @@ public class ColorConfidenceCalculatorImpl implements ColorConfidenceCalculator 
                 similarColors += colorHistogram.get(otherColor);
             }
         }
-        return similarColors / colorHistogram.values().stream().reduce(Integer::sum).orElseThrow();
+        return similarColors / colorHistogram.values().stream().mapToInt(v -> v).sum();
     }
 
 }
