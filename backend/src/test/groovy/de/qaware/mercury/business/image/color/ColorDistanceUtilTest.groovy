@@ -6,7 +6,7 @@ import spock.lang.Unroll
 class ColorDistanceUtilTest extends Specification {
 
     @Unroll
-    def "Check color distance"() {
+    def "Check color distance"(Color color1, Color color2, double lower_bound, Double upper_bound) {
         expect:
         ColorDistanceUtil.getColorDistance(color1, color2) >= lower_bound
         if (upper_bound) ColorDistanceUtil.getColorDistance(color1, color2) <= upper_bound

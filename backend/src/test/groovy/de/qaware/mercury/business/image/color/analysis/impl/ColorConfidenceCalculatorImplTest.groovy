@@ -10,7 +10,7 @@ class ColorConfidenceCalculatorImplTest extends Specification {
     @Subject
     ColorConfidenceCalculator colorConfidenceCalculator = new ColorConfidenceCalculatorImpl();
 
-    def "test calculateConfidence"() {
+    def "test calculateConfidence"(Color color, Map<Color, Integer> colorHistogram, double lower_bound, double upper_bound) {
 
         expect:
         colorConfidenceCalculator.calculateConfidence(color, colorHistogram) >= lower_bound
