@@ -58,8 +58,9 @@ public class ShopImageController {
             try {
                 color = imageService.getImageBackgroundColor(image.getId());
             } catch (ImageNotFoundException e) {
-                log.error("Could not derive image color. Will use default.", e);
-                color = "#FFFFFF";
+                log.error("Could not derive image color.", e);
+                // This should not be possible since we just received this image (and id) from the add-operation
+                throw new AssertionError("Unexpected exception.", e);
             }
         }
 
