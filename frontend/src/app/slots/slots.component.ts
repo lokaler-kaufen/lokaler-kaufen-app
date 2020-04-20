@@ -1,6 +1,6 @@
 import {Component, Input, OnInit, Output} from '@angular/core';
 import {Observable, ReplaySubject} from 'rxjs';
-import {BreakDto, BreaksDto, SlotDto, SlotsDto} from '../data/client';
+import {BreakDto, BreaksDto, SlotDto, SlotsDto} from '../data/api';
 
 /**
  * data structure for slot selection
