@@ -73,10 +73,10 @@ public class ColorDistanceUtil {
      */
     private static LabColor cie1931ToLab(CIE1931Color color) {
         // https://de.wikipedia.org/wiki/Lab-Farbraum#Umrechnung_von_XYZ_zu_Lab
-        double L = 116 * Math.cbrt(color.y / YN10) - 16;
+        double l = 116 * Math.cbrt(color.y / YN10) - 16;
         double a = 500 * (Math.cbrt(color.x / XN10) - Math.cbrt(color.y / YN10));
         double b = 200 * (Math.cbrt(color.y / YN10) - Math.cbrt(color.z / ZN10));
-        return LabColor.of(L, a, b);
+        return LabColor.of(l, a, b);
     }
 
     /**
