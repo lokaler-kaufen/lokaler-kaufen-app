@@ -20,7 +20,7 @@ public class GMTextOutputParserImpl implements GMTextOutputParser {
 
     @Override
     public ColorMap parseGMTextOutput(String gmTextOutput) {
-        log.debug("Parsing GM output.");
+        log.debug("Parsing GM output");
         // Split in lines
         String[] lines = gmTextOutput.split("\\r?\\n");
 
@@ -43,7 +43,7 @@ public class GMTextOutputParserImpl implements GMTextOutputParser {
                 throw new ImageException(String.format("Cannot parse value from GM output: '%s'", line), e);
             }
         }
-        log.debug("Parsed {} lines.", lines.length);
+        log.debug("Parsed {} lines", lines.length);
         return colorMap;
     }
 }

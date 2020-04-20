@@ -23,7 +23,7 @@ public class GMImageToTextConverterImpl implements GMImageToTextConverter {
             throw new ImageException("Failed to convert image to text", e);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            throw new ImageException("Got interrupted while scaling image .", e);
+            throw new ImageException("Got interrupted while scaling image", e);
         }
         return result;
     }

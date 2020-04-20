@@ -22,7 +22,7 @@ public class DominantColorFinderImpl implements DominantColorFinder {
             .max(Map.Entry.comparingByValue());
 
         if (topColorEntry.isEmpty()) {
-            throw new ImageException("Cannot find dominant color.");
+            throw new ImageException("Cannot find dominant color");
         }
 
         return topColorEntry.get().getKey();
