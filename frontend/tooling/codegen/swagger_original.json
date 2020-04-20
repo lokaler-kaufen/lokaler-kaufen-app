@@ -1931,6 +1931,9 @@
                 "approved": {
                     "type": "boolean"
                 },
+                "autoColorEnabled": {
+                    "type": "boolean"
+                },
                 "city": {
                     "type": "string"
                 },
