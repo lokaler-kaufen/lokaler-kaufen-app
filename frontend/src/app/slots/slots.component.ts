@@ -156,7 +156,7 @@ export class SlotsComponent implements OnInit {
       slot,
       index,
       day,
-      removeSlot: false
+      removeSlot: true
     });
     slot.available = true;
   }

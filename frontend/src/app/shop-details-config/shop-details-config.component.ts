@@ -367,13 +367,7 @@ export class ShopDetailsConfigComponent implements OnInit {
 
   changeBreakSlot($event: SlotSelectionData) {
     if ($event.removeSlot) {
-      const index = this.slotBreaks[$event.day].indexOf({
-        slot: $event.slot,
-        id: $event.index
-      }, 0);
-      if (index > -1) {
-        this.slotBreaks[$event.day].splice(index, 1);
-      }
+      this.slotBreaks[$event.day] = this.slotBreaks[$event.day].filter(slotData => slotData.id !== $event.index);
     } else {
       this.slotBreaks[$event.day].push({
         slot: $event.slot,
