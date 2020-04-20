@@ -9,6 +9,10 @@ import lombok.Value;
  */
 public class ColorDistanceUtil {
 
+    private ColorDistanceUtil() {
+        // prevent instances
+    }
+
     // These constants are used for converting the CIE1931 color space to the more subjective LAB Space.
     // These are the D65 values which assume a light temperature of 6500k. This temperature is closer to
     // the LED white produced by screens than the alternative (D50@5000k, more of a warm white).
