@@ -10,19 +10,19 @@ public class ColorMap {
     private final Color[][] colors;
     private int width = -1;
     private int height = -1;
-    private final int maxX;
-    private final int maxY;
+    private final int maxWidth;
+    private final int maxHeight;
 
     /**
      * The constructor of the map.
      *
-     * @param maxX the maximum width the contained image can have
-     * @param maxY the maximum height the contained image can have
+     * @param maxWidth  the maximum width the contained image can have
+     * @param maxHeight the maximum height the contained image can have
      */
-    public ColorMap(int maxX, int maxY) {
-        colors = new Color[maxX][maxY];
-        this.maxX = maxX;
-        this.maxY = maxY;
+    public ColorMap(int maxWidth, int maxHeight) {
+        colors = new Color[maxWidth][maxHeight];
+        this.maxWidth = maxWidth;
+        this.maxHeight = maxHeight;
     }
 
     /**
@@ -33,7 +33,7 @@ public class ColorMap {
      * @param color The color of the pixel.
      */
     public void setColor(int x, int y, Color color) {
-        if (x > maxX || y > maxY || x < 0 || y < 0) {
+        if (x > maxWidth || y > maxHeight || x < 0 || y < 0) {
             throw new IllegalArgumentException("Coordinates must be between 0 and maxX/maxY");
         }
         colors[x][y] = color;
