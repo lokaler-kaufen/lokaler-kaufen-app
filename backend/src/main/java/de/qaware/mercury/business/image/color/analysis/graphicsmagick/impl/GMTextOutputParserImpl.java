@@ -34,9 +34,9 @@ public class GMTextOutputParserImpl implements GMTextOutputParser {
             try {
                 int x = Integer.parseInt(matcher.group("x"));
                 int y = Integer.parseInt(matcher.group("y"));
-                int r = Integer.parseInt(matcher.group("r"), 10);
-                int g = Integer.parseInt(matcher.group("g"), 10);
-                int b = Integer.parseInt(matcher.group("b"), 10);
+                int r = Integer.parseInt(matcher.group("r"));
+                int g = Integer.parseInt(matcher.group("g"));
+                int b = Integer.parseInt(matcher.group("b"));
                 Color color = Color.of(r, g, b, matcher.group("hex"));
                 colorMap.setColor(x, y, color);
             } catch (NumberFormatException e) {
