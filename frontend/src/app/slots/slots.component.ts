@@ -1,5 +1,4 @@
 import {Component, Input, OnInit, Output} from '@angular/core';
-import {SlotsPerDay} from '../shop-details-page/shop-details-page.component';
 import {Observable, ReplaySubject} from 'rxjs';
 import {BreakDto, BreaksDto, SlotDto, SlotsDto} from '../data/client';
 
@@ -19,6 +18,17 @@ export interface SlotSelectionData {
 export interface ReserveSlotsData {
   slots: SlotsDto;
   breaks?: BreaksDto;
+}
+
+/**
+ * data structure to represent slots in html
+ */
+export interface SlotsPerDay {
+  dayName: string;
+  day: string;
+  hasSlots: boolean;
+  isHoliday: boolean;
+  slots: Array<SlotDto>;
 }
 
 /**
@@ -73,7 +83,8 @@ export class SlotsComponent implements OnInit {
             dayName: this.getDayName(new Date(day.date)),
             day: day.dayOfWeek,
             slots: day.slots,
-            hasSlots: day.slots.length > 0
+            hasSlots: day.slots.length > 0,
+            isHoliday: day.holiday
           });
         });
       }
@@ -99,7 +110,8 @@ export class SlotsComponent implements OnInit {
         dayName: this.getDayName(new Date(availableSlots.date)),
         day: key,
         slots: availableSlots.slots,
-        hasSlots: availableSlots.slots.length > 0
+        hasSlots: availableSlots.slots.length > 0,
+        isHoliday: availableSlots.holiday
       });
     });
   }

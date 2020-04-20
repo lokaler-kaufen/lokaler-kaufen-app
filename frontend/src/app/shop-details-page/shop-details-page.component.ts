@@ -13,17 +13,10 @@ import {
 } from '../booking-success-popup/booking-success-popup.component';
 import {HttpClient} from '@angular/common/http';
 import {NotificationsService} from 'angular2-notifications';
-import {CreateReservationDto, ShopDetailDto, SlotDto, SlotsDto} from '../data/api';
+import {CreateReservationDto, ShopDetailDto, SlotsDto} from '../data/api';
 import {ContactTypesEnum} from '../contact-types/available-contact-types';
 import {ReplaySubject} from 'rxjs';
 import {ReserveSlotsData, SlotSelectionData} from '../slots/slots.component';
-
-export interface SlotsPerDay {
-  dayName: string;
-  day: string;
-  hasSlots: boolean;
-  slots: Array<SlotDto>;
-}
 
 @Component({
   selector: 'shop-details-page',

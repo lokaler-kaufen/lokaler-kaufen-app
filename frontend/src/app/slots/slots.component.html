@@ -10,6 +10,9 @@
           <div *ngIf="!isSlotConfig">Dieser Laden bietet am {{slots.dayName}} leider keine Termine an.</div>
           <div *ngIf="isSlotConfig">Sie bieten am {{slots.dayName}} leider keine Termine an.</div>
         </h3>
+        <h3 *ngIf="!isSlotConfig && slots.isHoliday" class="text-no-values margin-top">
+          Bitte beachten Sie, dass die Öffnungszeiten an Feiertagen abweichen können.
+        </h3>
         <div *ngIf="slots.hasSlots">
           <mat-table [dataSource]="slots.slots" class="margin-top" id="calendar">
             <ng-container matColumnDef="from">
@@ -65,6 +68,9 @@
     <h3 *ngIf="!slots.hasSlots" class="text-no-values">
       <div *ngIf="!isSlotConfig">Dieser Laden bietet am {{slots.dayName}} leider keine Termine an.</div>
       <div *ngIf="isSlotConfig">Sie bieten am {{slots.dayName}} leider keine Termine an.</div>
+    </h3>
+    <h3 *ngIf="!isSlotConfig && slots.isHoliday" class="text-no-values">
+      Bitte beachten Sie, dass die Öffnungszeiten an Feiertagen abweichen können.
     </h3>
     <div *ngIf="slots.hasSlots">
       <div *ngFor="let slot of slots.slots; last as last; let i = index ">
