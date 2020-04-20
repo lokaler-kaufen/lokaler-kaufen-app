@@ -38,10 +38,10 @@ public class ColorMap {
         }
         colors[x][y] = color;
         // width and height should be 1 based
-        if (x >= width - 1) {
+        if (x > width - 1) {
             width = x + 1;
         }
-        if (y >= height - 1) {
+        if (y > height - 1) {
             height = y + 1;
         }
     }
