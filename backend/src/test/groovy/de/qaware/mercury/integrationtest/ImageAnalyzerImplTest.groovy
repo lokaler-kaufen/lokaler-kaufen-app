@@ -16,12 +16,17 @@ class ImageAnalyzerImplTest extends IntegrationTestSpecification {
     def "test getDominantColor"() {
         given:
         // a 128x128 picture with the uniform color #008081
-        InputStream testImage = getClass().getClassLoader().getResourceAsStream("test/images/2.jpg");
+        InputStream testImage = ImageAnalyzerImplTest.getResourceAsStream("/test/images/2.jpg");
+
         when:
         ColorFindResult output = sut.getBackgroundColor(new Image.Id(UUID.randomUUID()), testImage);
 
         then:
         output.getHexColor() == "#008081"
         output.confidence > 0.99 && output.confidence < 1.01
+
+        cleanup:
+        testImage.close()
+
     }
 }
