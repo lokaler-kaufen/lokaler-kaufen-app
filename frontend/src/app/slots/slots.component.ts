@@ -1,7 +1,7 @@
 import {Component, Input, OnInit, Output} from '@angular/core';
 import {SlotsPerDay} from '../shop-details-page/shop-details-page.component';
 import {Observable, ReplaySubject} from 'rxjs';
-import {BreaksDto, SlotsDto} from '../data/client';
+import {BreaksDto, SlotsDto} from '../data/api';
 
 /**
  * data structure for slot selection
