@@ -20,6 +20,7 @@ public class Color {
      * @param blue  b component
      * @param hex   hex representation, (e.g. '#FFAF10').
      */
+    @SuppressWarnings("java:S1144") // false positive, this is used by the static "of" constructor
     private Color(int red, int green, int blue, String hex) {
         if (red < 0 || red > 255 ||
             green < 0 || green > 255 ||
