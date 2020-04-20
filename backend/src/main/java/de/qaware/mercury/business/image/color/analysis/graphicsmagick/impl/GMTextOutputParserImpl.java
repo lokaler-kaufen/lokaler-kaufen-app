@@ -16,7 +16,7 @@ public class GMTextOutputParserImpl implements GMTextOutputParser {
 
     // Example of parsed output: "1,0: ( 78,175, 52) #4EAF34"
     private static final Pattern PIXEL_REGEX_PATTERN =
-        Pattern.compile("^(?<x>[0-9]+),(?<y>[0-9]+): \\([ ]*(?<r>[0-9]+),[ ]*(?<g>[0-9]+),[ ]*(?<b>[0-9]+)\\) (?<hex>#[0-9A-F]*)$");
+        Pattern.compile("^(?<x>[0-9]+),(?<y>[0-9]+): \\([ ]*(?<r>[0-9]+),[ ]*(?<g>[0-9]+),[ ]*(?<b>[0-9]+)\\) (?<hex>#[0-9A-F]{6})$");
 
     @Override
     public ColorMap parseGMTextOutput(String gmTextOutput) {
