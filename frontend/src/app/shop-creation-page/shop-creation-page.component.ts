@@ -5,13 +5,22 @@ import {ActivatedRoute} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {ShopCreationSuccessPopupComponent} from '../shop-creation-success-popup/shop-creation-success-popup.component';
 import {NotificationsService} from 'angular2-notifications';
-import {CreateShopDto, LocationSuggestionDto, LocationSuggestionsDto, SlotConfigDto, SlotsDto} from '../data/api';
+import {
+  BreaksDto,
+  CreateShopDto,
+  LocationSuggestionDto,
+  LocationSuggestionsDto,
+  SlotConfigDto,
+  SlotDto,
+  SlotsDto
+} from '../data/api';
 import {ContactTypesEnum} from '../contact-types/available-contact-types';
 import {catchError, filter, map} from 'rxjs/operators';
 import {of, ReplaySubject} from 'rxjs';
 import {ImageService} from '../shared/image.service';
 import {StepperSelectionEvent} from '@angular/cdk/stepper';
 import {ReserveSlotsData, SlotSelectionData} from '../slots/slots.component';
+import {SlotBreakData, SlotBreaksData} from '../shop-details-config/shop-details-config.component';
 
 export class OpeningHours {
   constructor(enabled: boolean = true, from: string = '09:00', to: string = '16:00') {
@@ -62,7 +71,7 @@ export class ShopCreationPageComponent implements OnInit {
   progress = 0;
 
   slotsPreview: ReplaySubject<ReserveSlotsData> = new ReplaySubject<ReserveSlotsData>();
-  breakSlots: string[] = [];
+  slotBreaks: SlotBreaksData = {};
 
   constructor(
     private client: HttpClient,
@@ -204,7 +213,7 @@ export class ShopCreationPageComponent implements OnInit {
     const slots = this.fillSlotsConfig();
     createShopRequestDto.slots = slots;
     createShopRequestDto.password = this.passwordFormGroup.get('passwordCtrl').value;
-    createShopRequestDto.breaks = {slotIds: this.breakSlots};
+    createShopRequestDto.breaks = this.fillBreakConfig();
     return createShopRequestDto;
   }
 
@@ -221,6 +230,34 @@ export class ShopCreationPageComponent implements OnInit {
     slots.timePerSlot = this.openingFormGroup.get('defaultCtrl').value;
     slots.delayForFirstSlot = this.openingFormGroup.get('delayCtrl').value;
     return slots;
+  }
+
+  private fillBreakConfig() {
+    const breaksDto: BreaksDto = {};
+    Object.keys(this.slotBreaks).forEach(day => {
+      const slots: SlotBreakData[] = this.slotBreaks[day];
+      slots.sort((s1, s2) => {
+        if (s1.id > s2.id) {
+          return 1;
+        }
+        if (s1.id < s2.id) {
+          return -1;
+        }
+        return 0;
+      });
+      let oldSlotId = slots[0].id - 1;
+      const start = slots[0].slot.start;
+      let end;
+      slots.forEach(slot => {
+        if (oldSlotId + 1 === slot.id) {
+          end = slot.slot.end;
+        } else {
+          breaksDto[day].push({start, end});
+        }
+        oldSlotId = slot.id;
+      });
+    });
+    return breaksDto;
   }
 
   private postShopCreation(createShopRequestDto: CreateShopDto) {
@@ -342,11 +379,10 @@ export class ShopCreationPageComponent implements OnInit {
   }
 
   changeBreakSlot($event: SlotSelectionData) {
-    if ($event.removeSlot) {
-      delete this.breakSlots[$event.id];
-    } else {
-      this.breakSlots.push($event.id);
-    }
+    this.slotBreaks[$event.day].push({
+      slot: $event.slot,
+      id: $event.index
+    });
   }
 
   previewSlots($event: StepperSelectionEvent) {
