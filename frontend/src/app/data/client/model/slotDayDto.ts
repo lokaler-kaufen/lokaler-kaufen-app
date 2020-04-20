@@ -9,10 +9,11 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { SlotDayDto } from './slotDayDto';
+import { SlotDto } from './slotDto';
 
-export interface SlotsDto { 
-    days?: Array<SlotDayDto>;
-    end?: string;
-    start?: string;
+export interface SlotDayDto { 
+    date?: string;
+    dayOfWeek?: string;
+    holiday?: boolean;
+    slots?: Array<SlotDto>;
 }

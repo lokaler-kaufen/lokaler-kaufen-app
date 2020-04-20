@@ -1,3 +1,4 @@
+export * from './breakDto';
 export * from './breaksDto';
 export * from './clientErrorDto';
 export * from './createReservationDto';
@@ -18,6 +19,7 @@ export * from './shopListEntryDto';
 export * from './shopOwnerDetailDto';
 export * from './shopsAdminDto';
 export * from './slotConfigDto';
+export * from './slotDayDto';
 export * from './slotDto';
 export * from './slotsDto';
 export * from './socialLinksDto';
