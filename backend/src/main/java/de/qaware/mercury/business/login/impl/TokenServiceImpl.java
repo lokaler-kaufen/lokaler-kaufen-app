@@ -6,6 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.auth0.jwt.interfaces.Verification;
 import de.qaware.mercury.business.admin.Admin;
 import de.qaware.mercury.business.login.AdminToken;
 import de.qaware.mercury.business.login.KeyProvider;
@@ -76,10 +77,7 @@ class TokenServiceImpl implements TokenService {
     @Override
     public VerifiedToken<Admin.Id, AdminToken> verifyAdminToken(AdminToken token) throws LoginException {
         try {
-            Algorithm algorithm = getAlgorithm(keyProvider.getAdminJwtSecret());
-            JWTVerifier verifier = JWT.require(algorithm)
-                .withIssuer(ADMIN_ISSUER)
-                .build();
+            JWTVerifier verifier = createJwtVerifier(keyProvider.getAdminJwtSecret(), ADMIN_ISSUER);
             DecodedJWT jwt = verifier.verify(token.getToken());
 
             Admin.Id adminId = Admin.Id.parse(jwt.getSubject());
@@ -116,10 +114,7 @@ class TokenServiceImpl implements TokenService {
     @Override
     public VerifiedToken<ShopLogin.Id, ShopToken> verifyShopToken(ShopToken token) throws LoginException {
         try {
-            Algorithm algorithm = getAlgorithm(keyProvider.getShopJwtSecret());
-            JWTVerifier verifier = JWT.require(algorithm)
-                .withIssuer(SHOP_ISSUER)
-                .build();
+            JWTVerifier verifier = createJwtVerifier(keyProvider.getShopJwtSecret(), SHOP_ISSUER);
             DecodedJWT jwt = verifier.verify(token.getToken());
 
             ShopLogin.Id shopLoginId = ShopLogin.Id.parse(jwt.getSubject());
@@ -158,10 +153,7 @@ class TokenServiceImpl implements TokenService {
     @Override
     public String verifyShopCreationToken(ShopCreationToken token) throws LoginException {
         try {
-            Algorithm algorithm = getAlgorithm(keyProvider.getShopCreationJwtSecret());
-            JWTVerifier verifier = JWT.require(algorithm)
-                .withIssuer(SHOP_CREATION_ISSUER)
-                .build();
+            JWTVerifier verifier = createJwtVerifier(keyProvider.getShopCreationJwtSecret(), SHOP_CREATION_ISSUER);
             DecodedJWT jwt = verifier.verify(token.getToken());
             String email = jwt.getSubject();
 
@@ -196,10 +188,7 @@ class TokenServiceImpl implements TokenService {
     @Override
     public String verifyPasswordResetToken(PasswordResetToken token) throws LoginException {
         try {
-            Algorithm algorithm = getAlgorithm(keyProvider.getPasswordResetJwtSecret());
-            JWTVerifier verifier = JWT.require(algorithm)
-                .withIssuer(PASSWORD_RESET_ISSUER)
-                .build();
+            JWTVerifier verifier = createJwtVerifier(keyProvider.getPasswordResetJwtSecret(), PASSWORD_RESET_ISSUER);
             DecodedJWT jwt = verifier.verify(token.getToken());
             String email = jwt.getSubject();
 
@@ -234,10 +223,7 @@ class TokenServiceImpl implements TokenService {
     @Override
     public ReservationCancellation verifyReservationCancellationToken(ReservationCancellationToken token) throws LoginException {
         try {
-            Algorithm algorithm = getAlgorithm(keyProvider.getReservationCancellationJwtSecret());
-            JWTVerifier verifier = JWT.require(algorithm)
-                .withIssuer(RESERVATION_CANCELLATION_ISSUER)
-                .build();
+            JWTVerifier verifier = createJwtVerifier(keyProvider.getReservationCancellationJwtSecret(), RESERVATION_CANCELLATION_ISSUER);
             DecodedJWT jwt = verifier.verify(token.getToken());
 
             Reservation.Id reservationId = Reservation.Id.parse(jwt.getSubject());
@@ -251,7 +237,18 @@ class TokenServiceImpl implements TokenService {
         }
     }
 
-    private Algorithm getAlgorithm(String jwtSecret) {
-        return Algorithm.HMAC256(jwtSecret);
+    private JWTVerifier createJwtVerifier(String secret, String issuer) {
+        Verification verification = JWT.require(getAlgorithm(secret))
+            .withIssuer(issuer);
+
+        // We have to set the clock to allowed mocked time in tests
+        // There's no build(Clock) method on Verification, so we need to cast it.
+        // Ugly, but I don't see any other way.
+        JWTVerifier.BaseVerification baseVerification = (JWTVerifier.BaseVerification) verification;
+        return baseVerification.build(clock::nowAsLegacyDate);
+    }
+
+    private Algorithm getAlgorithm(String secret) {
+        return Algorithm.HMAC256(secret);
     }
 }

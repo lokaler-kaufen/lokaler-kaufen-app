@@ -54,6 +54,7 @@ export class ShopDetailsConfigComponent implements OnInit {
   descriptionFormGroup: FormGroup;
   contactFormGroup = new FormGroup({});
   openingFormGroup = new FormGroup({});
+  logoFormGroup: FormGroup;
 
   contactTypes = ContactTypesEnum;
   businessHours = BusinessHours;
@@ -62,6 +63,7 @@ export class ShopDetailsConfigComponent implements OnInit {
   citySuggestions: LocationSuggestionDto[] = [];
 
   image: File;
+  localImageUrl: any;
 
   fileIsTooBig = false;
   wrongFileExtension = false;
@@ -140,6 +142,8 @@ export class ShopDetailsConfigComponent implements OnInit {
     this.openingFormGroup.controls.defaultCtrl.setValue(this.details.slots.timePerSlot);
     this.openingFormGroup.controls.pauseCtrl.setValue(this.details.slots.timeBetweenSlots);
     this.openingFormGroup.controls.delayCtrl.setValue(this.details.slots.delayForFirstSlot);
+
+    this.logoFormGroup.controls.autoColorCtrl.setValue(this.details.autoColorEnabled);
   }
 
   configureFormControls() {
@@ -152,6 +156,9 @@ export class ShopDetailsConfigComponent implements OnInit {
       zipCtrl: ['', [Validators.required, Validators.pattern(new RegExp(/^\d{5}$/))]],
       cityCtrl: ['', Validators.required],
       suffixCtrl: ''
+    });
+    this.logoFormGroup = this.formBuilder.group({
+      autoColorCtrl: ''
     });
     this.descriptionFormGroup = this.formBuilder.group({
       descriptionCtrl: ['', Validators.required],
@@ -218,6 +225,7 @@ export class ShopDetailsConfigComponent implements OnInit {
     updateShopDto.addressSupplement = this.addressFormGroup.get('suffixCtrl').value;
     updateShopDto.details = this.descriptionFormGroup.get('descriptionCtrl').value;
     updateShopDto.website = this.descriptionFormGroup.get('urlCtrl').value;
+    updateShopDto.autoColorEnabled = this.logoFormGroup.get('autoColorCtrl').value;
     updateShopDto.socialLinks = {
       twitter: this.descriptionFormGroup.get('twitterCtrl').value,
       instagram: this.descriptionFormGroup.get('instagramCtrl').value,
@@ -338,6 +346,11 @@ export class ShopDetailsConfigComponent implements OnInit {
       return;
     }
     this.image = file;
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (readerEvent) => {
+      this.localImageUrl = reader.result;
+    };
     this.fileIsTooBig = false;
     this.wrongFileExtension = false;
     this.deleteImage = false;
@@ -372,6 +385,7 @@ export class ShopDetailsConfigComponent implements OnInit {
   onDeleteFile() {
     this.details.imageUrl = null;
     this.image = null;
+    this.localImageUrl = null;
     this.deleteImage = true;
   }
 }

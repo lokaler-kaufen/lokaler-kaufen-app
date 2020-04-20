@@ -143,6 +143,8 @@ class ShopServiceImpl implements ShopService {
             true,
             config.isApproveShopsOnCreation(),
             null,
+            null,
+            creation.isAutoColorEnabled(),
             geoLocation,
             creation.getDetails(),
             creation.getWebsite(),
@@ -186,6 +188,8 @@ class ShopServiceImpl implements ShopService {
             shop.isEnabled(),
             shop.isApproved(),
             shop.getImageId(),
+            shop.getShopColor(),
+            update.isAutoColorEnabled(),
             geoLocation,
             update.getDetails(),
             update.getWebsite(),
@@ -198,6 +202,11 @@ class ShopServiceImpl implements ShopService {
         shopRepository.update(updatedShop);
         shopBreaksRepository.update(shop.getId(), update.getBreaks());
         return updatedShop;
+    }
+
+    @Override
+    public void updateShopColor(Shop shop, String color) {
+        shopRepository.update(shop.withShopColor(color));
     }
 
     @Override
@@ -228,13 +237,14 @@ class ShopServiceImpl implements ShopService {
 
     @Override
     @Transactional
-    public Shop setImage(Shop shop, Image image) {
+    public Shop setImage(Shop shop, Image image, String color) {
         if (shop.getImageId() != null && !shop.getImageId().equals(image.getId())) {
             // Shop had an image which is different from the new image -> delete old image
             imageService.deleteImage(shop.getImageId());
         }
 
         Shop updatedShop = shop.withImageId(image.getId());
+        updatedShop = updatedShop.withShopColor(color);
         shopRepository.update(updatedShop);
         return updatedShop;
     }

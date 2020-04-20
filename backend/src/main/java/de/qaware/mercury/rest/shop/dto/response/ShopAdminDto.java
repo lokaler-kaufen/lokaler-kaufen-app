@@ -35,6 +35,7 @@ public class ShopAdminDto {
     private String imageUrl;
     @Nullable
     private String website;
+    private boolean autoColorEnabled;
     private SlotConfigDto slots;
     private SocialLinksDto socialLinks;
     private String shareLink;
@@ -55,6 +56,7 @@ public class ShopAdminDto {
             shop.getDetails(),
             Null.map(shopService.generateImageUrl(shop), URI::toString),
             shop.getWebsite(),
+            shop.isAutoColorEnabled(),
             Null.map(shop.getSlotConfig(), SlotConfigDto::of),
             SocialLinksDto.of(shop.getSocialLinks()),
             shopService.generateShareLink(shop).toString()

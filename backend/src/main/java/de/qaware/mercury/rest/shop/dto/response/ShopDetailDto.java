@@ -31,6 +31,9 @@ public class ShopDetailDto {
     @Nullable
     private String imageUrl;
     @Nullable
+    private String shopColor;
+    private boolean autoColorEnabled;
+    @Nullable
     private String website;
     private SocialLinksDto socialLinks;
     private String shareLink;
@@ -48,6 +51,8 @@ public class ShopDetailDto {
             Sets.map(shop.getContacts().keySet(), ContactType::getId),
             shop.getDetails(),
             Null.map(shopService.generateImageUrl(shop), URI::toString),
+            shop.getShopColor(),
+            shop.isAutoColorEnabled(),
             shop.getWebsite(),
             SocialLinksDto.of(shop.getSocialLinks()),
             shopService.generateShareLink(shop).toString()

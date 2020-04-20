@@ -1,6 +1,7 @@
 package de.qaware.mercury;
 
 import de.qaware.mercury.cli.AddAdminRunner;
+import de.qaware.mercury.cli.UpdateColorsRunner;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
@@ -21,6 +22,15 @@ public class MercuryApplication {
                     .web(WebApplicationType.NONE).run(args) // Disables the HTTP stuff from Spring Boot
             ) {
                 AddAdminRunner runner = context.getBean(AddAdminRunner.class);
+                runner.run();
+            }
+        } else if (hasFlag(args, "--update-colors")) {
+            log.info ("Starting in 'Update colors' mode");
+            try (
+                ConfigurableApplicationContext context = new SpringApplicationBuilder(MercuryApplication.class)
+                    .web(WebApplicationType.NONE).run(args) // Disables the HTTP stuff from Spring Boot
+            ) {
+                UpdateColorsRunner runner = context.getBean(UpdateColorsRunner.class);
                 runner.run();
             }
         } else {
