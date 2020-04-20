@@ -15,8 +15,8 @@ import java.util.regex.Pattern;
 public class GMTextOutputParserImpl implements GMTextOutputParser {
 
     // Example of parsed output: "1,0: ( 78,175, 52) #4EAF34"
-    private static final String PIXEL_REGEX = "^(?<x>[0-9]+),(?<y>[0-9]+): \\([ ]*(?<r>[0-9]+),[ ]*(?<g>[0-9]+),[ ]*(?<b>[0-9]+)\\) (?<hex>#[0-9A-F]*)$";
-    private static final Pattern PATTERN = Pattern.compile(PIXEL_REGEX);
+    private static final Pattern PIXEL_REGEX_PATTERN =
+        Pattern.compile("^(?<x>[0-9]+),(?<y>[0-9]+): \\([ ]*(?<r>[0-9]+),[ ]*(?<g>[0-9]+),[ ]*(?<b>[0-9]+)\\) (?<hex>#[0-9A-F]*)$");
 
     @Override
     public ColorMap parseGMTextOutput(String gmTextOutput) {
@@ -27,7 +27,7 @@ public class GMTextOutputParserImpl implements GMTextOutputParser {
         ColorMap colorMap = new ColorMap(lines.length, lines.length);
 
         for (String line : lines) {
-            Matcher matcher = PATTERN.matcher(line);
+            Matcher matcher = PIXEL_REGEX_PATTERN.matcher(line);
             if (!matcher.matches()) {
                 throw new ImageException(String.format("Could not parse output of GM: '%s'", line));
             }
