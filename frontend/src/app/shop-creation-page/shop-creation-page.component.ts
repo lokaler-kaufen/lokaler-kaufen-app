@@ -50,6 +50,8 @@ export class ShopCreationPageComponent implements OnInit {
   contactFormGroup = new FormGroup({});
   openingFormGroup = new FormGroup({});
   passwordFormGroup: FormGroup;
+  logoFormGroup: FormGroup;
+
   passwordRegex: RegExp = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.{12,})');
   token: string;
   contactTypes = ContactTypesEnum;
@@ -63,6 +65,7 @@ export class ShopCreationPageComponent implements OnInit {
 
   slotsPreview: ReplaySubject<ReserveSlotsData> = new ReplaySubject<ReserveSlotsData>();
   breakSlots: string[] = [];
+  localImageUrl: any;
 
   constructor(
     private client: HttpClient,
@@ -136,6 +139,9 @@ export class ShopCreationPageComponent implements OnInit {
       confirmPasswordCtrl: ['', Validators.required],
       privacyCtrl: ['', Validators.requiredTrue]
     }, {validator: this.checkMatchingPasswords('passwordCtrl', 'confirmPasswordCtrl')});
+    this.logoFormGroup = this.formBuilder.group({
+      autoColorCtrl: 'true'
+    });
   }
 
   // Validation password equals confirmed password
@@ -187,6 +193,7 @@ export class ShopCreationPageComponent implements OnInit {
     createShopRequestDto.addressSupplement = this.addressFormGroup.get('suffixCtrl').value;
     createShopRequestDto.details = this.descriptionFormGroup.get('descriptionCtrl').value;
     createShopRequestDto.website = this.descriptionFormGroup.get('urlCtrl').value;
+    createShopRequestDto.autoColorEnabled = this.logoFormGroup.get('autoColorCtrl').value;
     createShopRequestDto.socialLinks = {
       twitter: this.descriptionFormGroup.get('twitterCtrl').value,
       instagram: this.descriptionFormGroup.get('instagramCtrl').value,
@@ -298,6 +305,11 @@ export class ShopCreationPageComponent implements OnInit {
       return;
     }
     this.image = file;
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (readerEvent) => {
+      this.localImageUrl = reader.result;
+    };
     this.fileIsTooBig = false;
     this.wrongFileExtension = false;
   }

@@ -32,6 +32,10 @@ public class Shop {
     @With
     @Nullable
     Image.Id imageId;
+    @With
+    @Nullable
+    String shopColor;
+    boolean autoColorEnabled;
     GeoLocation geoLocation;
     String details;
     @Nullable

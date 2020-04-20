@@ -17,6 +17,7 @@ public class ShopCreation {
     String details;
     @Nullable
     String website;
+    boolean autoColorEnabled;
     String password;
     // Maps from WHATSAPP -> Telephone number, for example
     Map<ContactType, String> contacts;

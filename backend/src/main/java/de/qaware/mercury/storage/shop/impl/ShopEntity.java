@@ -230,6 +230,15 @@ public class ShopEntity {
     @Nullable
     private String twitter;
 
+    @Setter
+    @Column(nullable = true)
+    @Nullable
+    private String shopColor;
+
+    @Setter
+    @Column(nullable = false)
+    private boolean autoColorEnabled;
+
     @Column(nullable = false)
     private ZonedDateTime created;
 
@@ -281,6 +290,8 @@ public class ShopEntity {
             shop.getSocialLinks().getInstagram(),
             shop.getSocialLinks().getFacebook(),
             shop.getSocialLinks().getTwitter(),
+            shop.getShopColor(),
+            shop.isAutoColorEnabled(),
             shop.getCreated(),
             shop.getUpdated()
         );
@@ -301,6 +312,8 @@ public class ShopEntity {
             enabled,
             approved,
             Null.map(imageId, Image.Id::of),
+            shopColor,
+            autoColorEnabled,
             GeoLocation.of(latitude, longitude),
             details,
             website,

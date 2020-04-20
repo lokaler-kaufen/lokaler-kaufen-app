@@ -54,6 +54,8 @@ public final class ShopEntityFixtures {
             "instagram",
             "facebook",
             "twitter",
+            null,
+            false,
             clock.nowZoned(),
             clock.nowZoned()
         );

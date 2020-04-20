@@ -16,8 +16,8 @@ public final class UpdateShopDtoFixtures {
         return new UpdateShopDto(
             shopUpdate.getName(), shopUpdate.getOwnerName(), shopUpdate.getStreet(), shopUpdate.getZipCode(),
             shopUpdate.getCity(), shopUpdate.getAddressSupplement(), shopUpdate.getDetails(), shopUpdate.getWebsite(),
-            Maps.mapKeys(shopUpdate.getContacts(), Enum::name), SlotConfigDto.of(shopUpdate.getSlotConfig()),
-            SocialLinksDto.of(shopUpdate.getSocialLinks()), null
+            shopUpdate.isAutoColorEnabled(), Maps.mapKeys(shopUpdate.getContacts(), Enum::name),
+            SlotConfigDto.of(shopUpdate.getSlotConfig()), SocialLinksDto.of(shopUpdate.getSocialLinks()), null
         );
     }
 }

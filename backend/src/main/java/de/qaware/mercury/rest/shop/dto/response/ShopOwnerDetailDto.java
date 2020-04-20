@@ -30,6 +30,7 @@ public class ShopOwnerDetailDto {
     private String details;
     @Nullable
     private String imageUrl;
+    private boolean autoColorEnabled;
     @Nullable
     private String website;
     private Map<String, String> contacts;
@@ -49,6 +50,7 @@ public class ShopOwnerDetailDto {
             shop.getAddressSupplement(),
             shop.getDetails(),
             Null.map(shopService.generateImageUrl(shop), URI::toString),
+            shop.isAutoColorEnabled(),
             shop.getWebsite(),
             Maps.mapKeys(shop.getContacts(), ContactType::getId),
             Null.map(shop.getSlotConfig(), SlotConfigDto::of),
