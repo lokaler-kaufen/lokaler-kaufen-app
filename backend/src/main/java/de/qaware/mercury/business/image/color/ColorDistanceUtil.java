@@ -69,9 +69,9 @@ public class ColorDistanceUtil {
      */
     private static LabColor cie1931ToLab(CIE1931Color color) {
         // https://de.wikipedia.org/wiki/Lab-Farbraum#Umrechnung_von_XYZ_zu_Lab
-        byte L = (byte) Math.round(116 * Math.cbrt(color.y / YN10) - 16);
-        byte a = (byte) Math.round(500 * (Math.cbrt(color.x / XN10) - Math.cbrt(color.y / YN10)));
-        byte b = (byte) Math.round(200 * (Math.cbrt(color.y / YN10) - Math.cbrt(color.z / ZN10)));
+        double L = 116 * Math.cbrt(color.y / YN10) - 16;
+        double a = 500 * (Math.cbrt(color.x / XN10) - Math.cbrt(color.y / YN10));
+        double b = 200 * (Math.cbrt(color.y / YN10) - Math.cbrt(color.z / ZN10));
         return LabColor.of(L, a, b);
     }
 
@@ -99,8 +99,8 @@ public class ColorDistanceUtil {
 
     @Value(staticConstructor = "of")
     private static class LabColor {
-        byte l;
-        byte a;
-        byte b;
+        double l;
+        double a;
+        double b;
     }
 }
