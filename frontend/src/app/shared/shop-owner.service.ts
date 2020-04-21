@@ -91,9 +91,4 @@ export class ShopOwnerService {
     this.updateTokenInfo();
   }
 
-  /** @deprecated */
-  storeOwnerLoggedOut(): void {
-    this.loginStateService.logoutShopOwner();
-  }
-
 }

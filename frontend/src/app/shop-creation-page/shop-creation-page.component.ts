@@ -365,37 +365,18 @@ export class ShopCreationPageComponent implements OnInit {
 
   private postImageAndDetails(createShopRequestDto: CreateShopDto) {
     this.client.post('/api/shop?token=' + this.token, createShopRequestDto).subscribe(() => {
-        const uploadData = new FormData();
-        uploadData.append('file', this.image, this.image.name);
-        this.imageService.upload(uploadData).pipe(
-          map(event => {
-            switch (event.type) {
-              case HttpEventType.UploadProgress:
-                this.progress = Math.round(event.loaded * 100 / event.total);
-                break;
-              case HttpEventType.Response:
-                return event;
-            }
-          }),
-          catchError((error: HttpErrorResponse) => {
-            console.log(`${this.image.name} upload failed.`);
+
+        this.imageService.upload(this.image, progress => this.progress = progress)
+          .then(() => {
+            this.matDialog.open(ShopCreationSuccessPopupComponent, {
+              width: '500px',
+              data: createShopRequestDto.name
+            }).afterClosed().subscribe();
+          })
+          .catch(() => {
             this.notificationsService.error('Tut uns leid!', 'Ihr Logo konnte nicht hochgeladen werden.');
-            return of(error);
-          })).subscribe((event: any) => {
-          if (event) {
-            if (event instanceof HttpErrorResponse) {
-              console.log(event);
-              return;
-            } else {
-              this.matDialog.open(ShopCreationSuccessPopupComponent, {
-                width: '500px',
-                data: createShopRequestDto.name
-              })
-                .afterClosed()
-                .subscribe();
-            }
-          }
-        });
+          });
+
       },
       error => {
         this.handleError(error);
