@@ -168,12 +168,8 @@ export class SlotsComponent implements OnInit {
 
   /**
    * Returns the day name of the given slot
-   * monday is index 0, add slot offset % 7 to get day name
    */
-  getDayName(slotOffset: Date): string {
-    if (!this.isSlotConfig) {
-      return this.weekday[(this.today.getDay() + slotOffset.getDay() - 1) % 7];
-    }
-    return this.weekday[(slotOffset.getDay()) % 7];
+  getDayName(date: Date): string {
+    return this.weekday[date.getDay()];
   }
 }
