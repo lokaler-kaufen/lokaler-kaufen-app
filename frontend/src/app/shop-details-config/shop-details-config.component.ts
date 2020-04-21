@@ -97,6 +97,8 @@ export class ShopDetailsConfigComponent implements OnInit {
     sunday: new Array<SlotBreakData>()
   };
 
+  private breaksChanged = false;
+
   ngOnInit() {
     this.configureFormControls();
     this.detailsObservable
@@ -268,7 +270,9 @@ export class ShopDetailsConfigComponent implements OnInit {
     slots.timePerSlot = this.openingFormGroup.get('defaultCtrl').value;
     slots.delayForFirstSlot = this.openingFormGroup.get('delayCtrl').value;
     updateShopDto.slots = slots;
-    updateShopDto.breaks = this.fillBreakConfig();
+    if (this.breaksChanged) {
+      updateShopDto.breaks = this.fillBreakConfig();
+    }
     this.updateShopEvent.next({
       updateShopDto,
       id: this.details.id,
@@ -293,7 +297,7 @@ export class ShopDetailsConfigComponent implements OnInit {
       }
       return null;
     };
-  };
+  }
 
   private onZipCodeValid() {
     const zipCode = this.addressFormGroup.get('zipCtrl').value;
@@ -356,6 +360,7 @@ export class ShopDetailsConfigComponent implements OnInit {
           } else {
             breaksDto[day].push({start, end});
             start = slot.slot.start;
+            end = slot.slot.end;
           }
           oldSlotId = slot.id;
         });
@@ -387,6 +392,7 @@ export class ShopDetailsConfigComponent implements OnInit {
         breaks: this.details.breaks
       });
     });
+    this.breaksChanged = true;
   }
 
   onFileChanged(event) {
