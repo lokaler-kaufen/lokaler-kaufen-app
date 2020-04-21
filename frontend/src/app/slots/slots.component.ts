@@ -127,9 +127,9 @@ export class SlotsComponent implements OnInit {
       // slot in break time
       if (slot.start >= breakData.start && slot.end <= breakData.end ||
         // slot start in break time
-        slot.start <= breakData.end && slot.end >= breakData.end ||
+        slot.start < breakData.end && slot.end >= breakData.end ||
         // slot end in break time
-        slot.end >= breakData.start && slot.start <= breakData.start) {
+        slot.end > breakData.start && slot.start <= breakData.start) {
         isBreak = true;
       }
     });
