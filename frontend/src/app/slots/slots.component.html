@@ -10,6 +10,9 @@
           <div *ngIf="!isSlotConfig">Dieser Laden bietet am {{slots.dayName}} leider keine Termine an.</div>
           <div *ngIf="isSlotConfig">Sie bieten am {{slots.dayName}} leider keine Termine an.</div>
         </h3>
+        <h3 *ngIf="!isSlotConfig && slots.isHoliday" class="text-no-values margin-top">
+          Bitte beachten Sie, dass die Öffnungszeiten an Feiertagen abweichen können.
+        </h3>
         <div *ngIf="slots.hasSlots">
           <mat-table [dataSource]="slots.slots" class="margin-top" id="calendar">
             <ng-container matColumnDef="from">
@@ -24,11 +27,11 @@
 
             <ng-container matColumnDef="available">
               <mat-header-cell *matHeaderCellDef> Verfügbar</mat-header-cell>
-              <mat-cell *matCellDef="let element">
+              <mat-cell *matCellDef="let element; let i = index">
                 <button class="book-button"
                         mat-raised-button
                         *ngIf="element.available"
-                        (click)="sendSelectedSlotId(element.id)"
+                        (click)="sendSelectedSlotId(element, i, slots.day)"
                         color="primary">
                   <div *ngIf="!isSlotConfig">Buchen</div>
                   <div *ngIf="isSlotConfig">Pause eintragen</div>
@@ -39,7 +42,7 @@
                 </button>
 
                 <button class="book-button" mat-stroked-button *ngIf="!element.available && isSlotConfig"
-                        (click)="sendRemovedSlotId(element.id)">
+                        (click)="sendRemovedSlotId(element, i, slots.day)">
                   <div>Blockiert</div>
                 </button>
               </mat-cell>
@@ -66,8 +69,11 @@
       <div *ngIf="!isSlotConfig">Dieser Laden bietet am {{slots.dayName}} leider keine Termine an.</div>
       <div *ngIf="isSlotConfig">Sie bieten am {{slots.dayName}} leider keine Termine an.</div>
     </h3>
+    <h3 *ngIf="!isSlotConfig && slots.isHoliday" class="text-no-values">
+      Bitte beachten Sie, dass die Öffnungszeiten an Feiertagen abweichen können.
+    </h3>
     <div *ngIf="slots.hasSlots">
-      <div *ngFor="let slot of slots.slots; last as last">
+      <div *ngFor="let slot of slots.slots; last as last; let i = index ">
         <div class="small-booking-row padding-vertical">
           <div>{{ slot.start }} - {{ slot.end }}</div>
           <div>
@@ -75,14 +81,18 @@
                     class="book-button"
                     mat-raised-button
                     color="primary"
-                    (click)="sendSelectedSlotId(slot.id)">
+                    (click)="sendSelectedSlotId(slot, i, slots.day)">
               <div *ngIf="!isSlotConfig">Buchen</div>
               <div *ngIf="isSlotConfig">Pause eintragen</div>
             </button>
 
-            <button *ngIf="!slot.available" class="book-button" mat-stroked-button disabled>
-              <div *ngIf="!isSlotConfig">Belegt</div>
-              <div *ngIf="isSlotConfig">Blockiert</div>
+            <button class="book-button" mat-stroked-button *ngIf="!slot.available && !isSlotConfig" disabled>
+              <div>Belegt</div>
+            </button>
+
+            <button class="book-button" mat-stroked-button *ngIf="!slot.available && isSlotConfig"
+                    (click)="sendRemovedSlotId(slot, i, slots.day)">
+              <div>Blockiert</div>
             </button>
           </div>
         </div>

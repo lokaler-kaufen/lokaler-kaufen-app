@@ -1,41 +1,52 @@
 package de.qaware.mercury.rest.reservation.dto.response;
 
-import de.qaware.mercury.business.reservation.Slot;
 import de.qaware.mercury.business.reservation.Slots;
+import de.qaware.mercury.util.Lists;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
+import java.util.function.Predicate;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class SlotsDto {
+    private String start;
+    private String end;
+    private List<SlotDayDto> days;
+
     /**
-     * Groups slots by offset from a date, normally today.
-     * <p>
-     * Offset 0 then stores all slots today, offset 1 all slots tomorrow etc.
+     * Converts the given Slots to a SlotsDto.
+     *
+     * @param slots     slots
+     * @param isHoliday predicate which is called with a date to determine if this date is a holiday
+     * @return SlotsDto
      */
-    private Map<Long, List<SlotDto>> slots;
+    public static SlotsDto of(Slots slots, Predicate<LocalDate> isHoliday) {
+        return new SlotsDto(
+            slots.getStart().toString(),
+            slots.getEnd().toString(),
+            Lists.map(slots.getDays(), s -> SlotDayDto.of(s, isHoliday))
+        );
+    }
 
-    public static SlotsDto of(Slots slots) {
-        Map<Long, List<SlotDto>> result = new HashMap<>();
-        for (long i = 0; i < slots.getDays(); i++) {
-            result.put(i, new ArrayList<>());
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class SlotDayDto {
+        private String date;
+        private String dayOfWeek;
+        private boolean holiday;
+        private List<SlotDto> slots;
+
+        public static SlotDayDto of(Slots.SlotDay slotDay, Predicate<LocalDate> isHoliday) {
+            return new SlotDayDto(
+                slotDay.getDate().toString(), slotDay.getDate().getDayOfWeek().name(), isHoliday.test(slotDay.getDate()),
+                Lists.map(slotDay.getSlots(), SlotDto::of)
+            );
         }
-
-        for (Slot slot : slots.getSlots()) {
-            // Calculate the offset from base date in days
-            long offset = slots.getBegin().until(slot.getStart(), ChronoUnit.DAYS);
-            // Add the slot in the list for that offset
-            result.get(offset).add(SlotDto.of(slot));
-        }
-
-        return new SlotsDto(result);
     }
 }

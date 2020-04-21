@@ -29,10 +29,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * 1. Create admin account
  * 2. Request shop creation link
  * 3. Use token from shop creation link to create shop
- * 3. Approve shop from admin
- * 4. Check if shop is in the list
- * 5. Login as shop
- * 6. See shop details
+ * 4. Approve shop from admin
+ * 5. Check if shop is in the list
+ * 6. Login as shop
+ * 7. See shop details
  */
 class CreateShopIntegrationTest extends IntegrationTestSpecification {
     @Autowired
@@ -87,12 +87,30 @@ class CreateShopIntegrationTest extends IntegrationTestSpecification {
               "slots": {
                 "timePerSlot": 15,
                 "timeBetweenSlots": 5,
-                "delayForFirstSlot": 60
+                "delayForFirstSlot": 60,
+                "monday": {
+                  "start": "09:00",
+                  "end": "17:00"
+                }
               },
-              "social": {
+              "socialLinks": {
                 "instagram": "insta.gram",
                 "facebook": "face.book",
                 "twitter": "@twitter"
+              },
+              "breaks": {
+                "monday": [
+                  {
+                    "start": "12:00",
+                    "end": "13:00"
+                  }
+                ],
+                "tuesday": [],
+                "wednesday": [],
+                "thursday": [],
+                "friday": [],
+                "saturday": [],
+                "sunday": []
               }
             }
             """
@@ -176,14 +194,61 @@ class CreateShopIntegrationTest extends IntegrationTestSpecification {
         when: "we get the shop details"
         response = mvc.perform(get("/api/shop/me").cookie(shopCookie))
 
-        then: "we get an ok and our shop name"
+        then: "we get an ok and our shop details"
         response
             .andExpect(status().isOk())
             .andExpect(content().json(
                 """
-                  {
-                    "name": "shop-1"
-                  }
+                {
+                    "name": "shop-1",
+                    "ownerName": "owner-1",
+                    "street": "street-1",
+                    "zipCode": "81549",
+                    "city": "city-1",
+                    "addressSupplement": "address-supplement-1",
+                    "details": "details-1",
+                    "imageUrl": null,
+                    "website": "http://website-1.host",
+                    "contacts": {
+                        "SIGNAL": "signal-1",
+                        "WHATSAPP": "whatsapp-1"
+                    },
+                    "slots": {
+                        "timePerSlot": 15,
+                        "timeBetweenSlots": 5,
+                        "delayForFirstSlot": 60,
+                        "monday": {
+                          "start": "09:00",
+                          "end": "17:00"
+                        },
+                        "tuesday": null,
+                        "wednesday": null,
+                        "thursday": null,
+                        "friday": null,
+                        "saturday": null,
+                        "sunday": null
+                    },
+                    "socialLinks": {
+                        "instagram": "insta.gram",
+                        "facebook": "face.book",
+                        "twitter": "@twitter"
+                    },
+                    "breaks": {
+                        "monday": [
+                            {
+                                "start": "12:00",
+                                "end": "13:00"
+                            }
+                        ],
+                        "tuesday": [],
+                        "wednesday": [],
+                        "thursday": [],
+                        "friday": [],
+                        "saturday": [],
+                        "sunday": []
+                    },
+                    "shareLink": "http://localhost:4200/bei/shop1"
+                }
                 """
             ))
     }

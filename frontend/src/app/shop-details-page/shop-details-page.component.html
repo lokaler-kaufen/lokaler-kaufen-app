@@ -63,7 +63,7 @@
               *ngIf="hasOnlyPhone">{{ shop.name }}
               bietet derzeit noch keine Videoberatung an, Sie können sich aber per Telefon beraten lassen.</span></p>
         </div>
-        <slots (selectedSlotId)="showBookingPopup($event)" [slotsDataObservable]="slotsPerDay"></slots>
+        <slots (selectedSlot)="showBookingPopup($event)" [slotsDataObservable]="slotsPerDay"></slots>
         <div class="shop-details margin-big-vertical">
           <div>
             <div class="address-title">Adresse</div>
@@ -132,7 +132,7 @@
             *ngIf="hasOnlyPhone">{{ shop.name }}
             bietet derzeit noch keine Videoberatung an, Sie können sich aber per Telefon beraten lassen.</span></p>
       </div>
-      <slots (selectedSlotId)="showBookingPopup($event)" [slotsDataObservable]="slotsPerDay"></slots>
+      <slots (selectedSlot)="showBookingPopup($event)" [slotsDataObservable]="slotsPerDay"></slots>
       <div class="shop-details margin-big-vertical">
         <div>
           <contact-types [availableContactTypes]="shop.contactTypes"></contact-types>

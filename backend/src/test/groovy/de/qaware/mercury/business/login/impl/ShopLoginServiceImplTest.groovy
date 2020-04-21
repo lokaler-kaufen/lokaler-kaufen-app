@@ -15,6 +15,7 @@ import de.qaware.mercury.business.time.Clock
 import de.qaware.mercury.business.uuid.UUIDFactory
 import de.qaware.mercury.storage.login.ShopLoginRepository
 import de.qaware.mercury.storage.shop.ShopRepository
+import de.qaware.mercury.test.time.TestClock
 import spock.lang.Specification
 import spock.lang.Subject
 import spock.lang.Unroll
@@ -28,7 +29,7 @@ class ShopLoginServiceImplTest extends Specification {
     TokenService tokenService = Mock()
     UUIDFactory uuidFactory = Mock()
     ShopRepository shopRepository = Mock()
-    Clock clock = Mock()
+    Clock clock = new TestClock()
     EmailService emailService = Mock()
 
     @Subject
@@ -46,7 +47,6 @@ class ShopLoginServiceImplTest extends Specification {
         1 * passwordHasher.hash('geheim') >> 'ahash'
         1 * uuidFactory.create() >> uuid
         1 * shopLoginRepository.insert(_)
-        2 * clock.nowZoned()
         0 * _
 
         and:

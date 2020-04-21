@@ -5,6 +5,7 @@ import de.qaware.mercury.business.reservation.ReservationNotFoundException
 import de.qaware.mercury.business.shop.ContactType
 import de.qaware.mercury.business.shop.Shop
 import de.qaware.mercury.business.time.Clock
+import de.qaware.mercury.test.time.TestClock
 import org.springframework.dao.EmptyResultDataAccessException
 import spock.lang.Specification
 import spock.lang.Subject
@@ -15,14 +16,13 @@ import java.time.ZonedDateTime
 class JpaReservationRepositoryImplSpec extends Specification {
 
     private ReservationDataRepository dataRepository
-    private Clock clock
+    private Clock clock = new TestClock()
 
     @Subject
     private JpaReservationRepositoryImpl repository
 
     def setup() {
         dataRepository = Mock(ReservationDataRepository)
-        clock = Mock(Clock)
         repository = new JpaReservationRepositoryImpl(dataRepository, clock)
     }
 
@@ -30,7 +30,6 @@ class JpaReservationRepositoryImplSpec extends Specification {
         setup:
         Reservation.Id id = Reservation.Id.of(UUID.randomUUID())
         Shop.Id shopId = Shop.Id.of(UUID.randomUUID())
-        ZonedDateTime currentTime = ZonedDateTime.now()
         Reservation reservation = new Reservation(
             id,
             shopId,
@@ -50,7 +49,6 @@ class JpaReservationRepositoryImplSpec extends Specification {
         repository.insert(reservation)
 
         then:
-        1 * clock.nowZoned() >> currentTime
         dataRepository.save(_) >> { passedEntity ->
             passedEntity == entity
         }

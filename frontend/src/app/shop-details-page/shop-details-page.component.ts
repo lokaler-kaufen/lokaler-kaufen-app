@@ -13,16 +13,10 @@ import {
 } from '../booking-success-popup/booking-success-popup.component';
 import {HttpClient} from '@angular/common/http';
 import {NotificationsService} from 'angular2-notifications';
-import {CreateReservationDto, ShopDetailDto, SlotDto, SlotsDto} from '../data/api';
+import {CreateReservationDto, ShopDetailDto, SlotsDto} from '../data/api';
 import {ContactTypesEnum} from '../contact-types/available-contact-types';
 import {ReplaySubject} from 'rxjs';
 import {ReserveSlotsData, SlotSelectionData} from '../slots/slots.component';
-
-export interface SlotsPerDay {
-  dayName: string;
-  hasSlots: boolean;
-  slots: Array<SlotDto>;
-}
 
 @Component({
   selector: 'shop-details-page',
@@ -87,12 +81,6 @@ export class ShopDetailsPageComponent implements OnInit {
   }
 
   showBookingPopup($event: SlotSelectionData) {
-    const selectedSlot = this.findSlotById($event.id);
-    if (!selectedSlot) {
-      console.log('Can not find slot with id ' + $event);
-      this.notificationsService.error('Tut uns Leid!', 'Bei der Buchung ist ein Fehler aufgetreten.');
-      return;
-    }
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = true;
     dialogConfig.width = '450px';
@@ -109,22 +97,21 @@ export class ShopDetailsPageComponent implements OnInit {
             owner: this.shop.name,
             contactNumber: data.phoneNumber,
             contactType: ContactTypesEnum.getDisplayName(data.option),
-            day: selectedSlot.date,
-            start: selectedSlot.start,
-            end: selectedSlot.end
+            day: $event.slot.id,
+            start: $event.slot.start,
+            end: $event.slot.end
           } as BookingSuccessData;
           const reservationDto: CreateReservationDto = {
             contact: data.phoneNumber,
             contactType: data.option,
             email: data.email,
             name: data.name,
-            slotId: $event.id
+            slotId: $event.slot.id
           };
 
           this.client.post<SlotsDto>('/api/reservation/' + this.shopId, reservationDto)
             .subscribe(() => {
                 this.matDialog.open(BookingSuccessPopupComponent, successConfig);
-                selectedSlot.available = false;
               },
               error => {
                 console.log('Error booking time slot: ' + error.status + ', ' + error.message);
@@ -132,17 +119,6 @@ export class ShopDetailsPageComponent implements OnInit {
               });
         }
       });
-  }
-
-  private findSlotById(slotId: string): SlotDto {
-    let slotDto = null;
-    Object.keys(this.slotsConfig.slots).find(key => {
-      slotDto = this.slotsConfig.slots[key].find(s => s.id === slotId);
-      if (slotDto) {
-        return slotDto;
-      }
-    });
-    return slotDto;
   }
 
   returnValidLink(url: string) {

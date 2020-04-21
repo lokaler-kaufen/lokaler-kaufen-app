@@ -65,11 +65,7 @@ class ReservationServiceImpl implements ReservationService {
         List<Interval> blockedSlots = blockSlots(begin, end, reservations, breaks);
 
         // Now generate slots. The time ranges which are blocked are marked as unavailable
-        return new Slots(
-            days,
-            begin,
-            slotService.generateSlots(begin, end, shop.getSlotConfig(), blockedSlots)
-        );
+        return slotService.generateSlots(begin, end, shop.getSlotConfig(), blockedSlots);
     }
 
     @Override

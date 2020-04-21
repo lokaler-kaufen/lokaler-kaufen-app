@@ -12,10 +12,8 @@ import java.time.format.DateTimeFormatter;
 @AllArgsConstructor
 public class SlotDto {
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
-    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     private String id;
-    private String date;
     private String start;
     private String end;
     private boolean available;
@@ -23,7 +21,6 @@ public class SlotDto {
     public static SlotDto of(Slot slot) {
         return new SlotDto(
             slot.getId().getId(),
-            slot.getStart().toLocalDate().format(DATE_FORMATTER),
             slot.getStart().toLocalTime().format(TIME_FORMATTER),
             slot.getEnd().toLocalTime().format(TIME_FORMATTER),
             slot.isAvailable()

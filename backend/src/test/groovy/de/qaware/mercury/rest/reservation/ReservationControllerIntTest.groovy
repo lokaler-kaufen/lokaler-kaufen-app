@@ -9,7 +9,7 @@ import de.qaware.mercury.test.email.Email
 import de.qaware.mercury.test.email.Emails
 import de.qaware.mercury.test.email.TestEmailSender
 import de.qaware.mercury.test.fixtures.ShopCreationFixtures
-import de.qaware.mercury.test.time.FixedClock
+import de.qaware.mercury.test.time.TestClock
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
@@ -59,30 +59,65 @@ class ReservationControllerIntTest extends IntegrationTestSpecification {
             .andExpect(content().json(
                 """
                 {
-                    "slots": {
-                        "0": [
-                            {
-                                "id": "2020-04-20T10:00",
-                                "date": "2020-04-20",
-                                "start": "10:00",
-                                "end": "10:30",
-                                "available": true
-                            },
-                            {
-                                "id": "2020-04-20T11:00",
-                                "date": "2020-04-20",
-                                "start": "11:00",
-                                "end": "11:30",
-                                "available": true
-                            }
-                        ],
-                        "1": [],
-                        "2": [],
-                        "3": [],
-                        "4": [],
-                        "5": [],
-                        "6": []
-                    }
+                    "start": "2020-04-20",
+                    "end": "2020-04-26",
+                    "days": [
+                        {
+                            "date": "2020-04-20",
+                            "dayOfWeek": "MONDAY",
+                            "holiday": false,
+                            "slots": [
+                                {
+                                    "id": "2020-04-20T10:00",
+                                    "start": "10:00",
+                                    "end": "10:30",
+                                    "available": true
+                                },
+                                {
+                                    "id": "2020-04-20T11:00",
+                                    "start": "11:00",
+                                    "end": "11:30",
+                                    "available": true
+                                }
+                            ]
+                        },
+                        {
+                            "date": "2020-04-21",
+                            "dayOfWeek": "TUESDAY",
+                            "holiday": false,
+                            "slots": []
+                        },
+                        {
+                            "date": "2020-04-22",
+                            "dayOfWeek": "WEDNESDAY",
+                            "holiday": false,
+                            "slots": []
+                        },
+                        {
+                            "date": "2020-04-23",
+                            "dayOfWeek": "THURSDAY",
+                            "holiday": false,
+                            "slots": []
+                        },
+                        {
+                            "date": "2020-04-24",
+                            "dayOfWeek": "FRIDAY",
+                            "holiday": false,
+                            "slots": []
+                        },
+                        {
+                            "date": "2020-04-25",
+                            "dayOfWeek": "SATURDAY",
+                            "holiday": false,
+                            "slots": []
+                        },
+                        {
+                            "date": "2020-04-26",
+                            "dayOfWeek": "SUNDAY",
+                            "holiday": false,
+                            "slots": []
+                        }
+                    ]
                 }
                 """
             ))
@@ -105,30 +140,65 @@ class ReservationControllerIntTest extends IntegrationTestSpecification {
             .andExpect(content().json(
                 """
                 {
-                    "slots": {
-                        "0": [],
-                        "1": [],
-                        "2": [],
-                        "3": [],
-                        "4": [
-                            {
-                                "id": "2020-04-20T10:00",
-                                "date": "2020-04-20",
-                                "start": "10:00",
-                                "end": "10:30",
-                                "available": true
-                            },
-                            {
-                                "id": "2020-04-20T11:00",
-                                "date": "2020-04-20",
-                                "start": "11:00",
-                                "end": "11:30",
-                                "available": true
-                            }
-                        ],
-                        "5": [],
-                        "6": []
-                    }
+                    "start": "2020-04-16",
+                    "end": "2020-04-22",
+                    "days": [
+                        {
+                            "date": "2020-04-16",
+                            "dayOfWeek": "THURSDAY",
+                            "holiday": false,
+                            "slots": []
+                        },
+                        {
+                            "date": "2020-04-17",
+                            "dayOfWeek": "FRIDAY",
+                            "holiday": false,
+                            "slots": []
+                        },
+                        {
+                            "date": "2020-04-18",
+                            "dayOfWeek": "SATURDAY",
+                            "holiday": false,
+                            "slots": []
+                        },
+                        {
+                            "date": "2020-04-19",
+                            "dayOfWeek": "SUNDAY",
+                            "holiday": false,
+                            "slots": []
+                        },
+                        {
+                            "date": "2020-04-20",
+                            "dayOfWeek": "MONDAY",
+                            "holiday": false,
+                            "slots": [
+                                {
+                                    "id": "2020-04-20T10:00",
+                                    "start": "10:00",
+                                    "end": "10:30",
+                                    "available": true
+                                },
+                                {
+                                    "id": "2020-04-20T11:00",
+                                    "start": "11:00",
+                                    "end": "11:30",
+                                    "available": true
+                                }
+                            ]
+                        },
+                        {
+                            "date": "2020-04-21",
+                            "dayOfWeek": "TUESDAY",
+                            "holiday": false,
+                            "slots": []
+                        },
+                        {
+                            "date": "2020-04-22",
+                            "dayOfWeek": "WEDNESDAY",
+                            "holiday": false,
+                            "slots": []
+                        }
+                    ]
                 }
                 """
             ))
@@ -180,30 +250,65 @@ class ReservationControllerIntTest extends IntegrationTestSpecification {
             .andExpect(content().json(
                 """
                 {
-                    "slots": {
-                        "0": [],
-                        "1": [],
-                        "2": [],
-                        "3": [],
-                        "4": [
-                            {
-                                "id": "2020-04-20T10:00",
-                                "date": "2020-04-20",
-                                "start": "10:00",
-                                "end": "10:30",
-                                "available": false
-                            },
-                            {
-                                "id": "2020-04-20T11:00",
-                                "date": "2020-04-20",
-                                "start": "11:00",
-                                "end": "11:30",
-                                "available": true
-                            }
-                        ],
-                        "5": [],
-                        "6": []
-                    }
+                    "start": "2020-04-16",
+                    "end": "2020-04-22",
+                    "days": [
+                        {
+                            "date": "2020-04-16",
+                            "dayOfWeek": "THURSDAY",
+                            "holiday": false,
+                            "slots": []
+                        },
+                        {
+                            "date": "2020-04-17",
+                            "dayOfWeek": "FRIDAY",
+                            "holiday": false,
+                            "slots": []
+                        },
+                        {
+                            "date": "2020-04-18",
+                            "dayOfWeek": "SATURDAY",
+                            "holiday": false,
+                            "slots": []
+                        },
+                        {
+                            "date": "2020-04-19",
+                            "dayOfWeek": "SUNDAY",
+                            "holiday": false,
+                            "slots": []
+                        },
+                        {
+                            "date": "2020-04-20",
+                            "dayOfWeek": "MONDAY",
+                            "holiday": false,
+                            "slots": [
+                                {
+                                    "id": "2020-04-20T10:00",
+                                    "start": "10:00",
+                                    "end": "10:30",
+                                    "available": false
+                                },
+                                {
+                                    "id": "2020-04-20T11:00",
+                                    "start": "11:00",
+                                    "end": "11:30",
+                                    "available": true
+                                }
+                            ]
+                        },
+                        {
+                            "date": "2020-04-21",
+                            "dayOfWeek": "TUESDAY",
+                            "holiday": false,
+                            "slots": []
+                        },
+                        {
+                            "date": "2020-04-22",
+                            "dayOfWeek": "WEDNESDAY",
+                            "holiday": false,
+                            "slots": []
+                        }
+                    ]
                 }
                 """
             ))
@@ -237,30 +342,65 @@ class ReservationControllerIntTest extends IntegrationTestSpecification {
             .andExpect(content().json(
                 """
                 {
-                    "slots": {
-                        "0": [],
-                        "1": [],
-                        "2": [],
-                        "3": [],
-                        "4": [
-                            {
-                                "id": "2020-04-20T10:00",
-                                "date": "2020-04-20",
-                                "start": "10:00",
-                                "end": "10:30",
-                                "available": true
-                            },
-                            {
-                                "id": "2020-04-20T11:00",
-                                "date": "2020-04-20",
-                                "start": "11:00",
-                                "end": "11:30",
-                                "available": true
-                            }
-                        ],
-                        "5": [],
-                        "6": []
-                    }
+                    "start": "2020-04-16",
+                    "end": "2020-04-22",
+                    "days": [
+                        {
+                            "date": "2020-04-16",
+                            "dayOfWeek": "THURSDAY",
+                            "holiday": false,
+                            "slots": []
+                        },
+                        {
+                            "date": "2020-04-17",
+                            "dayOfWeek": "FRIDAY",
+                            "holiday": false,
+                            "slots": []
+                        },
+                        {
+                            "date": "2020-04-18",
+                            "dayOfWeek": "SATURDAY",
+                            "holiday": false,
+                            "slots": []
+                        },
+                        {
+                            "date": "2020-04-19",
+                            "dayOfWeek": "SUNDAY",
+                            "holiday": false,
+                            "slots": []
+                        },
+                        {
+                            "date": "2020-04-20",
+                            "dayOfWeek": "MONDAY",
+                            "holiday": false,
+                            "slots": [
+                                {
+                                    "id": "2020-04-20T10:00",
+                                    "start": "10:00",
+                                    "end": "10:30",
+                                    "available": true
+                                },
+                                {
+                                    "id": "2020-04-20T11:00",
+                                    "start": "11:00",
+                                    "end": "11:30",
+                                    "available": true
+                                }
+                            ]
+                        },
+                        {
+                            "date": "2020-04-21",
+                            "dayOfWeek": "TUESDAY",
+                            "holiday": false,
+                            "slots": []
+                        },
+                        {
+                            "date": "2020-04-22",
+                            "dayOfWeek": "WEDNESDAY",
+                            "holiday": false,
+                            "slots": []
+                        }
+                    ]
                 }
                 """
             ))
@@ -270,8 +410,8 @@ class ReservationControllerIntTest extends IntegrationTestSpecification {
     static class MockConfig {
         @Bean
         @Primary
-        FixedClock fixedClock() {
-            return new FixedClock(ZonedDateTime.parse("2020-04-16T13:22:33.016252+02:00[Europe/Berlin]"));
+        TestClock testClock() {
+            return new TestClock(ZonedDateTime.parse("2020-04-16T13:22:33.016252+02:00[Europe/Berlin]"));
         }
 
         @Bean

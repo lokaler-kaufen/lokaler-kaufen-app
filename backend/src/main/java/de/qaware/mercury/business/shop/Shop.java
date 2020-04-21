@@ -40,6 +40,7 @@ public class Shop {
     String details;
     @Nullable
     String website;
+    @With
     SlotConfig slotConfig;
     SocialLinks socialLinks;
     @With

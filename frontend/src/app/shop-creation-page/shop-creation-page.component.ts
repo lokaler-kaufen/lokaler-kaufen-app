@@ -5,13 +5,14 @@ import {ActivatedRoute} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {ShopCreationSuccessPopupComponent} from '../shop-creation-success-popup/shop-creation-success-popup.component';
 import {NotificationsService} from 'angular2-notifications';
-import {CreateShopDto, LocationSuggestionDto, LocationSuggestionsDto, SlotConfigDto, SlotsDto} from '../data/api';
+import {BreakDto, BreaksDto, CreateShopDto, LocationSuggestionDto, LocationSuggestionsDto, SlotConfigDto, SlotsDto} from '../data/api';
 import {ContactTypesEnum} from '../contact-types/available-contact-types';
 import {catchError, filter, map} from 'rxjs/operators';
 import {of, ReplaySubject} from 'rxjs';
 import {ImageService} from '../shared/image.service';
 import {StepperSelectionEvent} from '@angular/cdk/stepper';
 import {ReserveSlotsData, SlotSelectionData} from '../slots/slots.component';
+import {SlotBreakData, SlotBreaksData} from '../shop-details-config/shop-details-config.component';
 
 export class OpeningHours {
   constructor(enabled: boolean = true, from: string = '09:00', to: string = '16:00') {
@@ -64,7 +65,17 @@ export class ShopCreationPageComponent implements OnInit {
   progress = 0;
 
   slotsPreview: ReplaySubject<ReserveSlotsData> = new ReplaySubject<ReserveSlotsData>();
-  breakSlots: string[] = [];
+
+  slotBreaks: SlotBreaksData = {
+    monday: new Array<SlotBreakData>(),
+    tuesday: new Array<SlotBreakData>(),
+    wednesday: new Array<SlotBreakData>(),
+    thursday: new Array<SlotBreakData>(),
+    friday: new Array<SlotBreakData>(),
+    saturday: new Array<SlotBreakData>(),
+    sunday: new Array<SlotBreakData>()
+  };
+
   localImageUrl: any;
 
   constructor(
@@ -211,7 +222,7 @@ export class ShopCreationPageComponent implements OnInit {
     const slots = this.fillSlotsConfig();
     createShopRequestDto.slots = slots;
     createShopRequestDto.password = this.passwordFormGroup.get('passwordCtrl').value;
-    createShopRequestDto.breaks = {slotIds: this.breakSlots};
+    createShopRequestDto.breaks = this.fillBreakConfig();
     return createShopRequestDto;
   }
 
@@ -229,6 +240,49 @@ export class ShopCreationPageComponent implements OnInit {
     slots.delayForFirstSlot = this.openingFormGroup.get('delayCtrl').value;
     return slots;
   }
+
+  private fillBreakConfig() {
+    const breaksDto: BreaksDto = {
+      monday: new Array<BreakDto>(),
+      tuesday: new Array<BreakDto>(),
+      wednesday: new Array<BreakDto>(),
+      thursday: new Array<BreakDto>(),
+      friday: new Array<BreakDto>(),
+      saturday: new Array<BreakDto>(),
+      sunday: new Array<BreakDto>(),
+    };
+    Object.keys(this.slotBreaks).forEach(day => {
+      const slots: SlotBreakData[] = this.slotBreaks[day];
+      slots.sort((s1, s2) => {
+        if (s1.id > s2.id) {
+          return 1;
+        }
+        if (s1.id < s2.id) {
+          return -1;
+        }
+        return 0;
+      });
+      if (slots.length > 0) {
+        let oldSlotId = slots[0].id - 1;
+
+        let start = slots[0].slot.start;
+        let end = slots[0].slot.end;
+        slots.forEach(slot => {
+          if (oldSlotId + 1 === slot.id) {
+            end = slot.slot.end;
+          } else {
+            breaksDto[day].push({start, end});
+            start = slot.slot.start;
+            end = slot.slot.end;
+          }
+          oldSlotId = slot.id;
+        });
+        breaksDto[day].push({start, end});
+      }
+    });
+    return breaksDto;
+  }
+
 
   private postShopCreation(createShopRequestDto: CreateShopDto) {
     this.client.post('/api/shop?token=' + this.token, createShopRequestDto).subscribe(() => {
@@ -316,37 +370,18 @@ export class ShopCreationPageComponent implements OnInit {
 
   private postImageAndDetails(createShopRequestDto: CreateShopDto) {
     this.client.post('/api/shop?token=' + this.token, createShopRequestDto).subscribe(() => {
-        const uploadData = new FormData();
-        uploadData.append('file', this.image, this.image.name);
-        this.imageService.upload(uploadData).pipe(
-          map(event => {
-            switch (event.type) {
-              case HttpEventType.UploadProgress:
-                this.progress = Math.round(event.loaded * 100 / event.total);
-                break;
-              case HttpEventType.Response:
-                return event;
-            }
-          }),
-          catchError((error: HttpErrorResponse) => {
-            console.log(`${this.image.name} upload failed.`);
+
+        this.imageService.upload(this.image, progress => this.progress = progress)
+          .then(() => {
+            this.matDialog.open(ShopCreationSuccessPopupComponent, {
+              width: '500px',
+              data: createShopRequestDto.name
+            }).afterClosed().subscribe();
+          })
+          .catch(() => {
             this.notificationsService.error('Tut uns leid!', 'Ihr Logo konnte nicht hochgeladen werden.');
-            return of(error);
-          })).subscribe((event: any) => {
-          if (event) {
-            if (event instanceof HttpErrorResponse) {
-              console.log(event);
-              return;
-            } else {
-              this.matDialog.open(ShopCreationSuccessPopupComponent, {
-                width: '500px',
-                data: createShopRequestDto.name
-              })
-                .afterClosed()
-                .subscribe();
-            }
-          }
-        });
+          });
+
       },
       error => {
         this.handleError(error);
@@ -355,9 +390,12 @@ export class ShopCreationPageComponent implements OnInit {
 
   changeBreakSlot($event: SlotSelectionData) {
     if ($event.removeSlot) {
-      delete this.breakSlots[$event.id];
+      this.slotBreaks[$event.day] = this.slotBreaks[$event.day].filter(slotData => slotData.id !== $event.index);
     } else {
-      this.breakSlots.push($event.id);
+      this.slotBreaks[$event.day].push({
+        slot: $event.slot,
+        id: $event.index
+      });
     }
   }
 

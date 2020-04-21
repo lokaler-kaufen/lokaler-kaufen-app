@@ -1,12 +1,10 @@
 package de.qaware.mercury.business.reservation;
 
-import de.qaware.mercury.business.shop.Breaks;
 import de.qaware.mercury.business.shop.SlotConfig;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 public interface SlotService {
 
@@ -20,7 +18,7 @@ public interface SlotService {
      * @param blockedSlots slots blocked by something, e.g. existing reservation or breaks
      * @return A list of available time slots between the start and end date.
      */
-    List<Slot> generateSlots(LocalDate start, LocalDate end, SlotConfig slotConfig, List<Interval> blockedSlots);
+    Slots generateSlots(LocalDate start, LocalDate end, SlotConfig slotConfig, List<Interval> blockedSlots);
 
     /**
      * Checks if the given slot is a valid slot under the given slot configuration.
@@ -33,8 +31,4 @@ public interface SlotService {
     boolean isValidSlot(LocalDateTime start, LocalDateTime end, SlotConfig slotConfig);
 
     Slots previewSlots(SlotConfig slotConfig);
-
-    Breaks resolveBreaks(Set<Slot.Id> slotIds, SlotConfig slotConfig);
-
-    List<Slot> convertBreaksToSlots(Breaks breaks);
 }

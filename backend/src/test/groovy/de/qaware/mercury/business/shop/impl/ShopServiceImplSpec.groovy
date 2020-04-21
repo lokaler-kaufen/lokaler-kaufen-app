@@ -15,10 +15,9 @@ import de.qaware.mercury.storage.shop.ShopRepository
 import de.qaware.mercury.test.fixtures.ShopCreationFixtures
 import de.qaware.mercury.test.fixtures.ShopFixtures
 import de.qaware.mercury.test.fixtures.ShopUpdateFixtures
+import de.qaware.mercury.test.time.TestClock
 import de.qaware.mercury.test.uuid.TestUUIDFactory
 import spock.lang.Specification
-
-import java.time.ZonedDateTime
 
 class ShopServiceImplSpec extends Specification {
 
@@ -29,7 +28,7 @@ class ShopServiceImplSpec extends Specification {
     ShopRepository shopRepository = Mock()
     EmailService emailService = Mock()
     ShopLoginService shopLoginService = Mock()
-    Clock clock = Mock()
+    Clock clock = new TestClock()
     ShopServiceConfigurationProperties config = Mock()
     ShopSharingConfigurationProperties sharingConfig = Mock()
     AdminService adminService = Mock()
@@ -171,7 +170,6 @@ class ShopServiceImplSpec extends Specification {
         given:
         UUID uuid = UUID.randomUUID()
         GeoLocation location = GeoLocation.of(0.0, 0.0)
-        ZonedDateTime dateTime = ZonedDateTime.now()
         ShopCreation creation = ShopCreationFixtures.create()
 
         when:
@@ -181,7 +179,6 @@ class ShopServiceImplSpec extends Specification {
         1 * shopLoginService.hasLogin(creation.email) >> false
         1 * uuidFactory.create() >> uuid
         1 * locationService.lookup(creation.zipCode) >> location
-        2 * clock.nowZoned() >> dateTime
 
         and:
         with(shop) {
@@ -189,8 +186,8 @@ class ShopServiceImplSpec extends Specification {
             shop.email == creation.email
             shop.name == creation.name
             shop.geoLocation == location
-            shop.updated == dateTime
-            shop.created == dateTime
+            shop.updated == clock.nowZoned()
+            shop.created == clock.nowZoned()
         }
     }
 

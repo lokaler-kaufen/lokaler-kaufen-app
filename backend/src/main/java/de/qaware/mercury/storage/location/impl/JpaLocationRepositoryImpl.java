@@ -1,5 +1,6 @@
 package de.qaware.mercury.storage.location.impl;
 
+import de.qaware.mercury.business.location.FederalState;
 import de.qaware.mercury.business.location.GeoLocation;
 import de.qaware.mercury.business.location.LocationSuggestion;
 import de.qaware.mercury.storage.location.LocationRepository;
@@ -42,5 +43,17 @@ class JpaLocationRepositoryImpl implements LocationRepository {
     public List<LocationSuggestion> suggest(String zipCode) {
         List<GeoLocationEntity> hits = geoLocationDataRepository.findByZipCodeLike(zipCode, Pageable.unpaged());
         return Lists.map(hits, GeoLocationEntity::toLocationSuggestion);
+    }
+
+    @Override
+    @Nullable
+    public FederalState resolveFederalState(String zipCode) {
+        List<GeoLocationEntity> hits = geoLocationDataRepository.findByZipCode(zipCode, PageRequest.of(0, 1));
+        if (hits.isEmpty()) {
+            return null;
+        }
+
+        // Always use first hit
+        return FederalState.parse(hits.get(0).getStateShort());
     }
 }

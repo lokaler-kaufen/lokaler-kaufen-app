@@ -5,11 +5,13 @@ import {MatDialog} from '@angular/material/dialog';
 import {NotificationsService} from 'angular2-notifications';
 import {Observable, ReplaySubject} from 'rxjs';
 import {
+  BreakDto,
+  BreaksDto,
   DayDto,
   LocationSuggestionDto,
   LocationSuggestionsDto,
   ShopOwnerDetailDto,
-  SlotConfigDto,
+  SlotConfigDto, SlotDto,
   SlotsDto,
   UpdateShopDto
 } from '../data/api';
@@ -24,6 +26,21 @@ export interface UpdateShopData {
   deleteImage: boolean;
   updateShopDto: UpdateShopDto;
   id: string;
+}
+
+export interface SlotBreakData {
+  id: number;
+  slot: SlotDto;
+}
+
+export interface SlotBreaksData {
+  friday?: Array<SlotBreakData>;
+  monday?: Array<SlotBreakData>;
+  saturday?: Array<SlotBreakData>;
+  sunday?: Array<SlotBreakData>;
+  thursday?: Array<SlotBreakData>;
+  tuesday?: Array<SlotBreakData>;
+  wednesday?: Array<SlotBreakData>;
 }
 
 @Component({
@@ -72,14 +89,23 @@ export class ShopDetailsConfigComponent implements OnInit {
 
   slotsPreview: ReplaySubject<ReserveSlotsData> = new ReplaySubject<ReserveSlotsData>();
 
-  breakSlots: string[] = [];
+  slotBreaks: SlotBreaksData = {
+    monday: new Array<SlotBreakData>(),
+    tuesday: new Array<SlotBreakData>(),
+    wednesday: new Array<SlotBreakData>(),
+    thursday: new Array<SlotBreakData>(),
+    friday: new Array<SlotBreakData>(),
+    saturday: new Array<SlotBreakData>(),
+    sunday: new Array<SlotBreakData>()
+  };
+
+  private breaksChanged = false;
 
   ngOnInit() {
     this.configureFormControls();
     this.detailsObservable
       .subscribe((shopDetails: ShopOwnerDetailDto) => {
           this.details = shopDetails;
-          this.breakSlots = shopDetails.breaks.slotIds;
           this.setConfiguredShopDetails();
         },
         error => {
@@ -252,7 +278,9 @@ export class ShopDetailsConfigComponent implements OnInit {
     slots.timePerSlot = this.openingFormGroup.get('defaultCtrl').value;
     slots.delayForFirstSlot = this.openingFormGroup.get('delayCtrl').value;
     updateShopDto.slots = slots;
-    updateShopDto.breaks = {slotIds: this.breakSlots};
+    if (this.breaksChanged) {
+      updateShopDto.breaks = this.fillBreakConfig();
+    }
     this.updateShopEvent.next({
       updateShopDto,
       id: this.details.id,
@@ -308,14 +336,56 @@ export class ShopDetailsConfigComponent implements OnInit {
     return slots;
   }
 
+  private fillBreakConfig() {
+    const breaksDto: BreaksDto = {
+      monday: new Array<BreakDto>(),
+      tuesday: new Array<BreakDto>(),
+      wednesday: new Array<BreakDto>(),
+      thursday: new Array<BreakDto>(),
+      friday: new Array<BreakDto>(),
+      saturday: new Array<BreakDto>(),
+      sunday: new Array<BreakDto>(),
+    };
+    Object.keys(this.slotBreaks).forEach(day => {
+      const slots: SlotBreakData[] = this.slotBreaks[day];
+      slots.sort((s1, s2) => {
+        if (s1.id > s2.id) {
+          return 1;
+        }
+        if (s1.id < s2.id) {
+          return -1;
+        }
+        return 0;
+      });
+      if (slots.length > 0) {
+        let oldSlotId = slots[0].id - 1;
+
+        let start = slots[0].slot.start;
+        let end = slots[0].slot.end;
+        slots.forEach(slot => {
+          if (oldSlotId + 1 === slot.id) {
+            end = slot.slot.end;
+          } else {
+            breaksDto[day].push({start, end});
+            start = slot.slot.start;
+            end = slot.slot.end;
+          }
+          oldSlotId = slot.id;
+        });
+        breaksDto[day].push({start, end});
+      }
+    });
+    return breaksDto;
+  }
+
   changeBreakSlot($event: SlotSelectionData) {
     if ($event.removeSlot) {
-      const index = this.breakSlots.indexOf($event.id, 0);
-      if (index > -1) {
-        this.breakSlots.splice(index, 1);
-      }
+      this.slotBreaks[$event.day] = this.slotBreaks[$event.day].filter(slotData => slotData.id !== $event.index);
     } else {
-      this.breakSlots.push($event.id);
+      this.slotBreaks[$event.day].push({
+        slot: $event.slot,
+        id: $event.index
+      });
     }
   }
 
@@ -330,6 +400,7 @@ export class ShopDetailsConfigComponent implements OnInit {
         breaks: this.details.breaks
       });
     });
+    this.breaksChanged = true;
   }
 
   onFileChanged(event) {

@@ -1,5 +1,6 @@
 package de.qaware.mercury.business.location.impl;
 
+import de.qaware.mercury.business.location.FederalState;
 import de.qaware.mercury.business.location.GeoLocation;
 import de.qaware.mercury.business.location.LocationService;
 import de.qaware.mercury.business.location.LocationSuggestion;
@@ -34,6 +35,17 @@ public class LocationServiceImpl implements LocationService {
         }
 
         return geoLocation;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public FederalState resolveFederalState(String zipCode) throws LocationNotFoundException {
+        FederalState federalState = locationRepository.resolveFederalState(zipCode);
+        if (federalState == null) {
+            throw new LocationNotFoundException(zipCode);
+        }
+
+        return federalState;
     }
 
     @Override
