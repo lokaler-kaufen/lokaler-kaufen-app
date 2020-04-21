@@ -1,14 +1,21 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {HttpClient, HttpErrorResponse, HttpEventType} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {ActivatedRoute} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {ShopCreationSuccessPopupComponent} from '../shop-creation-success-popup/shop-creation-success-popup.component';
 import {NotificationsService} from 'angular2-notifications';
-import {BreakDto, BreaksDto, CreateShopDto, LocationSuggestionDto, LocationSuggestionsDto, SlotConfigDto, SlotsDto} from '../data/api';
+import {
+  BreaksDto,
+  CreateShopDto,
+  LocationSuggestionDto,
+  LocationSuggestionsDto,
+  SlotConfigDto,
+  SlotsDto
+} from '../data/api';
 import {ContactTypesEnum} from '../contact-types/available-contact-types';
-import {catchError, filter, map} from 'rxjs/operators';
-import {of, ReplaySubject} from 'rxjs';
+import {filter} from 'rxjs/operators';
+import {ReplaySubject} from 'rxjs';
 import {ImageService} from '../shared/image.service';
 import {StepperSelectionEvent} from '@angular/cdk/stepper';
 import {ReserveSlotsData, SlotSelectionData} from '../slots/slots.component';
@@ -67,13 +74,13 @@ export class ShopCreationPageComponent implements OnInit {
   slotsPreview: ReplaySubject<ReserveSlotsData> = new ReplaySubject<ReserveSlotsData>();
 
   slotBreaks: SlotBreaksData = {
-    monday: new Array<SlotBreakData>(),
-    tuesday: new Array<SlotBreakData>(),
-    wednesday: new Array<SlotBreakData>(),
-    thursday: new Array<SlotBreakData>(),
-    friday: new Array<SlotBreakData>(),
-    saturday: new Array<SlotBreakData>(),
-    sunday: new Array<SlotBreakData>()
+    monday: [],
+    tuesday: [],
+    wednesday: [],
+    thursday: [],
+    friday: [],
+    saturday: [],
+    sunday: []
   };
 
   localImageUrl: any;
@@ -219,8 +226,7 @@ export class ShopCreationPageComponent implements OnInit {
       }
     });
     createShopRequestDto.contacts = availableContactTypes;
-    const slots = this.fillSlotsConfig();
-    createShopRequestDto.slots = slots;
+    createShopRequestDto.slots = this.fillSlotsConfig();
     createShopRequestDto.password = this.passwordFormGroup.get('passwordCtrl').value;
     createShopRequestDto.breaks = this.fillBreakConfig();
     return createShopRequestDto;
@@ -243,13 +249,13 @@ export class ShopCreationPageComponent implements OnInit {
 
   private fillBreakConfig() {
     const breaksDto: BreaksDto = {
-      monday: new Array<BreakDto>(),
-      tuesday: new Array<BreakDto>(),
-      wednesday: new Array<BreakDto>(),
-      thursday: new Array<BreakDto>(),
-      friday: new Array<BreakDto>(),
-      saturday: new Array<BreakDto>(),
-      sunday: new Array<BreakDto>(),
+      monday: [],
+      tuesday: [],
+      wednesday: [],
+      thursday: [],
+      friday: [],
+      saturday: [],
+      sunday: [],
     };
     Object.keys(this.slotBreaks).forEach(day => {
       const slots: SlotBreakData[] = this.slotBreaks[day];
@@ -388,13 +394,14 @@ export class ShopCreationPageComponent implements OnInit {
       });
   }
 
-  changeBreakSlot($event: SlotSelectionData) {
-    if ($event.removeSlot) {
-      this.slotBreaks[$event.day] = this.slotBreaks[$event.day].filter(slotData => slotData.id !== $event.index);
+  changeBreakSlot(selection: SlotSelectionData) {
+    if (selection.removeSlot) {
+      this.slotBreaks[selection.day] = this.slotBreaks[selection.day].filter(slotData => slotData.id !== selection.index);
+
     } else {
-      this.slotBreaks[$event.day].push({
-        slot: $event.slot,
-        id: $event.index
+      this.slotBreaks[selection.day].push({
+        slot: selection.slot,
+        id: selection.index
       });
     }
   }
@@ -403,12 +410,10 @@ export class ShopCreationPageComponent implements OnInit {
     if ($event.selectedIndex !== 5) {
       return;
     }
-    const slots = this.fillSlotsConfig();
-    this.client.post<SlotsDto>('/api/reservation/preview', slots).toPromise().then(preview => {
-      this.slotsPreview.next({
-        slots: preview
-      });
-    });
+
+    const slotsConfig = this.fillSlotsConfig();
+    this.client.post<SlotsDto>('/api/reservation/preview', slotsConfig).toPromise()
+      .then(slots => this.slotsPreview.next({slots}));
   }
 }
 

@@ -182,8 +182,12 @@
   <mat-step [optional]="true">
     <ng-template matStepLabel>Sie können auch Pausenzeiten angeben.</ng-template>
     <p>Wählen sie einfach die Slots aus, zu denen Sie keine Beratung anbieten.</p>
-    <slots *ngIf="details.breaks" [slotsDataObservable]="slotsPreview" (selectedSlot)="changeBreakSlot($event)"
-           [isSlotConfig]="true"></slots>
+    <slots
+      *ngIf="details.breaks"
+      [data]="slotsPreview"
+      (selectedSlot)="changeBreakSlot($event)"
+      [isSlotConfig]="true"
+    ></slots>
     <div>
       <button mat-button matStepperPrevious>Zurück</button>
       <button mat-button matStepperNext>Weiter</button>

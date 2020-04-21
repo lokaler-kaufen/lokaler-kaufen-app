@@ -21,15 +21,17 @@ export interface ReserveSlotsData {
 }
 
 /**
- * data structure to represent slots in html
+ * Data structure to represent slots per day.
  */
-export interface SlotsPerDay {
+interface Day {
   dayName: string;
   day: string;
   hasSlots: boolean;
   isHoliday: boolean;
   slots: Array<SlotDto>;
 }
+
+const DAY_NAMES = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
 
 /**
  * Component for handling and displaying slot interactions
@@ -42,18 +44,16 @@ export interface SlotsPerDay {
 export class SlotsComponent implements OnInit {
 
   /**
-   * input data for slots
+   * Slot data to be displayed.
    */
   @Input()
-  slotsDataObservable: Observable<ReserveSlotsData>;
+  data: Observable<ReserveSlotsData>;
 
   /**
-   * whether it is config mode, needed for different html styles
+   * Whether the "config" mode is active or not.
    */
   @Input()
   isSlotConfig = false;
-
-  slotsPerDay = new Array<SlotsPerDay>();
 
   /**
    * the selected slot and if it is to remove or to add
@@ -61,11 +61,8 @@ export class SlotsComponent implements OnInit {
   @Output()
   selectedSlot: ReplaySubject<SlotSelectionData> = new ReplaySubject<SlotSelectionData>();
 
-  weekday = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
+  days = new Array<Day>();
   today: Date;
-
-  constructor() {
-  }
 
   /**
    * set slots to be displayed based on given input data
@@ -73,13 +70,13 @@ export class SlotsComponent implements OnInit {
    */
   ngOnInit(): void {
     this.today = new Date();
-    this.slotsDataObservable.subscribe(slotsData => {
-      this.slotsPerDay = new Array<SlotsPerDay>();
+    this.data.subscribe(slotsData => {
+      this.days = new Array<Day>();
       if (slotsData.breaks) {
         this.setAvailableSlots(slotsData);
       } else {
         slotsData.slots.days.forEach(day => {
-          this.slotsPerDay.push({
+          this.days.push({
             dayName: this.getDayName(new Date(day.date)),
             day: day.dayOfWeek.toLowerCase(),
             slots: day.slots,
@@ -106,7 +103,7 @@ export class SlotsComponent implements OnInit {
           }
         });
       }
-      this.slotsPerDay.push({
+      this.days.push({
         dayName: this.getDayName(new Date(availableSlots.date)),
         day: key,
         slots: availableSlots.slots,
@@ -137,9 +134,11 @@ export class SlotsComponent implements OnInit {
   }
 
   /**
-   * emit an event if a slot is selected as break
-   * @param slot the selected slot id
-   * @param index the index of the selected slot, needed to check subsequent slots
+   * Emits the next "selected" slot.
+   *
+   * @param slot The selected slot's id.
+   * @param index The index of the selected slot, needed to check subsequent slots.
+   * @param day The day to which the selected slot belongs to.
    */
   sendSelectedSlotId(slot: SlotDto, index: number, day: string) {
     this.selectedSlot.next({
@@ -148,13 +147,27 @@ export class SlotsComponent implements OnInit {
       day,
       removeSlot: false
     });
-    slot.available = false;
+
+    // In non-config mode, the UI should not eagerly change the displayed state of the slot.
+    // see https://github.com/lokaler-kaufen/lokaler-kaufen-app/issues/252
+    if (this.isSlotConfig) {
+      slot.available = false;
+    }
+    /*
+     ACTUALLY, this whole interaction between the parent and the <slot> component is rather weird.
+
+     Ideally, the parent should "own" and provide the data that is simply displayed inside the <slot> component.
+     The event that's raised in the slot component whenever the user clicks on a slot button should not mutate the
+     <slot> component's state. The parent should rather update the data that's flowing into the <slot> component.
+    */
   }
 
   /**
-   * emit an event if a slot selected as break is unselected
-   * @param slot the selected slot id
-   * @param index the index of the selected slot, needed to check subsequent slots
+   * Emits the next "to be removed" slot.
+   *
+   * @param slot The selected slot's id.
+   * @param index The index of the selected slot, needed to check subsequent slots.
+   * @param day The day to which the selected slot belongs to.
    */
   sendRemovedSlotId(slot: SlotDto, index: number, day: string) {
     this.selectedSlot.next({
@@ -163,13 +176,19 @@ export class SlotsComponent implements OnInit {
       day,
       removeSlot: true
     });
-    slot.available = true;
+
+    // In non-config mode, the UI should not eagerly change the displayed state of the slot.
+    // see https://github.com/lokaler-kaufen/lokaler-kaufen-app/issues/252
+    if (this.isSlotConfig) {
+      slot.available = true;
+    }
   }
 
   /**
-   * Returns the day name of the given slot
+   * Returns the human-readable day name for the given date.
    */
   getDayName(date: Date): string {
-    return this.weekday[date.getDay()];
+    return DAY_NAMES[date.getDay()];
   }
+
 }

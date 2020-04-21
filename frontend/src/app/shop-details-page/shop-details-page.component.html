@@ -11,7 +11,9 @@
   <!-- region ONLY LARGE LAYOUT -->
   <div class="only-large">
     <mat-card class="mat-elevation-z3">
-      <div *ngIf="shop.imageUrl" class="shop-logo-bubble mat-elevation-z3" [ngStyle]="{ 'background-color':  logoBackgroundColor }" >
+      <div *ngIf="shop.imageUrl"
+           class="shop-logo-bubble mat-elevation-z3"
+           [ngStyle]="{ 'background-color':  logoBackgroundColor }">
         <!-- mat-card adds "position: relative" so we can use it to "position: absolute" our floaty image -->
         <div class="shop-logo-bubble-image">
           <shop-logo [imageUrl]="shop.imageUrl"></shop-logo>
@@ -63,7 +65,7 @@
               *ngIf="hasOnlyPhone">{{ shop.name }}
               bietet derzeit noch keine Videoberatung an, Sie können sich aber per Telefon beraten lassen.</span></p>
         </div>
-        <slots (selectedSlot)="showBookingPopup($event)" [slotsDataObservable]="slotsPerDay"></slots>
+        <slots (selectedSlot)="showBookingPopup($event)" [data]="slotsPerDay"></slots>
         <div class="shop-details margin-big-vertical">
           <div>
             <div class="address-title">Adresse</div>
@@ -81,7 +83,6 @@
     </mat-card>
     <page-footer></page-footer>
   </div>
-
   <!-- endregion -->
 
   <!-- region ONLY SMALL LAYOUT -->
@@ -132,7 +133,7 @@
             *ngIf="hasOnlyPhone">{{ shop.name }}
             bietet derzeit noch keine Videoberatung an, Sie können sich aber per Telefon beraten lassen.</span></p>
       </div>
-      <slots (selectedSlot)="showBookingPopup($event)" [slotsDataObservable]="slotsPerDay"></slots>
+      <slots (selectedSlot)="showBookingPopup($event)" [data]="slotsPerDay"></slots>
       <div class="shop-details margin-big-vertical">
         <div>
           <contact-types [availableContactTypes]="shop.contactTypes"></contact-types>
