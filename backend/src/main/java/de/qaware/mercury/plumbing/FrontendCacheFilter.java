@@ -33,9 +33,14 @@ class FrontendCacheFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String cacheHeader = getCacheControlHeader(getExtension(request.getRequestURI()));
-        if (cacheHeader != null) {
-            response.setHeader("Cache-Control", cacheHeader);
+        if (request.getRequestURI().equals("/") || request.getRequestURI().equals("/index.html")) {
+            // index.html must always be revalidated
+            response.setHeader("Cache-Control", "must-revalidate");
+        } else {
+            String cacheHeader = getCacheControlHeader(getExtension(request.getRequestURI()));
+            if (cacheHeader != null) {
+                response.setHeader("Cache-Control", cacheHeader);
+            }
         }
 
         filterChain.doFilter(request, response);
