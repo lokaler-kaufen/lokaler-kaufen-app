@@ -27,7 +27,7 @@ export class CancelReservationComponent implements OnInit {
   cancelReservation() {
     this.client.delete('/api/reservation?token=' + encodeURIComponent(this.token))
       .subscribe(() => {
-          this.notificationsService.success('Alles klar!', 'Wir haben Ihre Buchung storniert. Der Laden wird von uns informiert.');
+          this.notificationsService.success('Alles klar!', 'Der Beratungstermin wurde storniert.');
           this.router.navigate(['/']);
         },
         error => {
