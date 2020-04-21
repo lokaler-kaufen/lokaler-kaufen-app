@@ -45,6 +45,7 @@ public class CreateShopDto {
     private String details;
     @Nullable
     private String website;
+    private boolean autoColorEnabled;
     @NotBlank
     @Size(min = Validation.MIN_PASSWORD_LENGTH, max = Validation.MAX_PASSWORD_LENGTH)
     private String password;

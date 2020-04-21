@@ -146,6 +146,7 @@ class ShopController {
             request.getAddressSupplement(),
             request.getDetails(),
             request.getWebsite(),
+            request.isAutoColorEnabled(),
             request.getPassword(),
             Maps.mapKeys(request.getContacts(), ContactType::parse),
             slotConfig,

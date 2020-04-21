@@ -16,6 +16,7 @@ public class ShopUpdate {
     String details;
     @Nullable
     String website;
+    boolean autoColorEnabled;
     // Maps from WHATSAPP -> Telephone number, for example
     Map<ContactType, String> contacts;
     SlotConfig slotConfig;

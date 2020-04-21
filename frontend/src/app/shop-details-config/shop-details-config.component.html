@@ -190,31 +190,54 @@
     </div>
   </mat-step>
   <mat-step [optional]="true">
-    <ng-template matStepLabel>Sie haben ein Logo?</ng-template>
-    <div style="display: flex; align-items: flex-end;">
-      <div *ngIf="details.imageUrl" style="display: flex; flex-direction: column; padding-right: 15px; ">
-        <img style="max-width: 80px;" src=
-          "{{details.imageUrl}}"
-             alt="Shop logo">
+    <form [formGroup]="logoFormGroup">
+      <ng-template matStepLabel>Sie haben ein Logo?</ng-template>
+      <p>Wählen Sie einfach eine JPEG oder PNG Bilddatei von Ihrem Rechner aus. Die Datei muss kleiner als 5 MB
+        sein.</p>
+      <p>Hier noch ein paar Tipps für ein gutes Logo:</p>
+      <ul>
+        <li>Wählen Sie ein Bild mit einem einheitlichen, einfarbigen Hintergrund, z.B. weiß oder transparent.</li>
+        <li>Vermeiden Sie Bilder mit viel Text. Das Logo wird verkleinert angezeigt und Text damit schwer lesbar.</li>
+        <li>Verwenden Sie keine Fotos. Diese sind verkleinert schwer erkennbar und wirken unruhig.</li>
+        <li>Verwenden Sie ein Bild mit einer Auflösung von mind. 300x300 Pixeln.</li>
+      </ul>
+      <div *ngIf="details.imageUrl || this.image" style="display: flex; flex-direction: column;">
         <div>
-          <button (click)="onDeleteFile()">Datei löschen</button>
+          <!-- Show current image unless user uploaded a new one.-->
+          <img *ngIf="details.imageUrl && !this.image" style="max-width: 150px; max-height: 150px"
+               src="{{details.imageUrl}}" alt="Shop logo">
+          <!-- If a user uploaded a new image, show this instead. -->
+          <img *ngIf="localImageUrl" src="{{this.localImageUrl}}" style="max-width: 150px; max-height: 150px">
+        </div>
+        <div *ngIf="this.image">
+          Ihre ausgewählte Datei: {{this.image?.name}}
         </div>
       </div>
-      <div>
-        <p>Bitte beachten Sie die maximale Dateigröße von 5 MB.</p>
-        <input
-          style="display: none"
-          type="file" (change)="onFileChanged($event)"
-          #fileInput>
-        <div *ngIf="this.image">{{this.image.name}}</div>
-        <button (click)="fileInput.click()">Datei auswählen...</button>
-        <mat-error *ngIf="fileIsTooBig">Die Datei ist zu groß. Bitte wählen Sie eine Datei aus, die maximal 2 MB groß
-          ist.
-        </mat-error>
-        <mat-error *ngIf="wrongFileExtension">Bitte wählen Sie eine Datei mit der Endung '.png', '.jpeg' oder '.jpg'
-          aus.
-        </mat-error>
+      <div style="display: flex; flex-direction: column;">
+        <div style="display: flex; flex-direction: row; max-width: 155px; padding-top: 5px">
+          <div *ngIf="details.imageUrl && !this.image" style="padding-right: 15px">
+            <!--  Disable delete button if user selected a new image to avoid confusion-->
+            <button mat-raised-button color="primary" (click)="onDeleteFile()">Datei löschen</button>
+          </div>
+          <div>
+            <input style="display: none" type="file" (change)="onFileChanged($event)" #fileInput>
+            <button mat-raised-button color="primary" (click)="fileInput.click()">Datei auswählen...</button>
+          </div>
+        </div>
+        <div style="padding-top: 10px;" *ngIf="details.imageUrl || this.image">
+          <p>Um das Logo auf der Seite Ihres Ladens schöner in Szene zu setzen, passen wir die Farbe rund um Ihr Logo
+            automatisch an. Das funktioniert in den allermeisten Fällen sehr gut. Falls Sie jedoch mit dem Ergebnis
+            unzufrieden sind, können Sie die Funktion auch später jederzeit deaktivieren.</p>
+          <mat-checkbox formControlName="autoColorCtrl">Automatische Farbe aktivieren (empfohlen)
+          </mat-checkbox>
+        </div>
       </div>
-    </div>
+      <mat-error *ngIf="fileIsTooBig">Die Datei ist zu groß. Bitte wählen Sie eine Datei aus, die maximal 2 MB groß
+        ist.
+      </mat-error>
+      <mat-error *ngIf="wrongFileExtension">Bitte wählen Sie eine Datei mit der Endung '.png', '.jpeg' oder '.jpg'
+        aus.
+      </mat-error>
+    </form>
   </mat-step>
 </mat-vertical-stepper>

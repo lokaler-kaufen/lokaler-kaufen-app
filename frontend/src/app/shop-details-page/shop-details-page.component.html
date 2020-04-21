@@ -11,7 +11,7 @@
   <!-- region ONLY LARGE LAYOUT -->
   <div class="only-large">
     <mat-card class="mat-elevation-z3">
-      <div *ngIf="shop.imageUrl" class="shop-logo-bubble mat-elevation-z3">
+      <div *ngIf="shop.imageUrl" class="shop-logo-bubble mat-elevation-z3" [ngStyle]="{ 'background-color':  logoBackgroundColor }" >
         <!-- mat-card adds "position: relative" so we can use it to "position: absolute" our floaty image -->
         <div class="shop-logo-bubble-image">
           <shop-logo [imageUrl]="shop.imageUrl"></shop-logo>

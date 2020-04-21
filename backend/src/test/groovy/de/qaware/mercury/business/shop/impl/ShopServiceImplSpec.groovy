@@ -7,15 +7,7 @@ import de.qaware.mercury.business.image.ImageService
 import de.qaware.mercury.business.location.GeoLocation
 import de.qaware.mercury.business.location.LocationService
 import de.qaware.mercury.business.login.ShopLoginService
-import de.qaware.mercury.business.shop.Shop
-import de.qaware.mercury.business.shop.ShopAlreadyExistsException
-import de.qaware.mercury.business.shop.ShopCreation
-import de.qaware.mercury.business.shop.ShopNotFoundException
-import de.qaware.mercury.business.shop.ShopService
-import de.qaware.mercury.business.shop.ShopSharingConfigurationProperties
-import de.qaware.mercury.business.shop.ShopUpdate
-import de.qaware.mercury.business.shop.ShopWithDistance
-import de.qaware.mercury.business.shop.SlugService
+import de.qaware.mercury.business.shop.*
 import de.qaware.mercury.business.time.Clock
 import de.qaware.mercury.business.uuid.UUIDFactory
 import de.qaware.mercury.storage.shop.ShopBreaksRepository
@@ -288,7 +280,7 @@ class ShopServiceImplSpec extends Specification {
         Shop shop = ShopFixtures.create(uuidFactory, oldImage, clock)
 
         when:
-        shopService.setImage(shop, newImage)
+        shopService.setImage(shop, newImage, "#FFFFFF")
 
         then:
         // Delete old image

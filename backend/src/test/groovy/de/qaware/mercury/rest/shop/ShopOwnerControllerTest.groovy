@@ -50,7 +50,7 @@ class ShopOwnerControllerTest extends Specification {
         given:
         Shop shop = ShopFixtures.create()
         SlotConfigDto slots = SlotConfigDto.of(shop.getSlotConfig())
-        UpdateShopDto dto = new UpdateShopDto("name", "ownername", "street", "zipCode", "city", "addressSupplement", "details", "www.example.com", Map.of(), slots, new SocialLinksDto("instagram", "facebook", "twitter"), null)
+        UpdateShopDto dto = new UpdateShopDto("name", "ownername", "street", "zipCode", "city", "addressSupplement", "details", "www.example.com", true, Map.of(), slots, new SocialLinksDto("instagram", "facebook", "twitter"), null)
         shopService.findBreaks(shop) >> Breaks.none()
         String testImageUrl = "http://image.url/path"
         shopService.generateImageUrl(shop) >> new URI(testImageUrl)

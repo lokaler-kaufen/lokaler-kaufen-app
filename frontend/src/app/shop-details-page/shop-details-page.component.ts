@@ -40,6 +40,10 @@ export class ShopDetailsPageComponent implements OnInit {
       this.shop?.contactTypes?.values()?.next()?.value === 'PHONE');
   }
 
+  get logoBackgroundColor(): string {
+    return this.shop.autoColorEnabled ? this.shop.shopColor : '#FFFFFF';
+  }
+
   shopId: string;
   shop: ShopDetailDto;
 

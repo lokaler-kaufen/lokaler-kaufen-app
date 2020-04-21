@@ -76,6 +76,7 @@ public class ShopOwnerController {
             request.getAddressSupplement(),
             request.getDetails(),
             request.getWebsite(),
+            request.isAutoColorEnabled(),
             Maps.mapKeys(request.getContacts(), ContactType::parse),
             slotConfig,
             request.getSocialLinks() == null ? SocialLinks.none() : request.getSocialLinks().toSocialLinks(),
