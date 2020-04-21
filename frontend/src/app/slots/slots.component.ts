@@ -81,7 +81,7 @@ export class SlotsComponent implements OnInit {
         slotsData.slots.days.forEach(day => {
           this.slotsPerDay.push({
             dayName: this.getDayName(new Date(day.date)),
-            day: day.dayOfWeek,
+            day: day.dayOfWeek.toLowerCase(),
             slots: day.slots,
             hasSlots: day.slots.length > 0,
             isHoliday: day.holiday

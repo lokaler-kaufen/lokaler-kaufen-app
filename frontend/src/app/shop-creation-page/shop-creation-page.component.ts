@@ -6,12 +6,12 @@ import {MatDialog} from '@angular/material/dialog';
 import {ShopCreationSuccessPopupComponent} from '../shop-creation-success-popup/shop-creation-success-popup.component';
 import {NotificationsService} from 'angular2-notifications';
 import {
+  BreakDto,
   BreaksDto,
   CreateShopDto,
   LocationSuggestionDto,
   LocationSuggestionsDto,
   SlotConfigDto,
-  SlotDto,
   SlotsDto
 } from '../data/api';
 import {ContactTypesEnum} from '../contact-types/available-contact-types';
@@ -71,7 +71,16 @@ export class ShopCreationPageComponent implements OnInit {
   progress = 0;
 
   slotsPreview: ReplaySubject<ReserveSlotsData> = new ReplaySubject<ReserveSlotsData>();
-  slotBreaks: SlotBreaksData = {};
+
+  slotBreaks: SlotBreaksData = {
+    monday: new Array<SlotBreakData>(),
+    tuesday: new Array<SlotBreakData>(),
+    wednesday: new Array<SlotBreakData>(),
+    thursday: new Array<SlotBreakData>(),
+    friday: new Array<SlotBreakData>(),
+    saturday: new Array<SlotBreakData>(),
+    sunday: new Array<SlotBreakData>()
+  };
 
   constructor(
     private client: HttpClient,
@@ -233,7 +242,15 @@ export class ShopCreationPageComponent implements OnInit {
   }
 
   private fillBreakConfig() {
-    const breaksDto: BreaksDto = {};
+    const breaksDto: BreaksDto = {
+      monday: new Array<BreakDto>(),
+      tuesday: new Array<BreakDto>(),
+      wednesday: new Array<BreakDto>(),
+      thursday: new Array<BreakDto>(),
+      friday: new Array<BreakDto>(),
+      saturday: new Array<BreakDto>(),
+      sunday: new Array<BreakDto>(),
+    };
     Object.keys(this.slotBreaks).forEach(day => {
       const slots: SlotBreakData[] = this.slotBreaks[day];
       slots.sort((s1, s2) => {
@@ -245,20 +262,27 @@ export class ShopCreationPageComponent implements OnInit {
         }
         return 0;
       });
-      let oldSlotId = slots[0].id - 1;
-      const start = slots[0].slot.start;
-      let end;
-      slots.forEach(slot => {
-        if (oldSlotId + 1 === slot.id) {
-          end = slot.slot.end;
-        } else {
-          breaksDto[day].push({start, end});
-        }
-        oldSlotId = slot.id;
-      });
+      if (slots.length > 0) {
+        let oldSlotId = slots[0].id - 1;
+
+        let start = slots[0].slot.start;
+        let end = slots[0].slot.end;
+        slots.forEach(slot => {
+          if (oldSlotId + 1 === slot.id) {
+            end = slot.slot.end;
+          } else {
+            breaksDto[day].push({start, end});
+            start = slot.slot.start;
+            end = slot.slot.end;
+          }
+          oldSlotId = slot.id;
+        });
+        breaksDto[day].push({start, end});
+      }
     });
     return breaksDto;
   }
+
 
   private postShopCreation(createShopRequestDto: CreateShopDto) {
     this.client.post('/api/shop?token=' + this.token, createShopRequestDto).subscribe(() => {
@@ -379,10 +403,14 @@ export class ShopCreationPageComponent implements OnInit {
   }
 
   changeBreakSlot($event: SlotSelectionData) {
-    this.slotBreaks[$event.day].push({
-      slot: $event.slot,
-      id: $event.index
-    });
+    if ($event.removeSlot) {
+      this.slotBreaks[$event.day] = this.slotBreaks[$event.day].filter(slotData => slotData.id !== $event.index);
+    } else {
+      this.slotBreaks[$event.day].push({
+        slot: $event.slot,
+        id: $event.index
+      });
+    }
   }
 
   previewSlots($event: StepperSelectionEvent) {
