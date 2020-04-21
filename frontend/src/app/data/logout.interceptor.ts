@@ -8,14 +8,27 @@ import {NotificationsService} from 'angular2-notifications';
 
 /**
  * All 401'ed requests belonging to this base URL will trigger a redirect to the admin login page.
+ *
+ * (except for the login request)
  */
 const API_ADMIN_BASE = '/api/admin';
+
+/**
+ * 401'ed requests these URLS will not be "swallowed" by the interceptor.
+ */
+const API_LOGIN_URLS = [
+  '/api/shop/login', '/api/admin/login'
+];
 
 @Injectable()
 export class LogoutInterceptor implements HttpInterceptor {
 
   private static wasAdminRequest(url: string): boolean {
     return url.startsWith(API_ADMIN_BASE);
+  }
+
+  private static wasLoginAttempt(url: string): boolean {
+    return API_LOGIN_URLS.some(loginURL => url === loginURL);
   }
 
   constructor(
@@ -28,7 +41,7 @@ export class LogoutInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
-        if (error?.status !== 401) {
+        if (error?.status !== 401 || LogoutInterceptor.wasLoginAttempt(request.url)) {
           return throwError(error);
         }
 
