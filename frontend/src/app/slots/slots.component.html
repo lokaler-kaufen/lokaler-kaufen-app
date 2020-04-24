@@ -12,9 +12,12 @@
           <span *ngIf="isSlotConfig">Sie bieten am {{ day.dayName }} leider keine Termine an.</span>
         </h3>
 
-        <h3 *ngIf="!isSlotConfig && day.isHoliday" class="text-no-values margin-top">
-          Bitte beachten Sie, dass die Öffnungszeiten an Feiertagen abweichen können.
-        </h3>
+        <div *ngIf="!isSlotConfig && day.isHoliday && day.hasSlots" class="holiday-warning-box margin-top">
+          <p class="holiday-warning-box-header">Hinweis</p>
+          <p>Dieser Tag ist im Bundesland des Ladens ein Feiertag. Bitte beachten Sie bitte, dass
+            die Öffnungszeiten an Feiertagen abweichen können.</p>
+          <p>Wir empfehlen vor der Buchung von Terminen an Feiertagen kurz Rücksprache mit dem Laden zu halten.</p>
+        </div>
 
         <div *ngIf="day.hasSlots">
           <mat-table [dataSource]="day.slots" class="margin-top">

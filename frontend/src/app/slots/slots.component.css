@@ -16,6 +16,18 @@
   width: 50%;
 }
 
+.holiday-warning-box {
+  background-color: #ffc107;
+  text-align: center;
+  padding-top: 10px;
+  padding-bottom: 10px
+}
+
+.holiday-warning-box-header {
+  font-weight: bold;
+}
+
+
 ::ng-deep.mat-tab-labels {
   justify-content: space-between;
 }
