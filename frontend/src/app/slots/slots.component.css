@@ -19,14 +19,12 @@
 .holiday-warning-box {
   background-color: #ffc107;
   text-align: center;
-  padding-top: 10px;
-  padding-bottom: 10px
+  padding: 10px 7px;
 }
 
 .holiday-warning-box-header {
   font-weight: bold;
 }
-
 
 ::ng-deep.mat-tab-labels {
   justify-content: space-between;
