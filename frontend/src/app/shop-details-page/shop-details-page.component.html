@@ -29,7 +29,7 @@
       </mat-card-header>
       <mat-card-content>
         <div *ngIf="!hasDescription">Dieser Laden hat noch keine Beschreibung hinterlegt.</div>
-        <div *ngIf="hasDescription" style="padding-top: 10px">{{ shop.details }}</div>
+        <div *ngIf="hasDescription" style="padding-top: 15px">{{ shop.details }}</div>
         <div class="social-links-block">
           <div *ngIf="shop.website" class="social-links">
             <a href="{{returnValidLink(shop.website)}}" target="_blank" class="social-links"
