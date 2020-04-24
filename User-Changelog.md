@@ -1,16 +1,20 @@
 # Änderungshistorie
 
-## - (-)
-
+## 24.04.2020 (1.2.0)
+* Die Seite hat ein neues Layout mit dem Fokus auf leichtere Verständlichkeit.
+* Das mobile Layout ist darauf optimiert, weniger Platz zu benötigen.
+* Der Footer ist überarbeitet und verweist nun auf die wichtigsten Wissensressourcen.
 * Läden können nun eine Vorlaufzeit zu dem ersten angebotenen Termin angeben.
 * Läden können nun Mittagspausen definieren. Zu diesen Zeiten wird dann kein Reservierungsslot angeboten.
 * Der Link, der beim Erstellen eines Ladens geschickt wird, ist nun 7 statt 2 Tagen gültig.
 * Läden können nun ihren Instagram-, Facebook- und Twitter-Account verlinken
+* Logos mit farbigem Hintergrund werden nun auf der Detailseiete automatisch in die gleiche Farbe eingebettet (nur im Desktop-Layout).
+* Bugfix: Der transparente Hintergrund von PNGs wird nun bei der Konvertierung korrekt als weiß (statt schwarz) interpretiert.
 
 ## 10.04.2020 (1.1.1)
 
-* Behebt einen Bug, der unvollständig ausgefüllte E-Mails zur Folge hatte.
-* Setzt bei E-Mail-Textfeldern den Typ korrekt, wodurch automatisch angefügte Leerzeichen bei der Autocompletion mit manchen Android-Tastaturen vermieden werden.
+* Bugfix: Setzt bei E-Mail-Textfeldern den Typ korrekt, wodurch automatisch angefügte Leerzeichen bei der Autocompletion mit manchen Android-Tastaturen vermieden werden.
+* Bugfix: Behebt einen Bug, der unvollständig ausgefüllte E-Mails zur Folge hatte.
 
 ## 07.04.2020 (1.1.0)
 
@@ -24,8 +28,8 @@
 
 * Banner für Internet Explorer- und Edge-Benutzer hinzugefügt
 * Verbesserungen für mobile Geräte
-* Der Login für Ladenbesitzer ignoriert nun Groß- und Kleinschreibung bei E-Mail-Adressen
 * Link zur Support-Seite in den unteren Bereich der Seite eingefügt
+* Bugfix: Der Login für Ladenbesitzer ignoriert nun Groß- und Kleinschreibung bei E-Mail-Adressen
 
 ## 31.03.2020 (1.0.1)
 
