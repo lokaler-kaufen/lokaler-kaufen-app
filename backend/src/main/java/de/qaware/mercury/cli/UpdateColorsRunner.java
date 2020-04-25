@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
- * This bean is run when the application is started with '--add-admin'
+ * This bean is run when the application is started with '--update-colors'
  */
 @Component
 @Slf4j
