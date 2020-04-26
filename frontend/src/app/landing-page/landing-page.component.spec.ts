@@ -8,6 +8,7 @@ import {RouterTestingModule} from '@angular/router/testing';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {NotificationsService, SimpleNotificationsModule} from 'angular2-notifications';
 import {MatDialogModule} from '@angular/material/dialog';
+import {TranslateModule} from '@ngx-translate/core';
 
 /**
  * Overriding the ZipCodeCacheService to prevent cross-test leaking through the browser's localStorage.
@@ -45,7 +46,8 @@ describe('LandingPageComponent', () => {
         RouterTestingModule,
         MatAutocompleteModule,
         MatDialogModule,
-        SimpleNotificationsModule.forRoot()
+        SimpleNotificationsModule.forRoot(),
+        TranslateModule.forRoot()
       ],
       providers: [
         {provide: ZipCodeCacheService, useValue: zipCodeCacheService},

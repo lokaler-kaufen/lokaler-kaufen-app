@@ -136,7 +136,7 @@ export class ShopDetailsPageComponent implements OnInit {
     return result;
   }
 
-  public back(): void {
+  back(): void {
     window.history.back();
   }
 
