@@ -61,7 +61,7 @@ export class SlotsComponent implements OnInit {
   @Output()
   selectedSlot: ReplaySubject<SlotSelectionData> = new ReplaySubject<SlotSelectionData>();
 
-  days = new Array<Day>();
+  days: Array<Day> = [];
   today: Date;
 
   /**
@@ -70,10 +70,13 @@ export class SlotsComponent implements OnInit {
    */
   ngOnInit(): void {
     this.today = new Date();
+
     this.data.subscribe(slotsData => {
-      this.days = new Array<Day>();
+      this.days = [];
+
       if (slotsData.breaks) {
         this.setAvailableSlots(slotsData);
+
       } else {
         slotsData.slots.days.forEach(day => {
           this.days.push({

@@ -25,10 +25,12 @@ import {ReserveSlotsData, SlotSelectionData} from '../slots/slots.component';
 })
 export class ShopDetailsPageComponent implements OnInit {
 
-  constructor(private client: HttpClient,
-              private activatedRoute: ActivatedRoute,
-              private matDialog: MatDialog,
-              private notificationsService: AsyncNotificationService) {
+  constructor(
+    private client: HttpClient,
+    private activatedRoute: ActivatedRoute,
+    private matDialog: MatDialog,
+    private notificationsService: AsyncNotificationService
+  ) {
   }
 
   get hasDescription(): boolean {
@@ -46,77 +48,93 @@ export class ShopDetailsPageComponent implements OnInit {
 
   shopId: string;
   shop: ShopDetailDto;
+  slotsData: ReplaySubject<ReserveSlotsData> = new ReplaySubject<ReserveSlotsData>();
 
-  slotsPerDay: ReplaySubject<ReserveSlotsData> = new ReplaySubject<ReserveSlotsData>();
+  private static getReservationDto(data: BookingPopupResult, $event: SlotSelectionData) {
+    const reservationDto: CreateReservationDto = {
+      contact: data.phoneNumber,
+      contactType: data.option,
+      email: data.email,
+      name: data.name,
+      slotId: $event.slot.id
+    };
+    return reservationDto;
+  }
 
-  slotsConfig: SlotsDto;
+  static createDialogConfig<T>(data: T): MatDialogConfig<T> {
+    const cfg = new MatDialogConfig();
+    cfg.autoFocus = true;
+    cfg.width = '450px';
+    cfg.data = data;
+    return cfg;
+  }
 
   ngOnInit(): void {
     this.activatedRoute.paramMap
       .subscribe(value => {
-        console.log('subscribe param map');
         this.shopId = value.get('id');
-        this.refresh();
+        this.loadShopData();
+        this.loadSlots();
       });
   }
 
-  refresh() {
-    this.client.get<ShopDetailDto>('/api/shop/' + this.shopId)
-      .toPromise().then((shopDetails: ShopDetailDto) => {
-      this.shop = shopDetails;
-    })
+  private loadShopData() {
+    this.client.get<ShopDetailDto>('/api/shop/' + this.shopId).toPromise()
+      .then((shopDetails: ShopDetailDto) => {
+        this.shop = shopDetails;
+      })
+
       .catch(error => {
         console.log('Error requesting shop details: ' + error.status + ', ' + error.message);
         this.notificationsService.error('shop.details.error.generic.title', 'shop.details.error.generic.message');
       });
+  }
 
-    this.client.get<SlotsDto>('/api/reservation/' + this.shopId + '/slot?days=7')
-      .subscribe((slots: SlotsDto) => {
-        this.slotsConfig = slots;
-        this.slotsPerDay.next({slots});
-      }, error => {
+  private loadSlots() {
+    this.slotsData.next({slots: {days: []}});
+
+    this.client.get<SlotsDto>('/api/reservation/' + this.shopId + '/slot?days=7').toPromise()
+      .then((slots: SlotsDto) => {
+        this.slotsData.next({slots});
+      })
+
+      .catch(error => {
         console.log('Error requesting slots: ' + error.status + ', ' + error.message);
         this.notificationsService.error('shop.details.error.slots.title', 'shop.details.error.slots.message');
       });
   }
 
   showBookingPopup($event: SlotSelectionData) {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = '450px';
-    dialogConfig.data = {supportedContactTypes: this.shop.contactTypes} as BookingDialogData;
+    const dialogConfig: MatDialogConfig<BookingDialogData> = ShopDetailsPageComponent.createDialogConfig({
+      supportedContactTypes: this.shop.contactTypes
+    });
 
     this.matDialog.open(BookingPopupComponent, dialogConfig)
       .afterClosed()
       .subscribe((data: BookingPopupResult) => {
         if (data && data.outcome === BookingPopupOutcome.BOOK) {
-          const successConfig = new MatDialogConfig();
-          successConfig.autoFocus = true;
-          successConfig.width = '450px';
-          successConfig.data = {
-            owner: this.shop.name,
-            contactNumber: data.phoneNumber,
-            contactType: ContactTypesEnum.getDisplayName(data.option),
-            day: $event.slot.id,
-            start: $event.slot.start,
-            end: $event.slot.end
-          } as BookingSuccessData;
-          const reservationDto: CreateReservationDto = {
-            contact: data.phoneNumber,
-            contactType: data.option,
-            email: data.email,
-            name: data.name,
-            slotId: $event.slot.id
-          };
+          const reservationDto = ShopDetailsPageComponent.getReservationDto(data, $event);
 
-          this.client.post<SlotsDto>('/api/reservation/' + this.shopId, reservationDto)
-            .subscribe(() => {
-                this.matDialog.open(BookingSuccessPopupComponent, successConfig);
-              },
-              error => {
-                console.log('Error booking time slot: ' + error.status + ', ' + error.message);
-                this.notificationsService.error('shop.details.error.booking.title', 'shop.details.error.booking.message');
+          this.client.post<SlotsDto>('/api/reservation/' + this.shopId, reservationDto).toPromise()
+            .then(() => {
+              const successConfig: MatDialogConfig<BookingSuccessData> = ShopDetailsPageComponent.createDialogConfig({
+                owner: this.shop.name,
+                contactNumber: data.phoneNumber,
+                contactType: ContactTypesEnum.getDisplayName(data.option),
+                day: $event.slot.id,
+                start: $event.slot.start,
+                end: $event.slot.end
               });
+
+              this.matDialog.open(BookingSuccessPopupComponent, successConfig);
+            })
+
+            .catch(error => {
+              console.log('Error booking time slot: ' + error.status + ', ' + error.message);
+              this.notificationsService.error('shop.details.error.booking.title', 'shop.details.error.booking.message');
+            })
+
+            .finally(() => this.loadSlots());
         }
       });
   }
@@ -151,4 +169,5 @@ export class ShopDetailsPageComponent implements OnInit {
   returnValidTwitterLink(handle: string) {
     return `https://www.twitter.com/${handle}/`;
   }
+
 }

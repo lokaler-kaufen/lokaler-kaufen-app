@@ -64,7 +64,7 @@
             <span *ngIf="hasOnlyPhone">{{ 'shop.details.booking.description.3' | translate: { shop: shop } }}</span>
           </p>
         </div>
-        <slots (selectedSlot)="showBookingPopup($event)" [data]="slotsPerDay"></slots>
+        <slots (selectedSlot)="showBookingPopup($event)" [data]="slotsData"></slots>
         <div class="shop-details margin-big-vertical">
           <div>
             <div class="address-title" translate>shop.details.address</div>
@@ -130,7 +130,7 @@
           <span *ngIf="!hasOnlyPhone" translate>shop.details.booking.description.2</span>. <span
             *ngIf="hasOnlyPhone">{{ 'shop.details.booking.description.3' | translate: { shop: shop } }}</span></p>
       </div>
-      <slots (selectedSlot)="showBookingPopup($event)" [data]="slotsPerDay"></slots>
+      <slots (selectedSlot)="showBookingPopup($event)" [data]="slotsData"></slots>
       <div class="shop-details margin-big-vertical">
         <div>
           <contact-types [availableContactTypes]="shop.contactTypes"></contact-types>
