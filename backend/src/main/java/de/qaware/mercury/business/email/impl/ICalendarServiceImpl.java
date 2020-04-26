@@ -25,7 +25,7 @@ class ICalendarServiceImpl implements ICalendarService {
     private final ICalendarConfigurationProperties configuration;
 
     @Override
-    public String createICalendar(Reservation.Id reservationId, LocalDateTime start, LocalDateTime end, String summary, String description) {
+    public String newReservation(Reservation.Id reservationId, LocalDateTime start, LocalDateTime end, String summary, String description) {
         return "BEGIN:VCALENDAR" + NEWLINE +
             "VERSION:2.0" + NEWLINE +
             "PRODID:-//lokaler.kaufen/lokaler.kaufen//EN" + NEWLINE +

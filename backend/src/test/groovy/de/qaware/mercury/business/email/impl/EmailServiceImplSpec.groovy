@@ -78,7 +78,7 @@ class EmailServiceImplSpec extends Specification {
         Shop shop = Shop.builder().ownerName('Spock').build()
         LocalDateTime slot = LocalDateTime.now()
         Reservation.Id reservationId = Reservation.Id.of(UUID.randomUUID())
-        iCalendarService.createICalendar(reservationId, slot, slot, _, _) >> ""
+        iCalendarService.newReservation(reservationId, slot, slot, _, _) >> ""
 
         when:
         emailService.sendShopNewReservation(shop, 'Test Shop', slot, slot, ContactType.WHATSAPP, 'Spock', reservationId)

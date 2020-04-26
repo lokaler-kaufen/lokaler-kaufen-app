@@ -29,7 +29,7 @@ class ICalendarServiceImplTest extends Specification {
         LocalDateTime end = LocalDateTime.of(2020, 4, 26, 19, 0)
 
         when:
-        String ics = sut.createICalendar(reservationId, start, end, "This is the summary", "This is the description\nAnd it contains a new line\r\nand several chars: , ; \\")
+        String ics = sut.newReservation(reservationId, start, end, "This is the summary", "This is the description\nAnd it contains a new line\r\nand several chars: , ; \\")
 
         then:
         // Compare ignoring the line endings

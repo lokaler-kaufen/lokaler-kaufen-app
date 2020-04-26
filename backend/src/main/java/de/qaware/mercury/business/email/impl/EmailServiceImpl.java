@@ -105,7 +105,7 @@ class EmailServiceImpl implements EmailService {
             .replace(EmailTemplateConstants.CONTACT, contact)
             .replace(EmailTemplateConstants.CANCEL_RESERVATION_LINK, cancelReservationLink);
 
-        String ics = iCalendarService.createICalendar(reservationId, slotStart, slotEnd, subject, body);
+        String ics = iCalendarService.newReservation(reservationId, slotStart, slotEnd, subject, body);
         Attachment attachment = new Attachment("Reservierung.ics", "text/calendar", ics.getBytes(StandardCharsets.UTF_8));
 
         emailSender.sendEmail(shop.getEmail(), subject, body, attachment);
