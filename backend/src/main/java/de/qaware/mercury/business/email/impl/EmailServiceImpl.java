@@ -74,6 +74,7 @@ class EmailServiceImpl implements EmailService {
         String cancelReservationLink = config.getReservationCancellationLinkTemplate()
             .replace(EmailTemplateConstants.TOKEN, token.getToken());
 
+        String subject = getTranslation(CUSTOMER_RESERVATION_CONFIRMATION_SUBJECT);
         String body = loadTemplate("/email/customer-reservation-confirmation.txt")
             .replace(EmailTemplateConstants.CUSTOMER_NAME, customerName)
             .replace(EmailTemplateConstants.SHOP_NAME, shop.getName())
@@ -85,7 +86,10 @@ class EmailServiceImpl implements EmailService {
             .replace(EmailTemplateConstants.CONTACT, contact)
             .replace(EmailTemplateConstants.CANCEL_RESERVATION_LINK, cancelReservationLink);
 
-        emailSender.sendEmail(email, getTranslation(CUSTOMER_RESERVATION_CONFIRMATION_SUBJECT), body);
+        String ics = iCalendarService.newReservation(reservationId, slotStart, slotEnd, subject, body);
+        Attachment attachment = new Attachment("Reservierung.ics", "text/calendar", ics.getBytes(StandardCharsets.UTF_8));
+
+        emailSender.sendEmail(email, subject, body, attachment);
     }
 
     @Override
