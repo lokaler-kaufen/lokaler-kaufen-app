@@ -375,9 +375,9 @@
             "image.alt": "Shop-Logo",
             "booking": {
                 "heading": "Terminbuchung",
-                "description.1": "Wählen Sie jetzt Ihren Wunschzeitpunkt aus und {{ shop.name }} ruft Sie für Ihr persönliches Beratungsgespräch an",
+                "description.1": "Wählen Sie jetzt Ihren Wunschzeitpunkt aus und {{ name }} ruft Sie für Ihr persönliches Beratungsgespräch an",
                 "description.2": " - per Videochat direkt aus dem Laden",
-                "description.3": "{{ shop.name }} bietet derzeit noch keine Videoberatung an, Sie können sich aber per Telefon beraten lassen."
+                "description.3": "{{ name }} bietet derzeit noch keine Videoberatung an, Sie können sich aber per Telefon beraten lassen."
             },
             "slots": {
                 "empty": "Dieser Laden bietet am {{slots.dayName}} leider keine Termine an.",

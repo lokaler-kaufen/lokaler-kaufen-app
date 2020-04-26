@@ -60,8 +60,9 @@
         <div class="booking-title">
           <h3 translate>shop.details.booking.heading</h3>
           <p>
-            <span translate>shop.details.booking.description.1</span><span *ngIf="!hasOnlyPhone" translate>shop.details.booking.description.2</span>.
-            <span *ngIf="hasOnlyPhone">{{ 'shop.details.booking.description.3' | translate: { shop: shop } }}</span>
+            <span translate [translateParams]="shop">shop.details.booking.description.1</span>
+            <span *ngIf="!hasOnlyPhone" translate>shop.details.booking.description.2</span>.
+            <span *ngIf="hasOnlyPhone" translate [translateParams]="shop">shop.details.booking.description.3</span>
           </p>
         </div>
         <slots (selectedSlot)="showBookingPopup($event)" [data]="slotsData"></slots>
@@ -126,9 +127,11 @@
       <mat-divider></mat-divider>
       <div class="booking-title">
         <h3 translate>shop.details.booking.heading</h3>
-        <p><span translate>shop.details.booking.description.1</span>
-          <span *ngIf="!hasOnlyPhone" translate>shop.details.booking.description.2</span>. <span
-            *ngIf="hasOnlyPhone">{{ 'shop.details.booking.description.3' | translate: { shop: shop } }}</span></p>
+        <p>
+          <span translate [translateParams]="shop">shop.details.booking.description.1</span>
+          <span *ngIf="!hasOnlyPhone" translate>shop.details.booking.description.2</span>.
+          <span *ngIf="hasOnlyPhone" translate [translateParams]="shop">shop.details.booking.description.3</span>
+        </p>
       </div>
       <slots (selectedSlot)="showBookingPopup($event)" [data]="slotsData"></slots>
       <div class="shop-details margin-big-vertical">

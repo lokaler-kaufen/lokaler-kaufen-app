@@ -127,6 +127,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ReactiveFormsModule,
     SimpleNotificationsModule.forRoot(),
     TranslateModule.forRoot({
+      defaultLanguage: 'de',
       loader: {
         provide: TranslateLoader,
         useFactory: HttpLoaderFactory,
