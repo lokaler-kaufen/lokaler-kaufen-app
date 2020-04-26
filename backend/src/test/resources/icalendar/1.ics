@@ -1,0 +1,13 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//lokaler.kaufen/lokaler.kaufen//EN
+BEGIN:VEVENT
+UID:830d9f5c-28c4-4bdf-b5d2-22f57c49bd64
+ORGANIZER;CN=The organizer:MAILTO:organizer@local.host
+DTSTAMP:20200426T165152Z
+DTSTART:20200426T170000
+DTEND:20200426T190000
+SUMMARY:This is the summary
+DESCRIPTION:This is the description\nAnd it contains a new line\nand several chars: \, \; \\
+END:VEVENT
+END:VCALENDAR

@@ -31,6 +31,9 @@ mercury:
     secure: true
   tokens:
     masterKey: "fZZP2re13vX7Q6xEWJDlAyYdzwtmZTmSEvjafucWlYg=" # Must be Base64, generated with openssl rand -base64 32
+  ical:
+    organizer-email: "noreply@lokaler.kaufen"
+    organizer-name: "Lokaler.kaufen"
   email:
     useDummy: true # Set this to false to send real emails
     from: "Lokaler.kaufen <info@lokaler.kaufen>"

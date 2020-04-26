@@ -39,4 +39,13 @@ public class TestClock implements Clock {
     public ZonedDateTime nowZoned() {
         return now;
     }
+
+    /**
+     * Returns always the same datetime, '2020-04-26T18:51:52.387535+02:00[Europe/Berlin]'
+     *
+     * @return clock with a fixed datetime
+     */
+    public static TestClock fixed() {
+        return new TestClock(ZonedDateTime.parse("2020-04-26T18:51:52.387535+02:00[Europe/Berlin]"));
+    }
 }

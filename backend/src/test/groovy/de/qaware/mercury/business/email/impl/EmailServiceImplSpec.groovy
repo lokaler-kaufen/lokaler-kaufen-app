@@ -1,6 +1,7 @@
 package de.qaware.mercury.business.email.impl
 
 import de.qaware.mercury.business.email.EmailSender
+import de.qaware.mercury.business.email.ICalendarService
 import de.qaware.mercury.business.i18n.DateTimeI18nService
 import de.qaware.mercury.business.login.PasswordResetToken
 import de.qaware.mercury.business.login.ReservationCancellationToken
@@ -19,20 +20,15 @@ class EmailServiceImplSpec extends Specification {
     static final String EMAIL = 'test@lokaler.kaufen'
 
     EmailServiceImpl emailService
-    EmailSender emailSender
-    EmailConfigurationProperties properties
-    TokenService tokenService
-    DateTimeI18nService i18nService
-    MessageSource messageSource
+    EmailSender emailSender = Mock()
+    EmailConfigurationProperties properties = Mock()
+    TokenService tokenService = Mock()
+    DateTimeI18nService i18nService = Mock()
+    MessageSource messageSource = Mock()
+    ICalendarService iCalendarService = Mock()
 
     void setup() {
-        emailSender = Mock(EmailSender)
-        properties = Mock(EmailConfigurationProperties)
-        tokenService = Mock(TokenService)
-        i18nService = Mock(DateTimeI18nService)
-        messageSource = Mock(MessageSource)
-
-        emailService = new EmailServiceImpl(emailSender, properties, tokenService, i18nService, messageSource)
+        emailService = new EmailServiceImpl(emailSender, properties, tokenService, i18nService, messageSource, iCalendarService)
     }
 
     def "Send Shop creation link"() {
@@ -82,6 +78,7 @@ class EmailServiceImplSpec extends Specification {
         Shop shop = Shop.builder().ownerName('Spock').build()
         LocalDateTime slot = LocalDateTime.now()
         Reservation.Id reservationId = Reservation.Id.of(UUID.randomUUID())
+        iCalendarService.newReservation(reservationId, slot, slot, _, _) >> ""
 
         when:
         emailService.sendShopNewReservation(shop, 'Test Shop', slot, slot, ContactType.WHATSAPP, 'Spock', reservationId)

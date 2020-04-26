@@ -1,8 +1,10 @@
 package de.qaware.mercury.business.email.impl;
 
 import de.qaware.mercury.business.admin.Admin;
+import de.qaware.mercury.business.email.Attachment;
 import de.qaware.mercury.business.email.EmailSender;
 import de.qaware.mercury.business.email.EmailService;
+import de.qaware.mercury.business.email.ICalendarService;
 import de.qaware.mercury.business.email.SendEmailException;
 import de.qaware.mercury.business.i18n.DateTimeI18nService;
 import de.qaware.mercury.business.login.PasswordResetToken;
@@ -52,6 +54,7 @@ class EmailServiceImpl implements EmailService {
     private final TokenService tokenService;
     private final DateTimeI18nService dateTimeI18nService;
     private final MessageSource messageSource;
+    private final ICalendarService iCalendarService;
 
     @Override
     public void sendShopCreationLink(String email) {
@@ -91,6 +94,7 @@ class EmailServiceImpl implements EmailService {
         String cancelReservationLink = config.getReservationCancellationLinkTemplate()
             .replace(EmailTemplateConstants.TOKEN, token.getToken());
 
+        String subject = getTranslation(SHOP_NEW_RESERVATION_SUBJECT);
         String body = loadTemplate("/email/shop-new-reservation.txt")
             .replace(EmailTemplateConstants.CUSTOMER_NAME, customerName)
             .replace(EmailTemplateConstants.OWNER_NAME, shop.getOwnerName())
@@ -101,7 +105,10 @@ class EmailServiceImpl implements EmailService {
             .replace(EmailTemplateConstants.CONTACT, contact)
             .replace(EmailTemplateConstants.CANCEL_RESERVATION_LINK, cancelReservationLink);
 
-        emailSender.sendEmail(shop.getEmail(), getTranslation(SHOP_NEW_RESERVATION_SUBJECT), body);
+        String ics = iCalendarService.newReservation(reservationId, slotStart, slotEnd, subject, body);
+        Attachment attachment = new Attachment("Reservierung.ics", "text/calendar", ics.getBytes(StandardCharsets.UTF_8));
+
+        emailSender.sendEmail(shop.getEmail(), subject, body, attachment);
     }
 
     @Override

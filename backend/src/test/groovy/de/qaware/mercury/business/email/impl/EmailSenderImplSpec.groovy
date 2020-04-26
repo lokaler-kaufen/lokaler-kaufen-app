@@ -1,17 +1,20 @@
 package de.qaware.mercury.business.email.impl
 
-import org.springframework.mail.MailSender
+
+import org.springframework.mail.javamail.JavaMailSender
 import spock.lang.Specification
+import spock.lang.Subject
 
 class EmailSenderImplSpec extends Specification {
 
-    EmailConfigurationProperties properties
-    MailSender mailSender
+    EmailConfigurationProperties properties = new EmailConfigurationProperties()
+    JavaMailSender mailSender = Mock()
+    @Subject
     EmailSenderImpl emailSender
 
     void setup() {
-        properties = Mock(EmailConfigurationProperties)
-        mailSender = Mock(MailSender)
+        properties.setFrom("test@local.host")
+
         emailSender = new EmailSenderImpl(properties, mailSender)
         emailSender.init()
     }
@@ -25,8 +28,6 @@ class EmailSenderImplSpec extends Specification {
         emailSender.sendEmail('mlr@qaware.de', 'Spock Tests', 'Rocks!')
 
         then:
-        1 * properties.from >> 'test@lokaler.kaufen'
         noExceptionThrown()
-        // 1 * mailSender.send(_)
     }
 }

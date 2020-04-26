@@ -1,7 +1,9 @@
 package de.qaware.mercury.test.email;
 
+import de.qaware.mercury.business.email.Attachment;
 import lombok.Value;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -14,6 +16,7 @@ public class Email {
     Set<String> recipients;
     String subject;
     String body;
+    List<Attachment> attachments;
 
     /**
      * Searches for a token in the body.

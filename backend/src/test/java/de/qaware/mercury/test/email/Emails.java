@@ -1,8 +1,10 @@
 package de.qaware.mercury.test.email;
 
+import de.qaware.mercury.business.email.Attachment;
 import lombok.Getter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -11,12 +13,12 @@ public class Emails {
     @Getter
     private final List<Email> emails = new ArrayList<>();
 
-    public void add(String recipient, String subject, String body) {
-        add(Set.of(recipient), subject, body);
+    public void add(String recipient, String subject, String body, Attachment... attachments) {
+        add(Set.of(recipient), subject, body, attachments);
     }
 
-    public void add(Set<String> recipients, String subject, String body) {
-        add(new Email(recipients, subject, body));
+    public void add(Set<String> recipients, String subject, String body, Attachment... attachments) {
+        add(new Email(recipients, subject, body, Arrays.asList(attachments)));
     }
 
     public void add(Email email) {
