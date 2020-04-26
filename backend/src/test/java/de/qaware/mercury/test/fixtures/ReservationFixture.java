@@ -8,8 +8,14 @@ import de.qaware.mercury.business.time.impl.WallClock;
 import de.qaware.mercury.business.uuid.UUIDFactory;
 import de.qaware.mercury.test.uuid.TestUUIDFactory;
 
+import java.util.UUID;
+
 public final class ReservationFixture {
     private ReservationFixture() {
+    }
+
+    public static Reservation create() {
+        return create(Shop.Id.of(UUID.randomUUID()));
     }
 
     public static Reservation create(Shop.Id shopId) {
