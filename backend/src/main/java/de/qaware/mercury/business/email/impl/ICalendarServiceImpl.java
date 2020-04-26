@@ -5,6 +5,7 @@ import de.qaware.mercury.business.reservation.Reservation;
 import de.qaware.mercury.business.time.Clock;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -14,12 +15,14 @@ import java.time.format.DateTimeFormatter;
 
 @Service
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
+@EnableConfigurationProperties(ICalendarConfigurationProperties.class)
 class ICalendarServiceImpl implements ICalendarService {
     private static final String NEWLINE = "\r\n"; // Must be \r\n to adhere the standard
     private static final DateTimeFormatter UTC = DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmss'Z'"); // 19970714T170000Z
     private static final DateTimeFormatter LOCAL = DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmss"); // 19970714T170000
 
     private final Clock clock;
+    private final ICalendarConfigurationProperties configuration;
 
     @Override
     public String createICalendar(Reservation.Id reservationId, LocalDateTime start, LocalDateTime end, String summary, String description) {
@@ -28,6 +31,7 @@ class ICalendarServiceImpl implements ICalendarService {
             "PRODID:-//lokaler.kaufen/lokaler.kaufen//EN" + NEWLINE +
             "BEGIN:VEVENT" + NEWLINE +
             "UID:" + reservationId.getId() + NEWLINE +
+            "ORGANIZER;CN=" + configuration.getOrganizerName() + ":MAILTO:" + configuration.getOrganizerEmail() + NEWLINE +
             "DTSTAMP:" + formatDateUTC(clock.nowZoned()) + NEWLINE +
             "DTSTART:" + formatDateLocal(start) + NEWLINE +
             "DTEND:" + formatDateLocal(end) + NEWLINE +
