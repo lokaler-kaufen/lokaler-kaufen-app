@@ -22,16 +22,15 @@ class ICalendarServiceImpl implements ICalendarService {
     private final Clock clock;
 
     @Override
-    public String createICalendar(Reservation reservation, String summary, String description) {
+    public String createICalendar(Reservation.Id reservationId, LocalDateTime start, LocalDateTime end, String summary, String description) {
         return "BEGIN:VCALENDAR" + NEWLINE +
             "VERSION:2.0" + NEWLINE +
             "PRODID:-//lokaler.kaufen/lokaler.kaufen//EN" + NEWLINE +
             "BEGIN:VEVENT" + NEWLINE +
-            "UID:" + reservation.getId().getId() + NEWLINE +
-            "ORGANIZER;CN=lokaler.kaufen:MAILTO:info@lokaler.kaufen" + NEWLINE + // TODO: Replace with properties
+            "UID:" + reservationId.getId() + NEWLINE +
             "DTSTAMP:" + formatDateUTC(clock.nowZoned()) + NEWLINE +
-            "DTSTART:" + formatDateLocal(reservation.getStart()) + NEWLINE +
-            "DTEND:" + formatDateLocal(reservation.getStart()) + NEWLINE +
+            "DTSTART:" + formatDateLocal(start) + NEWLINE +
+            "DTEND:" + formatDateLocal(end) + NEWLINE +
             "SUMMARY:" + escapeText(summary) + NEWLINE +
             "DESCRIPTION:" + escapeText(description) + NEWLINE +
             "END:VEVENT" + NEWLINE +
