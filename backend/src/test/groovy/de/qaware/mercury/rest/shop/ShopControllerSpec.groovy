@@ -4,11 +4,17 @@ import de.qaware.mercury.business.image.Image
 import de.qaware.mercury.business.login.ShopLoginService
 import de.qaware.mercury.business.login.TokenService
 import de.qaware.mercury.business.reservation.SlotService
+import de.qaware.mercury.business.shop.Breaks
 import de.qaware.mercury.business.shop.Shop
 import de.qaware.mercury.business.shop.ShopNotFoundException
 import de.qaware.mercury.business.shop.ShopService
 import de.qaware.mercury.business.shop.ShopWithDistance
-import de.qaware.mercury.rest.shop.dto.request.*
+import de.qaware.mercury.rest.shop.dto.request.CreateShopDto
+import de.qaware.mercury.rest.shop.dto.request.ResetPasswordDto
+import de.qaware.mercury.rest.shop.dto.request.SendCreateLinkDto
+import de.qaware.mercury.rest.shop.dto.request.SendPasswordResetLinkDto
+import de.qaware.mercury.rest.shop.dto.request.SlotConfigDto
+import de.qaware.mercury.rest.shop.dto.requestresponse.BreaksDto
 import de.qaware.mercury.rest.shop.dto.requestresponse.SocialLinksDto
 import de.qaware.mercury.rest.shop.dto.response.ShopDetailDto
 import de.qaware.mercury.rest.shop.dto.response.ShopListDto
@@ -110,7 +116,7 @@ class ShopControllerSpec extends Specification {
         setup:
         Shop shop = ShopFixtures.create()
         SlotConfigDto slots = SlotConfigDto.of(shop.getSlotConfig())
-        CreateShopDto dto = new CreateShopDto("name", "ownername", "street", "zipCode", "city", "addressSupplement", "details", "www.example.com", true, "password", Map.of(), slots, new SocialLinksDto("instagram", "facebook", "twitter"), null)
+        CreateShopDto dto = new CreateShopDto("name", "ownername", "street", "zipCode", "city", "addressSupplement", "details", "www.example.com", true, "password", Map.of(), slots, new SocialLinksDto("instagram", "facebook", "twitter"), BreaksDto.of(Breaks.none()))
         String token = "test-token"
         String testImageUrl = "http://image.url/path"
         String testShareUrl = "http://share.url/path"

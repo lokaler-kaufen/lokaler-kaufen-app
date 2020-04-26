@@ -8,7 +8,6 @@ import de.qaware.mercury.business.shop.Shop;
 import de.qaware.mercury.business.shop.ShopService;
 import de.qaware.mercury.business.shop.ShopUpdate;
 import de.qaware.mercury.business.shop.SlotConfig;
-import de.qaware.mercury.business.shop.SocialLinks;
 import de.qaware.mercury.rest.plumbing.authentication.AuthenticationHelper;
 import de.qaware.mercury.rest.shop.dto.request.UpdateShopDto;
 import de.qaware.mercury.rest.shop.dto.requestresponse.BreaksDto;
@@ -66,7 +65,6 @@ public class ShopOwnerController {
         Shop shop = authenticationHelper.authenticateShop(servletRequest);
 
         SlotConfig slotConfig = request.getSlots().toSlots();
-        Breaks breaks = request.getBreaks() == null ? Breaks.none() : request.getBreaks().toBreaks();
         Shop updatedShop = shopService.update(shop, new ShopUpdate(
             request.getName(),
             request.getOwnerName(),
@@ -79,8 +77,8 @@ public class ShopOwnerController {
             request.isAutoColorEnabled(),
             Maps.mapKeys(request.getContacts(), ContactType::parse),
             slotConfig,
-            request.getSocialLinks() == null ? SocialLinks.none() : request.getSocialLinks().toSocialLinks(),
-            breaks
+            request.getSocialLinks().toSocialLinks(),
+            request.getBreaks().toBreaks()
         ));
 
         return ShopOwnerDetailDto.of(updatedShop, request.getBreaks(), shopService);

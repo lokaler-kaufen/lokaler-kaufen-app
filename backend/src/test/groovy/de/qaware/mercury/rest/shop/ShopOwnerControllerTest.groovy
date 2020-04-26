@@ -7,6 +7,7 @@ import de.qaware.mercury.business.shop.ShopService
 import de.qaware.mercury.rest.plumbing.authentication.AuthenticationHelper
 import de.qaware.mercury.rest.shop.dto.request.SlotConfigDto
 import de.qaware.mercury.rest.shop.dto.request.UpdateShopDto
+import de.qaware.mercury.rest.shop.dto.requestresponse.BreaksDto
 import de.qaware.mercury.rest.shop.dto.requestresponse.SocialLinksDto
 import de.qaware.mercury.rest.shop.dto.response.ShopOwnerDetailDto
 import de.qaware.mercury.test.fixtures.ShopFixtures
@@ -50,7 +51,7 @@ class ShopOwnerControllerTest extends Specification {
         given:
         Shop shop = ShopFixtures.create()
         SlotConfigDto slots = SlotConfigDto.of(shop.getSlotConfig())
-        UpdateShopDto dto = new UpdateShopDto("name", "ownername", "street", "zipCode", "city", "addressSupplement", "details", "www.example.com", true, Map.of(), slots, new SocialLinksDto("instagram", "facebook", "twitter"), null)
+        UpdateShopDto dto = new UpdateShopDto("name", "ownername", "street", "zipCode", "city", "addressSupplement", "details", "www.example.com", true, Map.of(), slots, new SocialLinksDto("instagram", "facebook", "twitter"), BreaksDto.of(Breaks.none()))
         shopService.findBreaks(shop) >> Breaks.none()
         String testImageUrl = "http://image.url/path"
         shopService.generateImageUrl(shop) >> new URI(testImageUrl)

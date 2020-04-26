@@ -4,14 +4,12 @@ import de.qaware.mercury.business.admin.Admin;
 import de.qaware.mercury.business.location.impl.LocationNotFoundException;
 import de.qaware.mercury.business.login.LoginException;
 import de.qaware.mercury.business.reservation.SlotService;
-import de.qaware.mercury.business.shop.Breaks;
 import de.qaware.mercury.business.shop.ContactType;
 import de.qaware.mercury.business.shop.Shop;
 import de.qaware.mercury.business.shop.ShopNotFoundException;
 import de.qaware.mercury.business.shop.ShopService;
 import de.qaware.mercury.business.shop.ShopUpdate;
 import de.qaware.mercury.business.shop.SlotConfig;
-import de.qaware.mercury.business.shop.SocialLinks;
 import de.qaware.mercury.business.validation.Validation;
 import de.qaware.mercury.rest.plumbing.authentication.AuthenticationHelper;
 import de.qaware.mercury.rest.shop.dto.request.UpdateShopDto;
@@ -106,8 +104,8 @@ class ShopAdminController {
             request.isAutoColorEnabled(),
             Maps.mapKeys(request.getContacts(), ContactType::parse),
             slotConfig,
-            request.getSocialLinks() == null ? SocialLinks.none() : request.getSocialLinks().toSocialLinks(),
-            request.getBreaks() == null ? Breaks.none() : request.getBreaks().toBreaks()
+            request.getSocialLinks().toSocialLinks(),
+            request.getBreaks().toBreaks()
         ));
         log.info("Admin {} updated shop '{}'", admin.getEmail(), shop.getName());
         return ShopAdminDto.of(updatedShop, shopService);
