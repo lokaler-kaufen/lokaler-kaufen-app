@@ -1,5 +1,26 @@
 # MercuryUi
 
+## API Clients
+
+Client (API-calling) code should **not** sit inside of UI components. Ideally, every Controller of the backend has a
+corresponding Client in the frontend that provides access to the backend methods without leaking (too much) of the
+transport tech stuff into the code that's using the client.
+
+All client implementations should sit in `src/app/api`
+
+Example: There is a `ShopImageController` in the backend So there needs to be a `ShopImageClient` in the frontend. This
+client should be in a file called `src/app/api/shop-image-client.service.ts`. (The `.service` is only there to make
+Angular tooling happy - maybe we might get rid of it in the future).
+
+Observables are nice and dandy but don't make any sense when we're performing one request that results in one response
+(or one failure). Therefore, it's reasonable that users of these client classes want a Promise instead of an 
+Observable. To help minimize boilerplate code while enabling consistent logging of errors, the `ApiClientBase` helper
+exists. Right now, it just provides a simple `promisify` method.
+
+---
+
+(original Angular Readme below)
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.0.5.
 
 ## Prerequisites
