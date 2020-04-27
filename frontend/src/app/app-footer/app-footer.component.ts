@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {InfoRestClient} from '../api/info-rest-client.service';
+import {VersionDto} from '../data/client/model/versionDto';
 
 @Component({
   selector: 'app-footer',
@@ -8,23 +9,15 @@ import {HttpClient} from '@angular/common/http';
 })
 export class AppFooterComponent implements OnInit {
 
-  // version info
-  versionInfo: VersionInfo;
+  versionInfo: VersionDto;
 
-  constructor(private client: HttpClient) {
+  constructor(private client: InfoRestClient) {
   }
 
   ngOnInit(): void {
-    this.client.get<VersionInfo>('/api/info/version').toPromise().then(info => {
+    this.client.version().then(info => {
       this.versionInfo = info;
     });
   }
 
-}
-
-export interface VersionInfo {
-  commitHash: string;
-  commitTime: string;
-  localChanges: string;
-  version: string;
 }
