@@ -1,11 +1,10 @@
-import {Component, Injector, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ReplaySubject} from 'rxjs';
 import {ActivatedRoute} from '@angular/router';
-import {AdminService} from '../shared/admin.service';
+import {AdminService} from '../service/admin.service';
 import {NotificationsService} from 'angular2-notifications';
 import {UpdateShopData} from '../shop-details-config/shop-details-config.component';
 import {ShopAdminDto, ShopOwnerDetailDto} from '../data/api';
-import {TranslateService} from '@ngx-translate/core';
 import {AsyncNotificationService} from '../i18n/async-notification.service';
 
 @Component({

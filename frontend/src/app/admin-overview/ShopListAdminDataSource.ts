@@ -1,7 +1,7 @@
 import {CollectionViewer, DataSource} from '@angular/cdk/collections';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {NotificationsService} from 'angular2-notifications';
-import {AdminService} from '../shared/admin.service';
+import {AdminService} from '../service/admin.service';
 import {ShopAdminDto} from '../data/api';
 
 export class ShopListAdminDataSource implements DataSource<ShopAdminDto> {

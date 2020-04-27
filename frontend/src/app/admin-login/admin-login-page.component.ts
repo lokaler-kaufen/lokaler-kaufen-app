@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {AdminService} from '../shared/admin.service';
+import {AdminService} from '../service/admin.service';
 
 @Component({
   selector: 'admin-login',

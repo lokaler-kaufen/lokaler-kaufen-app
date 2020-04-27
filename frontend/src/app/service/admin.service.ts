@@ -3,8 +3,9 @@ import {HttpClient} from '@angular/common/http';
 import {ShopAdminDto, ShopsAdminDto, TokenInfoDto} from '../data/api';
 import {UpdateShopData} from '../shop-details-config/shop-details-config.component';
 import {Observable} from 'rxjs';
-import {LoginStateService} from './login-state.service';
+import {LoginStateService} from '../shared/login-state.service';
 import {first} from 'rxjs/operators';
+import {ShopAdminClient} from '../api/shop-admin-client.service';
 
 const API_ADMIN = '/api/admin';
 const API_ADMIN_LOGIN = `${API_ADMIN}/login`;
@@ -13,7 +14,10 @@ const API_ADMIN_TOKEN_INFO = `${API_ADMIN}/login/token-info`;
 @Injectable({providedIn: 'root'})
 export class AdminService {
 
-  constructor(private client: HttpClient, private loginStateService: LoginStateService) {
+  constructor(
+    private client: HttpClient,
+    private loginStateService: LoginStateService,
+    private shopAdminClient: ShopAdminClient) {
     // check the current status once and if we didn't find a token, try to get the tokenInfo from the backend
     this.loginStateService.isAdmin
       .pipe(first())
@@ -37,31 +41,23 @@ export class AdminService {
   }
 
   listAllShops(): Promise<ShopsAdminDto> {
-    return this.client.get(`${API_ADMIN}/shop`).toPromise();
+    return this.shopAdminClient.listAll();
   }
 
   getShopWithId(id: string): Promise<ShopAdminDto> {
-    const shopId = encodeURIComponent(id);
-
-    return this.client.get<ShopAdminDto>(`${API_ADMIN}/shop/${shopId}`).toPromise();
+    return this.shopAdminClient.getShopSettings(id);
   }
 
-  updateShop(updatedShop: UpdateShopData) {
-    const shopId = encodeURIComponent(updatedShop.id);
-
-    return this.client.put(`${API_ADMIN}/shop/${shopId}`, updatedShop.updateShopDto).toPromise();
+  updateShop({id, updateShopDto}: UpdateShopData) {
+    return this.shopAdminClient.update(id, updateShopDto);
   }
 
   deleteShop(id: string) {
-    const shopId = encodeURIComponent(id);
-
-    return this.client.delete(`${API_ADMIN}/shop/${shopId}`).toPromise();
+    return this.shopAdminClient.delete(id);
   }
 
   changeShopApproval(id: string, enabled: boolean) {
-    const shopId = encodeURIComponent(id);
-
-    return this.client.put(`${API_ADMIN}/shop/${shopId}/approve?approved=${enabled}`, {}).toPromise();
+    return this.shopAdminClient.changeApprove(id, enabled);
   }
 
   private updateTokenInfo() {

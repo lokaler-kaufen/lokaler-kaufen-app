@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {ShopListAdminDataSource} from './ShopListAdminDataSource';
 import {NotificationsService} from 'angular2-notifications';
-import {AdminService} from '../shared/admin.service';
+import {AdminService} from '../service/admin.service';
 
 @Component({
   selector: 'admin-overview',

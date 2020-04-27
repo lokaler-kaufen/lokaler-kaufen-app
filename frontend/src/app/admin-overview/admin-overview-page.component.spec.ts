@@ -2,7 +2,7 @@ import {async, ComponentFixture, fakeAsync, flushMicrotasks, TestBed, tick} from
 import {AdminOverviewPageComponent} from './admin-overview-page.component';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import {RouterTestingModule} from '@angular/router/testing';
-import {AdminService} from '../shared/admin.service';
+import {AdminService} from '../service/admin.service';
 import {SimpleNotificationsModule} from 'angular2-notifications';
 import {By} from '@angular/platform-browser';
 import {MatTableModule} from '@angular/material/table';
