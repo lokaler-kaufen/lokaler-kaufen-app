@@ -4,14 +4,7 @@ import {HttpClient} from '@angular/common/http';
 import {ActivatedRoute} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {ShopCreationSuccessPopupComponent} from '../shop-creation-success-popup/shop-creation-success-popup.component';
-import {
-  BreaksDto,
-  CreateShopDto,
-  LocationSuggestionDto,
-  LocationSuggestionsDto,
-  SlotConfigDto,
-  SlotsDto
-} from '../data/api';
+import {BreaksDto, CreateShopDto, LocationSuggestionDto, SlotConfigDto, SlotsDto} from '../data/api';
 import {ContactTypesEnum} from '../contact-types/available-contact-types';
 import {filter} from 'rxjs/operators';
 import {ReplaySubject} from 'rxjs';
@@ -20,6 +13,7 @@ import {AsyncNotificationService} from '../i18n/async-notification.service';
 import {StepperSelectionEvent} from '@angular/cdk/stepper';
 import {ReserveSlotsData, SlotSelectionData} from '../slots/slots.component';
 import {SlotBreakData, SlotBreaksData} from '../shop-details-config/shop-details-config.component';
+import {LocationClient} from '../api/location-client.service';
 
 export class OpeningHours {
   constructor(enabled: boolean = true, from: string = '09:00', to: string = '16:00') {
@@ -91,7 +85,8 @@ export class ShopCreationPageComponent implements OnInit {
     private route: ActivatedRoute,
     private matDialog: MatDialog,
     private notificationsService: AsyncNotificationService,
-    private shopImageClient: ShopImageClient
+    private shopImageClient: ShopImageClient,
+    private location: LocationClient
   ) {
     this.days = Array.from(this.businessHours.POSSIBLE_BUSINESS_HOURS.keys());
   }
@@ -339,7 +334,7 @@ export class ShopCreationPageComponent implements OnInit {
 
   private onZipCodeValid() {
     const zipCode = this.addressFormGroup.get('zipCtrl').value;
-    this.client.get<LocationSuggestionsDto>('/api/location/suggestion?zipCode=' + zipCode).toPromise()
+    this.location.getSuggestions(zipCode)
       .then(response => {
         if (response.suggestions.length > 0) {
           this.citySuggestions = response.suggestions;

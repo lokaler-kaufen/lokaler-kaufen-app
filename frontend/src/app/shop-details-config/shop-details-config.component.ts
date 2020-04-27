@@ -8,9 +8,9 @@ import {
   BreaksDto,
   DayDto,
   LocationSuggestionDto,
-  LocationSuggestionsDto,
   ShopOwnerDetailDto,
-  SlotConfigDto, SlotDto,
+  SlotConfigDto,
+  SlotDto,
   SlotsDto,
   UpdateShopDto
 } from '../data/api';
@@ -20,6 +20,7 @@ import {HttpClient} from '@angular/common/http';
 import {AsyncNotificationService} from '../i18n/async-notification.service';
 import {StepperSelectionEvent} from '@angular/cdk/stepper';
 import {ReserveSlotsData, SlotSelectionData} from '../slots/slots.component';
+import {LocationClient} from '../api/location-client.service';
 
 export interface UpdateShopData {
   image: File;
@@ -53,7 +54,8 @@ export class ShopDetailsConfigComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
               private matDialog: MatDialog,
               private notificationsService: AsyncNotificationService,
-              private client: HttpClient) {
+              private client: HttpClient,
+              private location: LocationClient) {
     this.days = Array.from(this.businessHours.POSSIBLE_BUSINESS_HOURS.keys());
   }
 
@@ -309,7 +311,7 @@ export class ShopDetailsConfigComponent implements OnInit {
 
   private onZipCodeValid() {
     const zipCode = this.addressFormGroup.get('zipCtrl').value;
-    this.client.get<LocationSuggestionsDto>('/api/location/suggestion?zipCode=' + zipCode).toPromise()
+    this.location.getSuggestions(zipCode)
       .then(response => {
         if (response.suggestions.length > 0) {
           this.citySuggestions = response.suggestions;
