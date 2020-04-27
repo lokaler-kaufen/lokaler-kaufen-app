@@ -3,7 +3,7 @@ import {HttpClient, HttpEvent, HttpEventType} from '@angular/common/http';
 import {ImageDto} from '../data/api';
 import {Observable, throwError} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
-import {ApiClientBase} from './api-client-base.service';
+import {wrapRequest} from './api-utilities';
 
 const API_IMAGE_SHOP = '/api/image/shop';
 
@@ -12,14 +12,14 @@ type ProgressConsumer = (progress: number) => void;
 @Injectable({providedIn: 'root'})
 export class ShopImageClient {
 
-  constructor(private client: HttpClient, private base: ApiClientBase) {
+  constructor(private client: HttpClient) {
   }
 
   /**
    * Issues shop logo deletion to the backend.
    */
   deleteImageFromShop(): Promise<void> {
-    return this.base.promisify(
+    return wrapRequest(
       this.client.delete<void>(API_IMAGE_SHOP),
       '[ShopImageClient] failed to delete shop logo'
     );

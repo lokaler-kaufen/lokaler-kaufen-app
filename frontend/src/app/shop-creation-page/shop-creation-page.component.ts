@@ -8,13 +8,13 @@ import {BreaksDto, CreateShopDto, LocationSuggestionDto, SlotConfigDto} from '..
 import {ContactTypesEnum} from '../contact-types/available-contact-types';
 import {filter} from 'rxjs/operators';
 import {ReplaySubject} from 'rxjs';
-import {ShopImageClient} from '../api/shop-image-client.service';
+import {ShopImageClient} from '../api/shop-image.client';
 import {AsyncNotificationService} from '../i18n/async-notification.service';
 import {StepperSelectionEvent} from '@angular/cdk/stepper';
 import {ReserveSlotsData, SlotSelectionData} from '../slots/slots.component';
 import {SlotBreakData, SlotBreaksData} from '../shop-details-config/shop-details-config.component';
-import {LocationClient} from '../api/location-client.service';
-import {ReservationClient} from '../api/reservation-client.service';
+import {LocationClient} from '../api/location.client';
+import {ReservationClient} from '../api/reservation.client';
 
 export class OpeningHours {
   constructor(enabled: boolean = true, from: string = '09:00', to: string = '16:00') {

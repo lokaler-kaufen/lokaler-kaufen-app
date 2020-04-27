@@ -4,7 +4,7 @@ import {Router} from '@angular/router';
 import {ReplaySubject} from 'rxjs';
 import {ShopOwnerDetailDto} from '../data/api';
 import {UpdateShopData} from '../shop-details-config/shop-details-config.component';
-import {ShopImageClient} from '../api/shop-image-client.service';
+import {ShopImageClient} from '../api/shop-image.client';
 import {ShopOwnerService} from '../shared/shop-owner.service';
 import {AsyncNotificationService} from '../i18n/async-notification.service';
 

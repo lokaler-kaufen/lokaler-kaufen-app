@@ -9,13 +9,12 @@ transport tech stuff into the code that's using the client.
 All client implementations should sit in `src/app/api`
 
 Example: There is a `ShopImageController` in the backend So there needs to be a `ShopImageClient` in the frontend. This
-client should be in a file called `src/app/api/shop-image-client.service.ts`. (The `.service` is only there to make
-Angular tooling happy - maybe we might get rid of it in the future).
+client should be in a file called `src/app/api/shop-image.client.ts`.
 
 Observables are nice and dandy but don't make any sense when we're performing one request that results in one response
 (or one failure). Therefore, it's reasonable that users of these client classes want a Promise instead of an 
-Observable. To help minimize boilerplate code while enabling consistent logging of errors, the `ApiClientBase` helper
-exists. Right now, it just provides a simple `promisify` method.
+Observable. To help minimize boilerplate code while enabling consistent logging of errors, use the `wrapRequest`
+helper function.
 
 ---
 

@@ -5,7 +5,7 @@ import {UpdateShopData} from '../shop-details-config/shop-details-config.compone
 import {Observable} from 'rxjs';
 import {LoginStateService} from '../shared/login-state.service';
 import {first} from 'rxjs/operators';
-import {ShopAdminClient} from '../api/shop-admin-client.service';
+import {ShopAdminClient} from '../api/shop-admin.client';
 
 const API_ADMIN = '/api/admin';
 const API_ADMIN_LOGIN = `${API_ADMIN}/login`;
