@@ -1,12 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {debounceTime, map, switchMap} from 'rxjs/operators';
-import {HttpClient} from '@angular/common/http';
+import {debounceTime, filter} from 'rxjs/operators';
 import {Router} from '@angular/router';
 import {ZipCodeCacheService} from './zip-code-cache.service';
-import {LocationSuggestionDto, LocationSuggestionsDto} from '../data/api';
+import {LocationSuggestionDto} from '../data/api';
 import {BreakpointObserver} from '@angular/cdk/layout';
 import {AsyncNotificationService} from '../i18n/async-notification.service';
+import {LocationClient} from '../api/location-client.service';
 
 @Component({
   selector: 'landing-page',
@@ -25,7 +25,7 @@ export class LandingPageComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private client: HttpClient,
+    private client: LocationClient,
     private router: Router,
     private zipCodeCacheService: ZipCodeCacheService,
     breakpointObserver: BreakpointObserver,
@@ -55,14 +55,13 @@ export class LandingPageComponent implements OnInit {
     this.form.controls.zipCode.valueChanges
       .pipe(
         debounceTime(150),
-        switchMap(value => {
-          if (value) {
-            return this.client.get<LocationSuggestionsDto>('/api/location/suggestion?zipCode=' + value)
-              .pipe(map(({suggestions}) => suggestions));
-          } else {
-            return [];
-          }
-        })).subscribe(suggestions => this.suggestions = suggestions);
+        filter(value => !!value)
+      )
+      .subscribe(value => {
+        this.client.getSuggestions(value)
+          .then(({suggestions}) => this.suggestions = suggestions)
+          .catch(() => this.suggestions = []);
+      });
   }
 
   checkZipCodeInput($event) {
@@ -89,10 +88,11 @@ export class LandingPageComponent implements OnInit {
     // cache the zipCode for later
     this.zipCodeCacheService.setZipCode(locationFromInput);
 
-    this.client.get('/api/location?zipCode=' + encodeURIComponent(locationFromInput)).subscribe(() => {
+    this.client.isLocationKnown(locationFromInput)
+      .then(() => {
         this.router.navigate(['/shops'], {queryParams: {location: locationFromInput}});
-      },
-      error => {
+      })
+      .catch(error => {
         if (error.status === 404) {
           this.asyncNS.error('landing.invalidZip.title', 'landing.invalidZip.content');
 
@@ -100,7 +100,6 @@ export class LandingPageComponent implements OnInit {
           this.asyncNS.error('landing.locationApiError.title', 'landing.locationApiError.content');
         }
       });
-
   }
 
   private get zipCodeFromInput(): string {
