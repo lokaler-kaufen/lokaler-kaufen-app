@@ -71,8 +71,8 @@ export class ShopDetailsConfigComponent implements OnInit {
   nameFormGroup: FormGroup;
   addressFormGroup: FormGroup;
   descriptionFormGroup: FormGroup;
-  contactFormGroup = new FormGroup({});
-  openingFormGroup = new FormGroup({});
+  contactFormGroup: FormGroup;
+  openingFormGroup: FormGroup;
   logoFormGroup: FormGroup;
 
   contactTypes = ContactTypesEnum;
@@ -104,11 +104,10 @@ export class ShopDetailsConfigComponent implements OnInit {
   private breaksChanged = false;
 
   ngOnInit() {
-    this.configureFormControls();
     this.detailsObservable
       .subscribe((shopDetails: ShopOwnerDetailDto) => {
           this.details = shopDetails;
-          this.setConfiguredShopDetails();
+          this.configureFormControls();
         },
         error => {
           console.log('Error requesting shop details: ' + error.status + ', ' + error.message);
@@ -121,13 +120,17 @@ export class ShopDetailsConfigComponent implements OnInit {
     });
   }
 
-  setConfiguredShopDetails() {
-    this.nameFormGroup.controls.nameCtrl.setValue(this.details.ownerName);
-    this.nameFormGroup.controls.businessNameCtrl.setValue(this.details.name);
-    this.addressFormGroup.controls.streetCtrl.setValue(this.details.street);
-    this.addressFormGroup.controls.zipCtrl.setValue(this.details.zipCode);
-    this.addressFormGroup.controls.cityCtrl.setValue(this.details.city);
-    this.addressFormGroup.controls.suffixCtrl.setValue(this.details.addressSupplement);
+  configureFormControls() {
+    this.nameFormGroup = this.formBuilder.group({
+      nameCtrl: [this.details.ownerName, Validators.required],
+      businessNameCtrl: [this.details.name, Validators.required]
+    });
+    this.addressFormGroup = this.formBuilder.group({
+      streetCtrl: [this.details.street, Validators.required],
+      zipCtrl: [this.details.zipCode, [Validators.required, Validators.pattern(new RegExp(/^\d{5}$/))]],
+      cityCtrl: [this.details.city, Validators.required],
+      suffixCtrl: this.details.addressSupplement
+    });
     this.citySuggestions.push({placeName: this.details.city});
     this.addressFormGroup.get('zipCtrl').statusChanges.pipe(
       filter((status: string) => {
@@ -136,89 +139,40 @@ export class ShopDetailsConfigComponent implements OnInit {
         return status === 'VALID';
       }))
       .subscribe(() => this.onZipCodeValid());
-    this.descriptionFormGroup.controls.descriptionCtrl.setValue(this.details.details);
-    this.descriptionFormGroup.controls.urlCtrl.setValue(this.details.website);
-    this.descriptionFormGroup.controls.facebookCtrl.setValue(this.details.socialLinks.facebook);
-    this.descriptionFormGroup.controls.instagramCtrl.setValue(this.details.socialLinks.instagram);
-    this.descriptionFormGroup.controls.twitterCtrl.setValue(this.details.socialLinks.twitter);
-
-    this.contactTypes.availableContactTypes.forEach(contact => {
-      const contactCtrl = contact.toLowerCase() + 'Ctrl';
-      if (this.details.contacts[contact]) {
-        this.contactFormGroup.get(contactCtrl).setValue(this.details.contacts[contact]);
-      }
+    this.descriptionFormGroup = this.formBuilder.group({
+      descriptionCtrl: [this.details.details, Validators.required],
+      urlCtrl: [this.details.website, [Validators.pattern('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]],
+      facebookCtrl: [this.details.socialLinks.facebook, Validators.pattern('^(?!.*\\/).*$')],
+      instagramCtrl: [this.details.socialLinks.instagram, Validators.pattern('^(?!.*\\/).*$')],
+      twitterCtrl: [this.details.socialLinks.twitter, Validators.pattern('^(?!.*\\/).*$')],
     });
-    this.businessHours.POSSIBLE_BUSINESS_HOURS.forEach((opening, day) => {
+    this.contactFormGroup = new FormGroup({});
+    this.contactTypes.availableContactTypes.forEach(type => {
+      const ctrl = type.toLowerCase() + 'Ctrl';
+      this.contactFormGroup.addControl(ctrl, new FormControl(this.details.contacts[type]));
+    });
+    this.contactFormGroup.setValidators(this.atLeastOneContact());
+    this.openingFormGroup = new FormGroup({});
+    Array.from(this.businessHours.POSSIBLE_BUSINESS_HOURS.keys()).forEach((day: string) => {
       const dayOpeningHours = this.getRightSlot(day, this.details.slots);
       const fromCtrl = day + 'FromCtrl';
       const toCtrl = day + 'ToCtrl';
-      // unavailable slots are null
       if (dayOpeningHours) {
-        this.openingFormGroup.get(fromCtrl).setValue(dayOpeningHours.start);
-        this.openingFormGroup.get(toCtrl).setValue(dayOpeningHours.end);
-        this.openingFormGroup.get(fromCtrl).enable();
-        this.openingFormGroup.get(toCtrl).enable();
-        opening.enabled = true;
+        this.openingFormGroup.addControl(fromCtrl, new FormControl(dayOpeningHours.start, Validators.required));
+        this.openingFormGroup.addControl(toCtrl, new FormControl(dayOpeningHours.end, Validators.required));
       } else {
-        opening.enabled = false;
-        this.openingFormGroup.get(fromCtrl).setValue('09:00');
-        this.openingFormGroup.get(toCtrl).setValue('16:00');
+        this.openingFormGroup.addControl(fromCtrl, new FormControl('09:00', Validators.required));
         this.openingFormGroup.get(fromCtrl).disable();
+        this.openingFormGroup.addControl(toCtrl, new FormControl('16:00', Validators.required));
         this.openingFormGroup.get(toCtrl).disable();
       }
     });
-    this.openingFormGroup.controls.defaultCtrl.setValue(this.details.slots.timePerSlot);
-    this.openingFormGroup.controls.pauseCtrl.setValue(this.details.slots.timeBetweenSlots);
-    this.openingFormGroup.controls.delayCtrl.setValue(this.details.slots.delayForFirstSlot);
-
-    this.logoFormGroup.controls.autoColorCtrl.setValue(this.details.autoColorEnabled);
-  }
-
-  configureFormControls() {
-    this.nameFormGroup = this.formBuilder.group({
-      nameCtrl: ['', Validators.required],
-      businessNameCtrl: ['', Validators.required]
-    });
-    this.addressFormGroup = this.formBuilder.group({
-      streetCtrl: ['', Validators.required],
-      zipCtrl: ['', [Validators.required, Validators.pattern(new RegExp(/^\d{5}$/))]],
-      cityCtrl: ['', Validators.required],
-      suffixCtrl: ''
-    });
+    this.openingFormGroup.addControl('defaultCtrl', new FormControl(this.details.slots.timePerSlot));
+    this.openingFormGroup.addControl('pauseCtrl', new FormControl(this.details.slots.timeBetweenSlots));
+    this.openingFormGroup.addControl('delayCtrl', new FormControl(this.details.slots.delayForFirstSlot));
     this.logoFormGroup = this.formBuilder.group({
-      autoColorCtrl: ''
+      autoColorCtrl: this.details.autoColorEnabled
     });
-    this.descriptionFormGroup = this.formBuilder.group({
-      descriptionCtrl: ['', Validators.required],
-      urlCtrl: ['', [Validators.pattern('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?')]],
-      facebookCtrl: ['', Validators.pattern('^(?!.*\\/).*$')],
-      instagramCtrl: ['', Validators.pattern('^(?!.*\\/).*$')],
-      twitterCtrl: ['', Validators.pattern('^(?!.*\\/).*$')],
-    });
-    this.contactTypes.availableContactTypes.forEach(type => {
-      const ctrl = type.toLowerCase() + 'Ctrl';
-      this.contactFormGroup.addControl(ctrl, new FormControl(''));
-    });
-    this.contactFormGroup.setValidators(this.atLeastOneContact());
-    Array.from(this.businessHours.POSSIBLE_BUSINESS_HOURS.keys()).forEach((day: string) => {
-      const fromCtrl = day + 'FromCtrl';
-      const toCtrl = day + 'ToCtrl';
-      this.openingFormGroup.addControl(fromCtrl, new FormControl('', Validators.required));
-      this.openingFormGroup.addControl(toCtrl, new FormControl('', Validators.required));
-      this.openingFormGroup.controls[fromCtrl].setValue('09:00');
-      this.openingFormGroup.controls[toCtrl].setValue('16:00');
-    });
-    this.openingFormGroup.addControl('defaultCtrl', new FormControl(''));
-    this.openingFormGroup.addControl('pauseCtrl', new FormControl(''));
-    this.openingFormGroup.controls.defaultCtrl.setValue(15);
-    this.openingFormGroup.controls.pauseCtrl.setValue(5);
-    this.openingFormGroup.addControl('delayCtrl', new FormControl(''));
-    this.openingFormGroup.controls.delayCtrl.setValue(15);
-    // disable default disabled saturday and sunday controls
-    this.openingFormGroup.controls.SamstagFromCtrl.disable();
-    this.openingFormGroup.controls.SonntagFromCtrl.disable();
-    this.openingFormGroup.controls.SamstagToCtrl.disable();
-    this.openingFormGroup.controls.SonntagToCtrl.disable();
   }
 
 
