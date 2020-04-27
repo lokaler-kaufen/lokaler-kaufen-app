@@ -11,7 +11,6 @@ import {
   ShopOwnerDetailDto,
   SlotConfigDto,
   SlotDto,
-  SlotsDto,
   UpdateShopDto
 } from '../data/api';
 import {ContactTypesEnum} from '../contact-types/available-contact-types';
@@ -21,6 +20,7 @@ import {AsyncNotificationService} from '../i18n/async-notification.service';
 import {StepperSelectionEvent} from '@angular/cdk/stepper';
 import {ReserveSlotsData, SlotSelectionData} from '../slots/slots.component';
 import {LocationClient} from '../api/location-client.service';
+import {ReservationClient} from '../api/reservation-client.service';
 
 export interface UpdateShopData {
   image: File;
@@ -53,9 +53,10 @@ export class ShopDetailsConfigComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
               private matDialog: MatDialog,
-              private notificationsService: AsyncNotificationService,
+              private notification: AsyncNotificationService,
               private client: HttpClient,
-              private location: LocationClient) {
+              private location: LocationClient,
+              private reservation: ReservationClient) {
     this.days = Array.from(this.businessHours.POSSIBLE_BUSINESS_HOURS.keys());
   }
 
@@ -111,7 +112,7 @@ export class ShopDetailsConfigComponent implements OnInit {
         },
         error => {
           console.log('Error requesting shop details: ' + error.status + ', ' + error.message);
-          this.notificationsService.error('shop.details-config.error.generic.title', 'shop.details-config.error.generic.message');
+          this.notification.error('shop.details-config.error.generic.title', 'shop.details-config.error.generic.message');
         });
     this.sendUpdatedShopDetails.subscribe((sendUpdatedShopDetails: boolean) => {
       if (sendUpdatedShopDetails) {
@@ -194,7 +195,7 @@ export class ShopDetailsConfigComponent implements OnInit {
     // If one form group is invalid, don't save the changes
     if (!this.addressFormGroup.valid || !this.contactFormGroup.valid || !this.descriptionFormGroup.valid ||
       !this.nameFormGroup.valid || !this.openingFormGroup.valid) {
-      this.notificationsService.error('shop.details-config.error.update.title', 'shop.details-config.error.update.message');
+      this.notification.error('shop.details-config.error.update.title', 'shop.details-config.error.update.message');
       return;
     }
     console.log('Update shop');
@@ -349,13 +350,13 @@ export class ShopDetailsConfigComponent implements OnInit {
     if ($event.selectedIndex !== 5) {
       return;
     }
-    const slots = this.fillSlotsConfig();
-    this.client.post<SlotsDto>('/api/reservation/preview', slots).toPromise().then(preview => {
-      this.slotsPreview.next({
-        slots: preview,
-        breaks: this.details.breaks
+
+    const request = this.fillSlotsConfig();
+
+    this.reservation.previewSlots(request)
+      .then(slots => {
+        this.slotsPreview.next({slots, breaks: this.details.breaks});
       });
-    });
     this.breaksChanged = true;
   }
 

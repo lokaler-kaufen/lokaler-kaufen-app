@@ -17,6 +17,7 @@ import {ContactTypesEnum} from '../contact-types/available-contact-types';
 import {AsyncNotificationService} from '../i18n/async-notification.service';
 import {ReplaySubject} from 'rxjs';
 import {ReserveSlotsData, SlotSelectionData} from '../slots/slots.component';
+import {ReservationClient} from '../api/reservation-client.service';
 
 @Component({
   selector: 'shop-details-page',
@@ -29,7 +30,8 @@ export class ShopDetailsPageComponent implements OnInit {
     private client: HttpClient,
     private activatedRoute: ActivatedRoute,
     private matDialog: MatDialog,
-    private notificationsService: AsyncNotificationService
+    private notification: AsyncNotificationService,
+    private reservation: ReservationClient
   ) {
   }
 
@@ -86,21 +88,21 @@ export class ShopDetailsPageComponent implements OnInit {
 
       .catch(error => {
         console.log('Error requesting shop details: ' + error.status + ', ' + error.message);
-        this.notificationsService.error('shop.details.error.generic.title', 'shop.details.error.generic.message');
+        this.notification.error('shop.details.error.generic.title', 'shop.details.error.generic.message');
       });
   }
 
   private loadSlots() {
     this.slotsData.next({slots: {days: []}});
 
-    this.client.get<SlotsDto>('/api/reservation/' + this.shopId + '/slot?days=7').toPromise()
+    this.reservation.getSlotsForShop(this.shopId)
       .then((slots: SlotsDto) => {
         this.slotsData.next({slots});
       })
 
       .catch(error => {
         console.log('Error requesting slots: ' + error.status + ', ' + error.message);
-        this.notificationsService.error('shop.details.error.slots.title', 'shop.details.error.slots.message');
+        this.notification.error('shop.details.error.slots.title', 'shop.details.error.slots.message');
       });
   }
 
@@ -115,7 +117,7 @@ export class ShopDetailsPageComponent implements OnInit {
         if (data && data.outcome === BookingPopupOutcome.BOOK) {
           const reservationDto = ShopDetailsPageComponent.getReservationDto(data, $event);
 
-          this.client.post<SlotsDto>('/api/reservation/' + this.shopId, reservationDto).toPromise()
+          this.reservation.createReservation(this.shopId, reservationDto)
             .then(() => {
               const successConfig: MatDialogConfig<BookingSuccessData> = ShopDetailsPageComponent.createDialogConfig({
                 owner: this.shop.name,
@@ -131,7 +133,7 @@ export class ShopDetailsPageComponent implements OnInit {
 
             .catch(error => {
               console.log('Error booking time slot: ' + error.status + ', ' + error.message);
-              this.notificationsService.error('shop.details.error.booking.title', 'shop.details.error.booking.message');
+              this.notification.error('shop.details.error.booking.title', 'shop.details.error.booking.message');
             })
 
             .finally(() => this.loadSlots());

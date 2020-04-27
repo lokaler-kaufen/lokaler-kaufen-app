@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {HttpClient} from '@angular/common/http';
 import {AsyncNotificationService} from '../i18n/async-notification.service';
+import {ReservationClient} from '../api/reservation-client.service';
 
 @Component({
   selector: 'cancel-reservation',
@@ -14,8 +14,8 @@ export class CancelReservationComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
               private router: Router,
-              private client: HttpClient,
-              private notificationsService: AsyncNotificationService) {
+              private client: ReservationClient,
+              private notification: AsyncNotificationService) {
   }
 
   ngOnInit(): void {
@@ -25,15 +25,15 @@ export class CancelReservationComponent implements OnInit {
   }
 
   cancelReservation() {
-    this.client.delete('/api/reservation?token=' + encodeURIComponent(this.token))
-      .subscribe(() => {
-          this.notificationsService.success('Alles klar!', 'Der Beratungstermin wurde storniert.');
-          this.router.navigate(['/']);
-        },
-        error => {
-          console.log('Error cancelling reservation: ' + error.status + ', ' + error.message);
-          this.notificationsService.error('reservation.cancel.error.title', 'reservation.cancel.error.message');
-        });
+    this.client.cancelReservation(this.token)
+      .then(() => {
+        this.notification.success('Alles klar!', 'Der Beratungstermin wurde storniert.');
+        this.router.navigate(['/']);
+      })
+      .catch(error => {
+        console.log('Error cancelling reservation: ' + error.status + ', ' + error.message);
+        this.notification.error('reservation.cancel.error.title', 'reservation.cancel.error.message');
+      });
   }
 
 }
