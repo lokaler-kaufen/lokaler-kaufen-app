@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
-import {VersionDto} from '../data/client/model/versionDto';
+import {VersionDto} from '../../data/client/model/versionDto';
 import {HttpClient} from '@angular/common/http';
-import {wrapRequest} from './api-utilities';
+import {wrapRequest} from '../api-utilities';
 
 const API = '/api/info/version';
 

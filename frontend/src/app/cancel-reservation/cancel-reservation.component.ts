@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AsyncNotificationService} from '../i18n/async-notification.service';
-import {ReservationClient} from '../api/reservation.client';
+import {ReservationClient} from '../api/reservation/reservation.client';
 
 @Component({
   selector: 'cancel-reservation',

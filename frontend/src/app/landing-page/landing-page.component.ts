@@ -6,7 +6,7 @@ import {ZipCodeCacheService} from './zip-code-cache.service';
 import {LocationSuggestionDto} from '../data/api';
 import {BreakpointObserver} from '@angular/cdk/layout';
 import {AsyncNotificationService} from '../i18n/async-notification.service';
-import {LocationClient} from '../api/location.client';
+import {LocationClient} from '../api/location/location.client';
 
 @Component({
   selector: 'landing-page',

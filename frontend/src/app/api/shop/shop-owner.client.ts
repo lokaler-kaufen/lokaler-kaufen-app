@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {ShopOwnerDetailDto} from '../data/client/model/shopOwnerDetailDto';
-import {wrapRequest} from './api-utilities';
-import {UpdateShopDto} from '../data/client/model/updateShopDto';
+import {ShopOwnerDetailDto} from '../../data/client/model/shopOwnerDetailDto';
+import {wrapRequest} from '../api-utilities';
+import {UpdateShopDto} from '../../data/client/model/updateShopDto';
 
 const API = '/api/shop';
 

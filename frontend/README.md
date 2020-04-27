@@ -9,7 +9,8 @@ transport tech stuff into the code that's using the client.
 All client implementations should sit in `src/app/api`
 
 Example: There is a `ShopImageController` in the backend So there needs to be a `ShopImageClient` in the frontend. This
-client should be in a file called `src/app/api/shop-image.client.ts`.
+client should be in a file called `src/app/api/shop/shop-image.client.ts` (matching class name, matching file name,
+matching directory to mirror the backend structure).
 
 Observables are nice and dandy but don't make any sense when we're performing one request that results in one response
 (or one failure). Therefore, it's reasonable that users of these client classes want a Promise instead of an 

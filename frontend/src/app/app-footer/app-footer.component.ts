@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {InfoRestClient} from '../api/info-rest.client';
+import {InfoRestClient} from '../api/info/info-rest.client';
 import {VersionDto} from '../data/client/model/versionDto';
 
 @Component({

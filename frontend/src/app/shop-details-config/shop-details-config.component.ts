@@ -19,8 +19,8 @@ import {HttpClient} from '@angular/common/http';
 import {AsyncNotificationService} from '../i18n/async-notification.service';
 import {StepperSelectionEvent} from '@angular/cdk/stepper';
 import {ReserveSlotsData, SlotSelectionData} from '../slots/slots.component';
-import {LocationClient} from '../api/location.client';
-import {ReservationClient} from '../api/reservation.client';
+import {LocationClient} from '../api/location/location.client';
+import {ReservationClient} from '../api/reservation/reservation.client';
 
 export interface UpdateShopData {
   image: File;

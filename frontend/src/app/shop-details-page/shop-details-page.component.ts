@@ -17,7 +17,7 @@ import {ContactTypesEnum} from '../contact-types/available-contact-types';
 import {AsyncNotificationService} from '../i18n/async-notification.service';
 import {ReplaySubject} from 'rxjs';
 import {ReserveSlotsData, SlotSelectionData} from '../slots/slots.component';
-import {ReservationClient} from '../api/reservation.client';
+import {ReservationClient} from '../api/reservation/reservation.client';
 
 @Component({
   selector: 'shop-details-page',

@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpEvent, HttpEventType} from '@angular/common/http';
-import {ImageDto} from '../data/api';
+import {ImageDto} from '../../data/api';
 import {Observable, throwError} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
-import {wrapRequest} from './api-utilities';
+import {wrapRequest} from '../api-utilities';
 
 const API_IMAGE_SHOP = '/api/image/shop';
 

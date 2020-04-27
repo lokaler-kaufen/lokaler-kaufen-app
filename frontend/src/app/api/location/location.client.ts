@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
-import {wrapRequest} from './api-utilities';
-import {LocationSuggestionsDto} from '../data/client/model/locationSuggestionsDto';
+import {wrapRequest} from '../api-utilities';
+import {LocationSuggestionsDto} from '../../data/client/model/locationSuggestionsDto';
 
 const API = '/api/location';
 

@@ -1,7 +1,7 @@
-import {ClientErrorDto} from '../data/client/model/clientErrorDto';
+import {ClientErrorDto} from '../../data/client/model/clientErrorDto';
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {wrapRequest} from './api-utilities';
+import {wrapRequest} from '../api-utilities';
 
 const API = '/api/client-error';
 
