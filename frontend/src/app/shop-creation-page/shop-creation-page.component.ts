@@ -15,7 +15,7 @@ import {
 import {ContactTypesEnum} from '../contact-types/available-contact-types';
 import {filter} from 'rxjs/operators';
 import {ReplaySubject} from 'rxjs';
-import {ImageService} from '../shared/image.service';
+import {ShopImageClient} from '../api/shop-image-client.service';
 import {AsyncNotificationService} from '../i18n/async-notification.service';
 import {StepperSelectionEvent} from '@angular/cdk/stepper';
 import {ReserveSlotsData, SlotSelectionData} from '../slots/slots.component';
@@ -91,7 +91,7 @@ export class ShopCreationPageComponent implements OnInit {
     private route: ActivatedRoute,
     private matDialog: MatDialog,
     private notificationsService: AsyncNotificationService,
-    private imageService: ImageService
+    private shopImageClient: ShopImageClient
   ) {
     this.days = Array.from(this.businessHours.POSSIBLE_BUSINESS_HOURS.keys());
   }
@@ -377,7 +377,7 @@ export class ShopCreationPageComponent implements OnInit {
   private postImageAndDetails(createShopRequestDto: CreateShopDto) {
     this.client.post('/api/shop?token=' + this.token, createShopRequestDto).subscribe(() => {
 
-        this.imageService.upload(this.image, progress => this.progress = progress)
+        this.shopImageClient.upload(this.image, progress => this.progress = progress)
           .then(() => {
             this.matDialog.open(ShopCreationSuccessPopupComponent, {
               width: '500px',

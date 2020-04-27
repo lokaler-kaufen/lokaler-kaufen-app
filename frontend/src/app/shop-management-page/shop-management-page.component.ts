@@ -4,7 +4,7 @@ import {Router} from '@angular/router';
 import {ReplaySubject} from 'rxjs';
 import {ShopOwnerDetailDto} from '../data/api';
 import {UpdateShopData} from '../shop-details-config/shop-details-config.component';
-import {ImageService} from '../shared/image.service';
+import {ShopImageClient} from '../api/shop-image-client.service';
 import {ShopOwnerService} from '../shared/shop-owner.service';
 import {AsyncNotificationService} from '../i18n/async-notification.service';
 
@@ -20,7 +20,7 @@ export class ShopManagementPageComponent implements OnInit {
     private router: Router,
     private notificationsService: AsyncNotificationService,
     private shopOwnerService: ShopOwnerService,
-    private imageService: ImageService
+    private shopImageClient: ShopImageClient
   ) {
   }
 
@@ -45,7 +45,7 @@ export class ShopManagementPageComponent implements OnInit {
       this.updateImageAndDetails($event);
 
     } else if ($event.deleteImage) {
-      this.imageService.delete()
+      this.shopImageClient.delete()
         .then(() => {
           this.updateShopDto($event);
         })
@@ -59,7 +59,7 @@ export class ShopManagementPageComponent implements OnInit {
   }
 
   private updateImageAndDetails({id, image}: UpdateShopData) {
-    this.imageService.upload(image, progress => this.progress = progress)
+    this.shopImageClient.upload(image, progress => this.progress = progress)
       .then(() => {
         this.router.navigate(['shops/' + id]);
       })

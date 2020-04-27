@@ -3,29 +3,26 @@ import {HttpClient, HttpEvent, HttpEventType} from '@angular/common/http';
 import {ImageDto} from '../data/api';
 import {Observable, throwError} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
+import {ApiClientBase} from './api-client-base.service';
 
 const API_IMAGE_SHOP = '/api/image/shop';
 
 type ProgressConsumer = (progress: number) => void;
 
 @Injectable({providedIn: 'root'})
-export class ImageService {
+export class ShopImageClient {
 
-  constructor(private client: HttpClient) {
+  constructor(private client: HttpClient, private base: ApiClientBase) {
   }
 
   /**
    * Issues shop logo deletion to the backend.
    */
   delete(): Promise<void> {
-    return this.client.delete<void>(API_IMAGE_SHOP)
-      .pipe(
-        catchError(error => {
-          console.error('[ImageService.upload] failed to delete shop logo.', error.body);
-          return throwError(error);
-        })
-      )
-      .toPromise();
+    return this.base.promisify(
+      this.client.delete<void>(API_IMAGE_SHOP),
+      '[ShopImageClient.upload] failed to delete shop logo.'
+    );
   }
 
   /**
@@ -76,7 +73,7 @@ export class ImageService {
 
   private logUploadError(name: string) {
     return error => {
-      console.error(`[ImageService.upload] failed to upload ${name}.`, error);
+      console.error(`[ShopImageClient.upload] failed to upload ${name}.`, error);
       return throwError(error);
     };
   }
