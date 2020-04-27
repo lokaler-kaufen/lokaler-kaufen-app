@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {ReplaySubject} from 'rxjs';
 import {ShopOwnerDetailDto} from '../data/api';
@@ -7,6 +6,7 @@ import {UpdateShopData} from '../shop-details-config/shop-details-config.compone
 import {ShopImageClient} from '../api/shop-image.client';
 import {ShopOwnerService} from '../shared/shop-owner.service';
 import {AsyncNotificationService} from '../i18n/async-notification.service';
+import {ShopOwnerClient} from '../api/shop-owner.client';
 
 @Component({
   selector: 'shop-management-page',
@@ -16,7 +16,7 @@ import {AsyncNotificationService} from '../i18n/async-notification.service';
 export class ShopManagementPageComponent implements OnInit {
 
   constructor(
-    private client: HttpClient,
+    private client: ShopOwnerClient,
     private router: Router,
     private notificationsService: AsyncNotificationService,
     private shopOwnerService: ShopOwnerService,
@@ -30,14 +30,14 @@ export class ShopManagementPageComponent implements OnInit {
   progress = 0;
 
   ngOnInit() {
-    this.client.get<ShopOwnerDetailDto>('/api/shop/me')
-      .subscribe((shopDetails: ShopOwnerDetailDto) => {
-          this.shopId = shopDetails.id;
-          this.shopDetails.next(shopDetails);
-        },
-        error => {
-          this.handleError(error, true);
-        });
+    this.client.getShopSettings()
+      .then((shopDetails: ShopOwnerDetailDto) => {
+        this.shopId = shopDetails.id;
+        this.shopDetails.next(shopDetails);
+      })
+      .catch(error => {
+        this.handleError(error, true);
+      });
   }
 
   updateShop($event: UpdateShopData) {
@@ -68,11 +68,12 @@ export class ShopManagementPageComponent implements OnInit {
       });
   }
 
-  private updateShopDto(updateShopData: UpdateShopData) {
-    this.client.put('/api/shop', updateShopData.updateShopDto).subscribe(() => {
-        this.router.navigate(['shops/' + updateShopData.id]);
-      },
-      error => {
+  private updateShopDto({id, updateShopDto}: UpdateShopData) {
+    this.client.updateShop(updateShopDto)
+      .then(() => {
+        this.router.navigate(['shops/' + id]);
+      })
+      .catch(error => {
         this.handleError(error, false);
       });
   }
