@@ -2,7 +2,6 @@ import {ClientErrorDto} from '../data/client/model/clientErrorDto';
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {ApiClientBase} from './api-client-base.service';
-import {Observable} from 'rxjs';
 
 const API = '/api/client-error';
 
@@ -14,7 +13,7 @@ export class ClientErrorClient {
 
   reportError(clientErrorDto: ClientErrorDto): Promise<void> {
     return this.base.promisify<void>(
-      this.http.post(API, clientErrorDto) as Observable<any>,
+      this.http.post(API, clientErrorDto),
       '[ClientErrorClient] failed to upload client error'
     );
   }

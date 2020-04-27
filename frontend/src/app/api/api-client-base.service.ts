@@ -20,7 +20,7 @@ export class ApiClientBase {
    *
    * @return A promise resolving to the response body on success or rejecting to the error.
    */
-  promisify<T>(response$: Observable<T>, errorMessage: string): Promise<T> {
+  promisify<T>(response$: Observable<any>, errorMessage: string): Promise<T> {
     return response$
       .pipe(
         catchError(error => {
