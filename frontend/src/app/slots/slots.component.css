@@ -22,6 +22,11 @@
   padding: 10px 7px;
 }
 
+.holiday-warning-box p {
+  margin-top: 6pt;
+  margin-bottom: 6pt;
+}
+
 .holiday-warning-box-header {
   font-weight: bold;
 }
