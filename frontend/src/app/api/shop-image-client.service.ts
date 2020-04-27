@@ -21,7 +21,7 @@ export class ShopImageClient {
   deleteImageFromShop(): Promise<void> {
     return this.base.promisify(
       this.client.delete<void>(API_IMAGE_SHOP),
-      '[ShopImageClient.upload] failed to delete shop logo.'
+      '[ShopImageClient] failed to delete shop logo'
     );
   }
 
@@ -73,7 +73,7 @@ export class ShopImageClient {
 
   private logUploadError(name: string) {
     return error => {
-      console.error(`[ShopImageClient.upload] failed to upload ${name}.`, error);
+      console.error(`[ShopImageClient] failed to upload "${name}"`, error);
       return throwError(error);
     };
   }
