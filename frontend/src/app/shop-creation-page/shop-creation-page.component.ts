@@ -377,7 +377,7 @@ export class ShopCreationPageComponent implements OnInit {
   private postImageAndDetails(createShopRequestDto: CreateShopDto) {
     this.client.post('/api/shop?token=' + this.token, createShopRequestDto).subscribe(() => {
 
-        this.shopImageClient.upload(this.image, progress => this.progress = progress)
+        this.shopImageClient.uploadImageForShop(this.image, progress => this.progress = progress)
           .then(() => {
             this.matDialog.open(ShopCreationSuccessPopupComponent, {
               width: '500px',

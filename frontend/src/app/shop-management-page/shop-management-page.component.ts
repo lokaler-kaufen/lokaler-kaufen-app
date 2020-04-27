@@ -45,7 +45,7 @@ export class ShopManagementPageComponent implements OnInit {
       this.updateImageAndDetails($event);
 
     } else if ($event.deleteImage) {
-      this.shopImageClient.delete()
+      this.shopImageClient.deleteImageFromShop()
         .then(() => {
           this.updateShopDto($event);
         })
@@ -59,7 +59,7 @@ export class ShopManagementPageComponent implements OnInit {
   }
 
   private updateImageAndDetails({id, image}: UpdateShopData) {
-    this.shopImageClient.upload(image, progress => this.progress = progress)
+    this.shopImageClient.uploadImageForShop(image, progress => this.progress = progress)
       .then(() => {
         this.router.navigate(['shops/' + id]);
       })

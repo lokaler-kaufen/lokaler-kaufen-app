@@ -18,7 +18,7 @@ export class ShopImageClient {
   /**
    * Issues shop logo deletion to the backend.
    */
-  delete(): Promise<void> {
+  deleteImageFromShop(): Promise<void> {
     return this.base.promisify(
       this.client.delete<void>(API_IMAGE_SHOP),
       '[ShopImageClient.upload] failed to delete shop logo.'
@@ -32,7 +32,7 @@ export class ShopImageClient {
    * @param onProgress (Optional) callback that will get called with the progress (in flat percent) during the upload.
    * @return A promise that resolves to an {@link ImageDto} on success.
    */
-  upload(image: File, onProgress?: ProgressConsumer): Promise<ImageDto> {
+  uploadImageForShop(image: File, onProgress?: ProgressConsumer): Promise<ImageDto> {
     return this.doUpload(image)
       .pipe(
         // handle progress and response
