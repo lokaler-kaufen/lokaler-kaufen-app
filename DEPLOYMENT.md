@@ -6,6 +6,8 @@
 * Public key configured on the target machine
 * User needs to be part of the group `deployment`
 
+*Hint*: See RELEASE.MD for details on how to create a new version.
+
 ### Database setup
 
 In case of incompatible database changes, you need to remove all database tables **before** the deployment.
