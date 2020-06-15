@@ -1,6 +1,6 @@
 # Release
 
-This document contains the necessary information to create lokaler.kaufen releases. The release process is a set of conventions. These conventions guarantee a consistent git flow and, minimize merging and cherry-picking.
+This document contains the necessary information on how to create lokaler.kaufen releases. The release process is a set of conventions. These conventions guarantee a consistent git flow, and minimize merging and cherry-picking.
 
 ## Branch Layout
 There are two important branches in our branch layout: `master` and `bugfix`. The `master` branch contains the snapshot of the next major or minor feature release (e.g. 1.3-SNAPSHOT or 2.0-SNAPSHOT), according to semantic versioning. While the acutal development is mostly happening on short-living feature branches, developers are strongly encouraged to often integrate their feature branches in the `master` branch. The usual development rules (no failed tests, no Sonar violations, ...) apply.
@@ -20,7 +20,7 @@ $ git checkout master
 $ git merge bugfix-1.2.x
 ```
 
-2. Adjust the version in the build.gradle file in backend/ to the desired release version. This usually means removing the `-SNAPSHOT` from the current version string.
+2. Adjust the version in the build.gradle file in backend/ to the desired release version. This usually means removing the `-SNAPSHOT` suffix from the current version string.
 
 Example:
 ```
@@ -86,7 +86,7 @@ $ git add backend/build.gradle
 $ git commit -m "Set version to 1.4.0-SNAPSHOT"
 ```
 
-11. Perform the formal no-op merge of the version changes in the bugfix branch.
+11. Perform the formal no-op merge of the version changes in the bugfix branch. Adjust the commit message of the merge commit to reflect its no-op nature, e.g. 'Formal no-op merge of version changes in bugfix branch'.
 
 ```
 $ git merge bugfix-1.3.x --strategy=ours
@@ -175,7 +175,7 @@ $ git commit -m "Set version to 1.3.2-SNAPSHOT"
 $ git checkout master
 ```
 
-9. Perform the formal no-op merge of the version changes in the bugfix branch.
+9. Perform the formal no-op merge of the version changes in the bugfix branch. Adjust the commit message of the merge commit to reflect its no-op nature, e.g. 'Formal no-op merge of version changes in bugfix branch'.
 
 ```
 $ git merge bugfix-1.3.x --strategy=ours
