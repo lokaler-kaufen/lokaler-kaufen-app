@@ -3,7 +3,7 @@
 This document contains the necessary information on how to create lokaler.kaufen releases. The release process is a set of conventions. These conventions guarantee a consistent git flow, and minimize merging and cherry-picking.
 
 ## Branch Layout
-There are two important branches in our branch layout: `master` and `bugfix`. The `master` branch contains the snapshot of the next major or minor feature release (e.g. 1.3-SNAPSHOT or 2.0-SNAPSHOT), according to semantic versioning. While the acutal development is mostly happening on short-living feature branches, developers are strongly encouraged to often integrate their feature branches in the `master` branch. The usual development rules (no failed tests, no Sonar violations, ...) apply.
+There are two important branches in our branch layout: `master` and `bugfix`. The `master` branch contains the snapshot of the next major or minor feature release (e.g. 1.3-SNAPSHOT or 2.0-SNAPSHOT), according to semantic versioning. While the actual development is mostly happening on short-living feature branches, developers are strongly encouraged to often integrate their feature branches into the `master` branch. The usual development rules (no failed tests, no Sonar violations, ...) apply.
 
 Every minor version has its own feature branch. The bugfix branch of version 1.3 is `bugfix-1.3.x` and contains every bugfix version starting from 1.3.1.
 
@@ -181,7 +181,7 @@ $ git checkout master
 $ git merge bugfix-1.3.x --strategy=ours
 ```
 
-10. Push master and tags
+10. Push master
 
 ```
 $ git push
