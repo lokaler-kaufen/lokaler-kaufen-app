@@ -52,8 +52,8 @@ git checkout -b bugfix-1.3.x
 Example:
 
 ```
-version = '1.3.0'
-version = '1.3.1-SNAPSHOT'
+- version = '1.3.0'
++ version = '1.3.1-SNAPSHOT'
 ```
 
 7. Create snapshot version commit on bugfix-branch
@@ -74,8 +74,8 @@ $ git checkout master
 Example:
 
 ```
-version = '1.3.0'
-version = '1.4.0-SNAPSHOT'
+- version = '1.3.0'
++ version = '1.4.0-SNAPSHOT'
 ```
 
 
@@ -104,6 +104,12 @@ $ git push --tags
 ```
 $ git checkout bugfix-1.3.x
 $ git push
+```
+
+(This very first push on a new branch might fail because no proper upstream is set. In this case set the upstream branch like this:)
+
+```
+git push --set-upstream origin bugfix-1.3.x
 ```
 
 14. (optional) if you want to deploy the new version you can do it like this:
@@ -158,8 +164,8 @@ $ git tag v1.3.1
 Example:
 
 ```
-version = '1.3.1'
-version = '1.3.2-SNAPSHOT'
+- version = '1.3.1'
++ version = '1.3.2-SNAPSHOT'
 ```
 
 7. Create snapshot version commit on bugfix-branch
@@ -203,4 +209,3 @@ $ ./deploy.sh
 ```
 
 Check DEPLOYMENT.MD for further information.
-
