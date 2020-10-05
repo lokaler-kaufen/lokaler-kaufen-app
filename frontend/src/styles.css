@@ -32,6 +32,10 @@ a:active {
   color: #ffc107;
 }
 
+a:active, a:focus, a:visited {
+  outline: none;
+}
+
 .text-no-values {
   color: darkgray;
 }
