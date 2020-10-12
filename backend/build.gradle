@@ -112,8 +112,8 @@ jacocoTestReport {
 
 sonarqube {
     properties {
-        property "sonar.projectKey", "qaware_wir-vs-virus"
-        property "sonar.organization", "qaware"
+        property "sonar.projectKey", "lokaler-kaufen_lokaler-kaufen-app"
+        property "sonar.organization", "lokaler-kaufen"
         property "sonar.host.url", "https://sonarcloud.io"
     }
 }
