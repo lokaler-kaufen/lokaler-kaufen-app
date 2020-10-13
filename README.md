@@ -1,4 +1,4 @@
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=qaware_wir-vs-virus&metric=alert_status)](https://sonarcloud.io/dashboard?id=qaware_wir-vs-virus)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=lokaler-kaufen_lokaler-kaufen-app&metric=alert_status)](https://sonarcloud.io/dashboard?id=lokaler-kaufen_lokaler-kaufen-app)
 
 ![lokaler.einkaufen](https://raw.githubusercontent.com/qaware/wir-vs-virus/master/lokaler.kaufen.png)
 
