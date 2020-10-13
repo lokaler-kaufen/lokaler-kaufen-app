@@ -115,7 +115,6 @@ sonarqube {
         property "sonar.projectKey", "lokaler-kaufen_lokaler-kaufen-app"
         property "sonar.organization", "lokaler-kaufen"
         property "sonar.host.url", "https://sonarcloud.io"
-        property "sonar.scm.provider", "git"
     }
 }
 
