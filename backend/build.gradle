@@ -80,7 +80,7 @@ dependencies {
     testImplementation "org.spockframework:spock-spring"
 
     // Testcontainers for integration tests
-    testImplementation 'org.testcontainers:postgresql:1.13.0'
+    testImplementation 'org.testcontainers:postgresql:1.15.0-rc2'
 
     // Spring Dev Tools for faster reload
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
