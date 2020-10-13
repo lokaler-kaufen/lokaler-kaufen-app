@@ -39,4 +39,4 @@ options:
 secrets:
   - kmsKeyName: projects/theta-mile-271809/locations/global/keyRings/lokalerkaufen/cryptoKeys/CLOUD_BUILD_KEY
     secretEnv:
-      SONAR_TOKEN: CiQA/jo+T7PGbQt72sqrRL5dVspyk3/vXr2HxoE406bZRwJtNEcSUQAOg7t2m3AOYeaF1tFS/Fp8EI+WHcHQ7cg46KyVqoO8j0o146ak/ec7yt5OnRBXkYO028xvyfMz2JWifTJRO6PHb3MMHh3Mpqci0rfAzn49aQ==
+      SONAR_TOKEN: CiQA/jo+T6j/EAXCsqivyOFOULJgnSCgVZPcg/jM8+NEwUZT0Z8SUQAOg7t26LyphNeZTbkvvqfWNf6d6vUJx30AaVy6UHMYN4oB/qBtruE28/aQP4yRu2YKhQHjA9E/RgWavmWj1J7Dd6xj9QPHgfmqsmLnEmijjA==
